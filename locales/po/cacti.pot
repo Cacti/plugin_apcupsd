@@ -1,0 +1,272 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2022-07-06 20:19-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
+"Language-Team: Cacti Developers <developers@cacti.net>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: setup.php:34
+msgid "Manage UPS's"
+msgstr ""
+
+#: setup.php:239
+msgid "Management"
+msgstr ""
+
+#: setup.php:239 upses.php:368 upses.php:383 upses.php:466
+msgid "UPSes"
+msgstr ""
+
+#: setup.php:242
+msgid "System Administration"
+msgstr ""
+
+#: setup.php:255
+msgid "Manage UPSes"
+msgstr ""
+
+#: upses.php:28
+msgid "Delete"
+msgstr ""
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr ""
+
+#: upses.php:36
+msgid "UPS Information"
+msgstr ""
+
+#: upses.php:41 upses.php:476
+msgid "UPS Name"
+msgstr ""
+
+#: upses.php:42
+msgid "The Name you would like to give this UPS."
+msgstr ""
+
+#: upses.php:45
+msgid "New UPS"
+msgstr ""
+
+#: upses.php:50
+msgid "UPS Description"
+msgstr ""
+
+#: upses.php:51
+msgid "A more detailed Description of this UPS if required."
+msgstr ""
+
+#: upses.php:58
+msgid "Site Name"
+msgstr ""
+
+#: upses.php:59
+msgid "The Site that this UPS exists in."
+msgstr ""
+
+#: upses.php:62
+msgid "None"
+msgstr ""
+
+#: upses.php:66
+msgid "Hostname"
+msgstr ""
+
+#: upses.php:67
+msgid "The hostname of the host running apcupsd."
+msgstr ""
+
+#: upses.php:74
+msgid "TCP Port"
+msgstr ""
+
+#: upses.php:75
+msgid "Enter the TCP Port for this UPS."
+msgstr ""
+
+#: upses.php:82 upses.php:530
+msgid "Enabled"
+msgstr ""
+
+#: upses.php:83
+msgid "Check to immediatly start polling for data."
+msgstr ""
+
+#: upses.php:200
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr ""
+
+#: upses.php:259
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] ""
+msgstr[1] ""
+
+#: upses.php:264 upses.php:274
+msgid "Cancel"
+msgstr ""
+
+#: upses.php:264 upses.php:274
+msgid "Continue"
+msgstr ""
+
+#: upses.php:264
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: upses.php:268
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] ""
+msgstr[1] ""
+
+#: upses.php:270
+msgid "UPS Name:"
+msgstr ""
+
+#: upses.php:274
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: upses.php:307
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr ""
+
+#: upses.php:309
+msgid "UPS [new]"
+msgstr ""
+
+#: upses.php:377
+msgid "Search"
+msgstr ""
+
+#: upses.php:387
+msgid "Default"
+msgstr ""
+
+#: upses.php:399
+msgid "Go"
+msgstr ""
+
+#: upses.php:399
+msgid "Set/Refresh Filters"
+msgstr ""
+
+#: upses.php:400
+msgid "Clear"
+msgstr ""
+
+#: upses.php:400
+msgid "Clear Filters"
+msgstr ""
+
+#: upses.php:479
+msgid "The Name of this UPS."
+msgstr ""
+
+#: upses.php:482
+msgid "ID"
+msgstr ""
+
+#: upses.php:485
+msgid "The unique id associated with this UPS."
+msgstr ""
+
+#: upses.php:488
+msgid "Collect Status"
+msgstr ""
+
+#: upses.php:491
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr ""
+
+#: upses.php:494
+msgid "UPS Status"
+msgstr ""
+
+#: upses.php:497
+msgid "The Status of the monitored UPS on the target Host."
+msgstr ""
+
+#: upses.php:500
+msgid "UPS Model"
+msgstr ""
+
+#: upses.php:503
+msgid "The Model of the monitored UPS on the target Host."
+msgstr ""
+
+#: upses.php:506
+msgid "Line Voltage"
+msgstr ""
+
+#: upses.php:509
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr ""
+
+#: upses.php:512
+msgid "Load Percent"
+msgstr ""
+
+#: upses.php:515
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr ""
+
+#: upses.php:518
+msgid "Time Left"
+msgstr ""
+
+#: upses.php:521
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr ""
+
+#: upses.php:524
+msgid "Hostname:Port"
+msgstr ""
+
+#: upses.php:527
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr ""
+
+#: upses.php:533
+msgid "If this UPS is being monitored or not."
+msgstr ""
+
+#: upses.php:536
+msgid "Last Updated"
+msgstr ""
+
+#: upses.php:539
+msgid "The last time this UPS was samples or found up."
+msgstr ""
+
+#: upses.php:559
+msgid "No"
+msgstr ""
+
+#: upses.php:559
+msgid "Yes"
+msgstr ""
+
+#: upses.php:567
+msgid "No UPSes Found"
+msgstr ""
