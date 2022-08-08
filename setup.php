@@ -97,7 +97,9 @@ function apcupsd_setup_table() {
 
 	db_execute("CREATE TABLE IF NOT EXISTS `apcupsd_ups` (
 		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		`host_id` int(10) unsigned NOT NULL default '0',
 		`site_id` int(10) unsigned NOT NULL default '0',
+		`type_id` int(10) unsigned NOT NULL default '0',
 		`name` varchar(40) NOT NULL DEFAULT '',
 		`description` varchar(128) NOT NULL DEFAULT '',
 		`status` int(10) unsigned NOT NULL DEFAULT '0',
@@ -158,12 +160,31 @@ function apcupsd_setup_table() {
 		`ups_cable` varchar(20) not null default '',
 		`ups_driver` varchar(20) not null default '',
 		`ups_mode` varchar(20) not null default '',
+
 		`ups_starttime` timestamp not null default CURRENT_TIMESTAMP,
+		`ups_mandate` timestamp not null default CURRENT_TIMESTAMP,
+		`ups_masterupd` timestamp not null default CURRENT_TIMESTAMP,
+		`ups_xonbatt` timestamp not null default CURRENT_TIMESTAMP,
+
 		`ups_model` varchar(40) not null default '',
 		`ups_status` varchar(20) not null default '',
+
+		`ups_dispsw` varchar(20) not null default '',
+		`ups_extbatts` int(10) unsigned not null default '0',
+		`ups_badbatts` int(10) unsigned not null default '0',
+		`ups_reg1` varchar(20) not null default '',
+		`ups_reg2` varchar(20) not null default '',
+		`ups_reg3` varchar(20) not null default '',
+
 		`ups_line_voltage` double not null default '0',
+		`ups_line_fail` varchar(20) not null default '0',
 		`ups_load_percent` double not null default '0',
-		`ups_battery_charge` double not null default '0',
+		`ups_line_frequency` double not null default '0',
+		`ups_output_voltage` double not null default '0',
+
+		`ups_max_line_voltage` double not null default '0',
+		`ups_min_line_voltage` double not null default '0',
+
 		`ups_timeleft` double not null default '0',
 		`ups_mbattchg` double not null default '0',
 		`ups_mintimel` double not null default '0',
@@ -172,19 +193,36 @@ function apcupsd_setup_table() {
 		`ups_lowtrans` double not null default '0',
 		`ups_hitrans` double not null default '0',
 		`ups_alarmdel` double not null default '0',
+
+		`ups_dlowbatt` varchar(20) not null default '',
+		`ups_dshutd` varchar(20) not null default '',
+		`ups_dwake` varchar(20) not null default '',
+
+		`ups_battery_status` varchar(60) not null default '',
+		`ups_battery_charge` double not null default '0',
 		`ups_battery_voltage` double not null default '0',
+		`ups_battery_date` varchar(20) not null default '',
+		`ups_battery_retpct` double not null default '0',
+
 		`ups_lastxfer` varchar(40) not null default '',
 		`ups_numxfers` int(10) unsigned not null default '0',
 		`ups_tonbatt` int(10) unsigned not null default '0',
 		`ups_cumonbatt` int(10) unsigned not null default '0',
 		`ups_xoffbatt` int(10) unsigned not null default '0',
 		`ups_selftest` varchar(10) not null default '',
-		`ups_startflag` varchar(20) not null default '',
+		`ups_selftest_interval` varchar(10) not null default '',
+		`ups_statflag` varchar(20) not null default '',
 		`ups_serialno` varchar(20) not null default '',
-		`ups_battdate` varchar(20) not null default '',
+
 		`ups_nominal_voltage` double not null default '0',
 		`ups_nominal_batt_voltage` double not null default '0',
 		`ups_nominal_power` double not null default '0',
+		`ups_nominal_output_voltage` double not null default '0',
+
+		`ups_abmtemp` double not null default '0',
+		`ups_humidity` double not null default '0',
+		`ups_internal_temp` double not null default '0',
+
 		`ups_firmware` varchar(40) not null default '',
 		`ups_end_rec` timestamp not null default CURRENT_TIMESTAMP,
 		PRIMARY KEY(ups_id))

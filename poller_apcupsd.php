@@ -27,6 +27,7 @@ chdir(dirname(__FILE__));
 chdir('../..');
 
 include('./include/cli_check.php');
+include('./plugins/apcupsd/database.php');
 include_once('./lib/poller.php');
 
 /* process calling arguments */
@@ -75,35 +76,58 @@ if (cacti_sizeof($parms)) {
 	}
 }
 
-/* collect data from each UPS */
+/* apcupsd upses first UPS */
 $upses = db_fetch_assoc('SELECT *
 	FROM apcupsd_ups
-	WHERE enabled = "on"');
+	WHERE type_id = 1
+	AND enabled = "on"');
 
-if (cacti_sizeof($upses)) {
+$apcupsd = cacti_sizeof($upses);
+
+if ($apcupsd > 0) {
 	foreach($upses as $ups) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
 		collect_ups_data($ups);
 	}
+}
 
-	$end = microtime(true);
+/* apcupsd upses first UPS */
+$upses = db_fetch_assoc('SELECT *
+	FROM apcupsd_ups
+	WHERE type_id = 2
+	AND enabled = "on"');
 
-	$cacti_stats = sprintf(
-		'Time:%01.2f ' .
-		'UPSes:%s',
-		$end - $start,
-		cacti_sizeof($upses));
+$snmpupses = cacti_sizeof($upses);
 
-	cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
+if ($snmpupses > 0) {
+	foreach($upses as $ups) {
+		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
-	/* log to the database */
-	set_config_option('stats_apcupsd', $cacti_stats);
-} else {
-	print "WARNING: No Enabled UPS's found" . PHP_EOL;
+		collect_snmp_ups_data($ups);
+	}
+}
+
+$end = microtime(true);
+
+$cacti_stats = sprintf(
+	'Time:%01.2f UPSDUPSes:%s SNMPUPSes:%s',
+	$end - $start,
+	$apcupsd, $snmpupses
+);
+
+cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
+
+/* log to the database */
+set_config_option('stats_apcupsd', $cacti_stats);
+
+function collect_snmp_ups_data($ups) {
+	global $ups_database;
 }
 
 function collect_ups_data($ups) {
+	global $ups_database;
+
 	$command = 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
 
 	$output = array();
@@ -119,46 +143,6 @@ function collect_ups_data($ups) {
 			WHERE id = ?',
 			array($message, $ups['id']));
 	} else {
-		$column_spec = array(
-			'APC'       => 'ups_key',
-			'DATE'      => 'ups_date',
-			'HOSTNAME'  => 'ups_hostname',
-			'VERSION'   => 'ups_version',
-			'UPSNAME'   => 'ups_name',
-			'CABLE'     => 'ups_cable',
-			'DRIVER'    => 'ups_driver',
-			'UPSMODE'   => 'ups_mode',
-			'STARTTIME' => 'ups_starttime',
-			'MODEL'     => 'ups_model',
-			'STATUS'    => 'ups_status',
-			'LINEV'     => 'ups_line_voltage',
-			'LOADPCT'   => 'ups_load_percent',
-			'BCHARGE'   => 'ups_battery_charge',
-			'TIMELEFT'  => 'ups_timeleft',
-			'MBATTCHG'  => 'ups_mbattchg',
-			'MINTIMEL'  => 'ups_mintimel',
-			'MAXTIME'   => 'ups_maxtime',
-			'SENSE'     => 'ups_sense',
-			'LOTRANS'   => 'ups_lowtrans',
-			'HITRANS'   => 'ups_hitrans',
-			'ALARMDEL'  => 'ups_alarmdel',
-			'BATTV'     => 'ups_battery_voltage',
-			'LASTXFER'  => 'ups_lastxfer',
-			'NUMXFERS'  => 'ups_numxfers',
-			'TONBATT'   => 'ups_tonbatt',
-			'CUMONBATT' => 'ups_cumonbatt',
-			'XOFFBATT'  => 'ups_xoffbatt',
-			'SELFTEST'  => 'ups_selftest',
-			'STATFLAG'  => 'ups_startflag',
-			'SERIALNO'  => 'ups_serialno',
-			'BATTDATE'  => 'ups_battdate',
-			'NOMINV'    => 'ups_nominal_voltage',
-			'NOMBATTV'  => 'ups_nominal_batt_voltage',
-			'NOMPOWER'  => 'ups_nominal_power',
-			'FIRMWARE'  => 'ups_firmware',
-			'END APC'   => 'ups_end_rec'
-		);
-
 		if (cacti_sizeof($output)) {
 			$sql_insert   = 'REPLACE INTO apcupsd_ups_stats (ups_id';
 			$sql_data     = 'VALUES (?';
@@ -170,9 +154,9 @@ function collect_ups_data($ups) {
 				$keyword = trim($o[0]);
 				$value   = trim($o[1]);
 
-				if (array_key_exists($keyword, $column_spec)) {
+				if (array_key_exists($keyword, $ups_database)) {
 					$sql_params[] = $value;
-					$sql_insert .= ', `' . $column_spec[$keyword] . '`';
+					$sql_insert .= ', `' . $ups_database[$keyword]['db_column'] . '`';
 					$sql_data   .= ', ?';
 				} else {
 					debug('WARNING: Column ' . $keyword . ' is unknown');
@@ -193,7 +177,7 @@ function debug($string) {
 	global $debug;
 
 	if ($debug) {
-		print date('H:i:s') . ' DEBUG:' . trim($string) . PHP_EOL;
+		print date('H:i:s') . ' DEBUG: ' . trim($string) . PHP_EOL;
 	}
 }
 

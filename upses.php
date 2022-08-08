@@ -25,64 +25,93 @@
 include('../../include/auth.php');
 
 $ups_actions = array(
-	1 => __('Delete'),
-	2 => __('Duplicate')
+	1 => __('Delete', 'apcupsd'),
+	2 => __('Duplicate', 'apcupsd')
+);
+
+$ups_types = array(
+	1 => __('APC UPSD Based', 'apcupsd'),
+	2 => __('SNMP Based', 'apcupsd')
 );
 
 /* file: upses.php, action: edit */
 $fields_ups_edit = array(
 	'spacer0' => array(
 		'method' => 'spacer',
-		'friendly_name' => __('UPS Information'),
+		'friendly_name' => __('UPS Information', 'apcupsd'),
 		'collapsible' => 'true'
 	),
 	'name' => array(
 		'method' => 'textbox',
-		'friendly_name' => __('UPS Name'),
-		'description' => __('The Name you would like to give this UPS.'),
+		'friendly_name' => __('UPS Name', 'apcupsd'),
+		'description' => __('The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS\'s, you must create the Cacti Device first.', 'apcupsd'),
 		'value' => '|arg1:name|',
 		'size' => '50',
-		'default' => __('New UPS'),
+		'default' => __('New UPS', 'apcupsd'),
 		'max_length' => '100'
 	),
 	'description' => array(
 		'method' => 'textarea',
-		'friendly_name' => __('UPS Description'),
-		'description' => __('A more detailed Description of this UPS if required.'),
+		'friendly_name' => __('UPS Description', 'apcupsd'),
+		'description' => __('A more detailed Description of this UPS if required.', 'apcupsd'),
 		'value' => '|arg1:description|',
 		'textarea_rows' => '3',
 		'textarea_cols' => '80'
 	),
+	'type_id' => array(
+		'method' => 'drop_array',
+		'friendly_name' => __('UPS Type', 'apcupsd'),
+		'description' => __('The Type of UPS you are monitoring.', 'apcupsd'),
+		'value' => '|arg1:type_id|',
+		'array' => $ups_types,
+		'none_value' => __('None', 'apcupsd')
+	),
 	'site_id' => array(
 		'method' => 'drop_sql',
-		'friendly_name' => __('Site Name'),
-		'description' => __('The Site that this UPS exists in.'),
+		'friendly_name' => __('Site Name', 'apcupsd'),
+		'description' => __('The Site that this UPS exists in.', 'apcupsd'),
 		'value' => '|arg1:site_id|',
 		'sql' => 'SELECT id, name FROM sites ORDER BY name',
 		'none_value' => __('None', 'apcupsd')
 	),
+	'host_id' => array(
+		'method' => 'drop_callback',
+		'friendly_name' => __('Cacti Device', 'apcupsd'),
+		'description' => __('For SNMP Based UPS\', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically.', 'apcupsd'),
+		'none_value' => __('None'),
+		'sql' => 'SELECT id, description AS name FROM host ORDER BY name',
+		'action' => 'ajax_hosts_noany',
+		'id' => '|arg1:site_id|',
+		'value' => __('None', 'apcupsd'),
+		'none_value' => __('None', 'apcupsd')
+	),
+	'enabled' => array(
+		'method' => 'checkbox',
+		'friendly_name' => __('Enabled', 'apcupsd'),
+		'description' => __('Check to immediatly start polling for data.', 'apcupsd'),
+		'value' => '|arg1:enabled|',
+		'default' => 'on'
+	),
+	'spacer1' => array(
+		'method' => 'spacer',
+		'friendly_name' => __('APC UPSD Information', 'apcupsd'),
+		'collapsible' => 'true'
+	),
 	'hostname' => array(
 		'method' => 'textbox',
-		'friendly_name' => __('Hostname'),
-		'description' => __('The hostname of the host running apcupsd.'),
+		'friendly_name' => __('Hostname', 'apcupsd'),
+		'description' => __('The hostname of the host running apcupsd.', 'apcupsd'),
 		'value' => '|arg1:hostname|',
 		'size' => '70',
 		'max_length' => '100'
 	),
 	'port' => array(
 		'method' => 'textbox',
-		'friendly_name' => __('TCP Port'),
-		'description' => __('Enter the TCP Port for this UPS.'),
+		'friendly_name' => __('TCP Port', 'apcupsd'),
+		'description' => __('Enter the TCP Port for this UPS.', 'apcupsd'),
 		'value' => '|arg1:port|',
 		'size' => '10',
 		'max_length' => '10'
-	),
-	'enabled' => array(
-		'method' => 'checkbox',
-		'friendly_name' => __('Enabled'),
-		'description' => __('Check to immediatly start polling for data.'),
-		'value' => '|arg1:enabled|',
-		'default' => 'on'
 	),
 	'id' => array(
 		'method' => 'hidden_zero',
@@ -106,6 +135,24 @@ switch (get_request_var('action')) {
 		form_actions();
 
 		break;
+    case 'ajax_hosts':
+        $sql_where = '';
+        if (get_request_var('site_id') > 0) {
+            $sql_where = 'site_id = ' . get_request_var('site_id');
+        }
+
+        get_allowed_ajax_hosts(true, 'applyFilter', $sql_where);
+
+        break;
+    case 'ajax_hosts_noany':
+        $sql_where = '';
+        if (get_request_var('site_id') > 0) {
+            $sql_where = 'site_id = ' . get_request_var('site_id');
+        }
+
+        get_allowed_ajax_hosts(false, 'applyFilter', $sql_where);
+
+        break;
 	case 'ajax_tz':
 		print json_encode(db_fetch_assoc_prepared('SELECT Name AS label, Name AS `value`
 			FROM mysql.time_zone_name
@@ -142,6 +189,8 @@ switch (get_request_var('action')) {
 function form_save() {
 	if (isset_request_var('save_component_ups')) {
 		$save['id']           = get_filter_request_var('id');
+		$save['host_id']      = form_input_validate(get_nfilter_request_var('host_id'), 'host_id', '', true, 3);
+		$save['type_id']      = form_input_validate(get_nfilter_request_var('type_id'), 'type_id', '', true, 3);
 		$save['name']         = form_input_validate(get_nfilter_request_var('name'), 'name', '', false, 3);
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
 		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '', true, 3);
@@ -306,7 +355,12 @@ function ups_edit() {
 		$ups = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', array(get_request_var('id')));
 		$header_label = __esc('UPS [edit: %s]', $ups['name']);
 	} else {
+		$ups = array();
 		$header_label = __('UPS [new]');
+	}
+
+	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
+		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
 	}
 
 	form_start('upses.php', 'ups');
@@ -323,6 +377,53 @@ function ups_edit() {
 	html_end_box(true, true);
 
 	form_save_button('upses.php', 'return');
+
+	?>
+	<script type='text/javascript'>
+	var showHost = false;
+
+	function changeType() {
+		if ($('#host_id').val() > 0) {
+			showHost = true;
+		}
+
+		if ($('#type_id').val() == 1) {
+			if (showHost) {
+				$('#row_host_id').show();
+			} else {
+				$('#row_host_id').hide();
+			}
+
+			$('#row_spacer1').show();
+			$('#row_hostname').show();
+			$('#row_port').show();
+		} else if ($('#type_id').val() == 2) {
+			$('#row_host_id').show();
+			$('#row_spacer1').hide();
+			$('#row_hostname').hide();
+			$('#row_port').hide();
+		} else {
+			if (showHost) {
+				$('#row_host_id').show();
+			} else {
+				$('#row_host_id').hide();
+			}
+
+			$('#row_spacer1').show();
+			$('#row_hostname').show();
+			$('#row_port').show();
+		}
+	}
+
+	$(function() {
+		$('#type_id').change(function() {
+			changeType();
+		});
+
+		changeType();
+	});
+	</script>
+	<?php
 }
 
 function upses() {
