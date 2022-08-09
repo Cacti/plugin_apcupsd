@@ -63,8 +63,7 @@ $fields_ups_edit = array(
 		'friendly_name' => __('UPS Type', 'apcupsd'),
 		'description' => __('The Type of UPS you are monitoring.', 'apcupsd'),
 		'value' => '|arg1:type_id|',
-		'array' => $ups_types,
-		'none_value' => __('None', 'apcupsd')
+		'array' => $ups_types
 	),
 	'site_id' => array(
 		'method' => 'drop_sql',
