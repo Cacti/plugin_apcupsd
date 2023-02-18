@@ -652,8 +652,8 @@ function upses() {
 			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_status'], $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
-			form_selectable_ecell($ups['ups_line_voltage'], $ups['id'], '', 'right');
-			form_selectable_ecell($ups['ups_load_percent'], $ups['id'], '', 'right');
+			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
+			form_selectable_ecell(checkNullandReturn($ups['ups_load_percent']), $ups['id'], '', 'right');
 			form_selectable_ecell($ups['ups_timeleft'], $ups['id'], '', 'right');
 			form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');
 			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes'):__('No'), $ups['id'], '', 'right');
@@ -679,3 +679,10 @@ function upses() {
 	form_end();
 }
 
+function checkNullandReturn($value) {
+	if ($value === null) {
+		return __('Not Avail', 'apcupsd');
+	} else {
+		return $value;
+	}
+}
