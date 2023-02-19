@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2022 The Cacti Group                                 |
+ | Copyright (C) 2007-2023 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -27,6 +27,7 @@ function plugin_apcupsd_install() {
 	api_plugin_register_hook('apcupsd', 'config_settings',      'apcupsd_config_settings',      'setup.php');
 	api_plugin_register_hook('apcupsd', 'poller_bottom',        'apcupsd_poller_bottom',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'draw_navigation_text', 'apcupsd_draw_navigation_text', 'setup.php');
+	api_plugin_register_hook('apcupsd', 'replicate_out',        'apcupsd_replicate_out',        'setup.php');
 
 	/* hook for table replication */
 	api_plugin_register_hook('apcupsd', 'replicate_out',        'apcupsd_replicate_out',        'setup.php');
@@ -97,6 +98,7 @@ function apcupsd_setup_table() {
 
 	db_execute("CREATE TABLE IF NOT EXISTS `apcupsd_ups` (
 		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		`poller_id` int(10) unsigned NOT NULL default '1',
 		`host_id` int(10) unsigned NOT NULL default '0',
 		`site_id` int(10) unsigned NOT NULL default '0',
 		`type_id` int(10) unsigned NOT NULL default '0',
@@ -286,6 +288,20 @@ function apcupsd_config_arrays() {
 function apcupsd_config_settings () {
 	global $tabs, $settings, $item_rows, $apcupsd_retentions;
 
+}
+
+function apcupsd_replicate_out($data) {
+	include_once($config['base_path'] . '/lib/poller.php');
+
+	$data = db_fetch_assoc('SELECT * FROM apcupsd_ups');
+
+	replicate_out_table($data['rcnn_id'], $data, 'apcupsd_ups', $data['remote_poller_id']);
+
+	$data = db_fetch_assoc('SELECT * FROM apcupsd_ups_stats');
+
+	replicate_out_table($data['rcnn_id'], $data, 'apcupsd_ups_stats', $data['remote_poller_id']);
+
+	return $data;
 }
 
 function apcupsd_draw_navigation_text($nav) {

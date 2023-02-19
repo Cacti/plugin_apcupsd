@@ -31,6 +31,10 @@ Install and Enabled from the Plugin Management Interface.  Your Cacti install
 will require the Linux `apcupsd` package be installed and `apcaccess` be in the
 system path.
 
+After you have installed the plugin, install the Device Package in the 
+templates folder from Console > Import/Export > Import Package.  This 
+Device Template will be used for showing available graphs.
+
 ## Possible Bugs
 
 If you figure out this problem, see the Cacti forums!

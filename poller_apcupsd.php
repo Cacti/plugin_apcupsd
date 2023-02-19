@@ -2,7 +2,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2004-2022 The Cacti Group                                 |
+ | Copyright (C) 2004-2023 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -27,8 +27,17 @@ chdir(dirname(__FILE__));
 chdir('../..');
 
 include('./include/cli_check.php');
+require_once($config['base_path'] . '/lib/api_automation_tools.php');
+require_once($config['base_path'] . '/lib/api_device.php');
+require_once($config['base_path'] . '/lib/api_data_source.php');
+require_once($config['base_path'] . '/lib/api_graph.php');
+require_once($config['base_path'] . '/lib/api_tree.php');
+require_once($config['base_path'] . '/lib/data_query.php');
+require_once($config['base_path'] . '/lib/poller.php');
+require_once($config['base_path'] . '/lib/snmp.php');
+require_once($config['base_path'] . '/lib/template.php');
+require_once($config['base_path'] . '/lib/utility.php');
 include('./plugins/apcupsd/database.php');
-include_once('./lib/poller.php');
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
@@ -39,6 +48,7 @@ global $debug, $start, $force;
 $debug = false;
 $force = false;
 $start = microtime(true);
+$hash  = '2107af603fd8dc27ea3f2cc2234eb7b9';
 
 if (cacti_sizeof($parms)) {
 	foreach($parms as $parameter) {
@@ -76,11 +86,21 @@ if (cacti_sizeof($parms)) {
 	}
 }
 
+$host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array($hash));
+$add_devices = true;
+
+if (empty($host_template_id)) {
+	cacti_log('WARNING: UPSD Device Package Not Imported.  Device automation will not happen until it is imported!', false, 'APCUPSD');
+	$add_devices = false;
+}
+
 /* apcupsd upses first UPS */
-$upses = db_fetch_assoc('SELECT *
+$upses = db_fetch_assoc_prepared('SELECT *
 	FROM apcupsd_ups
 	WHERE type_id = 1
-	AND enabled = "on"');
+	AND enabled = "on"
+	AND poller_id = ?',
+	array($config['poller_id']));
 
 $apcupsd = cacti_sizeof($upses);
 
@@ -89,8 +109,13 @@ if ($apcupsd > 0) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
 		collect_ups_data($ups);
+
+		if ($ups['host_id'] == 0 && $add_devices) {
+			add_ups_device($ups, $host_template_id);
+		}
 	}
 }
+
 
 /* apcupsd upses first UPS */
 $upses = db_fetch_assoc('SELECT *
@@ -105,6 +130,10 @@ if ($snmpupses > 0) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
 		collect_snmp_ups_data($ups);
+
+		if ($ups['host_id'] == 0 && $add_devices) {
+			add_ups_device($ups, $host_template_id);
+		}
 	}
 }
 
@@ -120,6 +149,25 @@ cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
 
 /* log to the database */
 set_config_option('stats_apcupsd', $cacti_stats);
+
+function add_ups_device($ups, $host_template_id) {
+	$save = array();
+
+	$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
+		'', 0, '', '',                     // snmp community, snmp_version, snmp_username, snmp_password
+		161, 500, '', 0,                   // snmp_port, snmp_timeout, disabled, availability_method
+		0, 0, 500, 1, $ups['description'], // ping_method, ping_port, ping_timeout, notes
+		'', '', '', '', '',                // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
+		10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
+		$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+
+	if ($host_id > 0) {
+		db_execute_prepared('UPDATE apcupsd_ups
+			SET host_id = ?
+			WHERE id = ?',
+			array($host_id, $ups['id']));
+	}
+}
 
 function collect_snmp_ups_data($ups) {
 	global $ups_database;
@@ -152,9 +200,29 @@ function collect_ups_data($ups) {
 				$o = explode(': ', $o);
 
 				$keyword = trim($o[0]);
-				$value   = trim($o[1]);
+
+				if (isset($o[1])) {
+					$value = trim($o[1]);
+				} else {
+					$value = '';
+				}
 
 				if (array_key_exists($keyword, $ups_database)) {
+					if ($keyword == 'STATUS') {
+						$status = db_fetch_cell_prepared('SELECT status
+							FROM host
+							WHERE id = ?',
+							array($ups['host_id']));
+
+						if ($value != 'ONLINE') {
+							if ($status != 4) {
+								db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', array($ups['host_id']));
+							}
+						} elseif ($status != 3) {
+							db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', array($ups['host_id']));
+						}
+					}
+
 					$sql_params[] = $value;
 					$sql_insert .= ', `' . $ups_database[$keyword]['db_column'] . '`';
 					$sql_data   .= ', ?';

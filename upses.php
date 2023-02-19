@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2004-2022 The Cacti Group                                 |
+ | Copyright (C) 2004-2023 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -65,6 +65,14 @@ $fields_ups_edit = array(
 		'value' => '|arg1:type_id|',
 		'array' => $ups_types
 	),
+	'poller_id' => array(
+		'method' => 'drop_sql',
+		'friendly_name' => __('Poller ID', 'apcupsd'),
+		'description' => __('The Poller that this UPS exists in is monitored by', 'apcupsd'),
+		'value' => '|arg1:poller_id|',
+		'sql' => 'SELECT id, name FROM poller ORDER BY name',
+		'default' => 1
+	),
 	'site_id' => array(
 		'method' => 'drop_sql',
 		'friendly_name' => __('Site Name', 'apcupsd'),
@@ -80,9 +88,9 @@ $fields_ups_edit = array(
 		'none_value' => __('None'),
 		'sql' => 'SELECT id, description AS name FROM host ORDER BY name',
 		'action' => 'ajax_hosts_noany',
-		'id' => '|arg1:site_id|',
-		'value' => __('None', 'apcupsd'),
-		'none_value' => __('None', 'apcupsd')
+		'id' => '|arg1:host_id|',
+		'value' => __('Autocreate on First Poll', 'apcupsd'),
+		'none_value' => __('Autocreate on First Poll', 'apcupsd')
 	),
 	'enabled' => array(
 		'method' => 'checkbox',
@@ -140,7 +148,7 @@ switch (get_request_var('action')) {
             $sql_where = 'site_id = ' . get_request_var('site_id');
         }
 
-        get_allowed_ajax_hosts(true, 'applyFilter', $sql_where);
+        get_allowed_ajax_hosts(false, false, $sql_where);
 
         break;
     case 'ajax_hosts_noany':
@@ -149,7 +157,7 @@ switch (get_request_var('action')) {
             $sql_where = 'site_id = ' . get_request_var('site_id');
         }
 
-        get_allowed_ajax_hosts(false, 'applyFilter', $sql_where);
+        get_allowed_ajax_hosts(false, false, $sql_where);
 
         break;
 	case 'ajax_tz':
@@ -358,9 +366,9 @@ function ups_edit() {
 		$header_label = __('UPS [new]');
 	}
 
-	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
-		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
-	}
+//	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
+//		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
+//	}
 
 	form_start('upses.php', 'ups');
 
@@ -382,17 +390,7 @@ function ups_edit() {
 	var showHost = false;
 
 	function changeType() {
-		if ($('#host_id').val() > 0) {
-			showHost = true;
-		}
-
 		if ($('#type_id').val() == 1) {
-			if (showHost) {
-				$('#row_host_id').show();
-			} else {
-				$('#row_host_id').hide();
-			}
-
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
@@ -402,12 +400,6 @@ function ups_edit() {
 			$('#row_hostname').hide();
 			$('#row_port').hide();
 		} else {
-			if (showHost) {
-				$('#row_host_id').show();
-			} else {
-				$('#row_host_id').hide();
-			}
-
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
