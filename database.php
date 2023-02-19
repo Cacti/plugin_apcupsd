@@ -3,12 +3,12 @@
 $ups_database = array(
 	'ALARMDEL' => array(
 		'db_column'   => 'ups_alarmdel',
-		'snmp_ci'     => '',
-		'description' => __esc('Delay period before UPS starts sounding alarm', 'apcupsd')
+		'snmp_ci'     => 'NA',
+		'description' => __esc('Delay period before APCUPSD starts sounding alarm', 'apcupsd')
 	),
 	'AMBTEMP' => array(
 		'db_column'   => 'ups_ambtemp',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '1.3.6.1.4.1.318.1.1.2.1.1',
 		'description' => __esc('Ambient temperature', 'apcupsd')
 	),
 	'APC' => array(
@@ -18,7 +18,7 @@ $ups_database = array(
 	),
 	'APCMODEL' => array(
 		'db_column'   => 'ups_model',
-		'snmp_ci'     => 'CI_UPSMODEL',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.1.1.0',
 		'description' => __esc('APC model information', 'apcupsd')
 	),
 	'BADBATTS' => array(
@@ -33,12 +33,18 @@ $ups_database = array(
 	),
 	'BATTSTAT' => array(
 		'db_column'   => 'ups_battery_status',
-		'snmp_ci'     => '',
-		'description' => __esc('Battery status.', 'apcupsd')
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.2.1.1.0',
+		'description' => __esc('Battery status.', 'apcupsd'),
+		'snmp_enum'   => array(
+			1 => 'Unknown',
+			2 => 'Normal',
+			3 => 'Low',
+			4 => 'Fault'
+		)
 	),
 	'BATTV' => array(
 		'db_column'   => 'ups_battery_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.2.2.8.0',
 		'description' => __esc('Current battery voltage', 'apcupsd')
 	),
 	'BCHARGE' => array(
@@ -48,17 +54,17 @@ $ups_database = array(
 	),
 	'CABLE' => array(
 		'db_column'   => 'ups_cable',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Cable type specified in the configuration file', 'apcupsd')
 	),
 	'CUMONBATT' => array(
 		'db_column'   => 'ups_cumonbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Cumulative seconds on battery since apcupsd startup', 'apcupsd')
 	),
 	'DATE' => array(
 		'db_column'   => 'ups_date',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'CURDATE',
 		'description' => __esc('Date and time of last update from UPS', 'apcupsd')
 	),
 	'DIPSW' => array(
@@ -68,12 +74,12 @@ $ups_database = array(
 	),
 	'DLOWBATT' => array(
 		'db_column'   => 'ups_dlowbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.5.2.8.0',
 		'description' => __esc('Low battery signal sent when this much runtime remains', 'apcupsd')
 	),
 	'DRIVER' => array(
 		'db_column'   => 'ups_driver',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('The APCUPSD Driver when APCUPSD is the protocol', 'apcupsd')
 	),
 	'DSHUTD' => array(
@@ -88,12 +94,12 @@ $ups_database = array(
 	),
 	'ENDAPC' => array(
 		'db_column'   => 'ups_end_rec',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'CURDATE',
 		'description' => __esc('Date and time of status information was written', 'apcupsd')
 	),
 	'END APC' => array(
 		'db_column'   => 'ups_end_rec',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'CURDATE',
 		'description' => __esc('Date and time of status information was written', 'apcupsd')
 	),
 	'EXTBATTS' => array(
@@ -108,12 +114,12 @@ $ups_database = array(
 	),
 	'HITRANS' => array(
 		'db_column'   => 'ups_hitrans',
-		'snmp_ci'     => 'CI_LTRANS',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.5.2.3.0',
 		'description' => __esc('Input line voltage above which UPS will switch to battery', 'apcupsd')
 	),
 	'HOSTNAME' => array(
 		'db_column'   => 'ups_hostname',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('hostname of computer running apcupsd', 'apcupsd')
 	),
 	'HUMIDITY' => array(
@@ -123,7 +129,7 @@ $ups_database = array(
 	),
 	'ITEMP' => array(
 		'db_column'   => 'ups_internal_temp',
-		'snmp_ci'     => 'CI_ITEMP',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.2.2.2.0',
 		'description' => __esc('UPS internal temperature in degrees Celcius', 'apcupsd')
 	),
 	'LASTXFER' => array(
@@ -138,7 +144,7 @@ $ups_database = array(
 	),
 	'LINEFREQ' => array(
 		'db_column'   => 'ups_line_frequency',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.3.2.4.0',
 		'description' => __esc('Current line frequency in Hertz', 'apcupsd')
 	),
 	'LINEV' => array(
@@ -148,27 +154,27 @@ $ups_database = array(
 	),
 	'LOADPCT' => array(
 		'db_column'   => 'ups_load_percent',
-		'snmp_ci'     => 'CI_LOAD',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.4.2.3.0',
 		'description' => __esc('Percentage of UPS load capacity used as estimated by UPS', 'apcupsd')
 	),
 	'LOTRANS' => array(
 		'db_column'   => 'ups_lowtrans',
-		'snmp_ci'     => 'CI_HTRANS',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.5.2.2.0',
 		'description' => __esc('Input line voltage below which UPS will switch to battery', 'apcupsd')
 	),
 	'MANDATE' => array(
 		'db_column'   => 'ups_mandate',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.2.2.0',
 		'description' => __esc('UPS date of manufacture', 'apcupsd')
 	),
 	'MASTERUPD' => array(
 		'db_column'   => 'ups_masterupd',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Last time the master sent an update to the slave', 'apcupsd')
 	),
 	'MAXLINEV' => array(
 		'db_column'   => 'ups_max_line_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.3.2.2.0',
 		'description' => __esc('Maximum input line voltage since apcupsd started', 'apcupsd')
 	),
 	'MAXTIME' => array(
@@ -183,7 +189,7 @@ $ups_database = array(
 	),
 	'MINLINEV' => array(
 		'db_column'   => 'ups_min_line_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.3.2.3.0',
 		'description' => __esc('Min (observed) input line voltage since apcupsd started', 'apcupsd')
 	),
 	'MINTIMEL' => array(
@@ -193,37 +199,37 @@ $ups_database = array(
 	),
 	'MODEL' => array(
 		'db_column'   => 'ups_model',
-		'snmp_ci'     => 'CI_UPSMODEL',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.1.1.0',
 		'description' => __esc('UPS model derived from UPS information', 'apcupsd')
 	),
 	'NOMBATTV' => array(
 		'db_column'   => 'ups_nominal_batt_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '1.3.6.1.4.1.318.1.1.1.2.2.7',
 		'description' => __esc('Nominal battery voltage', 'apcupsd')
 	),
 	'NOMINV' => array(
 		'db_column'   => 'ups_nominal_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '1.3.6.1.4.1.318.1.1.1.2.3.3',
 		'description' => __esc('Nominal input voltage delivered to the UPS.', 'apcupsd')
 	),
 	'NOMOUTV' => array(
 		'db_column'   => 'ups_nominal_output_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '1.3.6.1.2.1.33.1.9.3.0',
 		'description' => __esc('Nominal output voltage to supply when on battery power', 'apcupsd')
 	),
 	'NOMPOWER' => array(
 		'db_column'   => 'ups_nominal_power',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.2.1.33.1.9.6.0',
 		'description' => __esc('Nominal power output in watts', 'apcupsd')
 	),
 	'NUMXFERS' => array(
 		'db_column'   => 'ups_numxfers',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Number of transfers to battery since apcupsd startup', 'apcupsd')
 	),
 	'OUTPUTV' => array(
 		'db_column'   => 'ups_output_voltage',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.4.2.1.0',
 		'description' => __esc('Current UPS output voltage', 'apcupsd')
 	),
 	'REG1' => array(
@@ -248,38 +254,89 @@ $ups_database = array(
 	),
 	'SELFTEST' => array(
 		'db_column'   => 'ups_selftest',
-		'snmp_ci'     => '',
-		'description' => __esc('Date and time of last self test since apcupsd startup', 'apcupsd')
+		'snmp_ci'     => '.1.3.6.1.2.1.33.1.7.3.0',
+		'description' => __esc('Date and time of last self test since apcupsd startup', 'apcupsd'),
+		'snmp_enum'   => array(
+			1 => 'Ok',
+			2 => 'Warning',
+			3 => 'Error',
+			4 => 'Aborted',
+			5 => 'InProgress',
+			6 => 'Disabled'
+		)
 	),
 	'SENSE' => array(
 		'db_column'   => 'ups_sense',
 		'snmp_ci'     => '1.3.6.1.4.1.318.1.1.1.5.2.7.0',
-		'description' => __esc('Current UPS sensitivity setting for voltage fluctuations', 'apcupsd')
+		'description' => __esc('Current UPS sensitivity setting for voltage fluctuations', 'apcupsd'),
+		'snmp_enum'   => array(
+			1 => 'Auto',
+			2 => 'Low',
+			3 => 'Medium',
+			4 => 'High'
+		)
 	),
 	'SERIALNO' => array(
 		'db_column'   => 'ups_serialno',
-		'snmp_ci'     => 'CI_SERNO',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.2.3.0',
 		'description' => __esc('UPS serial number', 'apcupsd')
 	),
 	'STARTTIME' => array(
 		'db_column'   => 'ups_starttime',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Date and time apcupsd was started', 'apcupsd')
 	),
 	'STATFLAG' => array(
 		'db_column'   => 'ups_statflag',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('UPS status flag in hex', 'apcupsd')
 	),
 	'STATUS' => array(
 		'db_column'   => 'ups_status',
-		'snmp_ci'     => 'CI_STATUS',
-		'description' => __esc('UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN', 'apcupsd')
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.4.1.1.0',
+		'description' => __esc('UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN', 'apcupsd'),
+		'snmp_enum'   => array(
+			1  => 'UNKNOWN',
+			2  => 'ONLINE',
+      		3  => 'ONBATT',
+			4  => 'BOOST',
+			5  => 'SLEEPING',
+			6  => 'BYPASS',
+			7  => 'OFF',
+			8  => 'REBOOTING',
+   			9  => 'SWITCHBYPASS',
+			10 => 'HARDWAREBYPASS',
+			11 => 'SLEEPING',
+			12 => 'TRIM',
+			13 => 'ECOMODE',
+   			14 => 'INVERTER',
+			15 => 'ECONVERSION',
+			16 => 'STATICBYPASS'
+		)
+	),
+	'LASTSTEST' => array(
+		'db_column'   => 'ups_laststest',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.7.2.4.0',
+		'description' => __esc('Date of the last UPS self test', 'apcupsd')
 	),
 	'STESTI' => array(
 		'db_column'   => 'ups_selftest_interval',
-		'snmp_ci'     => '',
-		'description' => __esc('Self-test interval', 'apcupsd')
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.7.2.1.0',
+		'description' => __esc('Self-test interval', 'apcupsd'),
+		'snmp_enum'   => array(
+			1  => 'UNKNOWN',
+			2  => 'BIWEEKLY',
+			3  => 'WEEKLY',
+			4  => 'POWERON',
+			5  => 'NEVER',
+			6  => 'FOURWEEKS',
+			7  => 'TWELVEWEEKS',
+			8  => 'BIWEEKLYLAST',
+			9  => 'WEEKLYLAST',
+			10 => 'EIGHTWEEKS',
+			11 => 'HALFYEAR',
+			12 => 'YEARLY'
+		)
 	),
 	'TIMELEFT' => array(
 		'db_column'   => 'ups_timeleft',
@@ -288,37 +345,37 @@ $ups_database = array(
 	),
 	'TONBATT' => array(
 		'db_column'   => 'ups_tonbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.2.1.2.0',
 		'description' => __esc('Seconds currently on battery', 'apcupsd')
 	),
 	'UPSMODE' => array(
 		'db_column'   => 'ups_mode',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'UNKNOWN',
 		'description' => __esc('Mode in which UPS is operating', 'apcupsd')
 	),
 	'UPSNAME' => array(
 		'db_column'   => 'ups_name',
-		'snmp_ci'     => 'CI_UPSMODEL',
+		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.1.2.0',
 		'description' => __esc('UPS name from configuration file (dumb) or EEPROM (smart)', 'apcupsd')
 	),
 	'VERSION' => array(
 		'db_column'   => 'ups_version',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('apcupsd version number, date and operating system', 'apcupsd')
 	),
 	'XOFFBAT' => array(
 		'db_column'   => 'ups_xoffbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Date, time of last transfer off battery since apcupsd startup', 'apcupsd')
 	),
 	'XOFFBATT' => array(
 		'db_column'   => 'ups_xoffbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Date, time of last transfer off battery since apcupsd startup', 'apcupsd')
 	),
 	'XONBATT' => array(
 		'db_column'   => 'ups_xonbatt',
-		'snmp_ci'     => '',
+		'snmp_ci'     => 'NA',
 		'description' => __esc('Date, time of last transfer to battery since apcupsd startup', 'apcupsd')
 	)
 );

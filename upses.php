@@ -34,6 +34,8 @@ $ups_types = array(
 	2 => __('SNMP Based', 'apcupsd')
 );
 
+global $fields_snmp_item;
+
 /* file: upses.php, action: edit */
 $fields_ups_edit = array(
 	'spacer0' => array(
@@ -120,6 +122,19 @@ $fields_ups_edit = array(
 		'size' => '10',
 		'max_length' => '10'
 	),
+	'host_snmp_head' => array(
+		'method' => 'spacer',
+		'friendly_name' => __('SNMP Options'),
+	),
+	'snmp_hostname' => array(
+		'method' => 'textbox',
+		'friendly_name' => __('Hostname', 'apcupsd'),
+		'description' => __('The hostname where the snmp agent is located.', 'apcupsd'),
+		'value' => '|arg1:hostname|',
+		'size' => '70',
+		'max_length' => '100'
+	),
+	) + $fields_snmp_item + array(
 	'id' => array(
 		'method' => 'hidden_zero',
 		'value' => '|arg1:id|'
@@ -201,9 +216,29 @@ function form_save() {
 		$save['name']         = form_input_validate(get_nfilter_request_var('name'), 'name', '', false, 3);
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
 		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '', true, 3);
-		$save['hostname']     = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
+
+		if ($save['type_id'] == 1) {
+			$save['hostname'] = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
+		} else {
+			$save['hostname'] = form_input_validate(get_nfilter_request_var('snmp_hostname'), 'snmp_hostname', '', true, 3);
+		}
+
 		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '', true, 3);
 		$save['enabled']      = isset_request_var('enabled') ? 'on':'';
+
+		$save['snmp_version']   = form_input_validate(get_nfilter_request_var('snmp_version'), 'snmp_version', '', true, 3);
+		$save['snmp_community'] = form_input_validate(get_nfilter_request_var('snmp_community'), 'snmp_community', '', true, 3);
+
+		$save['snmp_username']        = form_input_validate(get_nfilter_request_var('snmp_username'), 'snmp_username', '', true, 3);
+		$save['snmp_password']        = form_input_validate(get_nfilter_request_var('snmp_password'), 'snmp_password', '', true, 3);
+		$save['snmp_auth_protocol']   = form_input_validate(get_nfilter_request_var('snmp_auth_protocol'), 'snmp_auth_protocol', '', true, 3);
+		$save['snmp_priv_protocol']   = form_input_validate(get_nfilter_request_var('snmp_priv_protocol'), 'snmp_priv_protocol', '', true, 3);
+		$save['snmp_priv_passphrase'] = form_input_validate(get_nfilter_request_var('snmp_priv_passphrase'), 'snmp_priv_passphrase', '', true, 3);
+		$save['snmp_context']         = form_input_validate(get_nfilter_request_var('snmp_context'), 'snmp_context', '', true, 3);
+		$save['snmp_engine_id']       = form_input_validate(get_nfilter_request_var('snmp_engine_id'), 'snmp_engine_id', '', true, 3);
+
+		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '', true, 3);
+		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
 		if (!is_error_message()) {
 			$ups_id = sql_save($save, 'apcupsd_ups');
@@ -389,16 +424,31 @@ function ups_edit() {
 	<script type='text/javascript'>
 	var showHost = false;
 
+	// default snmp information
+	var snmp_community       = $('#snmp_community').val();
+	var snmp_username        = $('#snmp_username').val();
+	var snmp_password        = $('#snmp_password').val();
+	var snmp_auth_protocol   = $('#snmp_auth_protocol').val();
+	var snmp_priv_passphrase = $('#snmp_priv_passphrase').val();
+	var snmp_priv_protocol   = $('#snmp_priv_protocol').val();
+	var snmp_context         = $('#snmp_context').val();
+	var snmp_engine_id       = $('#snmp_engine_id').val();
+	var snmp_port            = $('#snmp_port').val();
+	var snmp_timeout         = $('#snmp_timeout').val();
+
 	function changeType() {
 		if ($('#type_id').val() == 1) {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
+			$('[id^="row_snmp"]').hide();
 		} else if ($('#type_id').val() == 2) {
 			$('#row_host_id').show();
 			$('#row_spacer1').hide();
 			$('#row_hostname').hide();
 			$('#row_port').hide();
+			$('[id^="row_snmp"]').show();
+			setSNMP();
 		} else {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
@@ -411,6 +461,11 @@ function ups_edit() {
 			changeType();
 		});
 
+		$('#snmp_version').change(function() {
+			setSNMP();
+		});
+
+		setSNMP();
 		changeType();
 	});
 	</script>
@@ -577,10 +632,16 @@ function upses() {
 			'tip'     => __('The unique id associated with this UPS.')
 		),
 		'status' => array(
-			'display' => __('Collect Status'),
-			'align'   => 'left',
+			'display' => __('Status'),
+			'align'   => 'center',
 			'sort'    => 'ASC',
 			'tip'     => __('The Status of the apcupsd daemon on the target Host.')
+		),
+		'type_id' => array(
+			'display' => __('Collector'),
+			'align'   => 'left',
+			'sort'    => 'ASC',
+			'tip'     => __('The Type of Collector.  Currently APCUPSD and SNMP are supported.')
 		),
 		'ups_status' => array(
 			'display' => __('UPS Status'),
@@ -641,13 +702,20 @@ function upses() {
 
 			form_selectable_cell(filter_value($ups['name'], get_request_var('filter'), 'upses.php?action=edit&id=' . $ups['id']), $ups['id']);
 			form_selectable_cell($ups['id'], $ups['id'], '', 'center');
-			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'left');
+			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'center');
+			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD':'SNMPD', $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_status'], $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
 			form_selectable_ecell(checkNullandReturn($ups['ups_load_percent']), $ups['id'], '', 'right');
 			form_selectable_ecell($ups['ups_timeleft'], $ups['id'], '', 'right');
-			form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');
+
+			if ($ups['type_id'] == 1) {
+				form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');
+			} else {
+				form_selectable_ecell($ups['hostname'] . ':' . $ups['snmp_port'], $ups['id'], '', 'right');
+			}
+
 			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes'):__('No'), $ups['id'], '', 'right');
 			form_selectable_ecell($ups['last_updated'], $ups['id'], '', 'right');
 

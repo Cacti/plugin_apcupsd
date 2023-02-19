@@ -132,7 +132,7 @@ if ($snmpupses > 0) {
 		collect_snmp_ups_data($ups);
 
 		if ($ups['host_id'] == 0 && $add_devices) {
-			add_ups_device($ups, $host_template_id);
+//			add_ups_device($ups, $host_template_id);
 		}
 	}
 }
@@ -153,13 +153,23 @@ set_config_option('stats_apcupsd', $cacti_stats);
 function add_ups_device($ups, $host_template_id) {
 	$save = array();
 
-	$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
-		'', 0, '', '',                     // snmp community, snmp_version, snmp_username, snmp_password
-		161, 500, '', 0,                   // snmp_port, snmp_timeout, disabled, availability_method
-		0, 0, 500, 1, $ups['description'], // ping_method, ping_port, ping_timeout, notes
-		'', '', '', '', '',                // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
-		10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
-		$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+	if ($ups['type_id'] == 1) {
+		$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
+			'', 0, '', '',                     // snmp community, snmp_version, snmp_username, snmp_password
+			161, 500, '', 0,                   // snmp_port, snmp_timeout, disabled, availability_method
+			0, 0, 500, 1, $ups['description'], // ping_method, ping_port, ping_timeout, ping_retries, notes
+			'', '', '', '', '',                // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
+			10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
+			$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+	} else {
+		$host_id = api_device_save(0, $host_template_id, $ups['name'], $ups['hostname'], // id, template_id, description, hostname
+			$ups['snmp_community'], $ups['snmp_version'], $ups['snmp_username'], $ups['snmp_password'], // snmp community, snmp_version, snmp_username, snmp_password
+			$ups['snmp_port'], $ups['snmp_timeout'], '', 2,                   // snmp_port, snmp_timeout, disabled, availability_method
+			0, 0, $ups['snmp_timeout'], 1, $ups['description'], // ping_method, ping_port, ping_timeout, print_retries, notes
+			$ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'], $ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_engine_id'], // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
+			10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
+			$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+	}
 
 	if ($host_id > 0) {
 		db_execute_prepared('UPDATE apcupsd_ups
@@ -170,7 +180,81 @@ function add_ups_device($ups, $host_template_id) {
 }
 
 function collect_snmp_ups_data($ups) {
-	global $ups_database;
+	global $ups_database, $snmp_error;
+
+	$start = time();
+
+	$save = array();
+
+	$save['ups_id']   = $ups['id'];
+	$save['ups_date'] = date('Y-m-d H:i:s');
+	$save['ups_hostname'] = $ups['hostname'];
+	$save['ups_version']  = '1.0 (Cacti Plugin)';
+	$save['ups_cable']    = 'Ethernet Link';
+	$save['ups_driver']   = 'Cacti';
+	$save['ups_mode']     = 'Stand Alone';
+
+	$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], '.1.3.6.1.2.1.1.3.0', $ups['snmp_version'],
+		$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
+		$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
+		$ups['snmp_engine_id']);
+
+	if ($value > 0) {
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 3 WHERE id = ?', array($ups['id']));
+
+		foreach($ups_database AS $key => $data) {
+			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
+				if ($data['snmp_ci'] == 'CURDATE' || $data['db_column'] == 'ups_date') {
+					$stats[$data['db_column']] = date('Y-m-d H:i:s');
+				} else {
+					$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], $data['snmp_ci'], $ups['snmp_version'],
+						$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
+						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
+						$ups['snmp_engine_id']);
+
+					if ($value != 'U') {
+						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: $value");
+
+						if (isset($data['snmp_enum'])) {
+							$prevalue = $value;
+							debug("------------------ UPS ENUM $key");
+							$value = $data['snmp_enum'][$value];
+							debug("------------ $prevalue ---- $value");
+						}
+
+						switch($key) {
+							case 'LASTSTEST':
+								$parts = explode('/', $value);
+								$save[$data['db_column']] = $parts[2] . '-' . $parts[0] . '-' . $parts[1] . ' 00:00:00';
+								break;
+							case 'TIMELEFT':
+							case 'DLOWBATT':
+								$value /= 100;
+								$value /= 60;
+								$save[$data['db_column']] = $value;
+								break;
+							case 'NOMPOWER':
+							case 'NOMOUTV':
+								$parts = explode(' ', $value);
+								$save[$data['db_column']] = $parts[0];
+								break;
+							default:
+								$save[$data['db_column']] = $value;
+								break;
+						}
+					} else {
+						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: No Data");
+					}
+				}
+			}
+		}
+	} else {
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 1 WHERE id = ?', array($ups['id']));
+	}
+
+	$save['ups_end_rec'] = date('Y-m-d H:i:s');
+
+	sql_save($save, 'apcupsd_ups_stats');
 }
 
 function collect_ups_data($ups) {
@@ -227,7 +311,7 @@ function collect_ups_data($ups) {
 					$sql_insert .= ', `' . $ups_database[$keyword]['db_column'] . '`';
 					$sql_data   .= ', ?';
 				} else {
-					debug('WARNING: Column ' . $keyword . ' is unknown');
+					debug('WARNING: Column ' . $keyword . ' is unknown with value ' . $value);
 				}
 			}
 

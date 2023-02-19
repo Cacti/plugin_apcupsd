@@ -98,18 +98,29 @@ function apcupsd_setup_table() {
 
 	db_execute("CREATE TABLE IF NOT EXISTS `apcupsd_ups` (
 		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-		`poller_id` int(10) unsigned NOT NULL default '1',
-		`host_id` int(10) unsigned NOT NULL default '0',
-		`site_id` int(10) unsigned NOT NULL default '0',
-		`type_id` int(10) unsigned NOT NULL default '0',
+		`poller_id` int(10) unsigned DEFAULT 1,
+		`host_id` int(10) unsigned NOT NULL DEFAULT 0,
+		`site_id` int(10) unsigned NOT NULL DEFAULT 0,
+		`type_id` int(10) unsigned NOT NULL DEFAULT 0,
 		`name` varchar(40) NOT NULL DEFAULT '',
 		`description` varchar(128) NOT NULL DEFAULT '',
-		`status` int(10) unsigned NOT NULL DEFAULT '0',
+		`snmp_version` tinyint(3) unsigned DEFAULT 2,
+		`snmp_community` varchar(100) NOT NULL DEFAULT '',
+		`snmp_username` varchar(50) NOT NULL DEFAULT '',
+		`snmp_password` varchar(50) NOT NULL DEFAULT '',
+		`snmp_auth_protocol` varchar(6) NOT NULL DEFAULT '',
+		`snmp_priv_protocol` varchar(6) NOT NULL DEFAULT '',
+		`snmp_priv_passphrase` varchar(200) NOT NULL DEFAULT '',
+		`snmp_context` varchar(64) NOT NULL DEFAULT '',
+		`snmp_engine_id` varchar(64) NOT NULL DEFAULT '',
+		`snmp_port` tinyint(3) unsigned NOT NULL DEFAULT 161,
+		`snmp_timeout` int(10) unsigned NOT NULL DEFAULT 2000,
+		`status` int(10) unsigned NOT NULL DEFAULT 0,
 		`hostname` varchar(64) NOT NULL DEFAULT '',
-		`port` int(10) unsigned NOT NULL DEFAULT '3551',
+		`port` int(10) unsigned NOT NULL DEFAULT 3551,
 		`enabled` char(2) DEFAULT 'on',
 		`error_message` varchar(255) DEFAULT '',
-		`last_updated` timestamp DEFAULT CURRENT_TIMESTAMP,
+		`last_updated` timestamp NOT NULL DEFAULT current_timestamp(),
 		PRIMARY KEY (`id`))
 		ENGINE=InnoDB
 		COMMENT='Monitored UPS Table'");
@@ -167,6 +178,7 @@ function apcupsd_setup_table() {
 		`ups_mandate` timestamp not null default CURRENT_TIMESTAMP,
 		`ups_masterupd` timestamp not null default CURRENT_TIMESTAMP,
 		`ups_xonbatt` timestamp not null default CURRENT_TIMESTAMP,
+		`ups_laststest` timestamp not null default CURRENT_TIMESTAMP,
 
 		`ups_model` varchar(40) not null default '',
 		`ups_status` varchar(20) not null default '',
@@ -212,7 +224,7 @@ function apcupsd_setup_table() {
 		`ups_cumonbatt` int(10) unsigned default null,
 		`ups_xoffbatt` int(10) unsigned default null,
 		`ups_selftest` varchar(10) not null default '',
-		`ups_selftest_interval` varchar(10) not null default '',
+		`ups_selftest_interval` varchar(20) not null default '',
 		`ups_statflag` varchar(20) not null default '',
 		`ups_serialno` varchar(20) not null default '',
 

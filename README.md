@@ -41,8 +41,8 @@ If you figure out this problem, see the Cacti forums!
 
 ## Future Changes
 
-Currently the SNMP based collection is not functional.  I will likely fix
-that in the next release.
+Currently the SNMP based collection is functional but only covering APC UPS'.  
+I will likely fix that in the next release.  Need some help from others.l
 
 I've been looking at the NUT product to see if it's something I would add
 support for down the line, but as of yet, I have not made that decision.
