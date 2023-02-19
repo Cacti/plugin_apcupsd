@@ -26,7 +26,8 @@ include('../../include/auth.php');
 
 $ups_actions = array(
 	1 => __('Delete', 'apcupsd'),
-	2 => __('Duplicate', 'apcupsd')
+	2 => __('Duplicate', 'apcupsd'),
+	3 => __('Reset Detection', 'apcupsd')
 );
 
 $ups_types = array(
@@ -172,7 +173,7 @@ switch (get_request_var('action')) {
             $sql_where = 'site_id = ' . get_request_var('site_id');
         }
 
-        get_allowed_ajax_hosts(false, false, $sql_where);
+        get_allowed_ajax_hosts(false, true, $sql_where);
 
         break;
 	case 'ajax_tz':
@@ -313,6 +314,8 @@ function form_actions() {
 				db_execute('DELETE FROM apcupsd_ups WHERE ' . array_to_sql_or($selected_items, 'id'));
 			} elseif (get_nfilter_request_var('drp_action') == '2') { /* Duplicate */
 				duplicate_ups($selected_items, get_nfilter_request_var('ups_name'));
+			} elseif (get_nfilter_request_var('drp_action') == '3') { /* Reset Detection */
+				db_execute('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE ' . array_to_sql_or($selected_items, 'id'));
 			}
 		}
 
@@ -347,7 +350,7 @@ function form_actions() {
 		if (get_nfilter_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea' class='odd'>
-					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array)) . "</p>
+					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array)) . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 				</td>
 			</tr>\n";
@@ -363,6 +366,16 @@ function form_actions() {
 			</tr>\n";
 
 			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array)) . "'>";
+		} elseif (get_nfilter_request_var('drp_action') == '3') { /* reset */
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes.', 'Click \'Continue\' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes.', cacti_sizeof($ups_array)) . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>\n";
+
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array)) . "'>";
 		}
 	} else {
 		raise_message(40);

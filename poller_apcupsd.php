@@ -28,6 +28,7 @@ chdir('../..');
 
 include('./include/cli_check.php');
 require_once($config['base_path'] . '/lib/api_automation_tools.php');
+require_once($config['base_path'] . '/lib/api_automation.php');
 require_once($config['base_path'] . '/lib/api_device.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/api_graph.php');
@@ -110,6 +111,14 @@ if ($apcupsd > 0) {
 
 		collect_ups_data($ups);
 
+		if ($ups['host_id'] > 0) {
+			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', array($ups['host_id']));
+
+			if (!$exists) {
+				$ups['host_id'] = 0;
+			}
+		}
+
 		if ($ups['host_id'] == 0 && $add_devices) {
 			add_ups_device($ups, $host_template_id);
 		}
@@ -129,10 +138,18 @@ if ($snmpupses > 0) {
 	foreach($upses as $ups) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
-		collect_snmp_ups_data($ups);
+		$ups_up = collect_snmp_ups_data($ups);
 
-		if ($ups['host_id'] == 0 && $add_devices) {
-//			add_ups_device($ups, $host_template_id);
+		if ($ups['host_id'] > 0) {
+			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', array($ups['host_id']));
+
+			if (!$exists) {
+				$ups['host_id'] = 0;
+			}
+		}
+
+		if ($ups['host_id'] == 0 && $add_devices && $ups_up) {
+			add_ups_device($ups, $host_template_id, true);
 		}
 	}
 }
@@ -150,7 +167,7 @@ cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
 /* log to the database */
 set_config_option('stats_apcupsd', $cacti_stats);
 
-function add_ups_device($ups, $host_template_id) {
+function add_ups_device($ups, $host_template_id, $force_up = false) {
 	$save = array();
 
 	if ($ups['type_id'] == 1) {
@@ -169,6 +186,10 @@ function add_ups_device($ups, $host_template_id) {
 			$ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'], $ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_engine_id'], // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
 			10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
 			$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+
+		if ($force_up && $host_id) {
+			db_execute_prepared('UPDATE host SET status = 3 WHERE id = ?', array($host_id));
+		}
 	}
 
 	if ($host_id > 0) {
@@ -176,6 +197,10 @@ function add_ups_device($ups, $host_template_id) {
 			SET host_id = ?
 			WHERE id = ?',
 			array($host_id, $ups['id']));
+
+		if ($force_up) {
+			automation_update_device($host_id);
+		}
 	}
 }
 
@@ -194,19 +219,31 @@ function collect_snmp_ups_data($ups) {
 	$save['ups_driver']   = 'Cacti';
 	$save['ups_mode']     = 'Stand Alone';
 
+	if ($ups['snmp_skipped'] != '') {
+		$skipped = explode(',', $ups['snmp_skipped']);
+		$update_skipped = false;
+	} else {
+		$skipped = array();
+		$update_skipped = true;
+	}
+
+	$return_val = false;
+
 	$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], '.1.3.6.1.2.1.1.3.0', $ups['snmp_version'],
 		$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
 		$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
 		$ups['snmp_engine_id']);
 
 	if ($value > 0) {
+		$return_val = true;
+
 		db_execute_prepared('UPDATE apcupsd_ups SET status = 3 WHERE id = ?', array($ups['id']));
 
 		foreach($ups_database AS $key => $data) {
 			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
 				if ($data['snmp_ci'] == 'CURDATE' || $data['db_column'] == 'ups_date') {
 					$stats[$data['db_column']] = date('Y-m-d H:i:s');
-				} else {
+				} elseif (!in_array($key, $skipped, true)) {
 					$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], $data['snmp_ci'], $ups['snmp_version'],
 						$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
 						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
@@ -244,9 +281,17 @@ function collect_snmp_ups_data($ups) {
 						}
 					} else {
 						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: No Data");
+
+						if ($update_skipped) {
+							$skipped[] = $key;
+						}
 					}
 				}
 			}
+		}
+
+		if ($update_skipped && cacti_sizeof($skipped)) {
+			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = ? WHERE id = ?', array(implode(',', $skipped), $ups['id']));
 		}
 	} else {
 		db_execute_prepared('UPDATE apcupsd_ups SET status = 1 WHERE id = ?', array($ups['id']));
@@ -255,6 +300,8 @@ function collect_snmp_ups_data($ups) {
 	$save['ups_end_rec'] = date('Y-m-d H:i:s');
 
 	sql_save($save, 'apcupsd_ups_stats');
+
+	return $return_val;
 }
 
 function collect_ups_data($ups) {

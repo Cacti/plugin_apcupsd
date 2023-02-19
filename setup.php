@@ -115,6 +115,7 @@ function apcupsd_setup_table() {
 		`snmp_engine_id` varchar(64) NOT NULL DEFAULT '',
 		`snmp_port` tinyint(3) unsigned NOT NULL DEFAULT 161,
 		`snmp_timeout` int(10) unsigned NOT NULL DEFAULT 2000,
+		`snmp_skipped` varchar(255) unsigned NOT NULL DEFAULT 2000,
 		`status` int(10) unsigned NOT NULL DEFAULT 0,
 		`hostname` varchar(64) NOT NULL DEFAULT '',
 		`port` int(10) unsigned NOT NULL DEFAULT 3551,
