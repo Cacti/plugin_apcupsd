@@ -1,0 +1,560 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:57-0500\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "Khoảng thời gian trì hoãn trước khi UPS bắt đầu phát âm báo"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "nhiệt độ môi trường"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "phiên bản, số bản ghi và số byte theo sau"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "Thông tin mô hình APC"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Số lượng bộ pin bên ngoài bị hỏng (đối với kiểu máy XL)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "Ngày thay pin lần cuối (nếu được đặt)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "Trạng thái pin."
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "Điện áp pin hiện tại"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "Tỷ lệ phần trăm dung lượng pin hiện tại"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "Loại cáp được chỉ định trong tệp cấu hình"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Số giây tích lũy trên pin kể từ khi khởi động apcupsd"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "Ngày và giờ cập nhật lần cuối từ UPS"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "Cài đặt công tắc UPS DIP hiện tại"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Tín hiệu pin yếu được gửi khi vẫn còn nhiều thời gian chạy này"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Trình điều khiển APCUSD khi APCUSD là giao thức"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "Trì hoãn trước khi UPS tắt nguồn sau khi nhận được lệnh"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Thời gian UPS đợi sau khi tắt nguồn khi có điện trở lại"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "Ngày và thời gian của thông tin trạng thái đã được viết"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "Số lượng pin bên ngoài (đối với kiểu XL)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "Phiên bản phần sụn của UPS"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Điện áp đường dây đầu vào mà trên đó UPS sẽ chuyển sang ắc quy"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "tên máy tính chạy apcupsd"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "Độ ẩm môi trường xung quanh"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "Nhiệt độ bên trong UPS tính bằng độ C"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Lý do chuyển lần cuối sang pin kể từ khi khởi động apcupsd"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "Trạng thái điện áp đường dây đầu vào."
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "Tần số dòng hiện tại tính bằng Hertz"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "Điện áp dòng đầu vào hiện tại"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Tỷ lệ phần trăm công suất tải của UPS được sử dụng theo ước tính của UPS"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Điện áp đường dây đầu vào dưới mức mà UPS sẽ chuyển sang ắc quy"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "UPS ngày sản xuất"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "Lần trước, chủ đã gửi một bản cập nhật cho nô lệ"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Điện áp đường dây đầu vào tối đa kể từ khi apcupsd bắt đầu"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Thời gian chạy pin tối đa (TIMEOUT) sau khi hệ thống tắt"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Cần có mức sạc pin tối thiểu %%% (BCHARGE) để tắt hệ thống"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Điện áp đường dây đầu vào tối thiểu (quan sát được) kể từ khi apcupsd bắt đầu"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Thời gian chạy pin tối thiểu (MINUTES) cần thiết để tắt hệ thống"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "Mô hình UPS bắt nguồn từ thông tin UPS"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "Điện áp pin danh nghĩa"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Điện áp đầu vào danh định được cung cấp cho UPS."
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Điện áp đầu ra danh nghĩa để cung cấp khi bật nguồn pin"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "Công suất đầu ra danh nghĩa tính bằng watt"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Số lần chuyển sang pin kể từ khi khởi động apcupsd"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "Điện áp đầu ra hiện tại của UPS"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "Thanh ghi lỗi 1 ở dạng hex"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "Thanh ghi lỗi 2 ở dạng hex"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "Thanh ghi lỗi 3 ở dạng hex"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Cần sạc pin %%% rsau khi tắt nguồn để khôi phục nguồn điện"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Ngày và giờ tự kiểm tra lần cuối kể từ khi khởi động apcupsd"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Cài đặt độ nhạy hiện tại của UPS đối với dao động điện áp"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "Số sê-ri UPS"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "Ngày và giờ apcupsd đã được bắt đầu"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "Cờ trạng thái UPS ở dạng hex"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "trạng thái bộ lưu điện. Một hoặc nhiều điều sau (được phân tách bằng dấu cách): CAL TRIM BOOST ONLINE ONBATT QUÁ TẢI LOWBATT REPLACEBATT NOBATT SLAVEDOWN hoặc COMMLOST hoặc SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "Khoảng thời gian tự kiểm tra"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Thời gian chạy còn lại trên ắc quy theo ước tính của UPS"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "Giây hiện tại trên pin"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "Chế độ mà UPS đang hoạt động"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Tên UPS từ tệp cấu hình (câm) hoặc EEPROM (thông minh)"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "số phiên bản apcupsd, ngày và hệ điều hành"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Ngày, giờ tắt pin lần cuối kể từ khi khởi động apcupsd"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Ngày, giờ chuyển lần cuối sang pin kể từ khi khởi động apcupsd"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "Quản lý UPS"
+
+#: setup.php:279
+msgid "Management"
+msgstr "Sự quản lý"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "bộ lưu điện"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "Quản lí hệ thống"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "Quản lý UPS"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "Xóa"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "Bản sao"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "Dựa trên APC UPSD"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "Dựa trên SNMP"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "Thông tin UPS"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "Tên bộ lưu điện"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Tên bạn muốn đặt cho UPS này. Đối với Thiết bị APCUSD, Thiết bị Cacti tương ứng sẽ được tạo tự động cho UPS sử dụng tên này. Đối với UPS dựa trên SNMP, trước tiên bạn phải tạo Thiết bị Cacti."
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "Bộ lưu điện mới"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "Mô tả UPS"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "Mô tả chi tiết hơn về UPS này nếu cần."
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "Loại UPS"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "Loại UPS bạn đang giám sát."
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "ID người thăm dò ý kiến"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Poller mà UPS này tồn tại được theo dõi bởi"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "Tên trang web"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "Trang web mà UPS này tồn tại."
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "Không"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "thiết bị xương rồng"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Đối với UPS dựa trên SNMP', hãy chọn Thiết bị Cacti để sử dụng cho thông tin đăng nhập SNMP. Nếu không, hãy chọn Không, và plugin UPS sẽ tự động tạo Thiết bị cho bạn."
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "Tự động tạo trong cuộc thăm dò đầu tiên"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "Bật"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "Kiểm tra để ngay lập tức bắt đầu bỏ phiếu cho dữ liệu."
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "Thông tin UPSD của APC"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "Tên máy chủ"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "Tên máy chủ của máy chủ đang chạy apcupsd."
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "Cổng TCP"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "Nhập Cổng TCP cho UPS này."
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Không tìm thấy mẫu UPS! Không thể sao chép."
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Nhấp vào 'Tiếp tục' để Xóa UPS sau. Lưu ý, tất cả các Thiết bị sẽ được tách khỏi UPS này."
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "Hủy"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "Tiếp tục"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Xóa UPS"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Nhấp vào 'Tiếp tục' để Sao chép UPS sau."
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "Tên UPS:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Sao chép UPS"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [sửa: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "Bộ lưu điện [mới]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: upses.php:479
+msgid "Default"
+msgstr "Mặc định"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Đi"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "Đặt/Làm mới bộ lọc"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "Xóa"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "Xóa bộ lọc"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "Tên của UPS này."
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "ID duy nhất được liên kết với UPS này."
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "Thu thập trạng thái"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Trạng thái của daemon apcupsd trên Máy chủ đích."
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "Trạng thái UPS"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Trạng thái của UPS được giám sát trên Máy chủ mục tiêu."
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "Mô hình UPS"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Mô hình của UPS được giám sát trên Máy chủ mục tiêu."
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "Đường dây điện áp"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Điện áp đường dây của UPS được giám sát trên Máy chủ đích."
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "tải phần trăm"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Phần trăm tải của UPS được giám sát trên Máy chủ đích."
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "Thời Gian Còn Lại"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Số phút sạc UPS khả dụng của UPS được giám sát trên Máy chủ mục tiêu."
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "Tên máy chủ:Cổng"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "Tên máy chủ:Cổng đang chạy daemon apcupsd."
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "Nếu UPS này đang được theo dõi hay không."
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "Cập nhật mới nhất"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "Lần cuối cùng UPS này được lấy mẫu hoặc tìm thấy."
+
+#: upses.php:651
+msgid "No"
+msgstr "Không"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "Có"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "Không tìm thấy UPS nào"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "Không tận dụng"

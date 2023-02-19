@@ -1,0 +1,564 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:45-0500\n"
+"Last-Translator: Larry Adams <larryjadams@comcast.net>\n"
+"Language-Team: German <http://translate.cacti.net/projects/cacti/thold/de-DE/>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "Verzögerungszeit, bevor die USV einen Alarm auslöst"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "Umgebungstemperatur"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "Version, Anzahl der Datensätze und Anzahl der folgenden Bytes"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "APC-Modellinformationen"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Anzahl defekter externer Akkupacks (für XL-Modelle)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "Datum des letzten Batteriewechsels (falls eingestellt)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "Batteriestatus."
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "Aktuelle Batteriespannung"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "Aktueller Ladeprozentsatz der Batteriekapazität"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "In der Konfigurationsdatei angegebener Kabeltyp"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Akkumulierte Sekunden im Akkubetrieb seit dem Start von apcupsd"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "Datum und Uhrzeit der letzten Aktualisierung von UPS"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "Aktuelle USV-DIP-Schaltereinstellungen"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Low-Battery-Signal wird gesendet, wenn noch so viel Laufzeit verbleibt"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Der APCUPSD-Treiber, wenn APCUPSD das Protokoll ist"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "Verzögerung, bevor die USV nach Erhalt des Befehls heruntergefahren wird"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Zeit, die die USV nach dem Ausschalten wartet, wenn die Stromversorgung wiederhergestellt ist"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "Datum und Uhrzeit des Schreibens der Statusinformationen"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "Anzahl externer Akkus (für XL-Modelle)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "Firmware-Version der USV"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Eingangsnetzspannung, über der die USV auf Batterie umschaltet"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "Hostname des Computers, auf dem apcupsd ausgeführt wird"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "Luftfeuchtigkeit"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "USV-Innentemperatur in Grad Celsius"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Grund für die letzte Übertragung auf die Batterie seit dem Start von apcupsd"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "Status der Eingangsleitungsspannung."
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "Aktuelle Netzfrequenz in Hertz"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "Aktuelle Eingangsnetzspannung"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Prozentsatz der genutzten UPS-Ladekapazität, wie von UPS geschätzt"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Eingangsnetzspannung, unterhalb derer die USV auf Batterie umschaltet"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "USV-Herstellungsdatum"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "Letztes Mal hat der Master ein Update an den Slave gesendet"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Maximale Eingangsspannung seit dem Start von apcupsd"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Maximale Batterielaufzeit (TIMEOUT), nach der das System heruntergefahren wird"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Min. Batterieladung %% % (BCHARGE) zum Herunterfahren des Systems erforderlich"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Min. (beobachtete) Eingangsleitungsspannung seit dem Start von apcupsd"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Min. Batterielaufzeit (MINUTES), die zum Herunterfahren des Systems erforderlich ist"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "USV-Modell abgeleitet von USV-Informationen"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "Nominale Batteriespannung"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "An die USV gelieferte Nenneingangsspannung."
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Nominale Ausgangsspannung zur Versorgung bei Batteriebetrieb"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "Nennleistung in Watt"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Anzahl der Übertragungen an die Batterie seit dem Start von apcupsd"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "Aktuelle Ausgangsspannung der USV"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "Fehlerregister 1 in hex"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "Fehlerregister 2 in hex"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "Fehlerregister 3 in hex"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Akkuladung %%% rerforderlich nach dem Ausschalten, um die Stromversorgung wiederherzustellen"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Datum und Uhrzeit des letzten Selbsttests seit dem Start von apcupsd"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Aktuelle USV-Empfindlichkeitseinstellung für Spannungsschwankungen"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "USV-Seriennummer"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "Datum und Uhrzeit des Starts von apcupsd"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "USV-Status-Flag in Hex"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "USV-Status. Einer oder mehrere der folgenden (durch Leerzeichen getrennt): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVEDOWN oder COMMLOST oder SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "Selbsttestintervall"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Verbleibende Akkulaufzeit, wie von der USV geschätzt"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "Sekunden derzeit auf Batterie"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "Modus, in dem die USV arbeitet"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "USV-Name aus Konfigurationsdatei (dumm) oder EEPROM (smart)"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd Versionsnummer, Datum und Betriebssystem"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Datum, Uhrzeit der letzten Übertragung vom Akku seit dem Start von apcupsd"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Datum, Uhrzeit der letzten Übertragung auf die Batterie seit dem Start von apcupsd"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "UPS verwalten"
+
+#: setup.php:279
+msgid "Management"
+msgstr "Verwaltung"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "USVen"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "Systemverwaltung"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "USV verwalten"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "Löschen"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "APC UPSD-basiert"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "SNMP-basiert"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "UPS-Informationen"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "UPS-Name"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Der Name, den Sie dieser USV geben möchten. Für APCUPSD-Geräte wird automatisch ein entsprechendes Cacti-Gerät für die USV mit diesem Namen erstellt. Für SNMP-basierte USVs müssen Sie zuerst das Cacti-Gerät erstellen."
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "Neue USV"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "UPS Beschreibung "
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "Eine detailliertere Beschreibung dieser USV, falls erforderlich."
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "USV-Typ"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "Der USV-Typ, den Sie überwachen."
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "Poller-ID"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Der Poller, in dem diese USV vorhanden ist, wird von überwacht"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "Name des Standortes"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "Der Standort, an dem sich diese USV befindet."
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "Nichts"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "Kakteen-Gerät"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Wählen Sie für SNMP-basierte USV das Cacti-Gerät aus, das für SNMP-Anmeldeinformationen verwendet werden soll. Wählen Sie andernfalls None aus, und das UPS-Plug-in erstellt das Gerät automatisch für Sie."
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "Bei der ersten Abfrage automatisch erstellen"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "Aktivieren Sie diese Option, um sofort mit dem Abrufen von Daten zu beginnen."
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "APC UPSD-Informationen"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "Zielsystemname"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "Der Hostname des Hosts, auf dem apcupsd ausgeführt wird."
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "TCP-Port"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "Geben Sie den TCP-Port für diese USV ein."
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Vorlage UPS wurde nicht gefunden! Duplizieren nicht möglich."
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Klicken Sie auf „Weiter“, um die folgende USV zu löschen. Beachten Sie, dass alle Geräte von dieser USV getrennt werden."
+msgstr[1] "Klicken Sie auf „Weiter“, um alle folgenden USVs zu löschen. Beachten Sie, dass alle Geräte von dieser USV getrennt werden."
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "Fortsetzen"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "UPS löschen"
+msgstr[1] "USV löschen"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Klicken Sie auf „Weiter“, um die folgende USV zu duplizieren."
+msgstr[1] "Klicken Sie auf „Weiter“, um alle folgenden USVs zu duplizieren."
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "UPS-Name:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Doppelte USV"
+msgstr[1] "Doppelte USV"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [Bearbeiten: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "USV [neu]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "Suche"
+
+#: upses.php:479
+msgid "Default"
+msgstr "Voreinstellung"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Anwenden"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "Filter setzen/auffrischen"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "Löschen"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "Filter löschen"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "Der Name dieser USV."
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "Die dieser USV zugeordnete eindeutige ID."
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "Sammelstatus"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Der Status des apcupsd-Daemons auf dem Zielhost."
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "USV-Status"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Der Status der überwachten USV auf dem Zielhost."
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "USV-Modell"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Das Modell der überwachten USV auf dem Zielhost."
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "Leitungsspannung"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Die Netzspannung der überwachten USV auf dem Zielhost."
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "Ladeprozent"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Der Lastprozentsatz der überwachten USV auf dem Zielhost."
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "Zeit verbleibend"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Die Minuten der verfügbaren USV-Gebühr der überwachten USV auf dem Zielhost."
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "Hostname:Port"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "Der Hostname:Port, auf dem der apcupsd-Daemon ausgeführt wird."
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "Ob diese USV überwacht wird oder nicht."
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "Zuletzt aktualisiert"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "Das letzte Mal wurde diese USV bemustert oder aufgefunden."
+
+#: upses.php:651
+msgid "No"
+msgstr "Nein"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "Ja"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "Keine USV gefunden"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "Nicht verfügbar"

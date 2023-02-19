@@ -1,0 +1,568 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:57-0500\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "Період затримки, перш ніж ДБЖ почне видавати звуковий сигнал"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "Температура навколишнього середовища"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "версія, кількість записів і кількість наступних байтів"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "Інформація про модель APC"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Кількість несправних зовнішніх акумуляторних блоків (для моделей XL)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "Дата останньої заміни батареї (якщо встановлено)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "Стан батареї."
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "Поточна напруга акумулятора"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "Відсоток заряду поточної ємності акумулятора"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "Тип кабелю, вказаний у файлі конфігурації"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Загальна кількість секунд роботи від батареї з моменту запуску apcupsd"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "Дата й час останнього оновлення від UPS"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "Поточні налаштування DIP-перемикачів ДБЖ"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Сигнал про низький заряд батареї надсилається, коли залишається стільки часу роботи"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Драйвер APCUPSD, якщо APCUPSD є протоколом"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "Затримка до вимкнення ДБЖ після отримання команди"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Час очікування ДБЖ після вимкнення, коли живлення відновлюється"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "Дата й час інформації про статус були записані"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "Кількість зовнішніх батарей (для моделей XL)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "Версія мікропрограми ДБЖ"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Вхідна мережева напруга, вище якої ДБЖ перемикається на акумулятор"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "ім'я хоста комп'ютера, на якому запущено apcupsd"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "Вологість навколишнього середовища"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "Внутрішня температура ДБЖ у градусах Цельсія"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Причина останнього переходу на батарею з моменту запуску apcupsd"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "Стан вхідної напруги."
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "Поточна частота лінії в Герцах"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "Поточна вхідна мережева напруга"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Відсоток використаної навантажувальної потужності ДБЖ за оцінкою ДБЖ"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Напруга вхідної лінії, нижче якої ДБЖ перемикається на акумулятор"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "Дата виготовлення ДБЖ"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "Минулого разу головний надіслав оновлення підлеглому"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Максимальна вхідна напруга лінії з моменту запуску apcupsd"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Максимальний час автономної роботи (TIMEOUT), після якого система вимикається"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Мінімальний заряд акумулятора %%% (BCHARGE), необхідний для вимкнення системи"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Мінімальна (спостережувана) напруга вхідної лінії з моменту запуску apcupsd"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Мінімальний час роботи від акумулятора (MINUTES), необхідний для вимкнення системи"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "Модель ДБЖ, отримана з інформації про ДБЖ"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "Номінальна напруга акумулятора"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Номінальна вхідна напруга, що подається на ДБЖ."
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Номінальна вихідна напруга для живлення від батареї"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "Номінальна вихідна потужність у Ватах"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Кількість переключень на батарею з моменту запуску apcupsd"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "Поточна вихідна напруга ДБЖ"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "Регістр помилок 1 у шістнадцятковому форматі"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "Регістр помилок 2 у шістнадцятковому форматі"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "Регістр помилок 3 у шістнадцятковому форматі"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Після вимкнення живлення потрібно зарядити акумулятор %%% rдля відновлення живлення"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Дата й час останнього самотестування після запуску apcupsd"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Поточне налаштування чутливості ДБЖ до коливань напруги"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "Серійний номер ДБЖ"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "Дата й час запуску apcupsd"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "Прапор статусу ДБЖ у шістнадцятковому форматі"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "стан ДБЖ. Один або декілька з наступного (через пробіл): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN або COMMLOST або SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "Інтервал самоперевірки"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Час роботи, що залишився від батареї, оцінено ДБЖ"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "Секунд зараз від батареї"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "Режим роботи ДБЖ"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Назва ДБЖ із файлу конфігурації (тупий) або EEPROM (розумний)"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "номер версії apcupsd, дата та операційна система"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Дата, час останнього перемикання акумулятора з моменту запуску apcupsd"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Дата, час останнього переходу на батарею з моменту запуску apcupsd"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "Керуйте ДБЖ"
+
+#: setup.php:279
+msgid "Management"
+msgstr "управління"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "ДБЖ"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "Системне адміністрування"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "Керуйте ДБЖ"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "Видалити"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "Дублювати"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "На основі APC UPSD"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "На основі SNMP"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "Інформація про UPS"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "Назва UPS"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Ім’я, яке ви хотіли б дати цьому ДБЖ. Для пристроїв APCUPSD відповідний пристрій Cacti буде створено автоматично для ДБЖ із цим ім’ям. Для ДБЖ на основі SNMP спочатку потрібно створити пристрій Cacti."
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "Новий ДБЖ"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "Опис ДБЖ"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "Більш детальний опис цього ДБЖ, якщо потрібно."
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "Тип ДБЖ"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "Тип ДБЖ, який ви відстежуєте."
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "ID опитувальника"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Контролер Poller, у якому існує цей ДБЖ, контролюється"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "Назва сайту"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "Сайт, на якому існує цей ДБЖ."
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "Немає"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "Пристрій кактусів"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Для ДБЖ на основі SNMP виберіть пристрій Cacti для використання облікових даних SNMP. В іншому випадку виберіть «Немає», і плагін UPS автоматично створить для вас пристрій."
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "Автостворення під час першого опитування"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "Увімкнути"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "Поставте прапорець, щоб негайно почати опитування даних."
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "Інформація про APC UPSD"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "Назва хоста"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "Ім’я хоста, на якому запущено apcupsd."
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "Порт TCP"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "Введіть порт TCP для цього ДБЖ."
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Шаблон UPS не знайдено! Неможливо скопіювати."
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Натисніть «Продовжити», щоб видалити наступне ДБЖ. Зауважте, що всі пристрої будуть від’єднані від цього ДБЖ."
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "Продовжити"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Видалити UPS"
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Натисніть «Продовжити», щоб створити дублікат наступного ДБЖ."
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "Назва UPS:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Дублікат ДБЖ"
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [редагувати: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "UPS [новий]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "Пошук"
+
+#: upses.php:479
+msgid "Default"
+msgstr "За замовчуванням"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Перейти"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "Встановити/оновити фільтри"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "Очистити"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "Очистити фільтри"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "Назва цього ДБЖ."
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "Унікальний ідентифікатор, пов’язаний із цим ДБЖ."
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "Статус збору"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Статус демона apcupsd на цільовому хості."
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "Статус ДБЖ"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Статус контрольованого ДБЖ на цільовому хості."
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "Модель ДБЖ"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Модель контрольованого ДБЖ на цільовому хості."
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "Лінійна напруга"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Лінійна напруга контрольованого ДБЖ на цільовому хості."
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "Відсоток навантаження"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Відсоток навантаження контрольованого ДБЖ на цільовому хості."
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "Залишок часу"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Хвилини доступної зарядки ДБЖ контрольованого ДБЖ на цільовому хості."
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "Ім'я хосту: порт"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "Ім’я хосту: порт, на якому запущено демон apcupsd."
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "Чи контролюється цей ДБЖ чи ні."
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "Останнє оновлення"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "Останній раз, коли цей ДБЖ був знайдений або пробований."
+
+#: upses.php:651
+msgid "No"
+msgstr "Ні"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "Так"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "ДБЖ не знайдено"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "Без користі"

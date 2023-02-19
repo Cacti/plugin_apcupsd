@@ -1,0 +1,560 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:49-0500\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "UPS がアラームを鳴らし始めるまでの遅延時間"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "周囲温度"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "バージョン、レコード数、バイト数に続く"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "APC モデル情報"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "不良な外部バッテリー パックの数 (XL モデルの場合)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "バッテリを最後に交換した日付 (設定されている場合)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "バッテリー状態。"
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "現在のバッテリー電圧"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "現在のバッテリー容量の充電率"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "構成ファイルで指定されたケーブル タイプ"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "apcupsd の起動以降のバッテリの累積秒数"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "UPS からの最終更新日時"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "現在の UPS DIP スイッチ設定"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "ランタイムがこの程度残っている場合に送信される低バッテリー信号"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD がプロトコルの場合の APCUPSD ドライバー"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "コマンド受信後、UPS の電源がオフになるまでの遅延"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "UPS の電源オフから復電までの待機時間"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "ステータス情報の書き込み日時"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "外部バッテリーの数 (XL モデルの場合)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "UPS ファームウェアのバージョン"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "UPS がバッテリに切り替わる入力ライン電圧"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "apcupsd を実行しているコンピューターのホスト名"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "周囲湿度"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "UPS の内部温度 (摂氏)"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "apcupsd の起動後に最後にバッテリーに転送した理由"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "入力ライン電圧ステータス。"
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "現在の回線周波数 (ヘルツ)"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "現在の入力ライン電圧"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "UPS によって推定された、使用された UPS 負荷容量の割合"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "UPS がバッテリに切り替わる入力ライン電圧"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "UPSの製造日"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "マスターが最後にスレーブに更新を送信した時刻"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "apcupsd が起動してからの最大入力ライン電圧"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "システムがシャットダウンされるまでの最大バッテリ実行時間 (タイムアウト)"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "システムのシャットダウンに必要な最小バッテリー充電量 %%% (BCHARGE)"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "apcupsd が開始されてからの最小 (観測された) 入力ライン電圧"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "システムのシャットダウンに必要な最小バッテリ動作時間 (MINUTES)"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "UPS 情報から派生した UPS モデル"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "公称バッテリー電圧"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "UPS に供給される公称入力電圧。"
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "バッテリ電源で供給される公称出力電圧"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "公称電力出力 (ワット)"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "apcupsd 起動後のバッテリーへの転送回数"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "現在のUPS出力電圧"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "フォルト レジスタ 1 (16 進数)"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "フォルト レジスタ 2 (16 進数)"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "フォルト レジスタ 3 (16 進数)"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "%%% r電源オフ後に電源を復元するには、バッテリーの充電が必要です"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "apcupsd 起動後の最後のセルフテストの日時"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "電圧変動に対する現在の UPS 感度設定"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "UPS のシリアル番号"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "apcupsd が開始された日時"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "16 進数の UPS ステータス フラグ"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "UPS の状態。次の 1 つまたは複数 (スペース区切り): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN または COMMLOST または SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "セルフテスト間隔"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "UPS によって推定されたバッテリの残りのランタイム"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "現在バッテリー使用中の秒数"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "UPS の動作モード"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "構成ファイル (ダム) または EEPROM (スマート) からの UPS 名"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd のバージョン番号、日付、オペレーティング システム"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "apcupsd の起動以降、バッテリーから最後に転送された日付と時刻"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "apcupsd の起動以降、最後にバッテリーに転送された日付と時刻"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "UPS の管理"
+
+#: setup.php:279
+msgid "Management"
+msgstr "マネジメント"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "UPS"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "2. システム管理"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "UPS の管理"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "削除"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "複製"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "APC UPSD ベース"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "SNMP ベース"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "UPS 情報"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "UPS 名"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "この UPS に付けたい名前。 APCUPSD デバイスの場合、対応する Cacti デバイスがこの名前を使用して UPS 用に自動的に作成されます。 SNMP ベースの UPS の場合、最初に Cacti デバイスを作成する必要があります。"
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "新しいUPS"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "UPS の説明"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "必要に応じて、この UPS の詳細な説明。"
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "UPS タイプ"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "監視している UPS のタイプ。"
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "ポーラー ID"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "この UPS が存在するポーラーは、によって監視されています。"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "サイト名"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "この UPS が存在するサイト。"
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "なし"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "サボテンデバイス"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "SNMP ベースの UPS の場合は、SNMP 資格情報に使用する Cacti デバイスを選択します。それ以外の場合は、[なし] を選択すると、UPS プラグインがデバイスを自動的に作成します。"
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "最初のポーリングで自動作成"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "有効"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "データのポーリングをすぐに開始する場合にオンにします。"
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "APC UPSD 情報"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "ホスト名"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "apcupsd を実行しているホストのホスト名。"
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "TCP ポート"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "この UPS の TCP ポートを入力します。"
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "テンプレート UPS が見つかりませんでした!複製できません。"
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "[続行] をクリックして、次の UPS を削除します。すべてのデバイスがこの UPS から切り離されることに注意してください。"
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "取り消し"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "続ける"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "UPSを削除"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "[続行] をクリックして、次の UPS を複製します。"
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "UPS 名:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "UPS の複製"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [編集: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "UPS【新品】"
+
+#: upses.php:469
+msgid "Search"
+msgstr "検索"
+
+#: upses.php:479
+msgid "Default"
+msgstr "デフォルト"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Go"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "フィルタの設定/更新"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "クリア"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "絞り込み条件を解除する"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "この UPS の名前。"
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "この UPS に関連付けられた一意の ID。"
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "収集状況"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "ターゲット ホスト上の apcupsd デーモンのステータス。"
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "UPS ステータス"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "ターゲット ホスト上の監視対象 UPS のステータス。"
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "UPS モデル"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "ターゲット ホスト上の監視対象 UPS のモデル。"
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "線間電圧"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "ターゲット ホスト上の監視対象 UPS のライン電圧。"
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "負荷率"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "ターゲット ホスト上の監視対象 UPS の負荷率。"
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "残り時間"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "ターゲット ホスト上の監視対象 UPS の使用可能な UPS 充電の分数。"
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "ホスト名:ポート"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "ホスト名: apcupsd デーモンを実行しているポート。"
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "この UPS が監視されているかどうか。"
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "最終更新"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "この UPS が最後にサンプルまたは検出された日時。"
+
+#: upses.php:651
+msgid "No"
+msgstr "いいえ"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "はい"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "UPS が見つかりません"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "役に立たない"

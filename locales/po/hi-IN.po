@@ -1,0 +1,564 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:48-0500\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: hi_IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "यूपीएस के अलार्म बजने से पहले की देरी की अवधि"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "परिवेश का तापमान"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "संस्करण, रिकॉर्ड की संख्या और निम्नलिखित बाइट्स की संख्या"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "एपीसी मॉडल की जानकारी"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "खराब बाहरी बैटरी पैक की संख्या (XL मॉडल के लिए)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "पिछली बार बैटरी बदले जाने की तिथि (यदि सेट हो)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "बैटरी की स्थिति।"
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "वर्तमान बैटरी वोल्टेज"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "वर्तमान बैटरी क्षमता चार्ज प्रतिशत"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "कॉन्फ़िगरेशन फ़ाइल में निर्दिष्ट केबल प्रकार"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से बैटरी पर संचयी सेकंड"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "यूपीएस से अंतिम अद्यतन की तिथि और समय"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "वर्तमान यूपीएस डीआईपी स्विच सेटिंग्स"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "इतना रनटाइम रहने पर लो बैटरी सिग्नल भेजा जाता है"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD ड्राइवर जब APCUPSD प्रोटोकॉल होता है"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "कमांड मिलने के बाद यूपीएस पावर डाउन होने से पहले देरी"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "समय यूपीएस बिजली बंद होने के बाद इंतजार करता है जब बिजली बहाल हो जाती है"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "स्थिति की जानकारी की तिथि और समय लिखा गया था"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "बाहरी बैटरी की संख्या (एक्सएल मॉडल के लिए)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "यूपीएस फर्मवेयर संस्करण"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "इनपुट लाइन वोल्टेज जिसके ऊपर यूपीएस बैटरी में बदल जाएगा"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "apcupsd चलाने वाले कंप्यूटर का होस्टनाम"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "परिवेश आर्द्रता"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "यूपीएस आंतरिक तापमान डिग्री सेल्सियस में"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से बैटरी में अंतिम स्थानांतरण का कारण"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "इनपुट लाइन वोल्टेज की स्थिति।"
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "हर्ट्ज में वर्तमान लाइन आवृत्ति"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "वर्तमान इनपुट लाइन वोल्टेज"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "यूपीएस द्वारा अनुमानित यूपीएस लोड क्षमता का प्रतिशत"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "इनपुट लाइन वोल्टेज जिसके नीचे यूपीएस बैटरी में बदल जाएगा"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "यूपीएस निर्माण की तारीख"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "पिछली बार मास्टर ने गुलाम को अपडेट भेजा था"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "apcupsd शुरू होने के बाद से अधिकतम इनपुट लाइन वोल्टेज"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "अधिकतम बैटरी रनटाइम (टाइमआउट) जिसके बाद सिस्टम बंद हो जाता है"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "सिस्टम शटडाउन के लिए न्यूनतम बैटरी चार्ज %%% (BCHARGE) आवश्यक है"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "apcupsd शुरू होने के बाद से न्यूनतम (देखा गया) इनपुट लाइन वोल्टेज"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "सिस्टम शटडाउन के लिए आवश्यक न्यूनतम बैटरी रनटाइम (मिनट)।"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "यूपीएस जानकारी से प्राप्त यूपीएस मॉडल"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "नाममात्र बैटरी वोल्टेज"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "यूपीएस को दिया गया नाममात्र इनपुट वोल्टेज।"
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "बैटरी पावर पर आपूर्ति करने के लिए नाममात्र आउटपुट वोल्टेज"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "वाट में नाममात्र बिजली उत्पादन"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से बैटरी में स्थानान्तरण की संख्या"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "वर्तमान यूपीएस आउटपुट वोल्टेज"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "हेक्स में फॉल्ट रजिस्टर 1"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "हेक्स में फॉल्ट रजिस्टर 2"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "हेक्स में फॉल्ट रजिस्टर 3"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "बिजली बहाल करने के लिए बिजली बंद करने के बाद बैटरी चार्ज %%% rकी आवश्यकता होती है"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से अंतिम स्व परीक्षण की तिथि और समय"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "वोल्टेज में उतार-चढ़ाव के लिए वर्तमान यूपीएस संवेदनशीलता सेटिंग"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "यूपीएस सीरियल नंबर"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "दिनांक और समय apcupsd प्रारंभ किया गया था"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "यूपीएस स्थिति ध्वज हेक्स में"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "यूपीएस की स्थिति निम्नलिखित में से एक या अधिक (स्पेस से अलग): कैल ट्रिम बूस्ट ऑनलाइन ऑनबैट ओवरलोड लोबैट रिप्लेसबैट नोबैट स्लेव स्लेवडाउन या कॉम्लॉस्ट या शट डाउन"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "स्व-परीक्षण अंतराल"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "यूपीएस द्वारा अनुमानित शेष रनटाइम बैटरी पर बचा हुआ है"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "वर्तमान में बैटरी चालू सेकंड"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "मोड जिसमें यूपीएस काम कर रहा है"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "कॉन्फ़िगरेशन फ़ाइल (गूंगा) या EEPROM (स्मार्ट) से यूपीएस नाम"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd संस्करण संख्या, दिनांक और ऑपरेटिंग सिस्टम"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से बैटरी के अंतिम स्थानांतरण की तिथि, समय"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "apcupsd स्टार्टअप के बाद से बैटरी में अंतिम स्थानांतरण की तिथि, समय"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "यूपीएस प्रबंधित करें"
+
+#: setup.php:279
+msgid "Management"
+msgstr "प्रबंधन"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "यूपीएस"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "तंत्र प्रशासन"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "यूपीएस प्रबंधित करें"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "हटाएं"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "डुप्लीकेट"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "एपीसी यूपीएसडी आधारित"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "एसएनएमपी आधारित"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "यूपीएस सूचना"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "यूपीएस का नाम"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "आप इस यूपीएस को जो नाम देना चाहेंगे। APCUPSD उपकरणों के लिए, इस नाम का उपयोग करके UPS के लिए स्वचालित रूप से संबंधित कैक्टि डिवाइस बनाया जाएगा। एसएनएमपी आधारित यूपीएस के लिए, आपको पहले कैक्टि डिवाइस बनाना होगा।"
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "नया यूपीएस"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "The UPS rate calculator only approximates the live shipping rate. \"allow_url_fopen\" must be enabled"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "यदि आवश्यक हो तो इस यूपीएस का अधिक विस्तृत विवरण।"
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "यूपीएस प्रकार"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "आप किस प्रकार के यूपीएस की निगरानी कर रहे हैं।"
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "पोलर आईडी"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "यह यूपीएस जिस पोलर में मौजूद है, उसकी निगरानी किसके द्वारा की जाती है"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "साइट नाम"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "वह साइट जिसमें यह यूपीएस मौजूद है।"
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "कोई नहीं"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "कैक्टि डिवाइस"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "एसएनएमपी आधारित यूपीएस' के लिए, एसएनएमपी क्रेडेंशियल्स के लिए उपयोग करने के लिए कैक्टि डिवाइस का चयन करें। अन्यथा, कोई नहीं चुनें, और यूपीएस प्लगइन आपके लिए स्वचालित रूप से डिवाइस बना देगा।"
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "पहले मतदान पर स्वतः सृजित करें"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "सक्षम"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "डेटा के लिए तुरंत पोलिंग शुरू करने के लिए चेक करें।"
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "एपीसी यूपीएसडी सूचना"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "होस्टनांऽ"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "apcupsd चलाने वाले होस्ट का होस्टनाम।"
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "टीसीपी पोर्ट"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "इस यूपीएस के लिए टीसीपी पोर्ट दर्ज करें।"
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "टेम्प्लेट यूपीएस नहीं मिला! नकल करने में असमर्थ।"
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "निम्नलिखित यूपीएस को हटाने के लिए 'जारी रखें' पर क्लिक करें। ध्यान दें, सभी डिवाइस इस यूपीएस से अलग हो जाएंगे।"
+msgstr[1] "निम्नलिखित सभी यूपीएस को हटाने के लिए 'जारी रखें' पर क्लिक करें। ध्यान दें, सभी डिवाइस इस यूपीएस से अलग हो जाएंगे।"
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "कैंसिल करें"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "जारी रखें"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "यूपीएस हटाएं"
+msgstr[1] "यूपीएस हटाएं"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "निम्न यूपीएस को डुप्लिकेट करने के लिए 'जारी रखें' पर क्लिक करें।"
+msgstr[1] "निम्नलिखित सभी यूपीएस को डुप्लिकेट करने के लिए 'जारी रखें' पर क्लिक करें।"
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "यूपीएस का नाम:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "डुप्लीकेट यूपीएस"
+msgstr[1] "डुप्लीकेट यूपीएस"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "यूपीएस [संपादित करें: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "यूपीएस [नया]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "खोजें"
+
+#: upses.php:479
+msgid "Default"
+msgstr "डिफ़ॉल्ट"
+
+#: upses.php:491
+msgid "Go"
+msgstr "जाएं"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "फ़िल्टर सेट/ताज़ा करें"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "明确"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "फ़िल्टर साफ़ करें"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "इस यूपीएस का नाम।"
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "इस यूपीएस से जुड़ी यूनिक आईडी।"
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "स्थिति लीजिए"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "लक्ष्य होस्ट पर apcupsd डेमॉन की स्थिति।"
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "यूपीएस स्थिति"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "लक्ष्य होस्ट पर मॉनिटर किए गए यूपीएस की स्थिति।"
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "यूपीएस मॉडल"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "लक्षित होस्ट पर मॉनिटर किए गए यूपीएस का मॉडल।"
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "लाइन वोल्टेज"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "लक्ष्य होस्ट पर मॉनिटर किए गए यूपीएस का लाइन वोल्टेज।"
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "भार प्रतिशत"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "लक्षित होस्ट पर मॉनिटर किए गए यूपीएस का लोड प्रतिशत।"
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "शेष समय"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "लक्ष्य होस्ट पर मॉनिटर किए गए यूपीएस के उपलब्ध यूपीएस चार्ज के मिनट।"
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "होस्टनाम: पोर्ट"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "होस्टनाम: पोर्ट जो apcupsd डेमॉन चला रहा है।"
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "इस यूपीएस की मॉनिटरिंग हो रही है या नहीं।"
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "अंतिम अपडेट"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "पिछली बार इस यूपीएस के सैंपल लिए गए थे या पाए गए थे।"
+
+#: upses.php:651
+msgid "No"
+msgstr "नहीं"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "हाँ"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "कोई यूपीएस नहीं मिला"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "कोई लाभ नहीं"

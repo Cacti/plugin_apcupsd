@@ -1,0 +1,562 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: thold on cacti 1.1.34\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:58-0500\n"
+"Last-Translator: tomcat <luis_126@126.com>\n"
+"Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/thold/zh-CN/>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "UPS 开始报警前的延迟时间"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "环境温度"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "版本、记录数和后面的字节数"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "APC型号信息"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "坏的外部电池组数量（对于 XL 型号）"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "上次更换电池的日期（如果已设置）"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "电池状态。"
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "当前电池电压"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "当前电池容量充电百分比"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "配置文件中指定的电缆类型"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "自 apcupsd 启动以来电池累计秒数"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "UPS 上次更新的日期和时间"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "当前 UPS DIP 开关设置"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "当剩余这么多运行时间时发送低电量信号"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "当 APCUPSD 是协议时的 APCUPSD 驱动程序"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "收到命令后 UPS 断电前的延迟"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "UPS断电后恢复供电等待时间"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "写入状态信息的日期和时间"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "外部电池数量（适用于 XL 型号）"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "UPS固件版本"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "UPS 将切换到电池的输入线电压"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "运行 apcupsd 的计算机的主机名"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "环境湿度"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "UPS 内部温度（摄氏度）"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "自 apcupsd 启动后最后一次转移到电池的原因"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "输入线电压状态。"
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "当前线路频率（以赫兹为单位）"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "当前输入线电压"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "UPS 估计使用的 UPS 负载容量的百分比"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "UPS 将切换至电池的输入线路电压"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "UPS 生产日期"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "上次 master 向 slave 发送更新"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "自 apcupsd 启动以来的最大输入线路电压"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "系统关闭后的最大电池运行时间 (TIMEOUT)"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "系统关闭所需的最低电池电量 %%% (BCHARGE)"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "自 apcupsd 启动以来的最小（观察到的）输入线路电压"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "系统关闭所需的最短电池运行时间 (MINUTES)"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "UPS 型号源自 UPS 信息"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "标称电池电压"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "提供给 UPS 的标称输入电压。"
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "使用电池供电时提供的标称输出电压"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "以瓦特为单位的标称功率输出"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "自 apcupsd 启动以来转移到电池的次数"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "当前UPS输出电压"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "十六进制的故障寄存器 1"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "十六进制故障寄存器 2"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "十六进制的故障寄存器 3"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "断电后%%% r需要为电池充电以恢复供电"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "自 apcupsd 启动以来上次自检的日期和时间"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "当前 UPS 对电压波动的灵敏度设置"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "UPS序列号"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "启动 apcupsd 的日期和时间"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "十六进制的 UPS 状态标志"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "UPS 状态。以下一项或多项（以空格分隔）： CAL TRIM BOOST ONLINE OBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN 或 COMMLOST 或 SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "自检间隔"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "UPS 估计的电池剩余运行时间"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "当前电池上的秒数"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "UPS 运行模式"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "来自配置文件（哑）或 EEPROM（智能）的 UPS 名称"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd 版本号、日期和操作系统"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "自 apcupsd 启动以来最后一次关闭电池的日期、时间"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "自 apcupsd 启动以来最后一次传输到电池的日期、时间"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "管理 UPS"
+
+#: setup.php:279
+msgid "Management"
+msgstr "管理"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "UPS"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "系统管理"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "管理UPS"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "删除"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "重复"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "基于 APC UPSD"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "基于SNMP"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "UPS 资讯"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "UPS名称"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "您希望为该 UPS 指定的名称。对于 APCUPSD 设备，将使用此名称为 UPS 自动创建相应的 Cacti 设备。对于基于 SNMP 的 UPS，您必须首先创建 Cacti 设备。"
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "新UPS"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "UPS 说明"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "如果需要，请提供此 UPS 的更详细说明。"
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "UPS类型"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "您正在监控的 UPS 类型。"
+
+#: upses.php:70
+#, fuzzy
+msgid "Poller ID"
+msgstr " Poller ID: "
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "这个 UPS 所在的 Poller 被 monitored by"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "站点名称"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "此 UPS 所在的站点。"
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "无"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "仙人掌装置"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "对于基于 SNMP 的 UPS，选择用于 SNMP 凭据的 Cacti 设备。否则，选择无，UPS 插件将自动为您创建设备。"
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "第一次轮询时自动创建"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "启用"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "检查以立即开始轮询数据。"
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "APC UPSD 信息"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "主机名"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "运行 apcupsd 的主机的主机名。"
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "TCP端口"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "输入此 UPS 的 TCP 端口。"
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "找不到模板 UPS！无法复制。"
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "单击“继续”以删除以下 UPS。请注意，所有设备都将与此 UPS 断开关联。"
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "取消"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "继续"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "删除 UPS"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "单击“继续”以复制以下 UPS。"
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "UPS 名称："
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "重复UPS"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [编辑：%s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "UPS [新]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "搜索"
+
+#: upses.php:479
+msgid "Default"
+msgstr "默认"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Go"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "设置/刷新过滤器"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "清除"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "清除过滤器"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "此 UPS 的名称。"
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "与此 UPS 关联的唯一 ID。"
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "收集状态"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "目标主机上 apcupsd 守护进程的状态。"
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "UPS状态"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "目标主机上受监控 UPS 的状态。"
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "型号"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "目标主机上受监控 UPS 的型号。"
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "线路电压"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "目标主机上受监控 UPS 的线路电压。"
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "负载百分比"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "目标主机上受监控 UPS 的负载百分比。"
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "剩余时间"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "目标主机上受监控 UPS 的可用 UPS 充电分钟数。"
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "主机名：端口"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "运行 apcupsd 守护程序的主机名：端口。"
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "此 UPS 是否受到监控。"
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "最后更新"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "此 UPS 上次取样或被发现的时间。"
+
+#: upses.php:651
+#, fuzzy
+msgid "No"
+msgstr "否"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "是"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "未找到 UPS"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "无效"

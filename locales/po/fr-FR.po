@@ -1,0 +1,564 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:47-0500\n"
+"Last-Translator: Olivier VOGEL <olivier.vogel@st.com>\n"
+"Language-Team: French <http://translate.cacti.net/projects/cacti/thold/fr-FR/>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "Délai avant que l'UPS ne déclenche l'alarme"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "Température ambiante"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "version, nombre d'enregistrements et nombre d'octets suivants"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "Informations sur le modèle APC"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Nombre de batteries externes défectueuses (pour les modèles XL)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "Date du dernier remplacement de la batterie (si définie)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "État de la batterie."
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "Tension actuelle de la batterie"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "Pourcentage de charge de la capacité actuelle de la batterie"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "Type de câble spécifié dans le fichier de configuration"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Secondes cumulées sur batterie depuis le démarrage d'apcupsd"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "Date et heure de la dernière mise à jour d'UPS"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "Paramètres actuels des commutateurs DIP de l'onduleur"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Signal de batterie faible envoyé lorsqu'il reste autant d'autonomie"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Le pilote APCUPSD lorsque APCUPSD est le protocole"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "Délai avant que l'onduleur ne s'éteigne après la réception de la commande"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Temps d'attente de l'UPS après la mise hors tension lorsque le courant est rétabli"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "Date et heure d'écriture des informations d'état"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "Nombre de batteries externes (pour les modèles XL)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "Version du micrologiciel de l'onduleur"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Tension de ligne d'entrée au-dessus de laquelle l'onduleur passera à la batterie"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "nom d'hôte de l'ordinateur exécutant apcupsd"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "Humidité ambiante"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "Température interne de l'onduleur en degrés Celsius"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Raison du dernier transfert vers la batterie depuis le démarrage d'apcupsd"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "État de la tension de ligne d'entrée."
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "Fréquence de ligne actuelle en Hertz"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "Tension de ligne d'entrée actuelle"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Pourcentage de la capacité de charge de l'ASI utilisée, telle qu'estimée par l'ASI"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Tension de ligne d'entrée en dessous de laquelle l'onduleur passera à la batterie"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "Date de fabrication de l'onduleur"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "La dernière fois que le maître a envoyé une mise à jour à l'esclave"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Tension de ligne d'entrée maximale depuis le démarrage d'apcupsd"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Autonomie maximale de la batterie (TIMEOUT) après laquelle le système s'arrête"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Charge minimale de la batterie %% % (BCHARGE) requise pour l'arrêt du système"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Tension de ligne d'entrée minimale (observée) depuis le démarrage d'apcupsd"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Autonomie minimale de la batterie (MINUTES) requise pour l'arrêt du système"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "Modèle d'onduleur dérivé des informations de l'onduleur"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "Tension nominale de la batterie"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Tension d'entrée nominale fournie à l'UPS."
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Tension de sortie nominale à fournir en cas d'alimentation par batterie"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "Puissance de sortie nominale en watts"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Nombre de transferts vers la batterie depuis le démarrage d'apcupsd"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "Tension de sortie actuelle de l'ASI"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "Registre de défauts 1 en hexadécimal"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "Registre de défaut 2 en hexadécimal"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "Registre de défaut 3 en hexadécimal"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Charge de la batterie %%% rnécessaire après la mise hors tension pour rétablir l'alimentation"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Date et heure du dernier autotest depuis le démarrage d'apcupsd"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Réglage de la sensibilité actuelle de l'onduleur pour les fluctuations de tension"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "Numéro de série de l'onduleur"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "Date et heure de démarrage d'apcupsd"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "Indicateur d'état de l'onduleur en hexadécimal"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "État de l'onduleur. Un ou plusieurs des éléments suivants (séparés par des espaces) : CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ou COMMLOST ou SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "Intervalle d'auto-test"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Autonomie restante restante sur la batterie telle qu'estimée par l'onduleur"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "Secondes actuellement sur batterie"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "Mode de fonctionnement de l'ASI"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Nom de l'UPS du fichier de configuration (muet) ou EEPROM (intelligent)"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "numéro de version apcupsd, date et système d'exploitation"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Date, heure du dernier transfert hors batterie depuis le démarrage d'apcupsd"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Date, heure du dernier transfert vers la batterie depuis le démarrage de apcupsd"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "Gérer les onduleurs"
+
+#: setup.php:279
+msgid "Management"
+msgstr "Gestion"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "UPS"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "Gestion du système"
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "Gérer les onduleurs"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "Supprimer"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "Dupliquer"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "Basé sur APC UPSD"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "Basé sur SNMP"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "Informations sur l'onduleur"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "Nom de l'onduleur"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Le nom que vous souhaitez donner à cet onduleur. Pour les appareils APCUPSD, un appareil Cacti correspondant sera créé automatiquement pour l'onduleur en utilisant ce nom. Pour les onduleurs basés sur SNMP, vous devez d'abord créer le périphérique Cacti."
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "Nouvel onduleur"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "Le calculateur de taux d' UPS se rapproche seulement le taux direct de l'expédition. \" Allow_url_fopen \" doit être activé."
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "Une description plus détaillée de cet onduleur si nécessaire."
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "Type d'onduleur"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "Le type d'onduleur que vous surveillez."
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "ID d'interrogateur"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Le Poller dans lequel cet onduleur existe est surveillé par"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "Nom du site"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "Le site sur lequel cet onduleur existe."
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "Aucun"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "Dispositif de cactus"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Pour SNMP Based UPS', sélectionnez le périphérique Cacti à utiliser pour les informations d'identification SNMP. Sinon, sélectionnez Aucun et le plug-in UPS créera automatiquement l'appareil pour vous."
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "Création automatique lors du premier sondage"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "Activé"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "Cochez pour lancer immédiatement l'interrogation des données."
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "Informations APC UPSD"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "Nom d'hôte"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "Le nom d'hôte de l'hôte exécutant apcupsd."
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "Port TCP"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "Saisissez le port TCP de cet onduleur."
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Le modèle UPS n'a pas été trouvé ! Impossible de dupliquer."
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Cliquez sur « Continuer » pour supprimer l'onduleur suivant. Notez que tous les appareils seront dissociés de cet onduleur."
+msgstr[1] "Cliquez sur « Continuer » pour supprimer tous les onduleurs suivants. Notez que tous les appareils seront dissociés de cet onduleur."
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "Abandonner"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "Continuer"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Supprimer l'onduleur"
+msgstr[1] "Supprimer les onduleurs"
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Cliquez sur « Continuer » pour dupliquer l'onduleur suivant."
+msgstr[1] "Cliquez sur « Continuer » pour dupliquer tous les onduleurs suivants."
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "Nom de l'onduleur :"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "UPS en double"
+msgstr[1] "UPS en double"
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [modifier : %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "ASI [nouveau]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "Rechercher"
+
+#: upses.php:479
+msgid "Default"
+msgstr "Défaut"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Aller"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "Définir/Rafraîchir les filtres"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "Effacer"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "Supprimer les filtres"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "Le nom de cet onduleur."
+
+#: upses.php:574
+msgid "ID"
+msgstr "ID"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "L'identifiant unique associé à cet onduleur."
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "Collecter le statut"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Statut du démon apcupsd sur l'hôte cible."
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "État de l'onduleur"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "L'état de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "Modèle d'onduleur"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Le modèle de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "Tension de ligne"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "La tension de ligne de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "Pourcentage de charge"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Le pourcentage de charge de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "Temps restant"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Les minutes de charge UPS disponibles de l'UPS surveillé sur l'hôte cible."
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "Nom d'hôte : Port"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "Nom d'hôte : port qui exécute le démon apcupsd."
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "Si cet onduleur est surveillé ou non."
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "Dernière mise à jour"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "La dernière fois que cet onduleur a été échantillonné ou trouvé."
+
+#: upses.php:651
+msgid "No"
+msgstr "Non"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "Oui"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "Aucun onduleur trouvé"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "Non disponible"

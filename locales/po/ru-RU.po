@@ -1,0 +1,568 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"PO-Revision-Date: 2023-02-18 22:55-0500\n"
+"Last-Translator: Coool (github.com/Coool) <coool@mail.lv>\n"
+"Language-Team: Russian <http://translate.cacti.net/projects/cacti/thold/ru/>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: database.php:7
+msgid "Delay period before UPS starts sounding alarm"
+msgstr "Период задержки перед тем, как ИБП начнет подавать звуковой сигнал"
+
+#: database.php:12
+msgid "Ambient temperature"
+msgstr "Температура окружающей среды"
+
+#: database.php:17
+msgid "version, number of records and number of bytes following"
+msgstr "версия, количество записей и количество байтов, следующих за"
+
+#: database.php:22
+msgid "APC model information"
+msgstr "Информация о модели БТР"
+
+#: database.php:27
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Количество неисправных внешних батарейных блоков (для моделей XL)"
+
+#: database.php:32
+msgid "Date battery last replaced (if set)"
+msgstr "Дата последней замены батареи (если установлена)"
+
+#: database.php:37
+msgid "Battery status."
+msgstr "Заряд батареи."
+
+#: database.php:42
+msgid "Current battery voltage"
+msgstr "Текущее напряжение батареи"
+
+#: database.php:47
+msgid "Current battery capacity charge percentage"
+msgstr "Текущая емкость аккумулятора, процент заряда"
+
+#: database.php:52
+msgid "Cable type specified in the configuration file"
+msgstr "Тип кабеля, указанный в файле конфигурации"
+
+#: database.php:57
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Совокупное количество секунд от батареи с момента запуска apcupsd"
+
+#: database.php:62
+msgid "Date and time of last update from UPS"
+msgstr "Дата и время последнего обновления от UPS"
+
+#: database.php:67
+msgid "Current UPS DIP switch settings"
+msgstr "Текущие настройки DIP-переключателя ИБП"
+
+#: database.php:72
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Сигнал о низком заряде батареи отправляется, когда остается столько времени работы"
+
+#: database.php:77
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Драйвер APCUPSD, когда APCUPSD является протоколом"
+
+#: database.php:82
+msgid "Delay before UPS powers down after command received"
+msgstr "Задержка перед отключением ИБП после получения команды"
+
+#: database.php:87
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Время ожидания ИБП после отключения питания при восстановлении питания"
+
+#: database.php:92 database.php:97
+msgid "Date and time of status information was written"
+msgstr "Дата и время записи информации о состоянии"
+
+#: database.php:102
+msgid "Number of external batteries (for XL models)"
+msgstr "Количество внешних аккумуляторов (для моделей XL)"
+
+#: database.php:107
+msgid "UPS firmware version"
+msgstr "Версия прошивки ИБП"
+
+#: database.php:112
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Входное линейное напряжение, выше которого ИБП переключится на батарею"
+
+#: database.php:117
+msgid "hostname of computer running apcupsd"
+msgstr "имя хоста компьютера, на котором работает apcupsd"
+
+#: database.php:122
+msgid "Ambient humidity"
+msgstr "Влажность окружающей среды"
+
+#: database.php:127
+msgid "UPS internal temperature in degrees Celcius"
+msgstr "Внутренняя температура ИБП в градусах Цельсия"
+
+#: database.php:132
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Причина последней передачи на батарею с момента запуска apcupsd"
+
+#: database.php:137
+msgid "Input line voltage status."
+msgstr "Состояние напряжения входной линии."
+
+#: database.php:142
+msgid "Current line frequency in Hertz"
+msgstr "Текущая частота сети в герцах"
+
+#: database.php:147
+msgid "Current input line voltage"
+msgstr "Текущее входное линейное напряжение"
+
+#: database.php:152
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Процент нагрузочной способности ИБП, используемый по оценке ИБП"
+
+#: database.php:157
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Входное линейное напряжение, ниже которого ИБП переключится на батарею"
+
+#: database.php:162
+msgid "UPS date of manufacture"
+msgstr "Дата изготовления ИБП"
+
+#: database.php:167
+msgid "Last time the master sent an update to the slave"
+msgstr "Последний раз, когда мастер отправлял обновление ведомому"
+
+#: database.php:172
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Максимальное входное линейное напряжение с момента запуска apcupsd"
+
+#: database.php:177
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Максимальное время работы от батареи (TIMEOUT), после которого система выключается"
+
+#: database.php:182
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Минимальный заряд батареи %%% (BCHARGE), необходимый для выключения системы"
+
+#: database.php:187
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Минимальное (наблюдаемое) напряжение входной линии с момента запуска apcupsd"
+
+#: database.php:192
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Минимальное время работы от батареи (МИНУТЫ), необходимое для выключения системы"
+
+#: database.php:197
+msgid "UPS model derived from UPS information"
+msgstr "Модель ИБП, полученная из информации об ИБП"
+
+#: database.php:202
+msgid "Nominal battery voltage"
+msgstr "Номинальное напряжение батареи"
+
+#: database.php:207
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Номинальное входное напряжение, подаваемое на ИБП."
+
+#: database.php:212
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Номинальное выходное напряжение при питании от батареи"
+
+#: database.php:217
+msgid "Nominal power output in watts"
+msgstr "Номинальная выходная мощность в ваттах"
+
+#: database.php:222
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Количество передач на батарею с момента запуска apcupsd"
+
+#: database.php:227
+msgid "Current UPS output voltage"
+msgstr "Текущее выходное напряжение ИБП"
+
+#: database.php:232
+msgid "Fault register 1 in hex"
+msgstr "Регистр неисправности 1 в шестнадцатеричном формате"
+
+#: database.php:237
+msgid "Fault register 2 in hex"
+msgstr "Регистр неисправности 2 в шестнадцатеричном формате"
+
+#: database.php:242
+msgid "Fault register 3 in hex"
+msgstr "Регистр неисправности 3 в шестнадцатеричном формате"
+
+#: database.php:247
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Зарядка аккумулятора %%% rтребуется после отключения питания для восстановления питания"
+
+#: database.php:252
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Дата и время последней самопроверки с момента запуска apcupsd"
+
+#: database.php:257
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Текущая настройка чувствительности ИБП к колебаниям напряжения"
+
+#: database.php:262
+msgid "UPS serial number"
+msgstr "Серийный номер ИБП"
+
+#: database.php:267
+msgid "Date and time apcupsd was started"
+msgstr "Дата и время запуска apcupsd"
+
+#: database.php:272
+msgid "UPS status flag in hex"
+msgstr "Флаг состояния ИБП в шестнадцатеричном формате"
+
+#: database.php:277
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "статус ИБП. Один или несколько из следующих (через пробел): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN или COMMLOST или SHUTTING DOWN"
+
+#: database.php:282
+msgid "Self-test interval"
+msgstr "Интервал самопроверки"
+
+#: database.php:287
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Оставшееся время работы от батареи по оценке ИБП"
+
+#: database.php:292
+msgid "Seconds currently on battery"
+msgstr "Секунды в настоящее время на батарее"
+
+#: database.php:297
+msgid "Mode in which UPS is operating"
+msgstr "Режим, в котором работает ИБП"
+
+#: database.php:302
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Имя ИБП из файла конфигурации (немой) или EEPROM (умный)"
+
+#: database.php:307
+msgid "apcupsd version number, date and operating system"
+msgstr "номер версии apcupsd, дата и операционная система"
+
+#: database.php:312 database.php:317
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Дата, время последнего отключения батареи с момента запуска apcupsd"
+
+#: database.php:322
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Дата, время последней передачи на батарею с момента запуска apcupsd"
+
+#: setup.php:35
+msgid "Manage UPS's"
+msgstr "Управление ИБП"
+
+#: setup.php:279
+msgid "Management"
+msgstr "Управление"
+
+#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+msgid "UPSes"
+msgstr "ИБП"
+
+#: setup.php:282
+msgid "System Administration"
+msgstr "Администрирование системы."
+
+#: setup.php:309
+msgid "Manage UPSes"
+msgstr "Управление ИБП"
+
+#: upses.php:28
+msgid "Delete"
+msgstr "Удалить"
+
+#: upses.php:29
+msgid "Duplicate"
+msgstr "Дублировать"
+
+#: upses.php:33
+msgid "APC UPSD Based"
+msgstr "APC UPSD на базе"
+
+#: upses.php:34
+msgid "SNMP Based"
+msgstr "на основе SNMP"
+
+#: upses.php:41
+msgid "UPS Information"
+msgstr "Информация об ИБП"
+
+#: upses.php:46 upses.php:568
+msgid "UPS Name"
+msgstr "Имя ИБП"
+
+#: upses.php:47
+msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Имя, которое вы хотели бы дать этому ИБП. Для устройств APCUPSD соответствующее устройство Cacti будет автоматически создано для ИБП с использованием этого имени. Для ИБП на базе SNMP необходимо сначала создать устройство Cacti."
+
+#: upses.php:50
+msgid "New UPS"
+msgstr "Новый ИБП"
+
+#: upses.php:55
+msgid "UPS Description"
+msgstr "Калькулятор скорости UPS приближается к скорости доставки в реальном времени. \"allow_url_fopen\" должен быть включен"
+
+#: upses.php:56
+msgid "A more detailed Description of this UPS if required."
+msgstr "При необходимости более подробное описание данного ИБП."
+
+#: upses.php:63
+msgid "UPS Type"
+msgstr "Тип ИБП"
+
+#: upses.php:64
+msgid "The Type of UPS you are monitoring."
+msgstr "Тип ИБП, за которым вы следите."
+
+#: upses.php:70
+msgid "Poller ID"
+msgstr "Идентификатор опроса"
+
+#: upses.php:71
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Опросчик, в котором существует этот ИБП, контролируется"
+
+#: upses.php:78
+msgid "Site Name"
+msgstr "Имя Узла"
+
+#: upses.php:79
+msgid "The Site that this UPS exists in."
+msgstr "Сайт, на котором находится данный ИБП."
+
+#: upses.php:82 upses.php:88
+msgid "None"
+msgstr "Нет"
+
+#: upses.php:86
+msgid "Cacti Device"
+msgstr "Кактусы Устройство"
+
+#: upses.php:87
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Для ИБП на базе SNMP выберите устройство Cacti, которое будет использоваться для учетных данных SNMP. В противном случае выберите «Нет», и подключаемый модуль ИБП автоматически создаст для вас устройство."
+
+#: upses.php:92 upses.php:93
+msgid "Autocreate on First Poll"
+msgstr "Автосоздание при первом опросе"
+
+#: upses.php:97 upses.php:622
+msgid "Enabled"
+msgstr "Разрешено"
+
+#: upses.php:98
+msgid "Check to immediatly start polling for data."
+msgstr "Установите этот флажок, чтобы немедленно начать опрос данных."
+
+#: upses.php:104
+msgid "APC UPSD Information"
+msgstr "Информация об ИБП APC"
+
+#: upses.php:109
+msgid "Hostname"
+msgstr "Имя хоста"
+
+#: upses.php:110
+msgid "The hostname of the host running apcupsd."
+msgstr "Имя хоста, на котором работает apcupsd."
+
+#: upses.php:117
+msgid "TCP Port"
+msgstr "TCP-порт"
+
+#: upses.php:118
+msgid "Enter the TCP Port for this UPS."
+msgstr "Введите порт TCP для этого ИБП."
+
+#: upses.php:256
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Шаблон UPS не найден! Невозможно дублировать."
+
+#: upses.php:315
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Нажмите «Продолжить», чтобы удалить следующий ИБП. Обратите внимание, что все Устройства будут отключены от этого ИБП."
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:320 upses.php:330
+msgid "Cancel"
+msgstr "Отмена"
+
+#: upses.php:320 upses.php:330
+msgid "Continue"
+msgstr "Продолжить"
+
+#: upses.php:320
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Удалить ИБП"
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:324
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Нажмите «Продолжить», чтобы дублировать следующий ИБП."
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:326
+msgid "UPS Name:"
+msgstr "Имя ИБП:"
+
+#: upses.php:330
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Дублирующий ИБП"
+msgstr[1] ""
+msgstr[2] ""
+
+#: upses.php:363
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "ИБП [править: %s]"
+
+#: upses.php:366
+msgid "UPS [new]"
+msgstr "ИБП [новый]"
+
+#: upses.php:469
+msgid "Search"
+msgstr "Найти"
+
+#: upses.php:479
+msgid "Default"
+msgstr "Стандартно"
+
+#: upses.php:491
+msgid "Go"
+msgstr "Выполнить"
+
+#: upses.php:491
+msgid "Set/Refresh Filters"
+msgstr "Установить/Обновить фильтры"
+
+#: upses.php:492
+msgid "Clear"
+msgstr "Очистить"
+
+#: upses.php:492
+msgid "Clear Filters"
+msgstr "Очистить фильтры"
+
+#: upses.php:571
+msgid "The Name of this UPS."
+msgstr "Имя этого ИБП."
+
+#: upses.php:574
+msgid "ID"
+msgstr "ИД"
+
+#: upses.php:577
+msgid "The unique id associated with this UPS."
+msgstr "Уникальный идентификатор, связанный с этим ИБП."
+
+#: upses.php:580
+msgid "Collect Status"
+msgstr "Получить статус"
+
+#: upses.php:583
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Статус демона apcupsd на целевом хосте."
+
+#: upses.php:586
+msgid "UPS Status"
+msgstr "Статус ИБП"
+
+#: upses.php:589
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Статус отслеживаемого ИБП на целевом хосте."
+
+#: upses.php:592
+msgid "UPS Model"
+msgstr "Модель ИБП"
+
+#: upses.php:595
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Модель отслеживаемого ИБП на целевом хосте."
+
+#: upses.php:598
+msgid "Line Voltage"
+msgstr "Линейное напряжение"
+
+#: upses.php:601
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Линейное напряжение контролируемого ИБП на целевом хосте."
+
+#: upses.php:604
+msgid "Load Percent"
+msgstr "Процент нагрузки"
+
+#: upses.php:607
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Процент нагрузки отслеживаемого ИБП на целевом хосте."
+
+#: upses.php:610
+msgid "Time Left"
+msgstr "Оставшееся время"
+
+#: upses.php:613
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Минуты доступного заряда ИБП отслеживаемого ИБП на целевом хосте."
+
+#: upses.php:616
+msgid "Hostname:Port"
+msgstr "Имя хоста:Порт"
+
+#: upses.php:619
+msgid "The Hostname:Port that is running the apcupsd daemon."
+msgstr "Имя хоста: порт, на котором работает демон apcupsd."
+
+#: upses.php:625
+msgid "If this UPS is being monitored or not."
+msgstr "Мониторинг данного ИБП или нет."
+
+#: upses.php:628
+msgid "Last Updated"
+msgstr "Последнее обновление"
+
+#: upses.php:631
+msgid "The last time this UPS was samples or found up."
+msgstr "В последний раз, когда этот ИБП был обнаружен или взят в пробу."
+
+#: upses.php:651
+msgid "No"
+msgstr "Нет"
+
+#: upses.php:651
+msgid "Yes"
+msgstr "Да"
+
+#: upses.php:659
+msgid "No UPSes Found"
+msgstr "ИБП не найдены"
+
+#: upses.php:676
+msgid "Not Avail"
+msgstr "Недоступно"
