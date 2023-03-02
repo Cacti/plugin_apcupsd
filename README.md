@@ -53,7 +53,7 @@ Got any ideas or complaints, please log an issue on GitHub.
 
 --- develop ---
 
-* issue#4: Initial table creation failed due to bogus defaults
+* issue#5: Initial table creation failed due to bogus defaults
 
 --- 1.0 ---
 
