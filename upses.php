@@ -98,7 +98,7 @@ $fields_ups_edit = array(
 	'enabled' => array(
 		'method' => 'checkbox',
 		'friendly_name' => __('Enabled', 'apcupsd'),
-		'description' => __('Check to immediatly start polling for data.', 'apcupsd'),
+		'description' => __('Check to immediately start polling for data.', 'apcupsd'),
 		'value' => '|arg1:enabled|',
 		'default' => 'on'
 	),

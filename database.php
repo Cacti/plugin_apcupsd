@@ -130,7 +130,7 @@ $ups_database = array(
 	'ITEMP' => array(
 		'db_column'   => 'ups_internal_temp',
 		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.2.2.2.0',
-		'description' => __esc('UPS internal temperature in degrees Celcius', 'apcupsd')
+		'description' => __esc('UPS internal temperature in degrees Celsius', 'apcupsd')
 	),
 	'LASTXFER' => array(
 		'db_column'   => 'ups_lastxfer',
