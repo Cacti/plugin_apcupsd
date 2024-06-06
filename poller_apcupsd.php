@@ -201,9 +201,7 @@ function add_ups_device($ups, $host_template_id, $force_up = false) {
 			WHERE id = ?',
 			array($host_id, $ups['id']));
 
-		if ($force_up) {
-			automation_update_device($host_id);
-		}
+		automation_update_device($host_id);
 	}
 }
 
