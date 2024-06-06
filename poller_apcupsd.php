@@ -222,10 +222,8 @@ function collect_snmp_ups_data($ups) {
 
 	if ($ups['snmp_skipped'] != '') {
 		$skipped = explode(',', $ups['snmp_skipped']);
-		$update_skipped = false;
 	} else {
 		$skipped = array();
-		$update_skipped = true;
 	}
 
 	$return_val = false;
@@ -235,7 +233,18 @@ function collect_snmp_ups_data($ups) {
 		$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
 		$ups['snmp_engine_id']);
 
+	if ($ups['status'] != 3) {
+		$ups_down = true;
+	} else {
+		$ups_down = false;
+	}
+
 	if ($value > 0) {
+		/* UPS just came back up, retest possible snmp columns */
+		if ($ups_down) {
+			$skipped = array();
+		}
+
 		$return_val = true;
 
 		db_execute_prepared('UPDATE apcupsd_ups SET status = 3 WHERE id = ?', array($ups['id']));
@@ -250,14 +259,26 @@ function collect_snmp_ups_data($ups) {
 						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
 						$ups['snmp_engine_id']);
 
-					if ($value != 'U') {
-						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: $value");
+					debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: $value");
 
+					if ($value != 'U') {
 						if (isset($data['snmp_enum'])) {
-							$prevalue = $value;
-							debug("------------------ UPS ENUM $key");
-							$value = $data['snmp_enum'][$value];
-							debug("------------ $prevalue ---- $value");
+							if (is_numeric($value)) {
+								$prevalue = $value;
+
+								debug("------------------ UPS ENUM $key");
+
+								if (isset($data['snmp_enum'][$value])) {
+									$value = $data['snmp_enum'][$value];
+								} else {
+									$value = 'Unknown';
+								}
+
+								debug("------------ $prevalue ---- $value");
+							} else {
+								cacti_log("WARNING: SNMP Value from UPS Returns invalid ENUM values of $value, Setting Skipped", false, 'APCUPSD');
+								$skipped[] = $key;
+							}
 						}
 
 						switch($key) {
@@ -267,9 +288,14 @@ function collect_snmp_ups_data($ups) {
 								break;
 							case 'TIMELEFT':
 							case 'DLOWBATT':
-								$value /= 100;
-								$value /= 60;
-								$save[$data['db_column']] = $value;
+								if (is_numeric($value)) {
+									$value /= 100;
+									$value /= 60;
+									$save[$data['db_column']] = $value;
+								} else {
+									$save[$data['db_column']] = 0;
+								}
+
 								break;
 							case 'NOMPOWER':
 							case 'NOMOUTV':
@@ -281,21 +307,21 @@ function collect_snmp_ups_data($ups) {
 								break;
 						}
 					} else {
-						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: No Data");
+						debug("SNMP Check for {$data['snmp_ci']}, Key $key, DB Column: {$data['db_column']}, Rendered: No Data, Set Skipping");
 
-						if ($update_skipped) {
-							$skipped[] = $key;
-						}
+						$skipped[] = $key;
 					}
 				}
 			}
 		}
 
-		if ($update_skipped && cacti_sizeof($skipped)) {
+		if (cacti_sizeof($skipped)) {
 			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = ? WHERE id = ?', array(implode(',', $skipped), $ups['id']));
+		} else {
+			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE id = ?', array($ups['id']));
 		}
 	} else {
-		db_execute_prepared('UPDATE apcupsd_ups SET status = 1 WHERE id = ?', array($ups['id']));
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 1, snmp_skipped = "" WHERE id = ?', array($ups['id']));
 	}
 
 	$save['ups_end_rec'] = date('Y-m-d H:i:s');
