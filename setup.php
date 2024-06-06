@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2024 The Cacti Group                                 |
+ | Copyright (C) 2007-2023 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -71,16 +71,21 @@ function apcupsd_check_upgrade() {
 			api_plugin_enable_hooks('apcupsd');
 		}
 
-		db_execute("UPDATE plugin_config
-			SET version='$current'
-			WHERE directory='apcupsd'");
+		db_execute_prepared("UPDATE plugin_config SET
+			version = ?, name = ?, author = ?, webpage = ?
+			WHERE directory = ?",
+			array(
+				$info['version'],
+				$info['longname'],
+				$info['author'],
+				$info['homepage'],
+				$info['name']
+			)
+		);
 
-		db_execute("UPDATE plugin_config SET
-			version='" . $info['version']  . "',
-			name='"    . $info['longname'] . "',
-			author='"  . $info['author']   . "',
-			webpage='" . $info['homepage'] . "'
-			WHERE directory='" . $info['name'] . "' ");
+		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
+			db_execute('ALTER TABLE CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
+		}
 	}
 }
 
@@ -234,7 +239,7 @@ function apcupsd_setup_table() {
 		`ups_nominal_power` double default null,
 		`ups_nominal_output_voltage` double default null,
 
-		`ups_abmtemp` double default null,
+		`ups_ambtemp` double default null,
 		`ups_humidity` double default null,
 		`ups_internal_temp` double default null,
 

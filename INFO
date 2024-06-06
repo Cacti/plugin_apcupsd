@@ -1,6 +1,6 @@
 [info]
 name = apcupsd
-version = 1.0
+version = 1.1
 longname = UPS Monitor Plugin for Cacti
 author = The Cacti Group
 email = 

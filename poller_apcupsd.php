@@ -307,7 +307,24 @@ function collect_snmp_ups_data($ups) {
 function collect_ups_data($ups) {
 	global $ups_database;
 
-	$command = 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
+	/* for windows, apcupsd.exe must be in the path */
+	$paths = array(
+		'/usr/sbin/',
+		'/usr/bin/',
+		'/usr/local/bin/'
+	);
+
+	$found_path = '';
+
+	foreach($paths as $path) {
+		if (file_exists($path . 'apcaccess')) {
+			$found_path = $path;
+
+			break;
+		}
+	}
+
+	$command = $found_path . 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
 
 	$output = array();
 	$return = 0;
