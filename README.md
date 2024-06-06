@@ -56,6 +56,7 @@ Got any ideas or complaints, please log an issue on GitHub.
 * issue#5: Initial table creation failed due to bogus defaults
 * issue#6: Typo field name ups_abmtemp should be ups_ambtemp
 * issue: Unable to locate apcaccess command path
+* issue: Fix some minor GUI display issues
 
 --- 1.0 ---
 

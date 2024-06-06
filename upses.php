@@ -121,6 +121,7 @@ $fields_ups_edit = array(
 		'description' => __('Enter the TCP Port for this UPS.', 'apcupsd'),
 		'value' => '|arg1:port|',
 		'size' => '10',
+		'placeholder' => '3551',
 		'max_length' => '10'
 	),
 	'host_snmp_head' => array(
@@ -454,12 +455,14 @@ function ups_edit() {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
+			$('#row_host_snmp_head').hide();
 			$('[id^="row_snmp"]').hide();
 		} else if ($('#type_id').val() == 2) {
 			$('#row_host_id').show();
 			$('#row_spacer1').hide();
 			$('#row_hostname').hide();
 			$('#row_port').hide();
+			$('#row_host_snmp_head').show();
 			$('[id^="row_snmp"]').show();
 			setSNMP();
 		} else {
