@@ -248,6 +248,8 @@ function form_save() {
 
 		if ($save['host_id'] > 0) {
 			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', array($save['host_id']));
+		} else {
+			$host = array();
 		}
 
 		if (!is_error_message()) {
