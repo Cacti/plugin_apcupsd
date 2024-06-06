@@ -22,7 +22,11 @@
  +-------------------------------------------------------------------------+
 */
 
-include('../../include/auth.php');
+require('../../include/auth.php');
+require_once($config['base_path'] . '/lib/api_graph.php');
+require_once($config['base_path'] . '/lib/api_data_source.php');
+require_once($config['base_path'] . '/lib/poller.php');
+require_once($config['base_path'] . '/lib/utility.php');
 
 $ups_actions = array(
 	1 => __('Delete', 'apcupsd'),
@@ -242,6 +246,10 @@ function form_save() {
 		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '', true, 3);
 		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
+		if ($save['host_id'] > 0) {
+			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', array($save['host_id']));
+		}
+
 		if (!is_error_message()) {
 			$ups_id = sql_save($save, 'apcupsd_ups');
 
@@ -249,6 +257,79 @@ function form_save() {
 				raise_message(1);
 			} else {
 				raise_message(2);
+			}
+
+			if (cacti_sizeof($host)) {
+				$changed = false;
+				$name_changed = false;
+
+				if ($host['description'] != $save['name']) {
+					$ns['description'] = $save['name'];
+					$changed = true;
+					$name_changed = true;
+				}
+
+				if ($host['site_id'] != $save['site_id']) {
+					$ns['site_id'] = $save['site_id'];
+					$changed = true;
+				}
+
+				// SNMP columns
+				if ($save['type_id'] == 2) {
+					$columns = array(
+						'hostname',
+						'snmp_version',
+						'snmp_community',
+						'snmp_username',
+						'snmp_password',
+						'snmp_auth_protocol',
+						'snmp_priv_protocol',
+						'snmp_priv_passphrase',
+						'snmp_context',
+						'snmp_engine_id',
+						'snmp_port',
+						'snmp_timeout',
+					);
+
+					foreach($columns as $c) {
+						if ($save[$c] != $host[$c]) {
+							$ns[$c] = $save[$c];
+							$changed = true;
+						}
+					}
+				}
+
+				if ($changed) {
+					$ns['id'] = $save['host_id'];
+					$host_id = sql_save($ns, 'host');
+					push_out_host($host_id);
+
+					if ($name_changed) {
+						$graphs = array_rekey(
+							db_fetch_assoc_prepared('SELECT id FROM graph_local WHERE host_id = ?', array($host_id)),
+							'id', 'id'
+						);
+
+						$data_sources = array_rekey(
+							db_fetch_assoc_prepared('SELECT id FROM data_local WHERE host_id = ?', array($host_id)),
+							'id', 'id'
+						);
+
+						if (cacti_sizeof($graphs)) {
+							foreach($graphs as $id) {
+								api_reapply_suggested_graph_title($id);
+								update_graph_title_cache($id);
+							}
+						}
+
+						if (cacti_sizeof($data_sources)) {
+							foreach($data_sources as $id) {
+								api_reapply_suggested_data_source_data($id);
+								update_data_source_title_cache($id);
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -415,9 +496,9 @@ function ups_edit() {
 		$header_label = __('UPS [new]');
 	}
 
-//	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
-//		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
-//	}
+	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
+		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
+	}
 
 	form_start('upses.php', 'ups');
 

@@ -84,7 +84,11 @@ function apcupsd_check_upgrade() {
 		);
 
 		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
-			db_execute('ALTER TABLE CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
+			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
+		}
+
+		if (!db_column_exists('apcupsd_ups_stats', 'ups_master')) {
+			db_execute('ALTER TABLE apcupsd_ups_stats ADD COLUMN ups_master varchar(128) NOT NULL default "" AFTER ups_name');
 		}
 	}
 }
@@ -176,6 +180,7 @@ function apcupsd_setup_table() {
 		`ups_hostname` varchar(64) not null default '',
 		`ups_version` varchar(64) not null default '',
 		`ups_name` varchar(20) not null default '',
+		`ups_master` varchar(128) not null default '',
 		`ups_cable` varchar(20) not null default '',
 		`ups_driver` varchar(20) not null default '',
 		`ups_mode` varchar(20) not null default '',

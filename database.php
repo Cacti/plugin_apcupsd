@@ -358,6 +358,10 @@ $ups_database = array(
 		'snmp_ci'     => '.1.3.6.1.4.1.318.1.1.1.1.1.2.0',
 		'description' => __esc('UPS name from configuration file (dumb) or EEPROM (smart)', 'apcupsd')
 	),
+	'MASTER' => array(
+		'db_column'   => 'ups_master',
+		'description' => __esc('UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD', 'apcupsd')
+	),
 	'VERSION' => array(
 		'db_column'   => 'ups_version',
 		'snmp_ci'     => 'NA',

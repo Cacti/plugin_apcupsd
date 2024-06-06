@@ -96,10 +96,13 @@ if (empty($host_template_id)) {
 }
 
 /* apcupsd upses first UPS */
-$upses = db_fetch_assoc_prepared('SELECT *
-	FROM apcupsd_ups
+$upses = db_fetch_assoc_prepared('SELECT ups.*
+	FROM apcupsd_ups AS ups
+	INNER JOIN apcupsd_ups_stats AS stats
+	ON ups.id = stats.ups_id
 	WHERE type_id = 1
 	AND enabled = "on"
+	AND stats.ups_status in ("ONLINE", "ONLINE SLAVE")
 	AND poller_id = ?',
 	array($config['poller_id']));
 
@@ -329,6 +332,8 @@ function collect_ups_data($ups) {
 	$output = array();
 	$return = 0;
 
+	$ups_status = 1;
+
 	$results = exec($command, $output, $return);
 
 	if ($return > 0) {
@@ -362,12 +367,18 @@ function collect_ups_data($ups) {
 							WHERE id = ?',
 							array($ups['host_id']));
 
-						if ($value != 'ONLINE') {
+						if ($value == 'ONLINE' || $value == 'ONLINE SLAVE') {
+							$ups_status = 3;
+
+							if ($status != 3) {
+								db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', array($ups['host_id']));
+							}
+						} else {
+							$ups_status = 1;
+
 							if ($status != 4) {
 								db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', array($ups['host_id']));
 							}
-						} elseif ($status != 3) {
-							db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', array($ups['host_id']));
 						}
 					}
 
@@ -383,9 +394,9 @@ function collect_ups_data($ups) {
 		}
 
 		db_execute_prepared('UPDATE apcupsd_ups
-			SET status = 3, last_updated=NOW()
+			SET status = ?, last_updated=NOW()
 			WHERE id = ?',
-			array($ups['id']));
+			array($ups_status, $ups['id']));
 	}
 }
 
