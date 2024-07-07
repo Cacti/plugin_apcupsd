@@ -102,7 +102,6 @@ $upses = db_fetch_assoc_prepared('SELECT ups.*
 	ON ups.id = stats.ups_id
 	WHERE type_id = 1
 	AND enabled = "on"
-	AND stats.ups_status in ("ONLINE", "ONLINE SLAVE", "TRIM ONLINE")
 	AND poller_id = ?',
 	array($config['poller_id']));
 
