@@ -51,6 +51,10 @@ Got any ideas or complaints, please log an issue on GitHub.
 
 ## Changelog
 
+--- develop ---
+
+* issue: Fix issue with replication full sync errors
+
 --- 1.1 ---
 
 * feature#3: When changing UPS snmp and other settings on the UPS edit page, transfer those changes to the Cacti device
