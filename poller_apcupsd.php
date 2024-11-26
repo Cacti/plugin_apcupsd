@@ -142,7 +142,7 @@ $upses = db_fetch_assoc('SELECT *
 $snmpupses = cacti_sizeof($upses);
 
 if ($snmpupses > 0) {
-	printf('NOTE: Found %s snmp enabled UPS\'s' . PHP_EOL, $apcupsd);
+	printf('NOTE: Found %s snmp enabled UPS\'s' . PHP_EOL, $snmpupses);
 
 	foreach($upses as $ups) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
