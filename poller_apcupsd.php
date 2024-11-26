@@ -373,6 +373,8 @@ function collect_ups_data($ups) {
 			$sql_params[] = $ups['id'];
 
 			foreach($output as $o) {
+				debug('Output:' . $o);
+
 				$o = explode(': ', $o);
 
 				$keyword = trim($o[0]);
