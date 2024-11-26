@@ -87,6 +87,8 @@ if (cacti_sizeof($parms)) {
 	}
 }
 
+print 'NOTE: APCUPSD Poller Process Starting.' . PHP_EOL;
+
 $host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array($hash));
 $add_devices = true;
 
@@ -98,7 +100,7 @@ if (empty($host_template_id)) {
 /* apcupsd upses first UPS */
 $upses = db_fetch_assoc_prepared('SELECT ups.*
 	FROM apcupsd_ups AS ups
-	INNER JOIN apcupsd_ups_stats AS stats
+	LEFT JOIN apcupsd_ups_stats AS stats
 	ON ups.id = stats.ups_id
 	WHERE type_id = 1
 	AND enabled = "on"
@@ -108,6 +110,8 @@ $upses = db_fetch_assoc_prepared('SELECT ups.*
 $apcupsd = cacti_sizeof($upses);
 
 if ($apcupsd > 0) {
+	printf('NOTE: Found %s apcaccess enabled UPS\'s' . PHP_EOL, $apcupsd);
+
 	foreach($upses as $ups) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
@@ -125,8 +129,9 @@ if ($apcupsd > 0) {
 			add_ups_device($ups, $host_template_id);
 		}
 	}
+} else {
+	printf('NOTE: Did not find any apcaccess enabled UPS\'s' . PHP_EOL);
 }
-
 
 /* apcupsd upses first UPS */
 $upses = db_fetch_assoc('SELECT *
@@ -137,6 +142,8 @@ $upses = db_fetch_assoc('SELECT *
 $snmpupses = cacti_sizeof($upses);
 
 if ($snmpupses > 0) {
+	printf('NOTE: Found %s snmp enabled UPS\'s' . PHP_EOL, $apcupsd);
+
 	foreach($upses as $ups) {
 		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
 
@@ -154,6 +161,8 @@ if ($snmpupses > 0) {
 			add_ups_device($ups, $host_template_id, true);
 		}
 	}
+} else {
+	printf('NOTE: Did not find any snmp enabled UPS\'s' . PHP_EOL);
 }
 
 $end = microtime(true);
