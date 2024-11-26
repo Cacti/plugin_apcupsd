@@ -621,7 +621,7 @@ function upses() {
 			'filter' => FILTER_CALLBACK,
 			'options' => array('options' => 'sanitize_search_string'),
 			'pageset' => true,
-			'default' => ''
+			'default' => '-1'
 		),
 		'page' => array(
 			'filter' => FILTER_VALIDATE_INT,
