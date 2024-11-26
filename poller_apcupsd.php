@@ -100,8 +100,6 @@ if (empty($host_template_id)) {
 /* apcupsd upses first UPS */
 $upses = db_fetch_assoc_prepared('SELECT ups.*
 	FROM apcupsd_ups AS ups
-	LEFT JOIN apcupsd_ups_stats AS stats
-	ON ups.id = stats.ups_id
 	WHERE type_id = 1
 	AND enabled = "on"
 	AND poller_id = ?',
@@ -134,10 +132,12 @@ if ($apcupsd > 0) {
 }
 
 /* apcupsd upses first UPS */
-$upses = db_fetch_assoc('SELECT *
+$upses = db_fetch_assoc_prepared('SELECT *
 	FROM apcupsd_ups
 	WHERE type_id = 2
-	AND enabled = "on"');
+	AND enabled = "on"
+	AND poller_id = ?',
+	array($config['poller_id']));
 
 $snmpupses = cacti_sizeof($upses);
 
