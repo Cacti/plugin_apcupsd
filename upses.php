@@ -88,6 +88,16 @@ $fields_ups_edit = array(
 		'sql' => 'SELECT id, name FROM sites ORDER BY name',
 		'none_value' => __('None', 'apcupsd')
 	),
+	'location' => array(
+		'method'        => 'drop_callback',
+		'friendly_name' => __('Location'),
+		'description'   => __('The physical location of the Device.  This free form text can be a room, rack location, etc.'),
+		'none_value'    => __('None'),
+		'sql'           => 'SELECT DISTINCT location AS id, location AS name FROM host ORDER BY location',
+		'action'        => 'ajax_locations',
+		'id'            => '|arg1:location|',
+		'value'         => '|arg1:location|',
+	),
 	'host_id' => array(
 		'method' => 'drop_callback',
 		'friendly_name' => __('Cacti Device', 'apcupsd'),
@@ -181,6 +191,10 @@ switch (get_request_var('action')) {
         get_allowed_ajax_hosts(false, true, $sql_where);
 
         break;
+	case 'ajax_locations':
+		get_site_locations();
+
+		break;
 	case 'ajax_tz':
 		print json_encode(db_fetch_assoc_prepared('SELECT Name AS label, Name AS `value`
 			FROM mysql.time_zone_name
@@ -262,17 +276,27 @@ function form_save() {
 			}
 
 			if (cacti_sizeof($host)) {
-				$changed = false;
-				$name_changed = false;
+				$changed          = false;
+				$name_changed     = false;
+				$location_changed = false;
 
 				if ($host['description'] != $save['name']) {
 					$ns['description'] = $save['name'];
-					$changed = true;
+
+					$changed      = true;
 					$name_changed = true;
+				}
+
+				if ($host['location'] != get_request_var('location')) {
+					$ns['location'] = get_request_var('location');
+
+					$location_changed = true;
+					$changed          = true;
 				}
 
 				if ($host['site_id'] != $save['site_id']) {
 					$ns['site_id'] = $save['site_id'];
+
 					$changed = true;
 				}
 
@@ -499,8 +523,15 @@ function ups_edit() {
 	}
 
 	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
-		$fields_ups_edit['host_id']['value'] = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
+		$fields_ups_edit['host_id']['value']  = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
+		$fields_ups_edit['location']['value'] = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
+		$fields_ups_edit['location']['id']    = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
+	} else {
+		unset($fields_ups_edit['location']);
 	}
+
+	/* setup the callback for the form */
+	$_SESSION['cur_device_id'] = get_request_var('id');
 
 	form_start('upses.php', 'ups');
 
@@ -580,26 +611,37 @@ function upses() {
 			'filter' => FILTER_VALIDATE_INT,
 			'pageset' => true,
 			'default' => '-1'
-			),
+		),
+		'site_id' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1'
+		),
+		'location' => array(
+			'filter' => FILTER_CALLBACK,
+			'options' => array('options' => 'sanitize_search_string'),
+			'pageset' => true,
+			'default' => ''
+		),
 		'page' => array(
 			'filter' => FILTER_VALIDATE_INT,
 			'default' => '1'
-			),
+		),
 		'filter' => array(
 			'filter' => FILTER_DEFAULT,
 			'pageset' => true,
 			'default' => ''
-			),
+		),
 		'sort_column' => array(
 			'filter' => FILTER_CALLBACK,
 			'default' => 'name',
 			'options' => array('options' => 'sanitize_search_string')
-			),
+		),
 		'sort_direction' => array(
 			'filter' => FILTER_CALLBACK,
 			'default' => 'ASC',
 			'options' => array('options' => 'sanitize_search_string')
-			)
+		)
 	);
 
 	validate_store_request_vars($filters, 'sess_ups');
@@ -626,6 +668,56 @@ function upses() {
 						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
 					</td>
 					<td>
+						<?php print __('Site');?>
+					</td>
+					<td>
+						<select id='site_id' onChange='applyFilter()'>
+							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>':'>') . __('All');?></option>
+							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None');?></option>
+							<?php
+							$sites = array_rekey(
+								db_fetch_assoc('SELECT s.id, s.name
+									FROM sites AS s
+									INNER JOIN apcupsd_ups AS u
+									ON s.id = u.site_id
+									ORDER BY name'),
+								'id', 'name'
+							);
+
+							if (cacti_sizeof($sites)) {
+								foreach ($sites as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
+						</select>
+					</td>
+					<td>
+						<?php print __('Location');?>
+					</td>
+					<td>
+						<select id='location' onChange='applyFilter()'>
+							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>':'>') . __('All');?></option>
+							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None');?></option>
+							<?php
+							$locations = array_rekey(
+								db_fetch_assoc('SELECT DISTINCT h.location AS id, h.location AS name
+									FROM host AS h
+									INNER JOIN apcupsd_ups AS u
+									ON h.id = u.host_id
+									ORDER BY h.location'),
+								'id', 'name'
+							);
+
+							if (cacti_sizeof($locations)) {
+								foreach ($locations as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
+						</select>
+					</td>
+					<td>
 						<?php print __('UPSes');?>
 					</td>
 					<td>
@@ -634,7 +726,7 @@ function upses() {
 							<?php
 							if (cacti_sizeof($item_rows)) {
 								foreach ($item_rows as $key => $value) {
-									print "<option value='" . $key . "'"; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . html_escape($value) . "</option>\n";
+									print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
 								}
 							}
 							?>
@@ -642,7 +734,7 @@ function upses() {
 					</td>
 					<td>
 						<span>
-							<input type='button' class='ui-button ui-corner-all ui-widget' id='refresh' value='<?php print __esc('Go');?>' title='<?php print __esc('Set/Refresh Filters');?>'>
+							<input type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' value='<?php print __esc('Go');?>' title='<?php print __esc('Set/Refresh Filters');?>'>
 							<input type='button' class='ui-button ui-corner-all ui-widget' id='clear' value='<?php print __esc('Clear');?>' title='<?php print __esc('Clear Filters');?>'>
 						</span>
 					</td>
@@ -654,6 +746,8 @@ function upses() {
 			function applyFilter() {
 				strURL  = 'upses.php?header=false';
 				strURL += '&filter='+$('#filter').val();
+				strURL += '&site_id='+$('#site_id').val();
+				strURL += '&location='+$('#location').val();
 				strURL += '&rows='+$('#rows').val();
 				loadPageNoHeader(strURL);
 			}
@@ -685,29 +779,51 @@ function upses() {
 
 	html_end_box();
 
+	$sql_where  = '';
+	$sql_params = array();
+
 	/* form the 'where' clause for our main sql query */
 	if (get_request_var('filter') != '') {
-		$sql_where = 'WHERE name LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
-	} else {
-		$sql_where = '';
+		$sql_where = 'WHERE ups.name LIKE ?';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
 	}
 
 	if (get_request_var('site_id') > 0) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' site_id = ' . get_request_var('site_id');
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' ups.site_id = ?';
+		$sql_params[] = get_request_var('site_id');
+	} elseif (get_request_var('site_id') == -2) {
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' ups.site_id = 0';
 	}
 
-	$total_rows = db_fetch_cell("SELECT COUNT(*) FROM apcupsd_ups $sql_where");
+	if (get_request_var('location') == -2) {
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' h.location = ""';
+	} elseif (get_request_var('location') != -1) {
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' h.location = ?';
+		$sql_params[] = get_request_var('location');
+	}
+
+	$total_rows = db_fetch_cell_prepared("SELECT COUNT(*)
+		FROM apcupsd_ups AS ups
+		LEFT JOIN apcupsd_ups_stats AS stats
+		ON ups.id = stats.ups_id
+		LEFT JOIN host AS h
+		ON h.id = ups.host_id
+		$sql_where",
+		$sql_params);
 
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 
-	$ups_list = db_fetch_assoc("SELECT *
+	$ups_list = db_fetch_assoc_prepared("SELECT *
 		FROM apcupsd_ups AS ups
 		LEFT JOIN apcupsd_ups_stats AS stats
 		ON ups.id = stats.ups_id
+		LEFT JOIN host AS h
+		ON h.id = ups.host_id
 		$sql_where
 		$sql_order
-		$sql_limit");
+		$sql_limit",
+		$sql_params);
 
 	$nav = html_nav_bar('upses.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('UPSes', 'apcupsd'), 'page', 'main');
 
@@ -823,7 +939,7 @@ function upses() {
 			form_end_row();
 		}
 	} else {
-		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text)+1) . "'><em>" . __('No UPSes Found') . "</em></td></tr>\n";
+		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text)+1) . "'><em>" . __('No UPSes Found') . '</em></td></tr>';
 	}
 
 	html_end_box(false);
@@ -844,4 +960,43 @@ function checkNullandReturn($value) {
 	} else {
 		return $value;
 	}
+}
+
+function get_site_locations() {
+	$return  = array();
+	$term    = get_nfilter_request_var('term');
+	$host_id = $_SESSION['cur_device_id'];
+
+	$args  = ["%$term%"];
+	$where = '';
+
+	if (read_config_option('site_location_filter') && $_SESSION['cur_device_id']) {
+		$site_id = db_fetch_cell_prepared('SELECT site_id
+			FROM host
+			WHERE id = ?',
+			array($host_id));
+		$args []= $site_id;
+		$where = 'AND site_id = ?';
+	}
+
+	$locations = db_fetch_assoc_prepared("SELECT DISTINCT location
+		FROM host
+		WHERE location LIKE ?
+		AND location != ''
+		AND location IS NOT NULL
+		$where
+		ORDER BY location",
+		$args);
+
+	if (cacti_sizeof($locations)) {
+		foreach ($locations as $l) {
+			$return[] = array('label' => $l['location'], 'value' => $l['location'], 'id' => $l['location']);
+		}
+	}
+
+	if (!cacti_sizeof($return)) {
+		$return[] = array('label' => __('None'), 'value' => '', 'id' => __('None'));
+	}
+
+	print json_encode($return);
 }
