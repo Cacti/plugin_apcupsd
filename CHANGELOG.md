@@ -1,8 +1,9 @@
 # ChangeLog
 
---- develop ---
+--- 1.2 ---
 
 * issue: Fix issue with replication full sync errors
+* issue: A new UPS was not being polled due to a SQL error
 * feature: Provide more output when running poller_apcupsd.php --debug
 
 --- 1.1 ---
