@@ -168,7 +168,7 @@ if ($snmpupses > 0) {
 $end = microtime(true);
 
 $cacti_stats = sprintf(
-	'Time:%01.2f UPSDUPSes:%s SNMPUPSes:%s',
+	'Time:%01.2f APCAUPSes:%s SNMPUPSes:%s',
 	$end - $start,
 	$apcupsd, $snmpupses
 );
