@@ -441,7 +441,9 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$ups_list .= '<li>' . html_escape(db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', array($matches[1]))) . '</li>';
+			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', array($matches[1]));
+
+			$ups_list .= '<li>' . html_escape($name) . '</li>';
 			$ups_array[$i] = $matches[1];
 
 			$i++;
@@ -461,7 +463,7 @@ function form_actions() {
 					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array)) . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 				</td>
-			</tr>\n";
+			</tr>";
 
 			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') == '2') { /* duplicate */
@@ -471,7 +473,7 @@ function form_actions() {
 					<div class='itemlist'><ul>$ups_list</ul></div>
 					<p><strong>" . __('UPS Name:'). "</strong><br>"; form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text'); print "</p>
 				</td>
-			</tr>\n";
+			</tr>";
 
 			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') == '3') { /* reset */
@@ -480,7 +482,7 @@ function form_actions() {
 					<p>" . __n('Click \'Continue\' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes.', 'Click \'Continue\' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes.', cacti_sizeof($ups_array)) . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 				</td>
-			</tr>\n";
+			</tr>";
 
 
 			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array)) . "'>";
@@ -498,7 +500,7 @@ function form_actions() {
 			<input type='hidden' name='drp_action' value='" . html_escape(get_nfilter_request_var('drp_action')) . "'>
 			$save_html
 		</td>
-	</tr>\n";
+	</tr>";
 
 	html_end_box();
 
@@ -514,7 +516,7 @@ function ups_edit() {
 	get_filter_request_var('id');
 	/* ==================================================== */
 
-	if (!isempty_request_var('id')) {
+	if (get_request_var('id') > 0) {
 		$ups = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', array(get_request_var('id')));
 		$header_label = __esc('UPS [edit: %s]', $ups['name']);
 	} else {
@@ -814,7 +816,7 @@ function upses() {
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 
-	$ups_list = db_fetch_assoc_prepared("SELECT *
+	$ups_list = db_fetch_assoc_prepared("SELECT ups.*, stats.*
 		FROM apcupsd_ups AS ups
 		LEFT JOIN apcupsd_ups_stats AS stats
 		ON ups.id = stats.ups_id
@@ -824,14 +826,6 @@ function upses() {
 		$sql_order
 		$sql_limit",
 		$sql_params);
-
-	$nav = html_nav_bar('upses.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('UPSes', 'apcupsd'), 'page', 'main');
-
-	form_start('upses.php', 'chk');
-
-	print $nav;
-
-	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
 		'name' => array(
@@ -908,6 +902,14 @@ function upses() {
 		)
 	);
 
+	$nav = html_nav_bar('upses.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('UPSes', 'apcupsd'), 'page', 'main');
+
+	form_start('upses.php', 'chk');
+
+	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
+
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
 
 	$i = 0;
@@ -939,7 +941,7 @@ function upses() {
 			form_end_row();
 		}
 	} else {
-		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text)+1) . "'><em>" . __('No UPSes Found') . '</em></td></tr>';
+		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No UPSes Found') . '</em></td></tr>';
 	}
 
 	html_end_box(false);

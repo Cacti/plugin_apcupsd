@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* issue#8: Edit/delete UPS issue
 * feature#2: Provide Site and Location filters when viewing UPS's
 
 --- 1.2 ---
