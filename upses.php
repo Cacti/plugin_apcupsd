@@ -465,7 +465,7 @@ function form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') == '2') { /* duplicate */
 			print "<tr>
 				<td class='textArea' class='odd'>
@@ -475,7 +475,7 @@ function form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') == '3') { /* reset */
 			print "<tr>
 				<td class='textArea' class='odd'>
@@ -485,7 +485,7 @@ function form_actions() {
 			</tr>";
 
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array)) . "'>";
 		}
 	} else {
 		raise_message(40);
