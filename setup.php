@@ -318,24 +318,13 @@ function apcupsd_replicate_out($data) {
 
 	include_once($config['base_path'] . '/lib/poller.php');
 
-	$pollers  = db_fetch_assoc_prepared('SELECT id
-		FROM poller
-		WHERE id > 1
-		AND disabled = ""
-		AND status NOT IN (?, ?)',
-		array(POLLER_STATUS_DOWN, POLLER_STATUS_HEARTBEAT));
+	$upsdata = db_fetch_assoc('SELECT * FROM apcupsd_ups');
 
-	$ups       = db_fetch_assoc('SELECT * FROM apcupsd_ups');
-	$ups_stats = db_fetch_assoc('SELECT * FROM apcupsd_ups_stats');
+	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups', $data['remote_poller_id']);
 
-	if (cacti_sizeof($pollers)) {
-		foreach($pollers as $poller) {
-			$rcnn_id = poller_connect_to_remote($poller['id']);
+	$upsdata = db_fetch_assoc('SELECT * FROM apcupsd_ups_stats');
 
-			replicate_out_table($rcnn_id, $ups, 'apcupsd_ups', $poller['id']);
-			replicate_out_table($rcnn_id, $ups_stats, 'apcupsd_ups', $poller['id']);
-		}
-	}
+	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups_stats', $data['remote_poller_id']);
 
 	return $data;
 }
