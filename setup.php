@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2023 The Cacti Group                                 |
+ | Copyright (C) 2004-2025 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -89,6 +89,10 @@ function apcupsd_check_upgrade() {
 
 		if (!db_column_exists('apcupsd_ups_stats', 'ups_master')) {
 			db_execute('ALTER TABLE apcupsd_ups_stats ADD COLUMN ups_master varchar(128) NOT NULL default "" AFTER ups_name');
+		}
+
+		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
+			db_execute('ALTER TABLE apcuspd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
 		}
 	}
 }
@@ -194,7 +198,7 @@ function apcupsd_setup_table() {
 		`ups_model` varchar(40) not null default '',
 		`ups_status` varchar(20) not null default '',
 
-		`ups_dispsw` varchar(20) not null default '',
+		`ups_dipsw` varchar(20) not null default '',
 		`ups_extbatts` int(10) unsigned default null,
 		`ups_badbatts` int(10) unsigned default null,
 		`ups_reg1` varchar(20) not null default '',

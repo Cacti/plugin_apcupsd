@@ -1,8 +1,9 @@
 # ChangeLog
 
---- develop ---
+--- 1.3.1 ---
 
 * issue#8: Edit/delete UPS issue
+* issue#9: Error: Unknown column 'ups_dipsw' in 'INSERT INTO'
 * feature#2: Provide Site and Location filters when viewing UPS's
 
 --- 1.2 ---
@@ -27,4 +28,4 @@
 * Initial Release
 
 -----------------------------------------------
-Copyright (c) 2004-2024 - The Cacti Group, Inc.
+Copyright (c) 2004-2025 - The Cacti Group, Inc.
