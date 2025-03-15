@@ -111,7 +111,7 @@ if ($apcupsd > 0) {
 	printf('NOTE: Found %s apcaccess enabled UPS\'s' . PHP_EOL, $apcupsd);
 
 	foreach($upses as $ups) {
-		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
+		debug(sprintf('=================== Collecting UPS Information for %s ===================', $ups['name']));
 
 		collect_ups_data($ups);
 
@@ -145,7 +145,7 @@ if ($snmpupses > 0) {
 	printf('NOTE: Found %s snmp enabled UPS\'s' . PHP_EOL, $snmpupses);
 
 	foreach($upses as $ups) {
-		debug(sprintf('Collecting UPS Information for %s', $ups['name']));
+		debug(sprintf('=================== Collecting UPS Information for %s ===================', $ups['name']));
 
 		$ups_up = collect_snmp_ups_data($ups);
 
@@ -446,10 +446,10 @@ function display_version() {
 	global $config;
 
 	if (!function_exists('plugin_apcupsd_version')) {
-		include_once($config['base_path'] . '/plugins/hmib/setup.php');
+		include_once($config['base_path'] . '/plugins/apcupsd/setup.php');
 	}
 
-	$info = plugin_hmib_version();
+	$info = plugin_apcupsd_version();
 	print "UPS Poller Process, Version " . $info['version'] . ", " . COPYRIGHT_YEARS . "\n";
 }
 

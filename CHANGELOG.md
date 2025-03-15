@@ -2,6 +2,7 @@
 
 --- 1.3.1 ---
 
+* issue#10 Fix Display Version function
 * issue#8: Edit/delete UPS issue
 * issue#9: Error: Unknown column 'ups_dipsw' in 'INSERT INTO'
 * feature#2: Provide Site and Location filters when viewing UPS's
