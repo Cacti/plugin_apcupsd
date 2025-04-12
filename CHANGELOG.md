@@ -17,7 +17,7 @@
 
 * feature#3: When changing UPS snmp and other settings on the UPS edit page, transfer those changes to the Cacti device
 * feature: Support the 'ONLINE SLAVE' status as being a good status
-* feature: Add the uknown column MASTER or ups_master to the stats table
+* feature: Add the unknown column MASTER or ups_master to the stats table
 * issue#5: Initial table creation failed due to bogus defaults
 * issue#6: Typo field name ups_abmtemp should be ups_ambtemp
 * issue: Unable to locate apcaccess command path
