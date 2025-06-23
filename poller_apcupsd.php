@@ -291,8 +291,13 @@ function collect_snmp_ups_data($ups) {
 
 						switch($key) {
 							case 'LASTSTEST':
-								$parts = explode('/', $value);
-								$save[$data['db_column']] = $parts[2] . '-' . $parts[0] . '-' . $parts[1] . ' 00:00:00';
+								if ($value != '') {
+									$parts = explode('/', $value);
+									$save[$data['db_column']] = $parts[2] . '-' . $parts[0] . '-' . $parts[1] . ' 00:00:00';
+								} else {
+									$save[$data['db_column']] = '';
+								}
+
 								break;
 							case 'TIMELEFT':
 							case 'DLOWBATT':

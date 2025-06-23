@@ -5,6 +5,7 @@
 * issue#10 Fix Display Version function
 * issue#8: Edit/delete UPS issue
 * issue#9: Error: Unknown column 'ups_dipsw' in 'INSERT INTO'
+* issue: If there has been no LASTSTEST, errors appear in the Cacti Log
 * feature#2: Provide Site and Location filters when viewing UPS's
 
 --- 1.2 ---
