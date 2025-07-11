@@ -254,7 +254,7 @@ function collect_snmp_ups_data($ups) {
 
 		$return_val = true;
 
-		db_execute_prepared('UPDATE apcupsd_ups SET status = 3 WHERE id = ?', array($ups['id']));
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 3, last_updated=NOW() WHERE id = ?', array($ups['id']));
 
 		foreach($ups_database AS $key => $data) {
 			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
