@@ -217,11 +217,10 @@ function collect_snmp_ups_data($ups) {
 	global $ups_database, $snmp_error;
 
 	$start = time();
+	$save  = array();
 
-	$save = array();
-
-	$save['ups_id']   = $ups['id'];
-	$save['ups_date'] = date('Y-m-d H:i:s');
+	$save['ups_id']       = $ups['id'];
+	$save['ups_date']     = date('Y-m-d H:i:s');
 	$save['ups_hostname'] = $ups['hostname'];
 	$save['ups_version']  = '1.0 (Cacti Plugin)';
 	$save['ups_cable']    = 'Ethernet Link';
@@ -249,7 +248,7 @@ function collect_snmp_ups_data($ups) {
 
 	if ($value > 0) {
 		/* UPS just came back up, retest possible snmp columns */
-		if ($ups_down) {
+		if (!$ups_down) {
 			$skipped = array();
 		}
 
@@ -261,7 +260,7 @@ function collect_snmp_ups_data($ups) {
 			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
 				if ($data['snmp_ci'] == 'CURDATE' || $data['db_column'] == 'ups_date') {
 					$stats[$data['db_column']] = date('Y-m-d H:i:s');
-				} elseif (!in_array($key, $skipped, true)) {
+				} elseif (!cacti_sizeof($skipped) || !in_array($key, $skipped, true)) {
 					$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], $data['snmp_ci'], $ups['snmp_version'],
 						$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
 						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',

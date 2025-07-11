@@ -1,5 +1,9 @@
 # ChangeLog
 
+--- develop ---
+
+* issue: If an SNMP device goes down, once it returns to service the UPS status is missed
+
 --- 1.3.1 ---
 
 * issue#10 Fix Display Version function
