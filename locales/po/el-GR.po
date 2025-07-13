@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2023-02-18 22:42-0500\n"
+"POT-Creation-Date: 2025-07-13 14:12-0400\n"
 "PO-Revision-Date: 2023-02-18 22:45-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -19,7 +19,8 @@ msgstr ""
 "X-Generator: Poedit 3.2.2\n"
 
 #: database.php:7
-msgid "Delay period before UPS starts sounding alarm"
+#, fuzzy
+msgid "Delay period before APCUPSD starts sounding alarm"
 msgstr "Περίοδος καθυστέρησης πριν το UPS αρχίσει να ηχεί συναγερμός"
 
 #: database.php:12
@@ -46,223 +47,232 @@ msgstr "Ημερομηνία τελευταίας αντικατάστασης �
 msgid "Battery status."
 msgstr "Κατάσταση μπαταρίας."
 
-#: database.php:42
+#: database.php:48
 msgid "Current battery voltage"
 msgstr "Τρέχουσα τάση μπαταρίας"
 
-#: database.php:47
+#: database.php:53
 msgid "Current battery capacity charge percentage"
 msgstr "Ποσοστό φόρτισης τρέχουσας χωρητικότητας μπαταρίας"
 
-#: database.php:52
+#: database.php:58
 msgid "Cable type specified in the configuration file"
 msgstr "Τύπος καλωδίου που καθορίζεται στο αρχείο διαμόρφωσης"
 
-#: database.php:57
+#: database.php:63
 msgid "Cumulative seconds on battery since apcupsd startup"
 msgstr "Αθροιστικά δευτερόλεπτα στη μπαταρία από την εκκίνηση του apcupsd"
 
-#: database.php:62
+#: database.php:68
 msgid "Date and time of last update from UPS"
 msgstr "Ημερομηνία και ώρα τελευταίας ενημέρωσης από την UPS"
 
-#: database.php:67
+#: database.php:73
 msgid "Current UPS DIP switch settings"
 msgstr "Τρέχουσες ρυθμίσεις διακόπτη DIP UPS"
 
-#: database.php:72
+#: database.php:78
 msgid "Low battery signal sent when this much runtime remains"
 msgstr "Το σήμα χαμηλής μπαταρίας αποστέλλεται όταν απομένει τόσος χρόνος εκτέλεσης"
 
-#: database.php:77
+#: database.php:83
 msgid "The APCUPSD Driver when APCUPSD is the protocol"
 msgstr "Το πρόγραμμα οδήγησης APCUPSD όταν το APCUPSD είναι το πρωτόκολλο"
 
-#: database.php:82
+#: database.php:88
 msgid "Delay before UPS powers down after command received"
 msgstr "Καθυστέρηση πριν από την απενεργοποίηση του UPS μετά τη λήψη της εντολής"
 
-#: database.php:87
+#: database.php:93
 msgid "Time UPS waits after power off when the power is restored"
 msgstr "Χρόνος αναμονής του UPS μετά την απενεργοποίηση όταν αποκατασταθεί η τροφοδοσία"
 
-#: database.php:92 database.php:97
+#: database.php:98 database.php:103
 msgid "Date and time of status information was written"
 msgstr "Η ημερομηνία και η ώρα των πληροφοριών κατάστασης γράφτηκαν"
 
-#: database.php:102
+#: database.php:108
 msgid "Number of external batteries (for XL models)"
 msgstr "Αριθμός εξωτερικών μπαταριών (για μοντέλα XL)"
 
-#: database.php:107
+#: database.php:113
 msgid "UPS firmware version"
 msgstr "Έκδοση υλικολογισμικού UPS"
 
-#: database.php:112
+#: database.php:118
 msgid "Input line voltage above which UPS will switch to battery"
 msgstr "Τάση γραμμής εισόδου πάνω από την οποία το UPS θα μεταβεί σε μπαταρία"
 
-#: database.php:117
+#: database.php:123
 msgid "hostname of computer running apcupsd"
 msgstr "όνομα κεντρικού υπολογιστή του υπολογιστή που εκτελεί το apcupsd"
 
-#: database.php:122
+#: database.php:128
 msgid "Ambient humidity"
 msgstr "Υγρασία περιβάλλοντος"
 
-#: database.php:127
-msgid "UPS internal temperature in degrees Celcius"
+#: database.php:133
+#, fuzzy
+msgid "UPS internal temperature in degrees Celsius"
 msgstr "Εσωτερική θερμοκρασία UPS σε βαθμούς Κελσίου"
 
-#: database.php:132
+#: database.php:138
 msgid "Reason for last transfer to battery since apcupsd startup"
 msgstr "Λόγος για την τελευταία μεταφορά στην μπαταρία από την εκκίνηση του apcupsd"
 
-#: database.php:137
+#: database.php:143
 msgid "Input line voltage status."
 msgstr "Κατάσταση τάσης γραμμής εισόδου."
 
-#: database.php:142
+#: database.php:148
 msgid "Current line frequency in Hertz"
 msgstr "Τρέχουσα συχνότητα γραμμής σε Hertz"
 
-#: database.php:147
+#: database.php:153
 msgid "Current input line voltage"
 msgstr "Τρέχουσα τάση γραμμής εισόδου"
 
-#: database.php:152
+#: database.php:158
 msgid "Percentage of UPS load capacity used as estimated by UPS"
 msgstr "Ποσοστό της χωρητικότητας φορτίου UPS που χρησιμοποιείται όπως εκτιμάται από την UPS"
 
-#: database.php:157
+#: database.php:163
 msgid "Input line voltage below which UPS will switch to battery"
 msgstr "Τάση γραμμής εισόδου κάτω από την οποία το UPS θα μεταβεί σε μπαταρία"
 
-#: database.php:162
+#: database.php:168
 msgid "UPS date of manufacture"
 msgstr "UPS ημερομηνία κατασκευής"
 
-#: database.php:167
+#: database.php:173
 msgid "Last time the master sent an update to the slave"
 msgstr "Την τελευταία φορά που ο κύριος έστειλε μια ενημέρωση στον δούλο"
 
-#: database.php:172
+#: database.php:178
 msgid "Maximum input line voltage since apcupsd started"
 msgstr "Μέγιστη τάση γραμμής εισόδου από την έναρξη του apcupsd"
 
-#: database.php:177
+#: database.php:183
 msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
 msgstr "Μέγιστος χρόνος λειτουργίας μπαταρίας (TIMEOUT) μετά τον οποίο το σύστημα τερματίζεται"
 
-#: database.php:182
+#: database.php:188
 msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
 msgstr "Απαιτείται ελάχιστη φόρτιση μπαταρίας %%% (BCHARGE) για τον τερματισμό λειτουργίας του συστήματος"
 
-#: database.php:187
+#: database.php:193
 msgid "Min (observed) input line voltage since apcupsd started"
 msgstr "Ελάχιστη (παρατηρούμενη) τάση γραμμής εισόδου από την έναρξη του apcupsd"
 
-#: database.php:192
+#: database.php:198
 msgid "Min battery runtime (MINUTES) required for system shutdown"
 msgstr "Απαιτείται ελάχιστος χρόνος λειτουργίας μπαταρίας (MINUTES) για τον τερματισμό λειτουργίας του συστήματος"
 
-#: database.php:197
+#: database.php:203
 msgid "UPS model derived from UPS information"
 msgstr "Μοντέλο UPS που προέρχεται από πληροφορίες της UPS"
 
-#: database.php:202
+#: database.php:208
 msgid "Nominal battery voltage"
 msgstr "Ονομαστική τάση μπαταρίας"
 
-#: database.php:207
+#: database.php:213
 msgid "Nominal input voltage delivered to the UPS."
 msgstr "Ονομαστική τάση εισόδου που παραδίδεται στο UPS."
 
-#: database.php:212
+#: database.php:218
 msgid "Nominal output voltage to supply when on battery power"
 msgstr "Ονομαστική τάση εξόδου για τροφοδοσία όταν λειτουργεί με μπαταρία"
 
-#: database.php:217
+#: database.php:223
 msgid "Nominal power output in watts"
 msgstr "Ονομαστική ισχύς εξόδου σε watt"
 
-#: database.php:222
+#: database.php:228
 msgid "Number of transfers to battery since apcupsd startup"
 msgstr "Αριθμός μεταφορών στην μπαταρία από την εκκίνηση του apcupsd"
 
-#: database.php:227
+#: database.php:233
 msgid "Current UPS output voltage"
 msgstr "Τρέχουσα τάση εξόδου UPS"
 
-#: database.php:232
+#: database.php:238
 msgid "Fault register 1 in hex"
 msgstr "Καταχωρητής σφαλμάτων 1 στο εξάγωνο"
 
-#: database.php:237
+#: database.php:243
 msgid "Fault register 2 in hex"
 msgstr "Καταχωρητής σφαλμάτων 2 σε εξάγωνο"
 
-#: database.php:242
+#: database.php:248
 msgid "Fault register 3 in hex"
 msgstr "Καταχωρητής σφαλμάτων 3 σε εξάγωνο"
 
-#: database.php:247
+#: database.php:253
 msgid "Battery charge %%% required after power off to restore power"
 msgstr "Απαιτείται φόρτιση μπαταρίας %%% rμετά την απενεργοποίηση για επαναφορά της τροφοδοσίας"
 
-#: database.php:252
+#: database.php:258
 msgid "Date and time of last self test since apcupsd startup"
 msgstr "Ημερομηνία και ώρα του τελευταίου αυτοδιαγνωστικού ελέγχου από την εκκίνηση του apcupsd"
 
-#: database.php:257
+#: database.php:271
 msgid "Current UPS sensitivity setting for voltage fluctuations"
 msgstr "Τρέχουσα ρύθμιση ευαισθησίας UPS για διακυμάνσεις τάσης"
 
-#: database.php:262
+#: database.php:282
 msgid "UPS serial number"
 msgstr "Σειριακός αριθμός UPS"
 
-#: database.php:267
+#: database.php:287
 msgid "Date and time apcupsd was started"
 msgstr "Ημερομηνία και ώρα apcupsd ξεκίνησε"
 
-#: database.php:272
+#: database.php:292
 msgid "UPS status flag in hex"
 msgstr "Σημαία κατάστασης UPS σε εξάγωνο"
 
-#: database.php:277
+#: database.php:297
 msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
 msgstr "Κατάσταση UPS. Ένα ή περισσότερα από τα ακόλουθα (χωριστά διαστήματα): CAL TRIM BOOST ONLINE ΥΠΕΡΦΟΡΤΩΣΗ ONBATT LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ή COMMLOST ή SHUTT DOWN"
 
-#: database.php:282
+#: database.php:320
+msgid "Date of the last UPS self test"
+msgstr ""
+
+#: database.php:325
 msgid "Self-test interval"
 msgstr "Διάστημα αυτοελέγχου"
 
-#: database.php:287
+#: database.php:344
 msgid "Remaining runtime left on battery as estimated by the UPS"
 msgstr "Υπολειπόμενος χρόνος λειτουργίας που απομένει στην μπαταρία, όπως εκτιμάται από το UPS"
 
-#: database.php:292
+#: database.php:349
 msgid "Seconds currently on battery"
 msgstr "Δευτερόλεπτα με μπαταρία"
 
-#: database.php:297
+#: database.php:354
 msgid "Mode in which UPS is operating"
 msgstr "Λειτουργία στην οποία λειτουργεί το UPS"
 
-#: database.php:302
+#: database.php:359
 msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
 msgstr "Όνομα UPS από αρχείο διαμόρφωσης (χαζό) ή EEPROM (έξυπνο)"
 
-#: database.php:307
+#: database.php:363
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr ""
+
+#: database.php:368
 msgid "apcupsd version number, date and operating system"
 msgstr "Αριθμός έκδοσης apcupsd, ημερομηνία και λειτουργικό σύστημα"
 
-#: database.php:312 database.php:317
+#: database.php:373 database.php:378
 msgid "Date, time of last transfer off battery since apcupsd startup"
 msgstr "Ημερομηνία, ώρα τελευταίας μεταφοράς εκτός μπαταρίας από την εκκίνηση του apcupsd"
 
-#: database.php:322
+#: database.php:383
 msgid "Date, time of last transfer to battery since apcupsd startup"
 msgstr "Ημερομηνία, ώρα τελευταίας μεταφοράς στην μπαταρία από την εκκίνηση του apcupsd"
 
@@ -270,295 +280,352 @@ msgstr "Ημερομηνία, ώρα τελευταίας μεταφοράς σ�
 msgid "Manage UPS's"
 msgstr "Διαχειριστείτε τα UPS"
 
-#: setup.php:279
+#: setup.php:306
 msgid "Management"
 msgstr "Διοίκηση"
 
-#: setup.php:279 upses.php:460 upses.php:475 upses.php:558
+#: setup.php:306 upses.php:660 upses.php:725 upses.php:907
 msgid "UPSes"
 msgstr "UPS"
 
-#: setup.php:282
+#: setup.php:309
 msgid "System Administration"
 msgstr "Διαχείριση συστήματος"
 
-#: setup.php:309
+#: setup.php:338
 msgid "Manage UPSes"
 msgstr "Διαχείριση UPS"
 
-#: upses.php:28
+#: upses.php:32
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: upses.php:29
+#: upses.php:33
 msgid "Duplicate"
 msgstr "Αντιγραφή"
 
-#: upses.php:33
+#: upses.php:34
+msgid "Reset Detection"
+msgstr ""
+
+#: upses.php:38
 msgid "APC UPSD Based"
 msgstr "Βάσει APC UPSD"
 
-#: upses.php:34
+#: upses.php:39
 msgid "SNMP Based"
 msgstr "Με βάση το SNMP"
 
-#: upses.php:41
+#: upses.php:48
 msgid "UPS Information"
 msgstr "Πληροφορίες UPS"
 
-#: upses.php:46 upses.php:568
+#: upses.php:53 upses.php:834
 msgid "UPS Name"
 msgstr "Όνομα UPS"
 
-#: upses.php:47
+#: upses.php:54
 msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
 msgstr "Το όνομα που θα θέλατε να δώσετε σε αυτό το UPS. Για τις συσκευές APCUPSD, μια αντίστοιχη συσκευή Cacti θα δημιουργηθεί αυτόματα για το UPS χρησιμοποιώντας αυτό το όνομα. Για UPS που βασίζονται σε SNMP, πρέπει πρώτα να δημιουργήσετε τη Συσκευή Cacti."
 
-#: upses.php:50
+#: upses.php:57
 msgid "New UPS"
 msgstr "Νέο UPS"
 
-#: upses.php:55
+#: upses.php:62
 msgid "UPS Description"
 msgstr "Περιγραφή UPS"
 
-#: upses.php:56
+#: upses.php:63
 msgid "A more detailed Description of this UPS if required."
 msgstr "Μια πιο λεπτομερής περιγραφή αυτού του UPS εάν απαιτείται."
 
-#: upses.php:63
+#: upses.php:70
 msgid "UPS Type"
 msgstr "Τύπος UPS"
 
-#: upses.php:64
+#: upses.php:71
 msgid "The Type of UPS you are monitoring."
 msgstr "Ο τύπος του UPS που παρακολουθείτε."
 
-#: upses.php:70
+#: upses.php:77
 msgid "Poller ID"
 msgstr "Poler ID"
 
-#: upses.php:71
+#: upses.php:78
 msgid "The Poller that this UPS exists in is monitored by"
 msgstr "Το Poller στο οποίο υπάρχει αυτό το UPS παρακολουθείται από"
 
-#: upses.php:78
+#: upses.php:85
 msgid "Site Name"
 msgstr "Ορίστε Όνομα"
 
-#: upses.php:79
+#: upses.php:86
 msgid "The Site that this UPS exists in."
 msgstr "Ο ιστότοπος στον οποίο υπάρχει αυτό το UPS."
 
-#: upses.php:82 upses.php:88
+#: upses.php:89 upses.php:95 upses.php:105 upses.php:680 upses.php:705
+#: upses.php:1002
 msgid "None"
 msgstr "Κανένα"
 
-#: upses.php:86
+#: upses.php:93 upses.php:700
+msgid "Location"
+msgstr ""
+
+#: upses.php:94
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr ""
+
+#: upses.php:103
 msgid "Cacti Device"
 msgstr "Συσκευή κάκτων"
 
-#: upses.php:87
+#: upses.php:104
 msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
 msgstr "Για UPS που βασίζεται σε SNMP', επιλέξτε τη συσκευή Cacti που θα χρησιμοποιήσετε για τα διαπιστευτήρια SNMP. Διαφορετικά, επιλέξτε Καμία και η προσθήκη UPS θα δημιουργήσει αυτόματα τη Συσκευή για εσάς."
 
-#: upses.php:92 upses.php:93
+#: upses.php:109 upses.php:110
 msgid "Autocreate on First Poll"
 msgstr "Αυτόματη δημιουργία στην πρώτη δημοσκόπηση"
 
-#: upses.php:97 upses.php:622
+#: upses.php:114 upses.php:894
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
-#: upses.php:98
-msgid "Check to immediatly start polling for data."
+#: upses.php:115
+#, fuzzy
+msgid "Check to immediately start polling for data."
 msgstr "Επιλέξτε για να ξεκινήσει αμέσως η δημοσκόπηση για δεδομένα."
 
-#: upses.php:104
+#: upses.php:121
 msgid "APC UPSD Information"
 msgstr "Πληροφορίες APC UPSD"
 
-#: upses.php:109
+#: upses.php:126 upses.php:147
 msgid "Hostname"
 msgstr "Νέο όνομα φιλοξενίας"
 
-#: upses.php:110
+#: upses.php:127
 msgid "The hostname of the host running apcupsd."
 msgstr "Το όνομα κεντρικού υπολογιστή του κεντρικού υπολογιστή που εκτελείται το apcupsd."
 
-#: upses.php:117
+#: upses.php:134
 msgid "TCP Port"
 msgstr "Θύρα TCP"
 
-#: upses.php:118
+#: upses.php:135
 msgid "Enter the TCP Port for this UPS."
 msgstr "Εισαγάγετε τη Θύρα TCP για αυτό το UPS."
 
-#: upses.php:256
+#: upses.php:143
+msgid "SNMP Options"
+msgstr ""
+
+#: upses.php:148
+#, fuzzy
+msgid "The hostname where the snmp agent is located."
+msgstr "Το όνομα κεντρικού υπολογιστή του κεντρικού υπολογιστή που εκτελείται το apcupsd."
+
+#: upses.php:400
 msgid "Template UPS was not found! Unable to duplicate."
 msgstr "Το πρότυπο UPS δεν βρέθηκε! Δεν είναι δυνατή η αντιγραφή."
 
-#: upses.php:315
+#: upses.php:463
+#, fuzzy
 msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
-msgid_plural "Click 'Continue' to delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
 msgstr[0] "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε το ακόλουθο UPS. Σημείωση, όλες οι Συσκευές θα αποσυνδεθούν από αυτό το UPS."
 msgstr[1] "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε όλα τα ακόλουθα UPS. Σημείωση, όλες οι συσκευές θα αποσυνδεθούν από αυτό το UPS."
 
-#: upses.php:320 upses.php:330
+#: upses.php:468 upses.php:479 upses.php:489
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: upses.php:320 upses.php:330
+#: upses.php:469 upses.php:480 upses.php:490
 msgid "Continue"
 msgstr "Συνέχεια"
 
-#: upses.php:320
+#: upses.php:469
 msgid "Delete UPS"
 msgid_plural "Delete UPSes"
 msgstr[0] "Διαγραφή UPS"
 msgstr[1] "Διαγράψτε τα UPS"
 
-#: upses.php:324
+#: upses.php:473
 msgid "Click 'Continue' to Duplicate the following UPS."
 msgid_plural "Click 'Continue' to Duplicate all following UPSes."
 msgstr[0] "Κάντε κλικ στο «Συνέχεια» για να αντιγράψετε το ακόλουθο UPS."
 msgstr[1] "Κάντε κλικ στο «Συνέχεια» για να αντιγράψετε όλα τα ακόλουθα UPS."
 
-#: upses.php:326
+#: upses.php:475
 msgid "UPS Name:"
 msgstr "Όνομα UPS:"
 
-#: upses.php:330
+#: upses.php:480
 msgid "Duplicate UPS"
 msgid_plural "Duplicate UPSes"
 msgstr[0] "Διπλότυπο UPS"
 msgstr[1] "Διπλότυπα UPS"
 
-#: upses.php:363
+#: upses.php:484
+#, fuzzy
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε το ακόλουθο UPS. Σημείωση, όλες οι Συσκευές θα αποσυνδεθούν από αυτό το UPS."
+msgstr[1] "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε όλα τα ακόλουθα UPS. Σημείωση, όλες οι συσκευές θα αποσυνδεθούν από αυτό το UPS."
+
+#: upses.php:490
+#, fuzzy
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Διαγραφή UPS"
+msgstr[1] "Διαγράψτε τα UPS"
+
+#: upses.php:523
 #, php-format
 msgid "UPS [edit: %s]"
 msgstr "UPS [επεξεργασία: %s]"
 
-#: upses.php:366
+#: upses.php:526
 msgid "UPS [new]"
 msgstr "UPS [νέο]"
 
-#: upses.php:469
+#: upses.php:669
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: upses.php:479
+#: upses.php:675
+#, fuzzy
+msgid "Site"
+msgstr "Ορίστε Όνομα"
+
+#: upses.php:679 upses.php:704
+msgid "All"
+msgstr ""
+
+#: upses.php:729
 msgid "Default"
 msgstr "Προεπιλογή"
 
-#: upses.php:491
+#: upses.php:741
 msgid "Go"
 msgstr "Πήγαινε"
 
-#: upses.php:491
+#: upses.php:741
 msgid "Set/Refresh Filters"
 msgstr "Ρύθμιση/Ανανέωση φίλτρων"
 
-#: upses.php:492
+#: upses.php:742
 msgid "Clear"
 msgstr "Καθαρισμός"
 
-#: upses.php:492
+#: upses.php:742
 msgid "Clear Filters"
 msgstr "Καθαρισμός Φίλτρων"
 
-#: upses.php:571
+#: upses.php:837
 msgid "The Name of this UPS."
 msgstr "Το όνομα αυτού του UPS."
 
-#: upses.php:574
+#: upses.php:840
 msgid "ID"
 msgstr "ID"
 
-#: upses.php:577
+#: upses.php:843
 msgid "The unique id associated with this UPS."
 msgstr "Το μοναδικό αναγνωριστικό που σχετίζεται με αυτό το UPS."
 
-#: upses.php:580
-msgid "Collect Status"
-msgstr "Συλλέξτε την κατάσταση"
+#: upses.php:846
+#, fuzzy
+msgid "Status"
+msgstr "Κατάσταση UPS"
 
-#: upses.php:583
+#: upses.php:849
 msgid "The Status of the apcupsd daemon on the target Host."
 msgstr "Η κατάσταση του δαίμονα apcupsd στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:586
+#: upses.php:852
+#, fuzzy
+msgid "Collector"
+msgstr "Συλλέξτε την κατάσταση"
+
+#: upses.php:855
+msgid "The Type of Collector.  Currently APCUPSD and SNMP are supported."
+msgstr ""
+
+#: upses.php:858
 msgid "UPS Status"
 msgstr "Κατάσταση UPS"
 
-#: upses.php:589
+#: upses.php:861
 msgid "The Status of the monitored UPS on the target Host."
 msgstr "Η κατάσταση του παρακολουθούμενου UPS στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:592
+#: upses.php:864
 msgid "UPS Model"
 msgstr "Μοντέλο UPS"
 
-#: upses.php:595
+#: upses.php:867
 msgid "The Model of the monitored UPS on the target Host."
 msgstr "Το μοντέλο του παρακολουθούμενου UPS στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:598
+#: upses.php:870
 msgid "Line Voltage"
 msgstr "Τάση γραμμής"
 
-#: upses.php:601
+#: upses.php:873
 msgid "The Line Voltage of the monitored UPS on the target Host."
 msgstr "Η τάση γραμμής του παρακολουθούμενου UPS στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:604
+#: upses.php:876
 msgid "Load Percent"
 msgstr "Ποσοστό φόρτωσης"
 
-#: upses.php:607
+#: upses.php:879
 msgid "The Load Percent of the monitored UPS on the target Host."
 msgstr "Το ποσοστό φόρτωσης του παρακολουθούμενου UPS στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:610
+#: upses.php:882
 msgid "Time Left"
 msgstr "Υπολειπόμενος χρόνος"
 
-#: upses.php:613
+#: upses.php:885
 msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
 msgstr "Τα λεπτά της διαθέσιμης φόρτισης UPS του παρακολουθούμενου UPS στον κεντρικό υπολογιστή-στόχο."
 
-#: upses.php:616
+#: upses.php:888
 msgid "Hostname:Port"
 msgstr "Όνομα κεντρικού υπολογιστή: Port"
 
-#: upses.php:619
+#: upses.php:891
 msgid "The Hostname:Port that is running the apcupsd daemon."
 msgstr "Το όνομα κεντρικού υπολογιστή: Θύρα που εκτελεί τον δαίμονα apcupsd."
 
-#: upses.php:625
+#: upses.php:897
 msgid "If this UPS is being monitored or not."
 msgstr "Εάν αυτό το UPS παρακολουθείται ή όχι."
 
-#: upses.php:628
+#: upses.php:900
 msgid "Last Updated"
 msgstr "Τελευταία ενημέρωση"
 
-#: upses.php:631
+#: upses.php:903
 msgid "The last time this UPS was samples or found up."
 msgstr "Την τελευταία φορά που αυτό το UPS ήταν δείγμα ή βρέθηκε."
 
-#: upses.php:651
+#: upses.php:938
 msgid "No"
 msgstr "Όχι"
 
-#: upses.php:651
+#: upses.php:938
 msgid "Yes"
 msgstr "Ναι"
 
-#: upses.php:659
+#: upses.php:946
 msgid "No UPSes Found"
 msgstr "Δεν βρέθηκαν UPS"
 
-#: upses.php:676
+#: upses.php:963
 msgid "Not Avail"
 msgstr "Μη Διαθέσιμο"

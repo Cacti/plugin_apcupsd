@@ -460,32 +460,34 @@ function form_actions() {
 		if (get_nfilter_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea' class='odd'>
-					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array)) . "</p>
+					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '2') { /* duplicate */
 			print "<tr>
 				<td class='textArea' class='odd'>
-					<p>" . __n('Click \'Continue\' to Duplicate the following UPS.', 'Click \'Continue\' to Duplicate all following UPSes.', cacti_sizeof($ups_array)) . "</p>
+					<p>" . __n('Click \'Continue\' to Duplicate the following UPS.', 'Click \'Continue\' to Duplicate all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
-					<p><strong>" . __('UPS Name:'). "</strong><br>"; form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text'); print "</p>
+					<p><strong>" . __('UPS Name:', 'apcupsd'). "</strong><br>"; form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text'); print "</p>
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '3') { /* reset */
 			print "<tr>
 				<td class='textArea' class='odd'>
-					<p>" . __n('Click \'Continue\' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes.', 'Click \'Continue\' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes.', cacti_sizeof($ups_array)) . "</p>
+					<p>" . __n('Click \'Continue\' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes.', 'Click \'Continue\' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 				</td>
 			</tr>";
 
-
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo(\"upses.php\")'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array)) . "'>";
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<input type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
 		raise_message(40);
@@ -518,10 +520,10 @@ function ups_edit() {
 
 	if (get_request_var('id') > 0) {
 		$ups = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', array(get_request_var('id')));
-		$header_label = __esc('UPS [edit: %s]', $ups['name']);
+		$header_label = __esc('UPS [edit: %s]', $ups['name'], 'apcupsd');
 	} else {
 		$ups = array();
-		$header_label = __('UPS [new]');
+		$header_label = __('UPS [new]', 'apcupsd');
 	}
 
 	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
@@ -655,7 +657,7 @@ function upses() {
 		$rows = get_request_var('rows');
 	}
 
-	html_start_box( __('UPSes'), '100%', '', '3', 'center', 'upses.php?action=edit');
+	html_start_box( __('UPSes', 'apcupsd'), '100%', '', '3', 'center', 'upses.php?action=edit');
 
 	?>
 	<tr class='even'>
@@ -664,18 +666,18 @@ function upses() {
 			<table class='filterTable'>
 				<tr>
 					<td>
-						<?php print __('Search');?>
+						<?php print __('Search', 'apcupsd');?>
 					</td>
 					<td>
 						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
 					</td>
 					<td>
-						<?php print __('Site');?>
+						<?php print __('Site', 'apcupsd');?>
 					</td>
 					<td>
 						<select id='site_id' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>':'>') . __('All');?></option>
-							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None');?></option>
+							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>':'>') . __('All', 'apcupsd');?></option>
+							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$sites = array_rekey(
 								db_fetch_assoc('SELECT s.id, s.name
@@ -695,12 +697,12 @@ function upses() {
 						</select>
 					</td>
 					<td>
-						<?php print __('Location');?>
+						<?php print __('Location', 'apcupsd');?>
 					</td>
 					<td>
 						<select id='location' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>':'>') . __('All');?></option>
-							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None');?></option>
+							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>':'>') . __('All', 'apcupsd');?></option>
+							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$locations = array_rekey(
 								db_fetch_assoc('SELECT DISTINCT h.location AS id, h.location AS name
@@ -720,11 +722,11 @@ function upses() {
 						</select>
 					</td>
 					<td>
-						<?php print __('UPSes');?>
+						<?php print __('UPSes', 'apcupsd');?>
 					</td>
 					<td>
 						<select id='rows' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>':'>') . __('Default');?></option>
+							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>':'>') . __('Default', 'apcupsd');?></option>
 							<?php
 							if (cacti_sizeof($item_rows)) {
 								foreach ($item_rows as $key => $value) {
@@ -736,8 +738,8 @@ function upses() {
 					</td>
 					<td>
 						<span>
-							<input type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' value='<?php print __esc('Go');?>' title='<?php print __esc('Set/Refresh Filters');?>'>
-							<input type='button' class='ui-button ui-corner-all ui-widget' id='clear' value='<?php print __esc('Clear');?>' title='<?php print __esc('Clear Filters');?>'>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' title='<?php print __esc('Set/Refresh Filters', 'apcupsd');?>'><?php print __esc('Go', 'apcupsd');?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear' title='<?php print __esc('Clear Filters', 'apcupsd');?>'><?php print __esc('Clear', 'apcupsd');?></button>
 						</span>
 					</td>
 				</tr>
@@ -829,76 +831,76 @@ function upses() {
 
 	$display_text = array(
 		'name' => array(
-			'display' => __('UPS Name'),
+			'display' => __('UPS Name', 'apcupsd'),
 			'align' => 'left',
 			'sort' => 'ASC',
-			'tip' => __('The Name of this UPS.')
+			'tip' => __('The Name of this UPS.', 'apcupsd')
 		),
 		'id' => array(
-			'display' => __('ID'),
+			'display' => __('ID', 'apcupsd'),
 			'align'   => 'center',
 			'sort'    => 'ASC',
-			'tip'     => __('The unique id associated with this UPS.')
+			'tip'     => __('The unique id associated with this UPS.', 'apcupsd')
 		),
 		'status' => array(
-			'display' => __('Status'),
+			'display' => __('Status', 'apcupsd'),
 			'align'   => 'center',
 			'sort'    => 'ASC',
-			'tip'     => __('The Status of the apcupsd daemon on the target Host.')
+			'tip'     => __('The Status of the apcupsd daemon on the target Host.', 'apcupsd')
 		),
 		'type_id' => array(
-			'display' => __('Collector'),
+			'display' => __('Collector', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
-			'tip'     => __('The Type of Collector.  Currently APCUPSD and SNMP are supported.')
+			'tip'     => __('The Type of Collector.  Currently APCUPSD and SNMP are supported.', 'apcupsd')
 		),
 		'ups_status' => array(
-			'display' => __('UPS Status'),
+			'display' => __('UPS Status', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
-			'tip'     => __('The Status of the monitored UPS on the target Host.')
+			'tip'     => __('The Status of the monitored UPS on the target Host.', 'apcupsd')
 		),
 		'ups_model' => array(
-			'display' => __('UPS Model'),
+			'display' => __('UPS Model', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
-			'tip'     => __('The Model of the monitored UPS on the target Host.')
+			'tip'     => __('The Model of the monitored UPS on the target Host.', 'apcupsd')
 		),
 		'ups_line_voltage' => array(
-			'display' => __('Line Voltage'),
+			'display' => __('Line Voltage', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The Line Voltage of the monitored UPS on the target Host.')
+			'tip'     => __('The Line Voltage of the monitored UPS on the target Host.', 'apcupsd')
 		),
 		'ups_load_percent' => array(
-			'display' => __('Load Percent'),
+			'display' => __('Load Percent', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The Load Percent of the monitored UPS on the target Host.')
+			'tip'     => __('The Load Percent of the monitored UPS on the target Host.', 'apcupsd')
 		),
 		'ups_timeleft' => array(
-			'display' => __('Time Left'),
+			'display' => __('Time Left', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The minutes of available UPS charge of the monitored UPS on the target Host.')
+			'tip'     => __('The minutes of available UPS charge of the monitored UPS on the target Host.', 'apcupsd')
 		),
 		'nosort' => array(
-			'display' => __('Hostname:Port'),
+			'display' => __('Hostname:Port', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The Hostname:Port that is running the apcupsd daemon.')
+			'tip'     => __('The Hostname:Port that is running the apcupsd daemon.', 'apcupsd')
 		),
 		'enabled' => array(
-			'display' => __('Enabled'),
+			'display' => __('Enabled', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('If this UPS is being monitored or not.')
+			'tip'     => __('If this UPS is being monitored or not.', 'apcupsd')
 		),
 		'last_updated' => array(
-			'display' => __('Last Updated'),
+			'display' => __('Last Updated', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The last time this UPS was samples or found up.')
+			'tip'     => __('The last time this UPS was samples or found up.', 'apcupsd')
 		)
 	);
 
@@ -933,7 +935,7 @@ function upses() {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['snmp_port'], $ups['id'], '', 'right');
 			}
 
-			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes'):__('No'), $ups['id'], '', 'right');
+			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes', 'apcupsd'):__('No', 'apcupsd'), $ups['id'], '', 'right');
 			form_selectable_ecell($ups['last_updated'], $ups['id'], '', 'right');
 
 			form_checkbox_cell($ups['name'], $ups['id']);
@@ -941,7 +943,7 @@ function upses() {
 			form_end_row();
 		}
 	} else {
-		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No UPSes Found') . '</em></td></tr>';
+		print "<tr class='tableRow'><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No UPSes Found', 'apcupsd') . '</em></td></tr>';
 	}
 
 	html_end_box(false);
@@ -997,7 +999,7 @@ function get_site_locations() {
 	}
 
 	if (!cacti_sizeof($return)) {
-		$return[] = array('label' => __('None'), 'value' => '', 'id' => __('None'));
+		$return[] = array('label' => __('None', 'apcupsd'), 'value' => '', 'id' => __('None', 'apcupsd'));
 	}
 
 	print json_encode($return);
