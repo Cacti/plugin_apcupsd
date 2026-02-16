@@ -50,4 +50,4 @@ support for down the line, but as of yet, I have not made that decision.
 Got any ideas or complaints, please log an issue on GitHub.
 
 -----------------------------------------------
-Copyright (c) 2004-2025 - The Cacti Group, Inc.
+Copyright (c) 2004-2026 - The Cacti Group, Inc.
