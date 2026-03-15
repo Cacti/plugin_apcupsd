@@ -27,6 +27,7 @@ require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
+require_once(__DIR__ . '/ui_helpers.php');
 
 $ups_actions = array(
 	1 => __('Delete', 'apcupsd'),
@@ -205,18 +206,10 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'edit':
-		top_header();
-
-		ups_edit();
-
-		bottom_footer();
+		apcupsd_render_with_layout('ups_edit');
 		break;
 	default:
-		top_header();
-
-		upses();
-
-		bottom_footer();
+		apcupsd_render_with_layout('upses');
 		break;
 }
 
