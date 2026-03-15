@@ -64,7 +64,10 @@ function apcupsd_check_upgrade() {
 
 	$info    = plugin_apcupsd_version();
 	$current = $info['version'];
-	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='apcupsd'");
+	$old     = db_fetch_cell_prepared('SELECT version
+		FROM plugin_config
+		WHERE directory = ?',
+		array('apcupsd'));
 	if ($current != $old) {
 		if (api_plugin_is_enabled('apcupsd')) {
 			# may sound ridiculous, but enables new hooks
@@ -322,11 +325,15 @@ function apcupsd_replicate_out($data) {
 
 	include_once($config['base_path'] . '/lib/poller.php');
 
-	$upsdata = db_fetch_assoc('SELECT * FROM apcupsd_ups');
+	$upsdata = db_fetch_assoc_prepared('SELECT *
+		FROM apcupsd_ups',
+		array());
 
 	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups', $data['remote_poller_id']);
 
-	$upsdata = db_fetch_assoc('SELECT * FROM apcupsd_ups_stats');
+	$upsdata = db_fetch_assoc_prepared('SELECT *
+		FROM apcupsd_ups_stats',
+		array());
 
 	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups_stats', $data['remote_poller_id']);
 
@@ -343,4 +350,3 @@ function apcupsd_draw_navigation_text($nav) {
 
 	return $nav;
 }
-
