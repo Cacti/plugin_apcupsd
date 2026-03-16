@@ -61,6 +61,18 @@ assert_true(
 	'upses.php no longer builds SQL with array_to_sql_or',
 	strpos($upses_contents, 'array_to_sql_or(') === false
 );
+assert_true(
+	'upses.php guards bulk actions on non-empty selected items',
+	strpos($upses_contents, '$selected_items != false && cacti_sizeof($selected_items)') !== false
+);
+assert_true(
+	'upses.php derives IN-clause placeholders from selected item count',
+	strpos($upses_contents, '$selected_placeholders = implode(\',\', array_fill(0, cacti_sizeof($selected_items), \'?\'));') !== false
+);
+assert_true(
+	'upses.php has no remaining raw db helpers',
+	preg_match('/\bdb_(?:execute|fetch_row|fetch_assoc|fetch_cell)\s*\(/', $upses_contents) === 0
+);
 
 echo "\n";
 echo "Results: $pass passed, $fail failed\n";
