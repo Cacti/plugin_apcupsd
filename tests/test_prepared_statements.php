@@ -30,9 +30,15 @@ $upses_file = __DIR__ . '/../upses.php';
 $setup_contents = file_get_contents($setup_file);
 $upses_contents = file_get_contents($upses_file);
 
+assert_true('setup.php is readable', $setup_contents !== false);
+assert_true('upses.php is readable', $upses_contents !== false);
+
+$setup_contents = ($setup_contents === false ? '' : $setup_contents);
+$upses_contents = ($upses_contents === false ? '' : $upses_contents);
+
 assert_true(
 	'setup.php uses prepared plugin_config version lookup',
-	preg_match('/db_fetch_cell_prepared\s*\(\s*\'SELECT version/s', $setup_contents) === 1
+	preg_match('/db_fetch_cell_prepared\s*\(\s*[\'"]SELECT\s+version/s', $setup_contents) === 1
 );
 assert_true(
 	'setup.php has no raw db_fetch_cell calls',
@@ -40,7 +46,7 @@ assert_true(
 );
 assert_true(
 	'setup.php uses prepared replicate_out reads',
-	preg_match_all('/\bdb_fetch_assoc_prepared\s*\(/', $setup_contents) >= 2
+	preg_match_all('/\bdb_fetch_assoc_prepared\s*\(/', $setup_contents, $setup_prepared_matches) >= 2
 );
 
 assert_true(
@@ -49,7 +55,7 @@ assert_true(
 );
 assert_true(
 	'upses.php uses prepared action updates/deletes',
-	preg_match_all('/\bdb_execute_prepared\s*\(/', $upses_contents) >= 2
+	preg_match_all('/\bdb_execute_prepared\s*\(/', $upses_contents, $upses_prepared_matches) >= 2
 );
 assert_true(
 	'upses.php no longer builds SQL with array_to_sql_or',

@@ -678,7 +678,7 @@ function upses() {
 									FROM sites AS s
 									INNER JOIN apcupsd_ups AS u
 									ON s.id = u.site_id
-									ORDER BY name',
+									ORDER BY s.name',
 									array()),
 								'id', 'name'
 							);
