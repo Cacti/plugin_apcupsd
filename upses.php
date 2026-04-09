@@ -153,14 +153,8 @@ $fields_ups_edit = array(
 		'max_length' => '100'
 	),
 	) + $fields_snmp_item + array(
-	'id' => array(
-		'method' => 'hidden_zero',
-		'value' => '|arg1:id|'
-	),
-	'save_component_ups' => array(
-		'method' => 'hidden',
-		'value' => '1'
-	)
+	'id' => [],
+	'save_component_ups' => []
 );
 
 /* set default action */
@@ -263,9 +257,9 @@ function form_save() {
 		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
 		if ($save['host_id'] > 0) {
-			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', array($save['host_id']));
+			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', []);
 		} else {
-			$host = array();
+			$host = [];
 		}
 
 		if (!is_error_message()) {
@@ -304,20 +298,7 @@ function form_save() {
 
 				// SNMP columns
 				if ($save['type_id'] == 2) {
-					$columns = array(
-						'hostname',
-						'snmp_version',
-						'snmp_community',
-						'snmp_username',
-						'snmp_password',
-						'snmp_auth_protocol',
-						'snmp_priv_protocol',
-						'snmp_priv_passphrase',
-						'snmp_context',
-						'snmp_engine_id',
-						'snmp_port',
-						'snmp_timeout',
-					);
+					$columns = [];
 
 					foreach($columns as $c) {
 						if ($save[$c] != $host[$c]) {
@@ -334,12 +315,12 @@ function form_save() {
 
 					if ($name_changed) {
 						$graphs = array_rekey(
-							db_fetch_assoc_prepared('SELECT id FROM graph_local WHERE host_id = ?', array($host_id)),
+							db_fetch_assoc_prepared('SELECT id FROM graph_local WHERE host_id = ?', []),
 							'id', 'id'
 						);
 
 						$data_sources = array_rekey(
-							db_fetch_assoc_prepared('SELECT id FROM data_local WHERE host_id = ?', array($host_id)),
+							db_fetch_assoc_prepared('SELECT id FROM data_local WHERE host_id = ?', []),
 							'id', 'id'
 						);
 
@@ -366,18 +347,18 @@ function form_save() {
 }
 
 function duplicate_ups($template_id, $name) {
-	if (!is_array($template_id)) {
-		$template_id = array($template_id);
+	if (!is_[]) {
+		$template_id = [];
 	}
 
 	foreach($template_id as $id) {
 		$ups = db_fetch_row_prepared('SELECT *
 			FROM apcupsd_ups
 			WHERE id = ?',
-			array($id));
+			[]);
 
 		if (cacti_sizeof($ups)) {
-			$save = array();
+			$save = [];
 
 			$save['id'] = 0;
 
@@ -443,7 +424,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', array($matches[1]));
+			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', []);
 
 			$ups_list .= '<li>' . html_escape($name) . '</li>';
 			$ups_array[$i] = $matches[1];
@@ -524,14 +505,14 @@ function ups_edit() {
 		$ups = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', array(get_request_var('id')));
 		$header_label = __esc('UPS [edit: %s]', $ups['name'], 'apcupsd');
 	} else {
-		$ups = array();
+		$ups = [];
 		$header_label = __('UPS [new]', 'apcupsd');
 	}
 
 	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
-		$fields_ups_edit['host_id']['value']  = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
-		$fields_ups_edit['location']['value'] = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
-		$fields_ups_edit['location']['id']    = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
+		$fields_ups_edit['host_id']['value']  = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', []);
+		$fields_ups_edit['location']['value'] = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', []);
+		$fields_ups_edit['location']['id']    = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', []);
 	} else {
 		unset($fields_ups_edit['location']);
 	}
@@ -545,8 +526,8 @@ function ups_edit() {
 
 	draw_edit_form(
 		array(
-			'config' => array('no_form_tag' => true),
-			'fields' => inject_form_variables($fields_ups_edit, (isset($ups) ? $ups : array()))
+			'config' => [],
+			'fields' => inject_form_variables($fields_ups_edit, ( ?? []))
 		)
 	);
 
@@ -613,40 +594,25 @@ function upses() {
 
 	/* ================= input validation and session storage ================= */
 	$filters = array(
-		'rows' => array(
-			'filter' => FILTER_VALIDATE_INT,
-			'pageset' => true,
-			'default' => '-1'
-		),
-		'site_id' => array(
-			'filter' => FILTER_VALIDATE_INT,
-			'pageset' => true,
-			'default' => '-1'
-		),
+		'rows' => [],
+		'site_id' => [],
 		'location' => array(
 			'filter' => FILTER_CALLBACK,
-			'options' => array('options' => 'sanitize_search_string'),
+			'options' => [],
 			'pageset' => true,
 			'default' => '-1'
 		),
-		'page' => array(
-			'filter' => FILTER_VALIDATE_INT,
-			'default' => '1'
-		),
-		'filter' => array(
-			'filter' => FILTER_DEFAULT,
-			'pageset' => true,
-			'default' => ''
-		),
+		'page' => [],
+		'filter' => [],
 		'sort_column' => array(
 			'filter' => FILTER_CALLBACK,
 			'default' => 'name',
-			'options' => array('options' => 'sanitize_search_string')
+			'options' => []
 		),
 		'sort_direction' => array(
 			'filter' => FILTER_CALLBACK,
 			'default' => 'ASC',
-			'options' => array('options' => 'sanitize_search_string')
+			'options' => []
 		)
 	);
 
@@ -786,7 +752,7 @@ function upses() {
 	html_end_box();
 
 	$sql_where  = '';
-	$sql_params = array();
+	$sql_params = [];
 
 	/* form the 'where' clause for our main sql query */
 	if (get_request_var('filter') != '') {
@@ -969,7 +935,7 @@ function checkNullandReturn($value) {
 }
 
 function get_site_locations() {
-	$return  = array();
+	$return  = [];
 	$term    = get_nfilter_request_var('term');
 	$host_id = $_SESSION['cur_device_id'];
 
@@ -980,7 +946,7 @@ function get_site_locations() {
 		$site_id = db_fetch_cell_prepared('SELECT site_id
 			FROM host
 			WHERE id = ?',
-			array($host_id));
+			[]);
 		$args []= $site_id;
 		$where = 'AND site_id = ?';
 	}
@@ -996,7 +962,7 @@ function get_site_locations() {
 
 	if (cacti_sizeof($locations)) {
 		foreach ($locations as $l) {
-			$return[] = array('label' => $l['location'], 'value' => $l['location'], 'id' => $l['location']);
+			$return[] = [];
 		}
 	}
 

@@ -59,7 +59,7 @@ function apcupsd_check_upgrade() {
 	include_once($config['library_path'] . '/database.php');
 	include_once($config['library_path'] . '/functions.php');
 
-	$files = array('plugins.php', 'upses.php');
+	$files = [];
 	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
 		return;
 	}
@@ -76,13 +76,7 @@ function apcupsd_check_upgrade() {
 		db_execute_prepared("UPDATE plugin_config SET
 			version = ?, name = ?, author = ?, webpage = ?
 			WHERE directory = ?",
-			array(
-				$info['version'],
-				$info['longname'],
-				$info['author'],
-				$info['homepage'],
-				$info['name']
-			)
+			[]
 		);
 
 		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
@@ -308,7 +302,7 @@ function apcupsd_config_arrays() {
 	$menu[__('Management')]['plugins/apcupsd/upses.php'] = __('UPSes', 'webseer');
 
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('System Administration'), array('upses.php'));
+		auth_augment_roles(__('System Administration'), []);
 	}
 
 	apcupsd_check_upgrade();
