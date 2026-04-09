@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $ups_database = array(
 	'ALARMDEL' => array(
 		'db_column'   => 'ups_alarmdel',
