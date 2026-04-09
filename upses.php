@@ -417,13 +417,21 @@ function form_actions() {
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
-		if ($selected_items != false) {
+		if ($selected_items != false && cacti_sizeof($selected_items)) {
+			$selected_items        = array_values($selected_items);
+			$selected_placeholders = implode(',', array_fill(0, cacti_sizeof($selected_items), '?'));
+
 			if (get_nfilter_request_var('drp_action') == '1') { /* delete */
-				db_execute('DELETE FROM apcupsd_ups WHERE ' . array_to_sql_or($selected_items, 'id'));
+				db_execute_prepared("DELETE FROM apcupsd_ups
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
 			} elseif (get_nfilter_request_var('drp_action') == '2') { /* Duplicate */
 				duplicate_ups($selected_items, get_nfilter_request_var('ups_name'));
 			} elseif (get_nfilter_request_var('drp_action') == '3') { /* Reset Detection */
-				db_execute('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE ' . array_to_sql_or($selected_items, 'id'));
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET snmp_skipped = ''
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
 			}
 		}
 
@@ -680,11 +688,12 @@ function upses() {
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$sites = array_rekey(
-								db_fetch_assoc('SELECT s.id, s.name
+								db_fetch_assoc_prepared('SELECT s.id, s.name
 									FROM sites AS s
 									INNER JOIN apcupsd_ups AS u
 									ON s.id = u.site_id
-									ORDER BY name'),
+									ORDER BY s.name',
+									array()),
 								'id', 'name'
 							);
 
@@ -705,11 +714,12 @@ function upses() {
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$locations = array_rekey(
-								db_fetch_assoc('SELECT DISTINCT h.location AS id, h.location AS name
+								db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
 									FROM host AS h
 									INNER JOIN apcupsd_ups AS u
 									ON h.id = u.host_id
-									ORDER BY h.location'),
+									ORDER BY h.location',
+									array()),
 								'id', 'name'
 							);
 
