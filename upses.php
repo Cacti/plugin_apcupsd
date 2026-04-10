@@ -347,7 +347,7 @@ function form_save() {
 }
 
 function duplicate_ups($template_id, $name) {
-	if (!is_[]) {
+	if (!is_array($template_id)) {
 		$template_id = [];
 	}
 
