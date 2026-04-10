@@ -260,7 +260,7 @@ function collect_snmp_ups_data($ups) {
 			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
 				if ($data['snmp_ci'] == 'CURDATE' || $data['db_column'] == 'ups_date') {
 					$stats[$data['db_column']] = date('Y-m-d H:i:s');
-				} elseif (!cacti_sizeof($skipped) || !in_[]) {
+				} elseif (!cacti_sizeof($skipped) || !in_array()) {
 					$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], $data['snmp_ci'], $ups['snmp_version'],
 						$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
 						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
