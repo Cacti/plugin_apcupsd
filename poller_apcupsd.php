@@ -89,7 +89,7 @@ if (cacti_sizeof($parms)) {
 
 print 'NOTE: APCUPSD Poller Process Starting.' . PHP_EOL;
 
-$host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', []);
+$host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array($hash));
 $add_devices = true;
 
 if (empty($host_template_id)) {
@@ -103,7 +103,7 @@ $upses = db_fetch_assoc_prepared('SELECT ups.*
 	WHERE type_id = 1
 	AND enabled = "on"
 	AND poller_id = ?',
-	[]);
+	array($config['poller_id']));
 
 $apcupsd = cacti_sizeof($upses);
 
@@ -116,7 +116,7 @@ if ($apcupsd > 0) {
 		collect_ups_data($ups);
 
 		if ($ups['host_id'] > 0) {
-			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', []);
+			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', array($ups['host_id']));
 
 			if (!$exists) {
 				$ups['host_id'] = 0;
@@ -137,7 +137,7 @@ $upses = db_fetch_assoc_prepared('SELECT *
 	WHERE type_id = 2
 	AND enabled = "on"
 	AND poller_id = ?',
-	[]);
+	array($config['poller_id']));
 
 $snmpupses = cacti_sizeof($upses);
 
@@ -150,7 +150,7 @@ if ($snmpupses > 0) {
 		$ups_up = collect_snmp_ups_data($ups);
 
 		if ($ups['host_id'] > 0) {
-			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', []);
+			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', array($ups['host_id']));
 
 			if (!$exists) {
 				$ups['host_id'] = 0;
@@ -179,7 +179,7 @@ cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
 set_config_option('stats_apcupsd', $cacti_stats);
 
 function add_ups_device($ups, $host_template_id, $force_up = false) {
-	$save = [];
+	$save = array();
 
 	if ($ups['type_id'] == 1) {
 		$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
@@ -199,7 +199,7 @@ function add_ups_device($ups, $host_template_id, $force_up = false) {
 			$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
 
 		if ($force_up && $host_id) {
-			db_execute_prepared('UPDATE host SET status = 3 WHERE id = ?', []);
+			db_execute_prepared('UPDATE host SET status = 3 WHERE id = ?', array($host_id));
 		}
 	}
 
@@ -207,7 +207,7 @@ function add_ups_device($ups, $host_template_id, $force_up = false) {
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET host_id = ?
 			WHERE id = ?',
-			[]);
+			array($host_id, $ups['id']));
 
 		automation_update_device($host_id);
 	}
@@ -217,7 +217,7 @@ function collect_snmp_ups_data($ups) {
 	global $ups_database, $snmp_error;
 
 	$start = time();
-	$save  = [];
+	$save  = array();
 
 	$save['ups_id']       = $ups['id'];
 	$save['ups_date']     = date('Y-m-d H:i:s');
@@ -230,7 +230,7 @@ function collect_snmp_ups_data($ups) {
 	if ($ups['snmp_skipped'] != '') {
 		$skipped = explode(',', $ups['snmp_skipped']);
 	} else {
-		$skipped = [];
+		$skipped = array();
 	}
 
 	$return_val = false;
@@ -249,18 +249,18 @@ function collect_snmp_ups_data($ups) {
 	if ($value > 0) {
 		/* UPS just came back up, retest possible snmp columns */
 		if (!$ups_down) {
-			$skipped = [];
+			$skipped = array();
 		}
 
 		$return_val = true;
 
-		db_execute_prepared('UPDATE apcupsd_ups SET status = 3, last_updated=NOW() WHERE id = ?', []);
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 3, last_updated=NOW() WHERE id = ?', array($ups['id']));
 
 		foreach($ups_database AS $key => $data) {
 			if (isset($data['snmp_ci']) && $data['snmp_ci'] != '' && $data['snmp_ci'] != 'NA' && $data['snmp_ci'] != 'UNKNOWN') {
 				if ($data['snmp_ci'] == 'CURDATE' || $data['db_column'] == 'ups_date') {
 					$stats[$data['db_column']] = date('Y-m-d H:i:s');
-				} elseif (!cacti_sizeof($skipped) || !in_array()) {
+				} elseif (!cacti_sizeof($skipped) || !in_array($key, $skipped, true)) {
 					$value = cacti_snmp_get($ups['hostname'], $ups['snmp_community'], $data['snmp_ci'], $ups['snmp_version'],
 						$ups['snmp_username'], $ups['snmp_password'], $ups['snmp_auth_protocol'], $ups['snmp_priv_passphrase'],
 						$ups['snmp_priv_protocol'], $ups['snmp_context'], $ups['snmp_port'], $ups['snmp_timeout'], 1, 'SNMP',
@@ -330,10 +330,10 @@ function collect_snmp_ups_data($ups) {
 		if (cacti_sizeof($skipped)) {
 			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = ? WHERE id = ?', array(implode(',', $skipped), $ups['id']));
 		} else {
-			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE id = ?', []);
+			db_execute_prepared('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE id = ?', array($ups['id']));
 		}
 	} else {
-		db_execute_prepared('UPDATE apcupsd_ups SET status = 1, snmp_skipped = "" WHERE id = ?', []);
+		db_execute_prepared('UPDATE apcupsd_ups SET status = 1, snmp_skipped = "" WHERE id = ?', array($ups['id']));
 	}
 
 	$save['ups_end_rec'] = date('Y-m-d H:i:s');
@@ -347,7 +347,11 @@ function collect_ups_data($ups) {
 	global $ups_database;
 
 	/* for windows, apcupsd.exe must be in the path */
-	$paths = [];
+	$paths = array(
+		'/usr/sbin/',
+		'/usr/bin/',
+		'/usr/local/bin/'
+	);
 
 	$found_path = '';
 
@@ -361,7 +365,7 @@ function collect_ups_data($ups) {
 
 	$command = $found_path . 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
 
-	$output = [];
+	$output = array();
 	$return = 0;
 
 	$ups_status = 1;
@@ -374,7 +378,7 @@ function collect_ups_data($ups) {
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
 			WHERE id = ?',
-			[]);
+			array($message, $ups['id']));
 	} else {
 		if (cacti_sizeof($output)) {
 			$sql_insert   = 'REPLACE INTO apcupsd_ups_stats (ups_id';
@@ -399,19 +403,19 @@ function collect_ups_data($ups) {
 						$status = db_fetch_cell_prepared('SELECT status
 							FROM host
 							WHERE id = ?',
-							[]);
+							array($ups['host_id']));
 
 						if ($value == 'ONLINE' || $value == 'ONLINE SLAVE') {
 							$ups_status = 3;
 
 							if ($status != 3) {
-								db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', []);
+								db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', array($ups['host_id']));
 							}
 						} else {
 							$ups_status = 1;
 
 							if ($status != 4) {
-								db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', []);
+								db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', array($ups['host_id']));
 							}
 						}
 					}
@@ -430,7 +434,7 @@ function collect_ups_data($ups) {
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = ?, last_updated=NOW()
 			WHERE id = ?',
-			[]);
+			array($ups_status, $ups['id']));
 	}
 }
 
