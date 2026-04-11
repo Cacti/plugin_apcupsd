@@ -27,6 +27,7 @@ require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
+require_once(__DIR__ . '/apcupsd_functions.php');
 require_once(__DIR__ . '/ui_helpers.php');
 
 $ups_actions = array(
@@ -175,21 +176,13 @@ switch (get_request_var('action')) {
 
 		break;
     case 'ajax_hosts':
-        $sql_where = '';
-        if (get_request_var('site_id') > 0) {
-            $sql_where = 'site_id = ' . get_request_var('site_id');
-        }
-
-        get_allowed_ajax_hosts(false, false, $sql_where);
+        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+        get_allowed_ajax_hosts(false, false, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
         break;
     case 'ajax_hosts_noany':
-        $sql_where = '';
-        if (get_request_var('site_id') > 0) {
-            $sql_where = 'site_id = ' . get_request_var('site_id');
-        }
-
-        get_allowed_ajax_hosts(false, true, $sql_where);
+        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+        get_allowed_ajax_hosts(false, true, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
         break;
 	case 'ajax_locations':
@@ -201,7 +194,7 @@ switch (get_request_var('action')) {
 			FROM mysql.time_zone_name
 			WHERE Name LIKE ?
 			ORDER BY Name
-			LIMIT ' . read_config_option('autocomplete_rows'),
+			LIMIT ' . apcupsd_get_autocomplete_rows_limit(read_config_option('autocomplete_rows')),
 			array('%' . get_nfilter_request_var('term') . '%')));
 
 		break;
@@ -228,7 +221,7 @@ function form_save() {
 		$save['type_id']      = form_input_validate(get_nfilter_request_var('type_id'), 'type_id', '', true, 3);
 		$save['name']         = form_input_validate(get_nfilter_request_var('name'), 'name', '', false, 3);
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
-		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '', true, 3);
+		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '^[0-9]+$', true, 3);
 
 		if ($save['type_id'] == 1) {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
@@ -236,7 +229,7 @@ function form_save() {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('snmp_hostname'), 'snmp_hostname', '', true, 3);
 		}
 
-		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '', true, 3);
+		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '^[0-9]+$', true, 3);
 		$save['enabled']      = isset_request_var('enabled') ? 'on':'';
 
 		$save['snmp_version']   = form_input_validate(get_nfilter_request_var('snmp_version'), 'snmp_version', '', true, 3);
@@ -250,7 +243,7 @@ function form_save() {
 		$save['snmp_context']         = form_input_validate(get_nfilter_request_var('snmp_context'), 'snmp_context', '', true, 3);
 		$save['snmp_engine_id']       = form_input_validate(get_nfilter_request_var('snmp_engine_id'), 'snmp_engine_id', '', true, 3);
 
-		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '', true, 3);
+		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '^[0-9]+$', true, 3);
 		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
 		if ($save['host_id'] > 0) {
