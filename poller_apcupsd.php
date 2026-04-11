@@ -39,6 +39,7 @@ require_once($config['base_path'] . '/lib/snmp.php');
 require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
 include('./plugins/apcupsd/database.php');
+require_once('./plugins/apcupsd/apcupsd_functions.php');
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
@@ -363,12 +364,21 @@ function collect_ups_data($ups) {
 		}
 	}
 
-	$command = $found_path . 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
+	$command = apcupsd_build_apcaccess_command($found_path . 'apcaccess', $ups['hostname'], $ups['port']);
 
 	$output = array();
 	$return = 0;
 
 	$ups_status = 1;
+
+	if ($command === false) {
+		db_execute_prepared('UPDATE apcupsd_ups
+			SET status = 1, error_message = ?
+			WHERE id = ?',
+			array(__('Invalid apcupsd hostname or port configuration', 'apcupsd'), $ups['id']));
+
+		return 1;
+	}
 
 	$results = exec($command, $output, $return);
 
@@ -464,4 +474,3 @@ function display_help() {
 	print "usage: \n";
 	print "poller_apcups.php [--force] [--debug]\n";
 }
-
