@@ -927,7 +927,7 @@ function upses() {
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
 			form_selectable_ecell(checkNullandReturn($ups['ups_load_percent']), $ups['id'], '', 'right');
-			form_selectable_ecell(round($ups['ups_timeleft'],2), $ups['id'], '', 'right');
+			form_selectable_ecell(round((float) $ups['ups_timeleft'],2), $ups['id'], '', 'right');
 
 			if ($ups['type_id'] == 1) {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');
