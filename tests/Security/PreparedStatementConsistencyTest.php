@@ -14,8 +14,9 @@
 
 describe('prepared statement consistency in apcupsd', function () {
 	it('uses prepared DB helpers in migrated plugin files', function () {
-		// setup.php and upses.php still carry pre-migration DDL/literal SQL
-		// calls; only the fully migrated files are held to this contract.
+		// setup.php and upses.php are not yet migrated to the prepared DB
+		// helpers (tracked separately in #18); only the fully migrated
+		// files are held to this contract until that lands.
 		$targetFiles = array(
 		'database.php',
 		'poller_apcupsd.php',
