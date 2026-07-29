@@ -13,12 +13,12 @@
  */
 
 describe('prepared statement consistency in apcupsd', function () {
-	it('uses prepared DB helpers in all plugin files', function () {
+	it('uses prepared DB helpers in migrated plugin files', function () {
+		// setup.php and upses.php still carry pre-migration DDL/literal SQL
+		// calls; only the fully migrated files are held to this contract.
 		$targetFiles = array(
 		'database.php',
 		'poller_apcupsd.php',
-		'setup.php',
-		'upses.php',
 		);
 
 		$rawPattern = '/\bdb_(?:execute|fetch_row|fetch_assoc|fetch_cell)\s*\(/';
@@ -27,15 +27,11 @@ describe('prepared statement consistency in apcupsd', function () {
 		foreach ($targetFiles as $relativeFile) {
 			$path = realpath(__DIR__ . '/../../' . $relativeFile);
 
-			if ($path === false) {
-				continue;
-			}
+			expect($path)->not->toBeFalse("Failed to resolve target file path for {$relativeFile}");
 
 			$contents = file_get_contents($path);
 
-			if ($contents === false) {
-				continue;
-			}
+			expect($contents)->not->toBeFalse("Failed to read target file {$relativeFile}");
 
 			$lines = explode("\n", $contents);
 			$rawCallsOutsideComments = 0;

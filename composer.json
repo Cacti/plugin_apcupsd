@@ -3,7 +3,7 @@
     "description": "plugin_apcupsd plugin for Cacti",
     "license": "GPL-2.0-or-later",
     "require-dev": {
-        "pestphp/pest": "^1.23"
+        "pestphp/pest": "^2.0"
     },
     "config": {
         "allow-plugins": {
