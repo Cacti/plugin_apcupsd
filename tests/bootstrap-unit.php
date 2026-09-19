@@ -203,18 +203,6 @@ if (!function_exists('cacti_sizeof')) {
 	}
 }
 
-if (!function_exists('cacti_escapeshellcmd')) {
-	function cacti_escapeshellcmd($string) {
-		return escapeshellcmd((string) $string);
-	}
-}
-
-if (!function_exists('cacti_escapeshellarg')) {
-	function cacti_escapeshellarg($string) {
-		return escapeshellarg((string) $string);
-	}
-}
-
 if (!function_exists('is_realm_allowed')) {
 	function is_realm_allowed($realm) {
 		return true;
