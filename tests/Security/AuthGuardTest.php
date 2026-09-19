@@ -9,8 +9,9 @@
 
 describe('auth guard presence in apcupsd', function () {
 	it('includes auth.php or global.php in all UI entry points', function () {
+		// apcupsd_functions.php/setup.php/ui_helpers.php are library/setup
+		// files loaded by the real entry point, not pages served directly.
 		$uiFiles = array(
-		'tests/test_prepared_statements.php',
 		'upses.php',
 		);
 
@@ -38,7 +39,9 @@ describe('auth guard presence in apcupsd', function () {
 
 	it('validates numeric IDs from request variables before DB queries', function () {
 		$uiFiles = array(
-		'tests/test_prepared_statements.php',
+		'apcupsd_functions.php',
+		'setup.php',
+		'ui_helpers.php',
 		'upses.php',
 		);
 
@@ -49,7 +52,7 @@ describe('auth guard presence in apcupsd', function () {
 			if ($contents === false) continue;
 
 			// Check for get_filter_request_var usage for numeric IDs
-			if (preg_match('/get_request_var\s*\(\s*['"]id['"]/', $contents)) {
+			if (preg_match('/get_request_var\s*\(\s*[\'"]id[\'"]/', $contents)) {
 				// Should use get_filter_request_var for 'id' params
 				$hasFilter = (
 					strpos($contents, 'get_filter_request_var') !== false ||

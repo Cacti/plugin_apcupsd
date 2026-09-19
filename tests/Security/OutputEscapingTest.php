@@ -10,7 +10,9 @@
 describe('output escaping in apcupsd', function () {
 	it('does not interpolate raw variables into HTML attributes', function () {
 		$uiFiles = array(
-		'tests/test_prepared_statements.php',
+		'apcupsd_functions.php',
+		'setup.php',
+		'ui_helpers.php',
 		'upses.php',
 		);
 
@@ -47,7 +49,9 @@ describe('output escaping in apcupsd', function () {
 
 	it('uses html_escape or __esc for user-controlled output', function () {
 		$uiFiles = array(
-		'tests/test_prepared_statements.php',
+		'apcupsd_functions.php',
+		'setup.php',
+		'ui_helpers.php',
 		'upses.php',
 		);
 

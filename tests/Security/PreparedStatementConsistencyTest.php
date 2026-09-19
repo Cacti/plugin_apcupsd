@@ -11,7 +11,6 @@ describe('prepared statement consistency in apcupsd', function () {
 	it('uses prepared DB helpers in all plugin files', function () {
 		$targetFiles = array(
 		'setup.php',
-		'tests/test_prepared_statements.php',
 		'upses.php',
 		);
 
@@ -42,7 +41,6 @@ describe('prepared statement consistency in apcupsd', function () {
 	it('uses parameterized placeholders not string interpolation in SQL', function () {
 		$targetFiles = array(
 		'setup.php',
-		'tests/test_prepared_statements.php',
 		'upses.php',
 		);
 
