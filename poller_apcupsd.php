@@ -283,7 +283,9 @@ function collect_snmp_ups_data($ups) {
 
 								debug("------------ $prevalue ---- $value");
 							} else {
-								cacti_log("WARNING: SNMP Value from UPS Returns invalid ENUM values of $value, Setting Skipped", false, 'APCUPSD');
+								if ($value != '') { // log if $value is not empty string
+									cacti_log("WARNING: SNMP Value from UPS {$ups['name']} hostname {$ups['hostname']}, for key $key, for OID {$data['snmp_ci']} returns invalid ENUM value of $value, setting skipped", false, 'APCUPSD');
+								}
 								$skipped[] = $key;
 							}
 						}
