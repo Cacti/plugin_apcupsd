@@ -7,6 +7,16 @@
  +-------------------------------------------------------------------------+
  */
 
+if (!defined('APCUPSD_HOST_TEMPLATE_HASH')) {
+	define('APCUPSD_HOST_TEMPLATE_HASH', '2107af603fd8dc27ea3f2cc2234eb7b9');
+}
+
+if (!function_exists('apcupsd_host_template_imported')) {
+	function apcupsd_host_template_imported() {
+		return (bool) db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array(APCUPSD_HOST_TEMPLATE_HASH));
+	}
+}
+
 if (!function_exists('apcupsd_normalize_positive_int')) {
 	function apcupsd_normalize_positive_int($value, $default = 0) {
 		if (is_int($value)) {

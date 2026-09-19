@@ -50,7 +50,6 @@ global $debug, $start, $force;
 $debug = false;
 $force = false;
 $start = microtime(true);
-$hash  = '2107af603fd8dc27ea3f2cc2234eb7b9';
 
 if (cacti_sizeof($parms)) {
 	foreach($parms as $parameter) {
@@ -90,11 +89,10 @@ if (cacti_sizeof($parms)) {
 
 print 'NOTE: APCUPSD Poller Process Starting.' . PHP_EOL;
 
-$host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array($hash));
 $add_devices = true;
 
-if (empty($host_template_id)) {
-	cacti_log('WARNING: UPSD Device Package Not Imported.  Device automation will not happen until it is imported!', false, 'APCUPSD');
+if (!apcupsd_host_template_imported()) {
+	cacti_log('NOTE: UPSD Device Package Not Imported.  Device automation will not happen until it is imported!', false, 'APCUPSD');
 	$add_devices = false;
 }
 

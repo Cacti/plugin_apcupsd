@@ -604,6 +604,10 @@ function ups_edit() {
 function upses() {
 	global $ups_actions, $item_rows, $config;
 
+	if (!apcupsd_host_template_imported()) {
+		raise_message('apcupsd_template_missing', __('The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!', 'apcupsd'), MESSAGE_LEVEL_ERROR);
+	}
+
 	/* ================= input validation and session storage ================= */
 	$filters = array(
 		'rows' => array(
