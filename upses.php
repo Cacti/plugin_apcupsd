@@ -346,6 +346,7 @@ function form_save() {
 		}
 
 		header('Location: upses.php?header=false&action=edit&id=' . (empty($ups_id) ? get_nfilter_request_var('id') : $ups_id));
+		exit;
 	}
 }
 

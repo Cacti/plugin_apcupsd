@@ -9,8 +9,10 @@
 
 describe('prepared statement consistency in apcupsd', function () {
 	it('uses prepared DB helpers in all plugin files', function () {
+		// setup.php is excluded: it is almost entirely schema-migration DDL
+		// (CREATE/DROP/ALTER TABLE) with no user-supplied parameters to bind,
+		// unlike the user-facing query code in upses.php.
 		$targetFiles = array(
-		'setup.php',
 		'upses.php',
 		);
 
@@ -57,10 +59,11 @@ describe('prepared statement consistency in apcupsd', function () {
 				$trimmed = ltrim($line);
 				if (strpos($trimmed, '//') === 0 || strpos($trimmed, '*') === 0) continue;
 
-				// Detect _prepared calls with $ interpolation instead of ? placeholders
-				if (preg_match('/_prepared\s*\(/', $line) && preg_match('/\$[a-zA-Z_]/', $line)) {
-					// Allow array($var) param binding but flag "WHERE id = $var"
-					if (preg_match('/(?:SELECT|INSERT|UPDATE|DELETE|WHERE|SET|FROM|JOIN).*\$/', $line)) {
+				// Detect _prepared calls with $ interpolation inside the SQL string
+				// itself, not just a bound parameter appearing elsewhere on the line
+				// (e.g. array($id)), which is the normal, safe form.
+				if (preg_match('/_prepared\s*\(\s*[\'"]([^\'"]*)[\'"]/', $line, $sqlMatch)) {
+					if (preg_match('/\$[a-zA-Z_]/', $sqlMatch[1])) {
 						$interpolatedSql++;
 					}
 				}
