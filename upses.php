@@ -27,6 +27,8 @@ require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
+require_once(__DIR__ . '/apcupsd_functions.php');
+require_once(__DIR__ . '/ui_helpers.php');
 
 $ups_actions = array(
 	1 => __('Delete', 'apcupsd'),
@@ -174,21 +176,13 @@ switch (get_request_var('action')) {
 
 		break;
     case 'ajax_hosts':
-        $sql_where = '';
-        if (get_request_var('site_id') > 0) {
-            $sql_where = 'site_id = ' . get_request_var('site_id');
-        }
-
-        get_allowed_ajax_hosts(false, false, $sql_where);
+        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+        get_allowed_ajax_hosts(false, false, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
         break;
     case 'ajax_hosts_noany':
-        $sql_where = '';
-        if (get_request_var('site_id') > 0) {
-            $sql_where = 'site_id = ' . get_request_var('site_id');
-        }
-
-        get_allowed_ajax_hosts(false, true, $sql_where);
+        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+        get_allowed_ajax_hosts(false, true, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
         break;
 	case 'ajax_locations':
@@ -200,23 +194,15 @@ switch (get_request_var('action')) {
 			FROM mysql.time_zone_name
 			WHERE Name LIKE ?
 			ORDER BY Name
-			LIMIT ' . read_config_option('autocomplete_rows'),
+			LIMIT ' . apcupsd_get_autocomplete_rows_limit(read_config_option('autocomplete_rows')),
 			array('%' . get_nfilter_request_var('term') . '%')));
 
 		break;
 	case 'edit':
-		top_header();
-
-		ups_edit();
-
-		bottom_footer();
+		apcupsd_render_with_layout('ups_edit');
 		break;
 	default:
-		top_header();
-
-		upses();
-
-		bottom_footer();
+		apcupsd_render_with_layout('upses');
 		break;
 }
 
@@ -235,7 +221,7 @@ function form_save() {
 		$save['type_id']      = form_input_validate(get_nfilter_request_var('type_id'), 'type_id', '', true, 3);
 		$save['name']         = form_input_validate(get_nfilter_request_var('name'), 'name', '', false, 3);
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
-		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '', true, 3);
+		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '^[0-9]+$', true, 3);
 
 		if ($save['type_id'] == 1) {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
@@ -243,7 +229,7 @@ function form_save() {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('snmp_hostname'), 'snmp_hostname', '', true, 3);
 		}
 
-		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '', true, 3);
+		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '^[0-9]+$', true, 3);
 		$save['enabled']      = isset_request_var('enabled') ? 'on':'';
 
 		$save['snmp_version']   = form_input_validate(get_nfilter_request_var('snmp_version'), 'snmp_version', '', true, 3);
@@ -257,7 +243,7 @@ function form_save() {
 		$save['snmp_context']         = form_input_validate(get_nfilter_request_var('snmp_context'), 'snmp_context', '', true, 3);
 		$save['snmp_engine_id']       = form_input_validate(get_nfilter_request_var('snmp_engine_id'), 'snmp_engine_id', '', true, 3);
 
-		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '', true, 3);
+		$save['snmp_port']            = form_input_validate(get_nfilter_request_var('snmp_port'), 'snmp_port', '^[0-9]+$', true, 3);
 		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
 		if ($save['host_id'] > 0) {
@@ -360,6 +346,7 @@ function form_save() {
 		}
 
 		header('Location: upses.php?header=false&action=edit&id=' . (empty($ups_id) ? get_nfilter_request_var('id') : $ups_id));
+		exit;
 	}
 }
 
@@ -417,13 +404,21 @@ function form_actions() {
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
-		if ($selected_items != false) {
+		if ($selected_items != false && cacti_sizeof($selected_items)) {
+			$selected_items        = array_values($selected_items);
+			$selected_placeholders = implode(',', array_fill(0, cacti_sizeof($selected_items), '?'));
+
 			if (get_nfilter_request_var('drp_action') == '1') { /* delete */
-				db_execute('DELETE FROM apcupsd_ups WHERE ' . array_to_sql_or($selected_items, 'id'));
+				db_execute_prepared("DELETE FROM apcupsd_ups
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
 			} elseif (get_nfilter_request_var('drp_action') == '2') { /* Duplicate */
 				duplicate_ups($selected_items, get_nfilter_request_var('ups_name'));
 			} elseif (get_nfilter_request_var('drp_action') == '3') { /* Reset Detection */
-				db_execute('UPDATE apcupsd_ups SET snmp_skipped = "" WHERE ' . array_to_sql_or($selected_items, 'id'));
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET snmp_skipped = ''
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
 			}
 		}
 
@@ -609,6 +604,10 @@ function ups_edit() {
 function upses() {
 	global $ups_actions, $item_rows, $config;
 
+	if (!apcupsd_host_template_imported()) {
+		raise_message('apcupsd_template_missing', __('The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!', 'apcupsd'), MESSAGE_LEVEL_ERROR);
+	}
+
 	/* ================= input validation and session storage ================= */
 	$filters = array(
 		'rows' => array(
@@ -680,11 +679,12 @@ function upses() {
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$sites = array_rekey(
-								db_fetch_assoc('SELECT s.id, s.name
+								db_fetch_assoc_prepared('SELECT s.id, s.name
 									FROM sites AS s
 									INNER JOIN apcupsd_ups AS u
 									ON s.id = u.site_id
-									ORDER BY name'),
+									ORDER BY s.name',
+									array()),
 								'id', 'name'
 							);
 
@@ -705,11 +705,12 @@ function upses() {
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
 							<?php
 							$locations = array_rekey(
-								db_fetch_assoc('SELECT DISTINCT h.location AS id, h.location AS name
+								db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
 									FROM host AS h
 									INNER JOIN apcupsd_ups AS u
 									ON h.id = u.host_id
-									ORDER BY h.location'),
+									ORDER BY h.location',
+									array()),
 								'id', 'name'
 							);
 
@@ -927,7 +928,7 @@ function upses() {
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
 			form_selectable_ecell(checkNullandReturn($ups['ups_load_percent']), $ups['id'], '', 'right');
-			form_selectable_ecell(round($ups['ups_timeleft'],2), $ups['id'], '', 'right');
+			form_selectable_ecell(round((float)($ups['ups_timeleft'] ?? 0), 2), $ups['id'], '', 'right');
 
 			if ($ups['type_id'] == 1) {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');

@@ -39,6 +39,7 @@ require_once($config['base_path'] . '/lib/snmp.php');
 require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
 include('./plugins/apcupsd/database.php');
+require_once('./plugins/apcupsd/apcupsd_functions.php');
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
@@ -49,7 +50,6 @@ global $debug, $start, $force;
 $debug = false;
 $force = false;
 $start = microtime(true);
-$hash  = '2107af603fd8dc27ea3f2cc2234eb7b9';
 
 if (cacti_sizeof($parms)) {
 	foreach($parms as $parameter) {
@@ -89,11 +89,10 @@ if (cacti_sizeof($parms)) {
 
 print 'NOTE: APCUPSD Poller Process Starting.' . PHP_EOL;
 
-$host_template_id = db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array($hash));
 $add_devices = true;
 
-if (empty($host_template_id)) {
-	cacti_log('WARNING: UPSD Device Package Not Imported.  Device automation will not happen until it is imported!', false, 'APCUPSD');
+if (!apcupsd_host_template_imported()) {
+	cacti_log('NOTE: UPSD Device Package Not Imported.  Device automation will not happen until it is imported!', false, 'APCUPSD');
 	$add_devices = false;
 }
 
@@ -283,7 +282,9 @@ function collect_snmp_ups_data($ups) {
 
 								debug("------------ $prevalue ---- $value");
 							} else {
-								cacti_log("WARNING: SNMP Value from UPS Returns invalid ENUM values of $value, Setting Skipped", false, 'APCUPSD');
+								if ($value != '') { // log if $value is not empty string
+									cacti_log("WARNING: SNMP Value from UPS {$ups['name']} hostname {$ups['hostname']}, for key $key, for OID {$data['snmp_ci']} returns invalid ENUM value of $value, setting skipped", false, 'APCUPSD');
+								}
 								$skipped[] = $key;
 							}
 						}
@@ -363,12 +364,21 @@ function collect_ups_data($ups) {
 		}
 	}
 
-	$command = $found_path . 'apcaccess -u -h ' . $ups['hostname'] . ':' . $ups['port'];
+	$command = apcupsd_build_apcaccess_command($found_path . 'apcaccess', $ups['hostname'], $ups['port']);
 
 	$output = array();
 	$return = 0;
 
 	$ups_status = 1;
+
+	if ($command === false) {
+		db_execute_prepared('UPDATE apcupsd_ups
+			SET status = 1, error_message = ?
+			WHERE id = ?',
+			array(__('Invalid apcupsd hostname or port configuration', 'apcupsd'), $ups['id']));
+
+		return 1;
+	}
 
 	$results = exec($command, $output, $return);
 
@@ -464,4 +474,3 @@ function display_help() {
 	print "usage: \n";
 	print "poller_apcups.php [--force] [--debug]\n";
 }
-

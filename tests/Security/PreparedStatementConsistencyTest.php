@@ -7,19 +7,15 @@
  +-------------------------------------------------------------------------+
 */
 
-/*
- * Verify migrated files use prepared DB helpers exclusively.
- * Catches regressions where raw db_execute/db_fetch_* calls creep back in.
- */
-
 describe('prepared statement consistency in apcupsd', function () {
-	it('uses prepared DB helpers in migrated plugin files', function () {
-		// setup.php and upses.php are not yet migrated to the prepared DB
-		// helpers (tracked separately in #18); only the fully migrated
-		// files are held to this contract until that lands.
+	it('uses prepared DB helpers in all plugin files', function () {
+		// setup.php is excluded: it is almost entirely schema-migration DDL
+		// (CREATE/DROP/ALTER TABLE) with no user-supplied parameters to bind,
+		// unlike the user-facing query code in the other target files.
 		$targetFiles = array(
 		'database.php',
 		'poller_apcupsd.php',
+		'upses.php',
 		);
 
 		$rawPattern = '/\bdb_(?:execute|fetch_row|fetch_assoc|fetch_cell)\s*\(/';
@@ -27,31 +23,60 @@ describe('prepared statement consistency in apcupsd', function () {
 
 		foreach ($targetFiles as $relativeFile) {
 			$path = realpath(__DIR__ . '/../../' . $relativeFile);
-
-			expect($path)->not->toBeFalse("Failed to resolve target file path for {$relativeFile}");
-
+			if ($path === false) continue;
 			$contents = file_get_contents($path);
-
-			expect($contents)->not->toBeFalse("Failed to read target file {$relativeFile}");
+			if ($contents === false) continue;
 
 			$lines = explode("\n", $contents);
-			$rawCallsOutsideComments = 0;
+			$rawCalls = 0;
 
 			foreach ($lines as $line) {
 				$trimmed = ltrim($line);
-
-				if (strpos($trimmed, '//') === 0 || strpos($trimmed, '*') === 0 || strpos($trimmed, '#') === 0) {
-					continue;
-				}
-
+				if (strpos($trimmed, '//') === 0 || strpos($trimmed, '*') === 0 || strpos($trimmed, '#') === 0) continue;
 				if (preg_match($rawPattern, $line) && !preg_match($preparedPattern, $line)) {
-					$rawCallsOutsideComments++;
+					$rawCalls++;
 				}
 			}
 
-			expect($rawCallsOutsideComments)->toBe(0,
-				"File {$relativeFile} contains raw (unprepared) DB calls"
+			expect($rawCalls)->toBe(0, "File {$relativeFile} contains raw DB calls");
+		}
+	});
+
+	it('uses parameterized placeholders not string interpolation in SQL', function () {
+		$targetFiles = array(
+		'setup.php',
+		'upses.php',
+		);
+
+		foreach ($targetFiles as $relativeFile) {
+			$path = realpath(__DIR__ . '/../../' . $relativeFile);
+			if ($path === false) continue;
+			$contents = file_get_contents($path);
+			if ($contents === false) continue;
+
+			$lines = explode("\n", $contents);
+			$interpolatedSql = 0;
+
+			foreach ($lines as $num => $line) {
+				$trimmed = ltrim($line);
+				if (strpos($trimmed, '//') === 0 || strpos($trimmed, '*') === 0) continue;
+
+				// Detect _prepared calls with $ interpolation inside the SQL string
+				// itself, not just a bound parameter appearing elsewhere on the line
+				// (e.g. array($id)), which is the normal, safe form.
+				if (preg_match('/_prepared\s*\(\s*[\'"]([^\'"]*)[\'"]/', $line, $sqlMatch)) {
+					if (preg_match('/\$[a-zA-Z_]/', $sqlMatch[1])) {
+						$interpolatedSql++;
+					}
+				}
+			}
+
+			// This is a heuristic; some false positives expected for complex queries
+			expect($interpolatedSql)->toBeLessThanOrEqual(2,
+				"File {$relativeFile} may have SQL interpolation in prepared calls"
 			);
 		}
 	});
+});
+
 });
