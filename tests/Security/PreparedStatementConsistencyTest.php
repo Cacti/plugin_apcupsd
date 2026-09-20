@@ -11,8 +11,10 @@ describe('prepared statement consistency in apcupsd', function () {
 	it('uses prepared DB helpers in all plugin files', function () {
 		// setup.php is excluded: it is almost entirely schema-migration DDL
 		// (CREATE/DROP/ALTER TABLE) with no user-supplied parameters to bind,
-		// unlike the user-facing query code in upses.php.
+		// unlike the user-facing query code in the other target files.
 		$targetFiles = array(
+		'database.php',
+		'poller_apcupsd.php',
 		'upses.php',
 		);
 
