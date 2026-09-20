@@ -78,5 +78,3 @@ describe('prepared statement consistency in apcupsd', function () {
 		}
 	});
 });
-
-});
