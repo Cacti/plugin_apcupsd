@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2025-07-13 14:12-0400\n"
+"POT-Creation-Date: 2026-09-21 13:13-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -274,348 +274,356 @@ msgstr ""
 msgid "Date, time of last transfer to battery since apcupsd startup"
 msgstr ""
 
+#: poller_apcupsd.php:378
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr ""
+
 #: setup.php:35
 msgid "Manage UPS's"
 msgstr ""
 
-#: setup.php:306
+#: setup.php:309
 msgid "Management"
 msgstr ""
 
-#: setup.php:306 upses.php:660 upses.php:725 upses.php:907
+#: setup.php:309 upses.php:659 upses.php:726 upses.php:908
 msgid "UPSes"
 msgstr ""
 
-#: setup.php:309
+#: setup.php:312
 msgid "System Administration"
 msgstr ""
 
-#: setup.php:338
+#: setup.php:345
 msgid "Manage UPSes"
 msgstr ""
 
-#: upses.php:32
+#: upses.php:34
 msgid "Delete"
 msgstr ""
 
-#: upses.php:33
+#: upses.php:35
 msgid "Duplicate"
 msgstr ""
 
-#: upses.php:34
+#: upses.php:36
 msgid "Reset Detection"
 msgstr ""
 
-#: upses.php:38
+#: upses.php:40
 msgid "APC UPSD Based"
 msgstr ""
 
-#: upses.php:39
+#: upses.php:41
 msgid "SNMP Based"
 msgstr ""
 
-#: upses.php:48
+#: upses.php:50
 msgid "UPS Information"
 msgstr ""
 
-#: upses.php:53 upses.php:834
+#: upses.php:55 upses.php:835
 msgid "UPS Name"
 msgstr ""
 
-#: upses.php:54
+#: upses.php:56
 msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
 msgstr ""
 
-#: upses.php:57
+#: upses.php:59
 msgid "New UPS"
 msgstr ""
 
-#: upses.php:62
+#: upses.php:64
 msgid "UPS Description"
 msgstr ""
 
-#: upses.php:63
+#: upses.php:65
 msgid "A more detailed Description of this UPS if required."
 msgstr ""
 
-#: upses.php:70
+#: upses.php:72
 msgid "UPS Type"
 msgstr ""
 
-#: upses.php:71
+#: upses.php:73
 msgid "The Type of UPS you are monitoring."
 msgstr ""
 
-#: upses.php:77
+#: upses.php:79
 msgid "Poller ID"
 msgstr ""
 
-#: upses.php:78
+#: upses.php:80
 msgid "The Poller that this UPS exists in is monitored by"
 msgstr ""
 
-#: upses.php:85
+#: upses.php:87
 msgid "Site Name"
 msgstr ""
 
-#: upses.php:86
+#: upses.php:88
 msgid "The Site that this UPS exists in."
 msgstr ""
 
-#: upses.php:89 upses.php:95 upses.php:105 upses.php:680 upses.php:705
-#: upses.php:1002
+#: upses.php:91 upses.php:97 upses.php:107 upses.php:679 upses.php:705
+#: upses.php:1003
 msgid "None"
 msgstr ""
 
-#: upses.php:93 upses.php:700
+#: upses.php:95 upses.php:700
 msgid "Location"
 msgstr ""
 
-#: upses.php:94
+#: upses.php:96
 msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
 msgstr ""
 
-#: upses.php:103
+#: upses.php:105
 msgid "Cacti Device"
 msgstr ""
 
-#: upses.php:104
+#: upses.php:106
 msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
 msgstr ""
 
-#: upses.php:109 upses.php:110
+#: upses.php:111 upses.php:112
 msgid "Autocreate on First Poll"
 msgstr ""
 
-#: upses.php:114 upses.php:894
+#: upses.php:116 upses.php:895
 msgid "Enabled"
 msgstr ""
 
-#: upses.php:115
+#: upses.php:117
 msgid "Check to immediately start polling for data."
 msgstr ""
 
-#: upses.php:121
+#: upses.php:123
 msgid "APC UPSD Information"
 msgstr ""
 
-#: upses.php:126 upses.php:147
+#: upses.php:128 upses.php:149
 msgid "Hostname"
 msgstr ""
 
-#: upses.php:127
+#: upses.php:129
 msgid "The hostname of the host running apcupsd."
 msgstr ""
 
-#: upses.php:134
+#: upses.php:136
 msgid "TCP Port"
 msgstr ""
 
-#: upses.php:135
+#: upses.php:137
 msgid "Enter the TCP Port for this UPS."
 msgstr ""
 
-#: upses.php:143
+#: upses.php:145
 msgid "SNMP Options"
 msgstr ""
 
-#: upses.php:148
+#: upses.php:150
 msgid "The hostname where the snmp agent is located."
 msgstr ""
 
-#: upses.php:400
+#: upses.php:387
 msgid "Template UPS was not found! Unable to duplicate."
 msgstr ""
 
-#: upses.php:463
+#: upses.php:458
 msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
 msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:468 upses.php:479 upses.php:489
+#: upses.php:463 upses.php:474 upses.php:484
 msgid "Cancel"
 msgstr ""
 
-#: upses.php:469 upses.php:480 upses.php:490
+#: upses.php:464 upses.php:475 upses.php:485
 msgid "Continue"
 msgstr ""
 
-#: upses.php:469
+#: upses.php:464
 msgid "Delete UPS"
 msgid_plural "Delete UPSes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:473
+#: upses.php:468
 msgid "Click 'Continue' to Duplicate the following UPS."
 msgid_plural "Click 'Continue' to Duplicate all following UPSes."
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:475
+#: upses.php:470
 msgid "UPS Name:"
 msgstr ""
 
-#: upses.php:480
+#: upses.php:475
 msgid "Duplicate UPS"
 msgid_plural "Duplicate UPSes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:484
+#: upses.php:479
 msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
 msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:490
+#: upses.php:485
 msgid "Reset UPS"
 msgid_plural "Reset UPSes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: upses.php:523
+#: upses.php:518
 #, php-format
 msgid "UPS [edit: %s]"
 msgstr ""
 
-#: upses.php:526
+#: upses.php:521
 msgid "UPS [new]"
 msgstr ""
 
-#: upses.php:669
+#: upses.php:608
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr ""
+
+#: upses.php:668
 msgid "Search"
 msgstr ""
 
-#: upses.php:675
+#: upses.php:674
 msgid "Site"
 msgstr ""
 
-#: upses.php:679 upses.php:704
+#: upses.php:678 upses.php:704
 msgid "All"
 msgstr ""
 
-#: upses.php:729
+#: upses.php:730
 msgid "Default"
 msgstr ""
 
-#: upses.php:741
+#: upses.php:742
 msgid "Go"
 msgstr ""
 
-#: upses.php:741
+#: upses.php:742
 msgid "Set/Refresh Filters"
 msgstr ""
 
-#: upses.php:742
+#: upses.php:743
 msgid "Clear"
 msgstr ""
 
-#: upses.php:742
+#: upses.php:743
 msgid "Clear Filters"
 msgstr ""
 
-#: upses.php:837
+#: upses.php:838
 msgid "The Name of this UPS."
 msgstr ""
 
-#: upses.php:840
+#: upses.php:841
 msgid "ID"
 msgstr ""
 
-#: upses.php:843
+#: upses.php:844
 msgid "The unique id associated with this UPS."
 msgstr ""
 
-#: upses.php:846
+#: upses.php:847
 msgid "Status"
 msgstr ""
 
-#: upses.php:849
+#: upses.php:850
 msgid "The Status of the apcupsd daemon on the target Host."
 msgstr ""
 
-#: upses.php:852
+#: upses.php:853
 msgid "Collector"
 msgstr ""
 
-#: upses.php:855
+#: upses.php:856
 msgid "The Type of Collector.  Currently APCUPSD and SNMP are supported."
 msgstr ""
 
-#: upses.php:858
+#: upses.php:859
 msgid "UPS Status"
 msgstr ""
 
-#: upses.php:861
+#: upses.php:862
 msgid "The Status of the monitored UPS on the target Host."
 msgstr ""
 
-#: upses.php:864
+#: upses.php:865
 msgid "UPS Model"
 msgstr ""
 
-#: upses.php:867
+#: upses.php:868
 msgid "The Model of the monitored UPS on the target Host."
 msgstr ""
 
-#: upses.php:870
+#: upses.php:871
 msgid "Line Voltage"
 msgstr ""
 
-#: upses.php:873
+#: upses.php:874
 msgid "The Line Voltage of the monitored UPS on the target Host."
 msgstr ""
 
-#: upses.php:876
+#: upses.php:877
 msgid "Load Percent"
 msgstr ""
 
-#: upses.php:879
+#: upses.php:880
 msgid "The Load Percent of the monitored UPS on the target Host."
 msgstr ""
 
-#: upses.php:882
+#: upses.php:883
 msgid "Time Left"
 msgstr ""
 
-#: upses.php:885
+#: upses.php:886
 msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
 msgstr ""
 
-#: upses.php:888
+#: upses.php:889
 msgid "Hostname:Port"
 msgstr ""
 
-#: upses.php:891
+#: upses.php:892
 msgid "The Hostname:Port that is running the apcupsd daemon."
 msgstr ""
 
-#: upses.php:897
+#: upses.php:898
 msgid "If this UPS is being monitored or not."
 msgstr ""
 
-#: upses.php:900
+#: upses.php:901
 msgid "Last Updated"
 msgstr ""
 
-#: upses.php:903
+#: upses.php:904
 msgid "The last time this UPS was samples or found up."
 msgstr ""
 
-#: upses.php:938
+#: upses.php:939
 msgid "No"
 msgstr ""
 
-#: upses.php:938
+#: upses.php:939
 msgid "Yes"
 msgstr ""
 
-#: upses.php:946
+#: upses.php:947
 msgid "No UPSes Found"
 msgstr ""
 
-#: upses.php:963
+#: upses.php:964
 msgid "Not Avail"
 msgstr ""
