@@ -79,6 +79,45 @@ $GLOBALS['config'] = array(
 
 $GLOBALS['debug']            = false;
 $GLOBALS['__test_db_calls']  = array();
+$GLOBALS['__test_db_fixtures'] = array();
+
+if (!function_exists('apcupsd_test_mock_db')) {
+	function apcupsd_test_mock_db($fn, $match, $result) {
+		$GLOBALS['__test_db_fixtures'][] = array('fn' => $fn, 'match' => $match, 'result' => $result);
+	}
+}
+
+if (!function_exists('apcupsd_test_reset_db_mocks')) {
+	function apcupsd_test_reset_db_mocks() {
+		$GLOBALS['__test_db_fixtures'] = array();
+	}
+}
+
+if (!function_exists('apcupsd_test_db_result')) {
+	function apcupsd_test_db_result($fn, $sql, $params, $default) {
+		foreach (array_reverse($GLOBALS['__test_db_fixtures']) as $fixture) {
+			if ($fixture['fn'] !== $fn) {
+				continue;
+			}
+
+			$match = $fixture['match'];
+
+			if (is_callable($match)) {
+				if (!$match($sql, $params)) {
+					continue;
+				}
+			} elseif (strpos($sql, $match) === false) {
+				continue;
+			}
+
+			$result = $fixture['result'];
+
+			return is_callable($result) ? $result($sql, $params) : $result;
+		}
+
+		return $default;
+	}
+}
 
 if (!function_exists('db_execute')) {
 	function db_execute($sql) {
@@ -98,37 +137,37 @@ if (!function_exists('db_execute_prepared')) {
 
 if (!function_exists('db_fetch_assoc')) {
 	function db_fetch_assoc($sql) {
-		return array();
+		return apcupsd_test_db_result('db_fetch_assoc', $sql, array(), array());
 	}
 }
 
 if (!function_exists('db_fetch_assoc_prepared')) {
 	function db_fetch_assoc_prepared($sql, $params = array()) {
-		return array();
+		return apcupsd_test_db_result('db_fetch_assoc_prepared', $sql, $params, array());
 	}
 }
 
 if (!function_exists('db_fetch_row')) {
 	function db_fetch_row($sql) {
-		return array();
+		return apcupsd_test_db_result('db_fetch_row', $sql, array(), array());
 	}
 }
 
 if (!function_exists('db_fetch_row_prepared')) {
 	function db_fetch_row_prepared($sql, $params = array()) {
-		return array();
+		return apcupsd_test_db_result('db_fetch_row_prepared', $sql, $params, array());
 	}
 }
 
 if (!function_exists('db_fetch_cell')) {
 	function db_fetch_cell($sql) {
-		return '';
+		return apcupsd_test_db_result('db_fetch_cell', $sql, array(), '');
 	}
 }
 
 if (!function_exists('db_fetch_cell_prepared')) {
 	function db_fetch_cell_prepared($sql, $params = array()) {
-		return '';
+		return apcupsd_test_db_result('db_fetch_cell_prepared', $sql, $params, '');
 	}
 }
 
@@ -156,15 +195,71 @@ if (!function_exists('api_plugin_db_table_create')) {
 	}
 }
 
+$GLOBALS['__test_registered_hooks'] = array();
+
 if (!function_exists('api_plugin_register_hook')) {
 	function api_plugin_register_hook($plugin, $hook, $function, $file, $subtype = '') {
+		$GLOBALS['__test_registered_hooks'][] = array(
+			'name'     => $plugin,
+			'hook'     => $hook,
+			'function' => $function,
+			'file'     => $file,
+		);
+
 		return true;
 	}
 }
 
+$GLOBALS['__test_registered_realms'] = array();
+
+if (!function_exists('api_plugin_register_realm')) {
+	function api_plugin_register_realm($name, $file, $description, $enabled) {
+		$GLOBALS['__test_registered_realms'][] = array(
+			'name'        => $name,
+			'file'        => $file,
+			'description' => $description,
+			'enabled'     => $enabled,
+		);
+
+		return true;
+	}
+}
+
+if (!function_exists('api_plugin_is_enabled')) {
+	function api_plugin_is_enabled($plugin) {
+		return true;
+	}
+}
+
+$GLOBALS['__test_enabled_hooks_calls'] = array();
+
+if (!function_exists('api_plugin_enable_hooks')) {
+	function api_plugin_enable_hooks($plugin) {
+		$GLOBALS['__test_enabled_hooks_calls'][] = $plugin;
+
+		return true;
+	}
+}
+
+if (!function_exists('isset_request_var')) {
+	function isset_request_var($name) {
+		return isset($GLOBALS['__test_request'][$name]);
+	}
+}
+
+/*
+ * replicate_out_table() is intentionally NOT stubbed here:
+ * apcupsd_replicate_out() require_once()s Cacti core's real lib/poller.php
+ * at call time, which unconditionally declares its own
+ * replicate_out_table() AND exec_background() (no function_exists() guard
+ * on either), so both apcupsd_replicate_out() and apcupsd_poller_bottom()
+ * are left uncovered by unit tests rather than exercised against stubs
+ * that can never actually load without a fatal redeclare.
+ */
+
 if (!function_exists('read_config_option')) {
 	function read_config_option($name, $force = false) {
-		return '';
+		return isset($GLOBALS['__test_config_options'][$name]) ? $GLOBALS['__test_config_options'][$name] : '';
 	}
 }
 
@@ -213,15 +308,31 @@ if (!function_exists('raise_message')) {
 	}
 }
 
+$GLOBALS['__test_config_options'] = array();
+
+if (!function_exists('test_set_config_option')) {
+	function test_set_config_option($name, $value) {
+		$GLOBALS['__test_config_options'][$name] = $value;
+	}
+}
+
+$GLOBALS['__test_request'] = array();
+
+if (!function_exists('test_set_request')) {
+	function test_set_request(array $vars) {
+		$GLOBALS['__test_request'] = $vars;
+	}
+}
+
 if (!function_exists('get_request_var')) {
 	function get_request_var($name) {
-		return '';
+		return isset($GLOBALS['__test_request'][$name]) ? $GLOBALS['__test_request'][$name] : '';
 	}
 }
 
 if (!function_exists('get_nfilter_request_var')) {
 	function get_nfilter_request_var($name) {
-		return '';
+		return isset($GLOBALS['__test_request'][$name]) ? $GLOBALS['__test_request'][$name] : '';
 	}
 }
 
