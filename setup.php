@@ -22,6 +22,15 @@
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * Installs the APCUPSD plugin: registers its Cacti hooks (config_arrays,
+ * config_settings, poller_bottom, draw_navigation_text, replicate_out),
+ * registers its upses.php realm, and creates its database tables. Invoked
+ * by Cacti's plugin architecture when an administrator installs this
+ * plugin from Console > Plugin Management.
+ *
+ * @return void
+ */
 function plugin_apcupsd_install() {
 	api_plugin_register_hook('apcupsd', 'config_arrays',        'apcupsd_config_arrays',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'config_settings',      'apcupsd_config_settings',      'setup.php');
@@ -37,6 +46,14 @@ function plugin_apcupsd_install() {
 	apcupsd_setup_table();
 }
 
+/**
+ * Uninstalls the APCUPSD plugin, dropping its apcupsd_ups and
+ * apcupsd_ups_stats tables. Invoked by Cacti's plugin architecture when
+ * an administrator uninstalls this plugin from Console > Plugin
+ * Management.
+ *
+ * @return bool Always returns true.
+ */
 function plugin_apcupsd_uninstall() {
 	db_execute('DROP TABLE IF EXISTS apcupsd_ups');
 	db_execute('DROP TABLE IF EXISTS apcupsd_ups_stats');
@@ -44,14 +61,47 @@ function plugin_apcupsd_uninstall() {
 	return true;
 }
 
+/**
+ * Verifies the plugin's configuration; currently a no-op placeholder.
+ * Invoked by Cacti's plugin architecture on relevant page loads.
+ *
+ * @return bool Always returns true.
+ */
 function plugin_apcupsd_check_config() {
 	return true;
 }
 
+/**
+ * Performs any schema/data migrations needed when upgrading to a newer
+ * version of this plugin; currently a no-op placeholder. Invoked by
+ * Cacti's plugin architecture when an installed plugin's version
+ * increases.
+ *
+ * @return bool Always returns true.
+ */
 function plugin_apcupsd_upgrade() {
 	return true;
 }
 
+/**
+ * Detects whether the installed plugin_config version differs from this
+ * plugin's INFO file version and, if so, re-enables its hooks (to pick
+ * up any newly added ones), updates the stored plugin_config record, and
+ * applies a handful of one-off apcupsd_ups_stats column migrations
+ * (renaming/adding columns from older releases). Only runs on
+ * plugins.php/upses.php. Called from apcupsd_config_arrays() on every
+ * relevant page load.
+ *
+ * @return void
+ *
+ * @global array  $config           Cacti global configuration array; used
+ *                                   to load database.php/functions.php.
+ * @global object $database_default Cacti's default database connection
+ *                                   handle (unused directly here;
+ *                                   declared for parity with other
+ *                                   database-touching functions in this
+ *                                   file).
+ */
 function apcupsd_check_upgrade() {
 	global $config, $database_default;
 	include_once($config['library_path'] . '/database.php');
@@ -100,6 +150,17 @@ function apcupsd_check_upgrade() {
 	}
 }
 
+/**
+ * Hook implementation for Cacti's 'poller_bottom' filter. Launches
+ * poller_apcupsd.php as a background process to poll all configured
+ * UPS devices. Called by Cacti's poller via
+ * api_plugin_hook('poller_bottom', ...) at the end of each polling cycle.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to locate
+ *                        the PHP binary and this plugin's poller script.
+ */
 function apcupsd_poller_bottom() {
 	global $config;
 
@@ -108,6 +169,22 @@ function apcupsd_poller_bottom() {
 	exec_background(read_config_option('path_php_binary'), ' -q ' . $config['base_path'] . '/plugins/apcupsd/poller_apcupsd.php');
 }
 
+/**
+ * Creates this plugin's apcupsd_ups (configured UPS devices) and
+ * apcupsd_ups_stats (polled UPS readings) database tables, if they don't
+ * already exist. Called from plugin_apcupsd_install() during plugin
+ * installation.
+ *
+ * @return bool Always returns true.
+ *
+ * @global array  $config           Cacti global configuration array;
+ *                                   used to load database.php.
+ * @global object $database_default Cacti's default database connection
+ *                                   handle (unused directly here;
+ *                                   declared for parity with other
+ *                                   database-touching functions in this
+ *                                   file).
+ */
 function apcupsd_setup_table() {
 	global $config, $database_default;
 	include_once($config['library_path'] . '/database.php');
@@ -264,12 +341,39 @@ function apcupsd_setup_table() {
 	return true;
 }
 
+/**
+ * Reads this plugin's INFO file and returns its [info] section. Used by
+ * Cacti's plugin architecture via the api_plugin_version hook, and
+ * internally by apcupsd_check_upgrade() and poller_apcupsd.php's
+ * display_version() to detect/report the plugin's version.
+ *
+ * @return array The parsed [info] section of the plugin's INFO file (keys
+ *               such as name, version, author, homepage, longname).
+ *
+ * @global array $config Cacti global configuration array; used to locate
+ *                        the plugin's base path.
+ */
 function plugin_apcupsd_version () {
 	global $config;
 	$info = parse_ini_file($config['base_path'] . '/plugins/apcupsd/INFO', true);
 	return $info['info'];
 }
 
+/**
+ * Determines whether the current request represents a "valid" auditable
+ * event for this plugin's logging purposes (e.g. a POST submission or a
+ * plugins.php mode change), excluding known noisy/irrelevant pages such
+ * as graph_view.php and the login/password pages. Used by Cacti core's
+ * auditing hook to decide whether to record an event for the current
+ * page load, when the 'apcupsd_enabled' setting is on.
+ *
+ * @return bool True when the current request should be logged as a
+ *              valid event.
+ *
+ * @global string $action Set to the detected action ('purge', or the
+ *                         plugins.php 'mode' value) for the caller to
+ *                         include in its log entry.
+ */
 function apcupsd_log_valid_event() {
 	global $action;
 
@@ -303,6 +407,19 @@ function apcupsd_log_valid_event() {
 	return $valid;
 }
 
+/**
+ * Hook implementation for Cacti's 'config_arrays' filter. Adds the
+ * "UPSes" entry under the Management section of Cacti's menu, augments
+ * the System Administration role with this plugin's page where
+ * supported, and triggers this plugin's upgrade check. Called by Cacti
+ * core via api_plugin_hook('config_arrays', ...) while building the
+ * navigation menu.
+ *
+ * @return void
+ *
+ * @global array $menu Cacti's main navigation menu array, extended here
+ *                      with this plugin's entry.
+ */
 function apcupsd_config_arrays() {
 	global $menu;
 
@@ -315,11 +432,46 @@ function apcupsd_config_arrays() {
 	apcupsd_check_upgrade();
 }
 
+/**
+ * Hook implementation for Cacti's 'config_settings' filter. Intended to
+ * register this plugin's Settings page tab/fields; currently a no-op
+ * (the function body is empty). Called by Cacti core via
+ * api_plugin_hook('config_settings', ...) while building the Settings
+ * page.
+ *
+ * @return void
+ *
+ * @global array $tabs                Cacti's registered Settings page
+ *                                     tabs (unused directly here).
+ * @global array $settings            Cacti's registered Settings page
+ *                                     fields (unused directly here).
+ * @global array $item_rows           Rows-per-page options offered by
+ *                                     Cacti core (unused directly here).
+ * @global array $apcupsd_retentions  Reserved for this plugin's data
+ *                                     retention options (unused directly
+ *                                     here).
+ */
 function apcupsd_config_settings () {
 	global $tabs, $settings, $item_rows, $apcupsd_retentions;
 
 }
 
+/**
+ * Hook implementation for Cacti's 'replicate_out' filter. Replicates this
+ * plugin's apcupsd_ups and apcupsd_ups_stats table contents out to a
+ * remote poller in a distributed Cacti setup. Called by Cacti core via
+ * api_plugin_hook('replicate_out', ...) during remote poller data
+ * replication.
+ *
+ * @param array $data The replication context, including 'rcnn_id' (the
+ *                     remote connection id) and 'remote_poller_id'.
+ *
+ * @return array The unmodified $data array (this hook does not modify
+ *               its payload).
+ *
+ * @global array $config Cacti global configuration array; used to load
+ *                        lib/poller.php.
+ */
 function apcupsd_replicate_out($data) {
 	global $config;
 
@@ -340,6 +492,18 @@ function apcupsd_replicate_out($data) {
 	return $data;
 }
 
+/**
+ * Hook implementation for Cacti's 'draw_navigation_text' filter. Adds a
+ * breadcrumb entry for upses.php's default view. Called by Cacti core
+ * via api_plugin_hook('draw_navigation_text', ...) while rendering the
+ * page breadcrumb trail.
+ *
+ * @param array $nav The existing breadcrumb map contributed by Cacti
+ *                    core and other plugins.
+ *
+ * @return array The $nav array with this plugin's breadcrumb entry
+ *               added.
+ */
 function apcupsd_draw_navigation_text($nav) {
 	$nav['upses.php:'] = array(
 		'title'   => __('Manage UPSes', 'apcupsd'),

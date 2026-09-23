@@ -214,6 +214,17 @@ switch (get_request_var('action')) {
     The Save Function
    -------------------------- */
 
+/**
+ * Validates and saves a single UPS record (name, type, poller, site,
+ * location, apcupsd/SNMP connection details) from the submitted edit
+ * form, and propagates name/location/site/SNMP-credential changes onto
+ * the UPS's linked Cacti device (including regenerating any dependent
+ * graph/data source titles when the name changes). Invoked from this
+ * file's dispatcher when the request's 'action' is 'save'.
+ *
+ * @return void Redirects back to the edit form for this UPS; does not
+ *              return a value.
+ */
 function form_save() {
 	if (isset_request_var('save_component_ups')) {
 		$save['id']           = get_filter_request_var('id');
@@ -350,6 +361,20 @@ function form_save() {
 	}
 }
 
+/**
+ * Creates one or more copies of an existing UPS record (by id), renaming
+ * each copy by substituting the '<ups>' placeholder in the given name
+ * pattern with the original UPS's name, while preserving all other
+ * configured settings. Called from form_actions() when the 'Duplicate'
+ * bulk action is confirmed.
+ *
+ * @param int|array $template_id The apcupsd_ups.id (or array of ids) to
+ *                                duplicate.
+ * @param string    $name        The new UPS name pattern, with '<ups>'
+ *                                replaced by the original UPS's name.
+ *
+ * @return void
+ */
 function duplicate_ups($template_id, $name) {
 	if (!is_array($template_id)) {
 		$template_id = array($template_id);
@@ -393,6 +418,21 @@ function duplicate_ups($template_id, $name) {
     The 'actions' function
    ------------------------ */
 
+/**
+ * Handles the bulk-actions form for the UPSes list (delete/duplicate/
+ * reset detection). On first display, renders the confirmation dialog
+ * listing the selected UPSes (with a name field for duplication); once
+ * confirmed, applies the chosen action to each selected row. Invoked
+ * from this file's dispatcher when the request's 'action' is 'actions'.
+ *
+ * @return void Either redirects back to this page after applying the
+ *              action, or prints the confirmation dialog and returns
+ *              nothing.
+ *
+ * @global array $ups_actions Map of bulk-action ids to their display
+ *                             labels, used for the confirmation dialog
+ *                             title.
+ */
 function form_actions() {
 	global $ups_actions;
 
@@ -506,6 +546,20 @@ function form_actions() {
 	bottom_footer();
 }
 
+/**
+ * Renders the add/edit form for a single UPS, pre-populating its fields
+ * (including the linked Cacti device's description/location) when
+ * editing an existing UPS, and wiring up the client-side JavaScript that
+ * toggles the apcupsd/SNMP-specific field groups based on the selected
+ * UPS type. Invoked from this file's dispatcher when the request's
+ * 'action' is 'edit'.
+ *
+ * @return void Outputs the edit form HTML and JavaScript directly.
+ *
+ * @global array $fields_ups_edit The edit form's field definitions,
+ *                                 populated here with the UPS's current
+ *                                 values.
+ */
 function ups_edit() {
 	global $fields_ups_edit;
 
@@ -601,6 +655,23 @@ function ups_edit() {
 	<?php
 }
 
+/**
+ * Renders the main UPSes list page: warns when the APCUPSD host template
+ * hasn't been imported yet, draws the search/filter toolbar, queries
+ * apcupsd_ups with the current filter/sort/pagination settings, and
+ * prints the paginated results table with each UPS's status. Invoked
+ * from this file's dispatcher for the default (no 'action') request.
+ *
+ * @return void Outputs the list page HTML directly.
+ *
+ * @global array $ups_actions Map of bulk-action ids to their display
+ *                             labels, used to populate the actions
+ *                             dropdown.
+ * @global array $item_rows   Rows-per-page options offered by Cacti core,
+ *                             used to populate the 'rows' select list.
+ * @global array $config      Cacti global configuration array; used
+ *                             throughout list rendering.
+ */
 function upses() {
 	global $ups_actions, $item_rows, $config;
 
@@ -959,6 +1030,16 @@ function upses() {
 	form_end();
 }
 
+/**
+ * Returns a display-friendly placeholder for a possibly-null UPS reading
+ * value. Called from upses()/ups_edit() while rendering UPS stat values
+ * that may not yet have been polled.
+ *
+ * @param mixed $value The value to check.
+ *
+ * @return mixed The localized 'Not Avail' string when $value is null;
+ *               otherwise $value unchanged.
+ */
 function checkNullandReturn($value) {
 	if ($value === null) {
 		return __('Not Avail', 'apcupsd');
@@ -967,6 +1048,16 @@ function checkNullandReturn($value) {
 	}
 }
 
+/**
+ * Returns Cacti host 'location' values matching an autocomplete search
+ * term as a JSON array, optionally restricted to the current device's
+ * site when the 'site_location_filter' setting is enabled. Invoked from
+ * this file's dispatcher when the request's 'action' is 'ajax_locations',
+ * used by the edit form's Location autocomplete field.
+ *
+ * @return void Outputs a JSON-encoded array of matching locations
+ *              directly.
+ */
 function get_site_locations() {
 	$return  = array();
 	$term    = get_nfilter_request_var('term');
