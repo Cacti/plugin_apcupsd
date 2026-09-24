@@ -15,8 +15,8 @@ if (!function_exists('apcupsd_host_template_imported')) {
 	/**
 	 * Determines whether this plugin's APC UPS Host Template has been
 	 * imported into Cacti, by looking up its well-known template hash.
-	 * Called from setup.php's install/upgrade flow to decide whether the
-	 * host template still needs importing.
+	 * Called from poller_apcupsd.php and upses.php to decide whether the
+	 * host template still needs importing before proceeding.
 	 *
 	 * @return bool True when a host_template row with this plugin's
 	 *               known hash exists.

@@ -145,7 +145,7 @@ function apcupsd_check_upgrade() {
 		}
 
 		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
-			db_execute('ALTER TABLE apcuspd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
+			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
 		}
 	}
 }

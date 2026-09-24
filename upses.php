@@ -370,8 +370,9 @@ function form_save() {
  *
  * @param int|array $template_id The apcupsd_ups.id (or array of ids) to
  *                                duplicate.
- * @param string    $name        The new UPS name pattern, with '<ups>'
- *                                replaced by the original UPS's name.
+ * @param string    $name        The new UPS name pattern; '<ups>' is a
+ *                                placeholder that this function replaces
+ *                                with the original UPS's name.
  *
  * @return void
  */
@@ -1032,7 +1033,7 @@ function upses() {
 
 /**
  * Returns a display-friendly placeholder for a possibly-null UPS reading
- * value. Called from upses()/ups_edit() while rendering UPS stat values
+ * value. Called from upses() while rendering the UPS list's stat values
  * that may not yet have been polled.
  *
  * @param mixed $value The value to check.
