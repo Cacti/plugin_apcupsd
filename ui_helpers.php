@@ -11,6 +11,16 @@
  */
 
 if (!function_exists('apcupsd_render_with_layout')) {
+	/**
+	 * Wraps a page-rendering callback with Cacti's standard top/bottom
+	 * page chrome (top_header()/bottom_footer()). Called from upses.php's
+	 * dispatcher for each of its list/edit page views.
+	 *
+	 * @param callable $renderer The callback that renders the page's
+	 *                           main content.
+	 *
+	 * @return void
+	 */
 	function apcupsd_render_with_layout($renderer) {
 		top_header();
 		call_user_func($renderer);

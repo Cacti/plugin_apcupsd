@@ -177,6 +177,24 @@ cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
 /* log to the database */
 set_config_option('stats_apcupsd', $cacti_stats);
 
+/**
+ * Creates a new Cacti device for a discovered UPS (apcaccess-based or
+ * SNMP-based, using the type-appropriate api_device_save() parameters),
+ * links it back to the apcupsd_ups row, and triggers device automation.
+ * Called from this script's main flow for each enabled UPS that doesn't
+ * yet have an associated host_id.
+ *
+ * @param array $ups               The apcupsd_ups row for the UPS being
+ *                                  added as a device.
+ * @param int   $host_template_id  The host template id to apply to the
+ *                                  new device.
+ * @param bool  $force_up          For SNMP-based UPSes, whether to force
+ *                                  the new device's status to Up
+ *                                  immediately after creation; defaults
+ *                                  to false.
+ *
+ * @return void
+ */
 function add_ups_device($ups, $host_template_id, $force_up = false) {
 	$save = array();
 
@@ -212,6 +230,29 @@ function add_ups_device($ups, $host_template_id, $force_up = false) {
 	}
 }
 
+/**
+ * Polls a single SNMP-based UPS by fetching each configured OID from the
+ * global $ups_database mapping, translating enum values, normalizing a
+ * few special columns (LASTSTEST, TIMELEFT/DLOWBATT, NOMPOWER/NOMOUTV),
+ * remembering OIDs that returned no data as 'skipped' for next time, and
+ * saving the resulting reading to apcupsd_ups_stats. Called from this
+ * script's main flow for each enabled SNMP-type UPS.
+ *
+ * @param array $ups The apcupsd_ups row for the UPS being polled.
+ *
+ * @return bool True when the UPS responded and a reading was recorded;
+ *              false when the UPS did not respond to the initial system
+ *              uptime probe.
+ *
+ * @global array  $ups_database Map of apcupsd/SNMP field keys to their
+ *                               db_column/snmp_ci/snmp_enum metadata,
+ *                               defined in database.php, used to drive
+ *                               which OIDs are polled and how they're
+ *                               stored.
+ * @global string $snmp_error   Reserved/declared for parity with other
+ *                               SNMP-polling functions; not used
+ *                               directly here.
+ */
 function collect_snmp_ups_data($ups) {
 	global $ups_database, $snmp_error;
 
@@ -344,6 +385,26 @@ function collect_snmp_ups_data($ups) {
 	return $return_val;
 }
 
+/**
+ * Polls a single apcaccess-based UPS by locating the apcaccess binary,
+ * running it against the UPS's configured hostname/port, and parsing its
+ * "KEY: value" output into apcupsd_ups_stats columns (per the global
+ * $ups_database mapping), also updating the UPS's linked host's up/down
+ * status based on the STATUS field. Called from this script's main flow
+ * for each enabled apcaccess-type UPS.
+ *
+ * @param array $ups The apcupsd_ups row for the UPS being polled.
+ *
+ * @return int|void Returns 1 when the apcaccess command could not be
+ *                   built (invalid hostname/port configuration); otherwise
+ *                   returns no explicit value after recording the
+ *                   reading or error message.
+ *
+ * @global array $ups_database Map of apcupsd field keys to their
+ *                              db_column metadata, defined in
+ *                              database.php, used to translate apcaccess
+ *                              output into database columns.
+ */
 function collect_ups_data($ups) {
 	global $ups_database;
 
@@ -448,6 +509,19 @@ function collect_ups_data($ups) {
 	}
 }
 
+/**
+ * Writes $string to standard output, prefixed with the current time and
+ * 'DEBUG:', when this script was invoked with the '-d'/'--debug' option.
+ * Called throughout this script's UPS-polling functions to trace
+ * progress.
+ *
+ * @param string $string The message to print when debugging is enabled.
+ *
+ * @return void
+ *
+ * @global bool $debug Whether debug output is enabled, set from this
+ *                      script's own CLI argument parsing.
+ */
 function debug($string) {
 	global $debug;
 
@@ -456,6 +530,18 @@ function debug($string) {
 	}
 }
 
+/**
+ * Prints this script's name, plugin version, and copyright banner.
+ * Called from this script's own CLI argument parsing when
+ * '--version'/'-V'/'-v' is passed, and from display_help() before
+ * printing usage text.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to load
+ *                        this plugin's setup.php if needed to determine
+ *                        the plugin version.
+ */
 function display_version() {
 	global $config;
 
@@ -467,6 +553,13 @@ function display_version() {
 	print "UPS Poller Process, Version " . $info['version'] . ", " . COPYRIGHT_YEARS . "\n";
 }
 
+/**
+ * Prints this script's usage/help text. Called from this script's own CLI
+ * argument parsing when '--help'/'-H'/'-h' is passed, or when an
+ * unrecognized argument was given.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 
