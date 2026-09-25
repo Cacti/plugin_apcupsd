@@ -146,6 +146,16 @@ function apcupsd_check_upgrade(): void {
 		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
 			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
 		}
+
+		// Installations that ran the old install routine (which registered
+		// 'replicate_out' twice) are stuck with a stale duplicate hook row
+		// that re-enabling hooks alone does not remove.
+		$hook_count = (int) db_fetch_cell_prepared('SELECT COUNT(*) FROM plugin_hooks WHERE name = ? AND hook = ?', ['apcupsd', 'replicate_out']);
+
+		if ($hook_count > 1) {
+			$keep_id = db_fetch_cell_prepared('SELECT MIN(id) FROM plugin_hooks WHERE name = ? AND hook = ?', ['apcupsd', 'replicate_out']);
+			db_execute_prepared('DELETE FROM plugin_hooks WHERE name = ? AND hook = ? AND id != ?', ['apcupsd', 'replicate_out', $keep_id]);
+		}
 	}
 }
 
@@ -357,7 +367,7 @@ function plugin_apcupsd_version(): array {
 	$info = parse_ini_file($config['base_path'] . '/plugins/apcupsd/INFO', true);
 	$info = is_array($info) ? $info : [];
 
-	return $info['info'];
+	return isset($info['info']) && is_array($info['info']) ? $info['info'] : [];
 }
 
 /**
@@ -397,7 +407,7 @@ function apcupsd_log_valid_event(): bool {
 			$valid = false;
 		} elseif (strpos($_SERVER['SCRIPT_NAME'], 'auth_changepassword.php') !== false) {
 			$valid = false;
-		} elseif (sizeof($_POST)) {
+		} elseif (cacti_sizeof($_POST)) {
 			$valid = true;
 		} elseif (isset_request_var('purge_continue')) {
 			$valid  = true;

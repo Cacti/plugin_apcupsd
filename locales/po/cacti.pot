@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-25 08:20-0400\n"
+"POT-Creation-Date: 2026-09-25 08:29-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -282,19 +282,19 @@ msgstr ""
 msgid "Manage UPS's"
 msgstr ""
 
-#: setup.php:427
+#: setup.php:437
 msgid "Management"
 msgstr ""
 
-#: setup.php:427 upses.php:748 upses.php:815 upses.php:997
+#: setup.php:437 upses.php:748 upses.php:815 upses.php:997
 msgid "UPSes"
 msgstr ""
 
-#: setup.php:430
+#: setup.php:440
 msgid "System Administration"
 msgstr ""
 
-#: setup.php:509
+#: setup.php:519
 msgid "Manage UPSes"
 msgstr ""
 
