@@ -31,14 +31,11 @@
  *
  * @return void
  */
-function plugin_apcupsd_install() {
+function plugin_apcupsd_install(): void {
 	api_plugin_register_hook('apcupsd', 'config_arrays',        'apcupsd_config_arrays',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'config_settings',      'apcupsd_config_settings',      'setup.php');
 	api_plugin_register_hook('apcupsd', 'poller_bottom',        'apcupsd_poller_bottom',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'draw_navigation_text', 'apcupsd_draw_navigation_text', 'setup.php');
-	api_plugin_register_hook('apcupsd', 'replicate_out',        'apcupsd_replicate_out',        'setup.php');
-
-	/* hook for table replication */
 	api_plugin_register_hook('apcupsd', 'replicate_out',        'apcupsd_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('apcupsd', 'upses.php', __('Manage UPS\'s', 'apcupsd'), 1);
@@ -54,7 +51,7 @@ function plugin_apcupsd_install() {
  *
  * @return bool Always returns true.
  */
-function plugin_apcupsd_uninstall() {
+function plugin_apcupsd_uninstall(): bool {
 	db_execute('DROP TABLE IF EXISTS apcupsd_ups');
 	db_execute('DROP TABLE IF EXISTS apcupsd_ups_stats');
 
@@ -67,7 +64,7 @@ function plugin_apcupsd_uninstall() {
  *
  * @return bool Always returns true.
  */
-function plugin_apcupsd_check_config() {
+function plugin_apcupsd_check_config(): bool {
 	return true;
 }
 
@@ -79,7 +76,7 @@ function plugin_apcupsd_check_config() {
  *
  * @return bool Always returns true.
  */
-function plugin_apcupsd_upgrade() {
+function plugin_apcupsd_upgrade(): bool {
 	return true;
 }
 
@@ -102,13 +99,14 @@ function plugin_apcupsd_upgrade() {
  *                                   database-touching functions in this
  *                                   file).
  */
-function apcupsd_check_upgrade() {
+function apcupsd_check_upgrade(): void {
 	global $config, $database_default;
 	include_once($config['library_path'] . '/database.php');
 	include_once($config['library_path'] . '/functions.php');
 
-	$files = array('plugins.php', 'upses.php');
-	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
+	$files = ['plugins.php', 'upses.php'];
+
+	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files, true)) {
 		return;
 	}
 
@@ -117,23 +115,24 @@ function apcupsd_check_upgrade() {
 	$old     = db_fetch_cell_prepared('SELECT version
 		FROM plugin_config
 		WHERE directory = ?',
-		array('apcupsd'));
+		['apcupsd']);
+
 	if ($current != $old) {
 		if (api_plugin_is_enabled('apcupsd')) {
-			# may sound ridiculous, but enables new hooks
+			// may sound ridiculous, but enables new hooks
 			api_plugin_enable_hooks('apcupsd');
 		}
 
-		db_execute_prepared("UPDATE plugin_config SET
+		db_execute_prepared('UPDATE plugin_config SET
 			version = ?, name = ?, author = ?, webpage = ?
-			WHERE directory = ?",
-			array(
+			WHERE directory = ?',
+			[
 				$info['version'],
 				$info['longname'],
 				$info['author'],
 				$info['homepage'],
 				$info['name']
-			)
+			]
 		);
 
 		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
@@ -161,7 +160,7 @@ function apcupsd_check_upgrade() {
  * @global array $config Cacti global configuration array; used to locate
  *                        the PHP binary and this plugin's poller script.
  */
-function apcupsd_poller_bottom() {
+function apcupsd_poller_bottom(): void {
 	global $config;
 
 	include_once($config['base_path'] . '/lib/poller.php');
@@ -185,7 +184,7 @@ function apcupsd_poller_bottom() {
  *                                   database-touching functions in this
  *                                   file).
  */
-function apcupsd_setup_table() {
+function apcupsd_setup_table(): bool {
 	global $config, $database_default;
 	include_once($config['library_path'] . '/database.php');
 
@@ -353,9 +352,11 @@ function apcupsd_setup_table() {
  * @global array $config Cacti global configuration array; used to locate
  *                        the plugin's base path.
  */
-function plugin_apcupsd_version () {
+function plugin_apcupsd_version(): array {
 	global $config;
 	$info = parse_ini_file($config['base_path'] . '/plugins/apcupsd/INFO', true);
+	$info = is_array($info) ? $info : [];
+
 	return $info['info'];
 }
 
@@ -374,7 +375,7 @@ function plugin_apcupsd_version () {
  *                         plugins.php 'mode' value) for the caller to
  *                         include in its log entry.
  */
-function apcupsd_log_valid_event() {
+function apcupsd_log_valid_event(): bool {
 	global $action;
 
 	$valid = false;
@@ -396,7 +397,7 @@ function apcupsd_log_valid_event() {
 			$valid = false;
 		} elseif (strpos($_SERVER['SCRIPT_NAME'], 'auth_changepassword.php') !== false) {
 			$valid = false;
-		} elseif (isset($_POST) && sizeof($_POST)) {
+		} elseif (sizeof($_POST)) {
 			$valid = true;
 		} elseif (isset_request_var('purge_continue')) {
 			$valid  = true;
@@ -420,13 +421,13 @@ function apcupsd_log_valid_event() {
  * @global array $menu Cacti's main navigation menu array, extended here
  *                      with this plugin's entry.
  */
-function apcupsd_config_arrays() {
+function apcupsd_config_arrays(): void {
 	global $menu;
 
-	$menu[__('Management')]['plugins/apcupsd/upses.php'] = __('UPSes', 'webseer');
+	$menu[__('Management')]['plugins/apcupsd/upses.php'] = __('UPSes', 'apcupsd');
 
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('System Administration'), array('upses.php'));
+		auth_augment_roles(__('System Administration'), ['upses.php']);
 	}
 
 	apcupsd_check_upgrade();
@@ -451,9 +452,8 @@ function apcupsd_config_arrays() {
  *                                     retention options (unused directly
  *                                     here).
  */
-function apcupsd_config_settings () {
+function apcupsd_config_settings(): void {
 	global $tabs, $settings, $item_rows, $apcupsd_retentions;
-
 }
 
 /**
@@ -464,7 +464,7 @@ function apcupsd_config_settings () {
  * replication.
  *
  * @param array $data The replication context, including 'rcnn_id' (the
- *                     remote connection id) and 'remote_poller_id'.
+ *                    remote connection id) and 'remote_poller_id'.
  *
  * @return array The unmodified $data array (this hook does not modify
  *               its payload).
@@ -472,20 +472,20 @@ function apcupsd_config_settings () {
  * @global array $config Cacti global configuration array; used to load
  *                        lib/poller.php.
  */
-function apcupsd_replicate_out($data) {
+function apcupsd_replicate_out($data): array {
 	global $config;
 
 	include_once($config['base_path'] . '/lib/poller.php');
 
 	$upsdata = db_fetch_assoc_prepared('SELECT *
 		FROM apcupsd_ups',
-		array());
+		[]);
 
 	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups', $data['remote_poller_id']);
 
 	$upsdata = db_fetch_assoc_prepared('SELECT *
 		FROM apcupsd_ups_stats',
-		array());
+		[]);
 
 	replicate_out_table($data['rcnn_id'], $upsdata, 'apcupsd_ups_stats', $data['remote_poller_id']);
 
@@ -499,18 +499,18 @@ function apcupsd_replicate_out($data) {
  * page breadcrumb trail.
  *
  * @param array $nav The existing breadcrumb map contributed by Cacti
- *                    core and other plugins.
+ *                   core and other plugins.
  *
  * @return array The $nav array with this plugin's breadcrumb entry
  *               added.
  */
-function apcupsd_draw_navigation_text($nav) {
-	$nav['upses.php:'] = array(
+function apcupsd_draw_navigation_text($nav): array {
+	$nav['upses.php:'] = [
 		'title'   => __('Manage UPSes', 'apcupsd'),
 		'mapping' => 'index.php:',
 		'url'     => 'upses.php',
 		'level'   => '1'
-	);
+	];
 
 	return $nav;
 }

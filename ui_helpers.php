@@ -21,7 +21,7 @@ if (!function_exists('apcupsd_render_with_layout')) {
 	 *
 	 * @return void
 	 */
-	function apcupsd_render_with_layout($renderer) {
+	function apcupsd_render_with_layout(callable $renderer): void {
 		top_header();
 		call_user_func($renderer);
 		bottom_footer();

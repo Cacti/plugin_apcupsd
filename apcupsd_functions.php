@@ -19,10 +19,10 @@ if (!function_exists('apcupsd_host_template_imported')) {
 	 * host template still needs importing before proceeding.
 	 *
 	 * @return bool True when a host_template row with this plugin's
-	 *               known hash exists.
+	 *              known hash exists.
 	 */
-	function apcupsd_host_template_imported() {
-		return (bool) db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', array(APCUPSD_HOST_TEMPLATE_HASH));
+	function apcupsd_host_template_imported(): bool {
+		return (bool) db_fetch_cell_prepared('SELECT id FROM host_template WHERE hash = ?', [APCUPSD_HOST_TEMPLATE_HASH]);
 	}
 }
 
@@ -37,11 +37,11 @@ if (!function_exists('apcupsd_normalize_positive_int')) {
 	 *
 	 * @param mixed $value   The value to normalize.
 	 * @param int   $default The value to return when $value does not
-	 *                        normalize to a positive integer; defaults to 0.
+	 *                       normalize to a positive integer; defaults to 0.
 	 *
 	 * @return int The normalized positive integer, or (int)$default.
 	 */
-	function apcupsd_normalize_positive_int($value, $default = 0) {
+	function apcupsd_normalize_positive_int($value, $default = 0): int {
 		if (is_int($value)) {
 			$normalized = $value;
 		} elseif (is_string($value) && preg_match('/^[0-9]+$/', $value)) {
@@ -69,7 +69,7 @@ if (!function_exists('apcupsd_get_site_sql_where')) {
 	 * @return string The 'site_id = N' condition, or '' when $site_id
 	 *                doesn't normalize to a positive integer.
 	 */
-	function apcupsd_get_site_sql_where($site_id) {
+	function apcupsd_get_site_sql_where($site_id): string {
 		$site_id = apcupsd_normalize_positive_int($site_id, 0);
 
 		if ($site_id > 0) {
@@ -91,7 +91,7 @@ if (!function_exists('apcupsd_get_autocomplete_rows_limit')) {
 	 *
 	 * @return int The normalized row limit, defaulting to 1.
 	 */
-	function apcupsd_get_autocomplete_rows_limit($rows) {
+	function apcupsd_get_autocomplete_rows_limit($rows): int {
 		return apcupsd_normalize_positive_int($rows, 1);
 	}
 }
@@ -108,7 +108,7 @@ if (!function_exists('apcupsd_escape_shellcmd')) {
 	 *
 	 * @return string The escaped value.
 	 */
-	function apcupsd_escape_shellcmd($value) {
+	function apcupsd_escape_shellcmd($value): string {
 		if (function_exists('cacti_escapeshellcmd')) {
 			return cacti_escapeshellcmd($value);
 		}
@@ -129,7 +129,7 @@ if (!function_exists('apcupsd_escape_shellarg')) {
 	 *
 	 * @return string The escaped value.
 	 */
-	function apcupsd_escape_shellarg($value) {
+	function apcupsd_escape_shellarg($value): string {
 		if (function_exists('cacti_escapeshellarg')) {
 			return cacti_escapeshellarg($value);
 		}
@@ -150,7 +150,7 @@ if (!function_exists('apcupsd_build_apcaccess_command')) {
 	 * @param mixed  $port        The apcupsd daemon's TCP port.
 	 *
 	 * @return string|false The fully-escaped shell command, or false when
-	 *                       the binary path, hostname, or port is invalid.
+	 *                      the binary path, hostname, or port is invalid.
 	 */
 	function apcupsd_build_apcaccess_command($binary_path, $hostname, $port) {
 		$hostname = trim((string)$hostname);
