@@ -23,6 +23,8 @@
 */
 
 require('../../include/auth.php');
+
+/** @var array<string,mixed> $config */
 require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
@@ -30,67 +32,67 @@ require_once($config['base_path'] . '/lib/utility.php');
 require_once(__DIR__ . '/apcupsd_functions.php');
 require_once(__DIR__ . '/ui_helpers.php');
 
-$ups_actions = array(
+$ups_actions = [
 	1 => __('Delete', 'apcupsd'),
 	2 => __('Duplicate', 'apcupsd'),
 	3 => __('Reset Detection', 'apcupsd')
-);
+];
 
-$ups_types = array(
+$ups_types = [
 	1 => __('APC UPSD Based', 'apcupsd'),
 	2 => __('SNMP Based', 'apcupsd')
-);
+];
 
 global $fields_snmp_item;
 
-/* file: upses.php, action: edit */
-$fields_ups_edit = array(
-	'spacer0' => array(
-		'method' => 'spacer',
+// file: upses.php, action: edit
+$fields_ups_edit = [
+	'spacer0' => [
+		'method'        => 'spacer',
 		'friendly_name' => __('UPS Information', 'apcupsd'),
-		'collapsible' => 'true'
-	),
-	'name' => array(
-		'method' => 'textbox',
+		'collapsible'   => 'true'
+	],
+	'name' => [
+		'method'        => 'textbox',
 		'friendly_name' => __('UPS Name', 'apcupsd'),
-		'description' => __('The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS\'s, you must create the Cacti Device first.', 'apcupsd'),
-		'value' => '|arg1:name|',
-		'size' => '50',
-		'default' => __('New UPS', 'apcupsd'),
-		'max_length' => '100'
-	),
-	'description' => array(
-		'method' => 'textarea',
+		'description'   => __('The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS\'s, you must create the Cacti Device first.', 'apcupsd'),
+		'value'         => '|arg1:name|',
+		'size'          => '50',
+		'default'       => __('New UPS', 'apcupsd'),
+		'max_length'    => '100'
+	],
+	'description' => [
+		'method'        => 'textarea',
 		'friendly_name' => __('UPS Description', 'apcupsd'),
-		'description' => __('A more detailed Description of this UPS if required.', 'apcupsd'),
-		'value' => '|arg1:description|',
+		'description'   => __('A more detailed Description of this UPS if required.', 'apcupsd'),
+		'value'         => '|arg1:description|',
 		'textarea_rows' => '3',
 		'textarea_cols' => '80'
-	),
-	'type_id' => array(
-		'method' => 'drop_array',
+	],
+	'type_id' => [
+		'method'        => 'drop_array',
 		'friendly_name' => __('UPS Type', 'apcupsd'),
-		'description' => __('The Type of UPS you are monitoring.', 'apcupsd'),
-		'value' => '|arg1:type_id|',
-		'array' => $ups_types
-	),
-	'poller_id' => array(
-		'method' => 'drop_sql',
+		'description'   => __('The Type of UPS you are monitoring.', 'apcupsd'),
+		'value'         => '|arg1:type_id|',
+		'array'         => $ups_types
+	],
+	'poller_id' => [
+		'method'        => 'drop_sql',
 		'friendly_name' => __('Poller ID', 'apcupsd'),
-		'description' => __('The Poller that this UPS exists in is monitored by', 'apcupsd'),
-		'value' => '|arg1:poller_id|',
-		'sql' => 'SELECT id, name FROM poller ORDER BY name',
-		'default' => 1
-	),
-	'site_id' => array(
-		'method' => 'drop_sql',
+		'description'   => __('The Poller that this UPS exists in is monitored by', 'apcupsd'),
+		'value'         => '|arg1:poller_id|',
+		'sql'           => 'SELECT id, name FROM poller ORDER BY name',
+		'default'       => 1
+	],
+	'site_id' => [
+		'method'        => 'drop_sql',
 		'friendly_name' => __('Site Name', 'apcupsd'),
-		'description' => __('The Site that this UPS exists in.', 'apcupsd'),
-		'value' => '|arg1:site_id|',
-		'sql' => 'SELECT id, name FROM sites ORDER BY name',
-		'none_value' => __('None', 'apcupsd')
-	),
-	'location' => array(
+		'description'   => __('The Site that this UPS exists in.', 'apcupsd'),
+		'value'         => '|arg1:site_id|',
+		'sql'           => 'SELECT id, name FROM sites ORDER BY name',
+		'none_value'    => __('None', 'apcupsd')
+	],
+	'location' => [
 		'method'        => 'drop_callback',
 		'friendly_name' => __('Location'),
 		'description'   => __('The physical location of the Device.  This free form text can be a room, rack location, etc.'),
@@ -99,71 +101,70 @@ $fields_ups_edit = array(
 		'action'        => 'ajax_locations',
 		'id'            => '|arg1:location|',
 		'value'         => '|arg1:location|',
-	),
-	'host_id' => array(
-		'method' => 'drop_callback',
+	],
+	'host_id' => [
+		'method'        => 'drop_callback',
 		'friendly_name' => __('Cacti Device', 'apcupsd'),
-		'description' => __('For SNMP Based UPS\', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically.', 'apcupsd'),
-		'none_value' => __('None'),
-		'sql' => 'SELECT id, description AS name FROM host ORDER BY name',
-		'action' => 'ajax_hosts_noany',
-		'id' => '|arg1:host_id|',
-		'value' => __('Autocreate on First Poll', 'apcupsd'),
-		'none_value' => __('Autocreate on First Poll', 'apcupsd')
-	),
-	'enabled' => array(
-		'method' => 'checkbox',
+		'description'   => __('For SNMP Based UPS\', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically.', 'apcupsd'),
+		'sql'           => 'SELECT id, description AS name FROM host ORDER BY name',
+		'action'        => 'ajax_hosts_noany',
+		'id'            => '|arg1:host_id|',
+		'value'         => __('Autocreate on First Poll', 'apcupsd'),
+		'none_value'    => __('Autocreate on First Poll', 'apcupsd')
+	],
+	'enabled' => [
+		'method'        => 'checkbox',
 		'friendly_name' => __('Enabled', 'apcupsd'),
-		'description' => __('Check to immediately start polling for data.', 'apcupsd'),
-		'value' => '|arg1:enabled|',
-		'default' => 'on'
-	),
-	'spacer1' => array(
-		'method' => 'spacer',
+		'description'   => __('Check to immediately start polling for data.', 'apcupsd'),
+		'value'         => '|arg1:enabled|',
+		'default'       => 'on'
+	],
+	'spacer1' => [
+		'method'        => 'spacer',
 		'friendly_name' => __('APC UPSD Information', 'apcupsd'),
-		'collapsible' => 'true'
-	),
-	'hostname' => array(
-		'method' => 'textbox',
+		'collapsible'   => 'true'
+	],
+	'hostname' => [
+		'method'        => 'textbox',
 		'friendly_name' => __('Hostname', 'apcupsd'),
-		'description' => __('The hostname of the host running apcupsd.', 'apcupsd'),
-		'value' => '|arg1:hostname|',
-		'size' => '70',
-		'max_length' => '100'
-	),
-	'port' => array(
-		'method' => 'textbox',
+		'description'   => __('The hostname of the host running apcupsd.', 'apcupsd'),
+		'value'         => '|arg1:hostname|',
+		'size'          => '70',
+		'max_length'    => '100'
+	],
+	'port' => [
+		'method'        => 'textbox',
 		'friendly_name' => __('TCP Port', 'apcupsd'),
-		'description' => __('Enter the TCP Port for this UPS.', 'apcupsd'),
-		'value' => '|arg1:port|',
-		'size' => '10',
-		'placeholder' => '3551',
-		'max_length' => '10'
-	),
-	'host_snmp_head' => array(
-		'method' => 'spacer',
+		'description'   => __('Enter the TCP Port for this UPS.', 'apcupsd'),
+		'value'         => '|arg1:port|',
+		'size'          => '10',
+		'placeholder'   => '3551',
+		'max_length'    => '10'
+	],
+	'host_snmp_head' => [
+		'method'        => 'spacer',
 		'friendly_name' => __('SNMP Options'),
-	),
-	'snmp_hostname' => array(
-		'method' => 'textbox',
+	],
+	'snmp_hostname' => [
+		'method'        => 'textbox',
 		'friendly_name' => __('Hostname', 'apcupsd'),
-		'description' => __('The hostname where the snmp agent is located.', 'apcupsd'),
-		'value' => '|arg1:hostname|',
-		'size' => '70',
-		'max_length' => '100'
-	),
-	) + $fields_snmp_item + array(
-	'id' => array(
+		'description'   => __('The hostname where the snmp agent is located.', 'apcupsd'),
+		'value'         => '|arg1:hostname|',
+		'size'          => '70',
+		'max_length'    => '100'
+	],
+	] + $fields_snmp_item + [
+	'id' => [
 		'method' => 'hidden_zero',
-		'value' => '|arg1:id|'
-	),
-	'save_component_ups' => array(
+		'value'  => '|arg1:id|'
+	],
+	'save_component_ups' => [
 		'method' => 'hidden',
-		'value' => '1'
-	)
-);
+		'value'  => '1'
+	]
+];
 
-/* set default action */
+// set default action
 set_default_action();
 
 switch (get_request_var('action')) {
@@ -175,16 +176,16 @@ switch (get_request_var('action')) {
 		form_actions();
 
 		break;
-    case 'ajax_hosts':
-        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
-        get_allowed_ajax_hosts(false, false, apcupsd_get_site_sql_where(get_request_var('site_id')));
+	case 'ajax_hosts':
+		get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+		get_allowed_ajax_hosts(false, false, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
-        break;
-    case 'ajax_hosts_noany':
-        get_filter_request_var('site_id', FILTER_VALIDATE_INT);
-        get_allowed_ajax_hosts(false, true, apcupsd_get_site_sql_where(get_request_var('site_id')));
+		break;
+	case 'ajax_hosts_noany':
+		get_filter_request_var('site_id', FILTER_VALIDATE_INT);
+		get_allowed_ajax_hosts(false, true, apcupsd_get_site_sql_where(get_request_var('site_id')));
 
-        break;
+		break;
 	case 'ajax_locations':
 		get_site_locations();
 
@@ -195,23 +196,25 @@ switch (get_request_var('action')) {
 			WHERE Name LIKE ?
 			ORDER BY Name
 			LIMIT ' . apcupsd_get_autocomplete_rows_limit(read_config_option('autocomplete_rows')),
-			array('%' . get_nfilter_request_var('term') . '%')));
+			['%' . get_nfilter_request_var('term') . '%']));
 
 		break;
 	case 'edit':
 		apcupsd_render_with_layout('ups_edit');
+
 		break;
 	default:
 		apcupsd_render_with_layout('upses');
+
 		break;
 }
 
 /* --------------------------
-    Global Form Functions
+	Global Form Functions
    -------------------------- */
 
 /* --------------------------
-    The Save Function
+	The Save Function
    -------------------------- */
 
 /**
@@ -225,7 +228,7 @@ switch (get_request_var('action')) {
  * @return void Redirects back to the edit form for this UPS; does not
  *              return a value.
  */
-function form_save() {
+function form_save(): void {
 	if (isset_request_var('save_component_ups')) {
 		$save['id']           = get_filter_request_var('id');
 		$save['host_id']      = form_input_validate(get_nfilter_request_var('host_id'), 'host_id', '', true, 3);
@@ -241,7 +244,7 @@ function form_save() {
 		}
 
 		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '^[0-9]+$', true, 3);
-		$save['enabled']      = isset_request_var('enabled') ? 'on':'';
+		$save['enabled']      = isset_request_var('enabled') ? 'on' : '';
 
 		$save['snmp_version']   = form_input_validate(get_nfilter_request_var('snmp_version'), 'snmp_version', '', true, 3);
 		$save['snmp_community'] = form_input_validate(get_nfilter_request_var('snmp_community'), 'snmp_community', '', true, 3);
@@ -258,9 +261,10 @@ function form_save() {
 		$save['snmp_timeout']         = form_input_validate(get_nfilter_request_var('snmp_timeout'), 'snmp_timeout', '', true, 3);
 
 		if ($save['host_id'] > 0) {
-			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', array($save['host_id']));
+			$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', [$save['host_id']]);
+			$host = is_array($host) ? $host : [];
 		} else {
-			$host = array();
+			$host = [];
 		}
 
 		if (!is_error_message()) {
@@ -299,7 +303,7 @@ function form_save() {
 
 				// SNMP columns
 				if ($save['type_id'] == 2) {
-					$columns = array(
+					$columns = [
 						'hostname',
 						'snmp_version',
 						'snmp_community',
@@ -312,11 +316,11 @@ function form_save() {
 						'snmp_engine_id',
 						'snmp_port',
 						'snmp_timeout',
-					);
+					];
 
-					foreach($columns as $c) {
+					foreach ($columns as $c) {
 						if ($save[$c] != $host[$c]) {
-							$ns[$c] = $save[$c];
+							$ns[$c]  = $save[$c];
 							$changed = true;
 						}
 					}
@@ -324,29 +328,29 @@ function form_save() {
 
 				if ($changed) {
 					$ns['id'] = $save['host_id'];
-					$host_id = sql_save($ns, 'host');
+					$host_id  = sql_save($ns, 'host');
 					push_out_host($host_id);
 
 					if ($name_changed) {
 						$graphs = array_rekey(
-							db_fetch_assoc_prepared('SELECT id FROM graph_local WHERE host_id = ?', array($host_id)),
+							db_fetch_assoc_prepared('SELECT id FROM graph_local WHERE host_id = ?', [$host_id]),
 							'id', 'id'
 						);
 
 						$data_sources = array_rekey(
-							db_fetch_assoc_prepared('SELECT id FROM data_local WHERE host_id = ?', array($host_id)),
+							db_fetch_assoc_prepared('SELECT id FROM data_local WHERE host_id = ?', [$host_id]),
 							'id', 'id'
 						);
 
 						if (cacti_sizeof($graphs)) {
-							foreach($graphs as $id) {
+							foreach ($graphs as $id) {
 								api_reapply_suggested_graph_title($id);
 								update_graph_title_cache($id);
 							}
 						}
 
 						if (cacti_sizeof($data_sources)) {
-							foreach($data_sources as $id) {
+							foreach ($data_sources as $id) {
 								api_reapply_suggested_data_source_data($id);
 								update_data_source_title_cache($id);
 							}
@@ -369,33 +373,36 @@ function form_save() {
  * bulk action is confirmed.
  *
  * @param int|array $template_id The apcupsd_ups.id (or array of ids) to
- *                                duplicate.
+ *                               duplicate.
  * @param string    $name        The new UPS name pattern; '<ups>' is a
- *                                placeholder that this function replaces
- *                                with the original UPS's name.
+ *                               placeholder that this function replaces
+ *                               with the original UPS's name.
  *
  * @return void
  */
-function duplicate_ups($template_id, $name) {
+function duplicate_ups($template_id, $name): void {
 	if (!is_array($template_id)) {
-		$template_id = array($template_id);
+		$template_id = [$template_id];
 	}
 
-	foreach($template_id as $id) {
+	foreach ($template_id as $id) {
 		$ups = db_fetch_row_prepared('SELECT *
 			FROM apcupsd_ups
 			WHERE id = ?',
-			array($id));
+			[$id]);
+		$ups = is_array($ups) ? $ups : [];
 
 		if (cacti_sizeof($ups)) {
-			$save = array();
+			$save = [];
 
 			$save['id'] = 0;
 
-			foreach($ups as $column => $value) {
+			foreach ($ups as $column => $value) {
 				if ($column == 'id') {
 					continue;
-				} elseif ($column == 'name') {
+				}
+
+				if ($column == 'name') {
 					$save['name'] = str_replace('<ups>', $value, $name);
 				} else {
 					$save[$column] = $value;
@@ -416,7 +423,7 @@ function duplicate_ups($template_id, $name) {
 }
 
 /* ------------------------
-    The 'actions' function
+	The 'actions' function
    ------------------------ */
 
 /**
@@ -434,14 +441,19 @@ function duplicate_ups($template_id, $name) {
  *                             labels, used for the confirmation dialog
  *                             title.
  */
-function form_actions() {
+function form_actions(): void {
 	global $ups_actions;
 
-	/* ================= input validation ================= */
-	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => '/^([a-zA-Z0-9_]+)$/')));
-	/* ==================================================== */
+	// ================= input validation =================
+	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
+	// ====================================================
 
-	/* if we are to save this form, instead of display it */
+	if (!in_array(get_nfilter_request_var('drp_action'), ['1', '2', '3'], true)) {
+		header('Location: upses.php?header=false');
+		exit;
+	}
+
+	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
@@ -449,13 +461,13 @@ function form_actions() {
 			$selected_items        = array_values($selected_items);
 			$selected_placeholders = implode(',', array_fill(0, cacti_sizeof($selected_items), '?'));
 
-			if (get_nfilter_request_var('drp_action') == '1') { /* delete */
+			if (get_nfilter_request_var('drp_action') == '1') { // delete
 				db_execute_prepared("DELETE FROM apcupsd_ups
 					WHERE id IN ($selected_placeholders)",
 					$selected_items);
-			} elseif (get_nfilter_request_var('drp_action') == '2') { /* Duplicate */
+			} elseif (get_nfilter_request_var('drp_action') == '2') { // Duplicate
 				duplicate_ups($selected_items, get_nfilter_request_var('ups_name'));
-			} elseif (get_nfilter_request_var('drp_action') == '3') { /* Reset Detection */
+			} elseif (get_nfilter_request_var('drp_action') == '3') { // Reset Detection
 				db_execute_prepared("UPDATE apcupsd_ups
 					SET snmp_skipped = ''
 					WHERE id IN ($selected_placeholders)",
@@ -467,17 +479,19 @@ function form_actions() {
 		exit;
 	}
 
-	/* setup some variables */
-	$ups_list = ''; $i = 0;
+	// setup some variables
+	$ups_list  = '';
+	$i         = 0;
+	$ups_array = [];
 
-	/* loop through each of the graphs selected on the previous page and get more info about them */
+	// loop through each of the graphs selected on the previous page and get more info about them
 	foreach ($_POST as $var => $val) {
 		if (preg_match('/^chk_([0-9]+)$/', $var, $matches)) {
-			/* ================= input validation ================= */
+			// ================= input validation =================
 			input_validate_input_number($matches[1]);
-			/* ==================================================== */
+			// ====================================================
 
-			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', array($matches[1]));
+			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', [$matches[1]]);
 
 			$ups_list .= '<li>' . html_escape($name) . '</li>';
 			$ups_array[$i] = $matches[1];
@@ -490,10 +504,10 @@ function form_actions() {
 
 	form_start('upses.php');
 
-	html_start_box($ups_actions[get_nfilter_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($ups_actions[get_nfilter_request_var('drp_action')], '60%', false, 3, 'center', '');
 
-	if (isset($ups_array) && cacti_sizeof($ups_array)) {
-		if (get_nfilter_request_var('drp_action') == '1') { /* delete */
+	if (cacti_sizeof($ups_array)) {
+		if (get_nfilter_request_var('drp_action') == '1') { // delete
 			print "<tr>
 				<td class='textArea' class='odd'>
 					<p>" . __n('Click \'Continue\' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS.', 'Click \'Continue\' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
@@ -503,18 +517,20 @@ function form_actions() {
 
 			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
-		} elseif (get_nfilter_request_var('drp_action') == '2') { /* duplicate */
+		} elseif (get_nfilter_request_var('drp_action') == '2') { // duplicate
 			print "<tr>
 				<td class='textArea' class='odd'>
 					<p>" . __n('Click \'Continue\' to Duplicate the following UPS.', 'Click \'Continue\' to Duplicate all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
-					<p><strong>" . __('UPS Name:', 'apcupsd'). "</strong><br>"; form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text'); print "</p>
+					<p><strong>" . __('UPS Name:', 'apcupsd') . '</strong><br>';
+			form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text');
+			print '</p>
 				</td>
-			</tr>";
+			</tr>';
 
 			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
-		} elseif (get_nfilter_request_var('drp_action') == '3') { /* reset */
+		} elseif (get_nfilter_request_var('drp_action') == '3') { // reset
 			print "<tr>
 				<td class='textArea' class='odd'>
 					<p>" . __n('Click \'Continue\' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes.', 'Click \'Continue\' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
@@ -534,7 +550,7 @@ function form_actions() {
 	print "<tr>
 		<td class='saveRow'>
 			<input type='hidden' name='action' value='actions'>
-			<input type='hidden' name='selected_items' value='" . (isset($ups_array) ? serialize($ups_array) : '') . "'>
+			<input type='hidden' name='selected_items' value='" . serialize($ups_array) . "'>
 			<input type='hidden' name='drp_action' value='" . html_escape(get_nfilter_request_var('drp_action')) . "'>
 			$save_html
 		</td>
@@ -561,41 +577,42 @@ function form_actions() {
  *                                 populated here with the UPS's current
  *                                 values.
  */
-function ups_edit() {
+function ups_edit(): void {
 	global $fields_ups_edit;
 
-	/* ================= input validation ================= */
+	// ================= input validation =================
 	get_filter_request_var('id');
-	/* ==================================================== */
+	// ====================================================
 
 	if (get_request_var('id') > 0) {
-		$ups = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', array(get_request_var('id')));
-		$header_label = __esc('UPS [edit: %s]', $ups['name'], 'apcupsd');
+		$ups          = db_fetch_row_prepared('SELECT * FROM apcupsd_ups WHERE id = ?', [get_request_var('id')]);
+		$ups          = is_array($ups) ? $ups : [];
+		$header_label = __esc('UPS [edit: %s]', $ups['name'] ?? '', 'apcupsd');
 	} else {
-		$ups = array();
+		$ups          = [];
 		$header_label = __('UPS [new]', 'apcupsd');
 	}
 
 	if (isset($ups['host_id']) && $ups['host_id'] > 0) {
-		$fields_ups_edit['host_id']['value']  = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', array($ups['host_id']));
-		$fields_ups_edit['location']['value'] = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
-		$fields_ups_edit['location']['id']    = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', array($ups['host_id']));
+		$fields_ups_edit['host_id']['value']  = db_fetch_cell_prepared('SELECT description FROM host WHERE id = ?', [$ups['host_id']]);
+		$fields_ups_edit['location']['value'] = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', [$ups['host_id']]);
+		$fields_ups_edit['location']['id']    = db_fetch_cell_prepared('SELECT location FROM host WHERE id = ?', [$ups['host_id']]);
 	} else {
 		unset($fields_ups_edit['location']);
 	}
 
-	/* setup the callback for the form */
+	// setup the callback for the form
 	$_SESSION['cur_device_id'] = get_request_var('id');
 
 	form_start('upses.php', 'ups');
 
-	html_start_box($header_label, '100%', true, '3', 'center', '');
+	html_start_box($header_label, '100%', true, 3, 'center', '');
 
 	draw_edit_form(
-		array(
-			'config' => array('no_form_tag' => true),
-			'fields' => inject_form_variables($fields_ups_edit, (isset($ups) ? $ups : array()))
-		)
+		[
+			'config' => ['no_form_tag' => true],
+			'fields' => inject_form_variables($fields_ups_edit, $ups)
+		]
 	);
 
 	html_end_box(true, true);
@@ -673,54 +690,54 @@ function ups_edit() {
  * @global array $config      Cacti global configuration array; used
  *                             throughout list rendering.
  */
-function upses() {
+function upses(): void {
 	global $ups_actions, $item_rows, $config;
 
 	if (!apcupsd_host_template_imported()) {
 		raise_message('apcupsd_template_missing', __('The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!', 'apcupsd'), MESSAGE_LEVEL_ERROR);
 	}
 
-	/* ================= input validation and session storage ================= */
-	$filters = array(
-		'rows' => array(
-			'filter' => FILTER_VALIDATE_INT,
+	// ================= input validation and session storage =================
+	$filters = [
+		'rows' => [
+			'filter'  => FILTER_VALIDATE_INT,
 			'pageset' => true,
 			'default' => '-1'
-		),
-		'site_id' => array(
-			'filter' => FILTER_VALIDATE_INT,
+		],
+		'site_id' => [
+			'filter'  => FILTER_VALIDATE_INT,
 			'pageset' => true,
 			'default' => '-1'
-		),
-		'location' => array(
-			'filter' => FILTER_CALLBACK,
-			'options' => array('options' => 'sanitize_search_string'),
+		],
+		'location' => [
+			'filter'  => FILTER_CALLBACK,
+			'options' => ['options' => 'sanitize_search_string'],
 			'pageset' => true,
 			'default' => '-1'
-		),
-		'page' => array(
-			'filter' => FILTER_VALIDATE_INT,
+		],
+		'page' => [
+			'filter'  => FILTER_VALIDATE_INT,
 			'default' => '1'
-		),
-		'filter' => array(
-			'filter' => FILTER_DEFAULT,
+		],
+		'filter' => [
+			'filter'  => FILTER_DEFAULT,
 			'pageset' => true,
 			'default' => ''
-		),
-		'sort_column' => array(
-			'filter' => FILTER_CALLBACK,
+		],
+		'sort_column' => [
+			'filter'  => FILTER_CALLBACK,
 			'default' => 'name',
-			'options' => array('options' => 'sanitize_search_string')
-		),
-		'sort_direction' => array(
-			'filter' => FILTER_CALLBACK,
+			'options' => ['options' => 'sanitize_search_string']
+		],
+		'sort_direction' => [
+			'filter'  => FILTER_CALLBACK,
 			'default' => 'ASC',
-			'options' => array('options' => 'sanitize_search_string')
-		)
-	);
+			'options' => ['options' => 'sanitize_search_string']
+		]
+	];
 
 	validate_store_request_vars($filters, 'sess_ups');
-	/* ================= input validation ================= */
+	// ================= input validation =================
 
 	if (get_request_var('rows') == '-1') {
 		$rows = read_config_option('num_rows_table');
@@ -728,7 +745,7 @@ function upses() {
 		$rows = get_request_var('rows');
 	}
 
-	html_start_box( __('UPSes', 'apcupsd'), '100%', '', '3', 'center', 'upses.php?action=edit');
+	html_start_box(__('UPSes', 'apcupsd'), '100%', false, 3, 'center', 'upses.php?action=edit');
 
 	?>
 	<tr class='even'>
@@ -737,18 +754,18 @@ function upses() {
 			<table class='filterTable'>
 				<tr>
 					<td>
-						<?php print __('Search', 'apcupsd');?>
+						<?php print __('Search', 'apcupsd'); ?>
 					</td>
 					<td>
-						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
+						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter'); ?>'>
 					</td>
 					<td>
-						<?php print __('Site', 'apcupsd');?>
+						<?php print __('Site', 'apcupsd'); ?>
 					</td>
 					<td>
 						<select id='site_id' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>':'>') . __('All', 'apcupsd');?></option>
-							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
+							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
+							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
 							$sites = array_rekey(
 								db_fetch_assoc_prepared('SELECT s.id, s.name
@@ -756,63 +773,63 @@ function upses() {
 									INNER JOIN apcupsd_ups AS u
 									ON s.id = u.site_id
 									ORDER BY s.name',
-									array()),
+									[]),
 								'id', 'name'
 							);
 
-							if (cacti_sizeof($sites)) {
-								foreach ($sites as $key => $value) {
-									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
-								}
-							}
-							?>
+	if (cacti_sizeof($sites)) {
+		foreach ($sites as $key => $value) {
+			print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+		}
+	}
+	?>
 						</select>
 					</td>
 					<td>
-						<?php print __('Location', 'apcupsd');?>
+						<?php print __('Location', 'apcupsd'); ?>
 					</td>
 					<td>
 						<select id='location' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>':'>') . __('All', 'apcupsd');?></option>
-							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>':'>') . __('None', 'apcupsd');?></option>
+							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
+							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-							$locations = array_rekey(
-								db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
+	$locations = array_rekey(
+		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
 									FROM host AS h
 									INNER JOIN apcupsd_ups AS u
 									ON h.id = u.host_id
 									ORDER BY h.location',
-									array()),
-								'id', 'name'
-							);
+			[]),
+		'id', 'name'
+	);
 
-							if (cacti_sizeof($locations)) {
-								foreach ($locations as $key => $value) {
-									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
-								}
-							}
-							?>
+	if (cacti_sizeof($locations)) {
+		foreach ($locations as $key => $value) {
+			print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+		}
+	}
+	?>
 						</select>
 					</td>
 					<td>
-						<?php print __('UPSes', 'apcupsd');?>
+						<?php print __('UPSes', 'apcupsd'); ?>
 					</td>
 					<td>
 						<select id='rows' onChange='applyFilter()'>
-							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>':'>') . __('Default', 'apcupsd');?></option>
+							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
-							if (cacti_sizeof($item_rows)) {
-								foreach ($item_rows as $key => $value) {
-									print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
-								}
-							}
-							?>
+	if (cacti_sizeof($item_rows)) {
+		foreach ($item_rows as $key => $value) {
+			print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+		}
+	}
+	?>
 						</select>
 					</td>
 					<td>
 						<span>
-							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' title='<?php print __esc('Set/Refresh Filters', 'apcupsd');?>'><?php print __esc('Go', 'apcupsd');?></button>
-							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear' title='<?php print __esc('Clear Filters', 'apcupsd');?>'><?php print __esc('Clear', 'apcupsd');?></button>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' title='<?php print __esc('Set/Refresh Filters', 'apcupsd'); ?>'><?php print __esc('Go', 'apcupsd'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear' title='<?php print __esc('Clear Filters', 'apcupsd'); ?>'><?php print __esc('Clear', 'apcupsd'); ?></button>
 						</span>
 					</td>
 				</tr>
@@ -857,25 +874,25 @@ function upses() {
 	html_end_box();
 
 	$sql_where  = '';
-	$sql_params = array();
+	$sql_params = [];
 
-	/* form the 'where' clause for our main sql query */
+	// form the 'where' clause for our main sql query
 	if (get_request_var('filter') != '') {
-		$sql_where = 'WHERE ups.name LIKE ?';
+		$sql_where    = 'WHERE ups.name LIKE ?';
 		$sql_params[] = '%' . get_request_var('filter') . '%';
 	}
 
 	if (get_request_var('site_id') > 0) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' ups.site_id = ?';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . ' ups.site_id = ?';
 		$sql_params[] = get_request_var('site_id');
 	} elseif (get_request_var('site_id') == -2) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' ups.site_id = 0';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . ' ups.site_id = 0';
 	}
 
 	if (get_request_var('location') == -2) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' h.location = ""';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . ' h.location = ""';
 	} elseif (get_request_var('location') != -1) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . ' h.location = ?';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . ' h.location = ?';
 		$sql_params[] = get_request_var('location');
 	}
 
@@ -889,7 +906,7 @@ function upses() {
 		$sql_params);
 
 	$sql_order = get_order_string();
-	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
+	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
 	$ups_list = db_fetch_assoc_prepared("SELECT ups.*, stats.*
 		FROM apcupsd_ups AS ups
@@ -902,80 +919,80 @@ function upses() {
 		$sql_limit",
 		$sql_params);
 
-	$display_text = array(
-		'name' => array(
+	$display_text = [
+		'name' => [
 			'display' => __('UPS Name', 'apcupsd'),
-			'align' => 'left',
-			'sort' => 'ASC',
-			'tip' => __('The Name of this UPS.', 'apcupsd')
-		),
-		'id' => array(
+			'align'   => 'left',
+			'sort'    => 'ASC',
+			'tip'     => __('The Name of this UPS.', 'apcupsd')
+		],
+		'id' => [
 			'display' => __('ID', 'apcupsd'),
 			'align'   => 'center',
 			'sort'    => 'ASC',
 			'tip'     => __('The unique id associated with this UPS.', 'apcupsd')
-		),
-		'status' => array(
+		],
+		'status' => [
 			'display' => __('Status', 'apcupsd'),
 			'align'   => 'center',
 			'sort'    => 'ASC',
 			'tip'     => __('The Status of the apcupsd daemon on the target Host.', 'apcupsd')
-		),
-		'type_id' => array(
+		],
+		'type_id' => [
 			'display' => __('Collector', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
 			'tip'     => __('The Type of Collector.  Currently APCUPSD and SNMP are supported.', 'apcupsd')
-		),
-		'ups_status' => array(
+		],
+		'ups_status' => [
 			'display' => __('UPS Status', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
 			'tip'     => __('The Status of the monitored UPS on the target Host.', 'apcupsd')
-		),
-		'ups_model' => array(
+		],
+		'ups_model' => [
 			'display' => __('UPS Model', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
 			'tip'     => __('The Model of the monitored UPS on the target Host.', 'apcupsd')
-		),
-		'ups_line_voltage' => array(
+		],
+		'ups_line_voltage' => [
 			'display' => __('Line Voltage', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('The Line Voltage of the monitored UPS on the target Host.', 'apcupsd')
-		),
-		'ups_load_percent' => array(
+		],
+		'ups_load_percent' => [
 			'display' => __('Load Percent', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('The Load Percent of the monitored UPS on the target Host.', 'apcupsd')
-		),
-		'ups_timeleft' => array(
+		],
+		'ups_timeleft' => [
 			'display' => __('Time Left', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('The minutes of available UPS charge of the monitored UPS on the target Host.', 'apcupsd')
-		),
-		'nosort' => array(
+		],
+		'nosort' => [
 			'display' => __('Hostname:Port', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('The Hostname:Port that is running the apcupsd daemon.', 'apcupsd')
-		),
-		'enabled' => array(
+		],
+		'enabled' => [
 			'display' => __('Enabled', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('If this UPS is being monitored or not.', 'apcupsd')
-		),
-		'last_updated' => array(
+		],
+		'last_updated' => [
 			'display' => __('Last Updated', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
 			'tip'     => __('The last time this UPS was samples or found up.', 'apcupsd')
-		)
-	);
+		]
+	];
 
 	$nav = html_nav_bar('upses.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('UPSes', 'apcupsd'), 'page', 'main');
 
@@ -983,11 +1000,12 @@ function upses() {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
 
 	$i = 0;
+
 	if (cacti_sizeof($ups_list)) {
 		foreach ($ups_list as $ups) {
 			form_alternate_row('line' . $ups['id'], true);
@@ -995,7 +1013,7 @@ function upses() {
 			form_selectable_cell(filter_value($ups['name'], get_request_var('filter'), 'upses.php?action=edit&id=' . $ups['id']), $ups['id']);
 			form_selectable_cell($ups['id'], $ups['id'], '', 'center');
 			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'center');
-			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD':'SNMPD', $ups['id'], '', 'left');
+			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD' : 'SNMPD', $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_status'], $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
@@ -1008,7 +1026,7 @@ function upses() {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['snmp_port'], $ups['id'], '', 'right');
 			}
 
-			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes', 'apcupsd'):__('No', 'apcupsd'), $ups['id'], '', 'right');
+			form_selectable_ecell($ups['enabled'] == 'on' ? __('Yes', 'apcupsd') : __('No', 'apcupsd'), $ups['id'], '', 'right');
 			form_selectable_ecell($ups['last_updated'], $ups['id'], '', 'right');
 
 			form_checkbox_cell($ups['name'], $ups['id']);
@@ -1025,7 +1043,7 @@ function upses() {
 		print $nav;
 	}
 
-	/* draw the dropdown containing a list of available actions for this form */
+	// draw the dropdown containing a list of available actions for this form
 	draw_actions_dropdown($ups_actions);
 
 	form_end();
@@ -1059,8 +1077,8 @@ function checkNullandReturn($value) {
  * @return void Outputs a JSON-encoded array of matching locations
  *              directly.
  */
-function get_site_locations() {
-	$return  = array();
+function get_site_locations(): void {
+	$return  = [];
 	$term    = get_nfilter_request_var('term');
 	$host_id = $_SESSION['cur_device_id'];
 
@@ -1071,9 +1089,9 @@ function get_site_locations() {
 		$site_id = db_fetch_cell_prepared('SELECT site_id
 			FROM host
 			WHERE id = ?',
-			array($host_id));
-		$args []= $site_id;
-		$where = 'AND site_id = ?';
+			[$host_id]);
+		$args[] = $site_id;
+		$where  = 'AND site_id = ?';
 	}
 
 	$locations = db_fetch_assoc_prepared("SELECT DISTINCT location
@@ -1087,12 +1105,12 @@ function get_site_locations() {
 
 	if (cacti_sizeof($locations)) {
 		foreach ($locations as $l) {
-			$return[] = array('label' => $l['location'], 'value' => $l['location'], 'id' => $l['location']);
+			$return[] = ['label' => $l['location'], 'value' => $l['location'], 'id' => $l['location']];
 		}
 	}
 
 	if (!cacti_sizeof($return)) {
-		$return[] = array('label' => __('None', 'apcupsd'), 'value' => '', 'id' => __('None', 'apcupsd'));
+		$return[] = ['label' => __('None', 'apcupsd'), 'value' => '', 'id' => __('None', 'apcupsd')];
 	}
 
 	print json_encode($return);
