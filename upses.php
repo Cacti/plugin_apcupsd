@@ -620,7 +620,7 @@ function ups_edit(): void {
 	form_save_button('upses.php', 'return');
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_apcupsd_csp_nonce(); ?>>
 	var showHost = false;
 
 	// default snmp information
@@ -835,7 +835,7 @@ function upses(): void {
 				</tr>
 			</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_apcupsd_csp_nonce(); ?>>
 
 			function applyFilter() {
 				strURL  = 'upses.php?header=false';
