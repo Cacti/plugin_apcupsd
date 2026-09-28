@@ -23,6 +23,22 @@
 */
 
 /**
+ * Return the CSP nonce attribute for inline <script> tags, safely across
+ * Cacti versions. Newer Cacti releases enforce a Content-Security-Policy that
+ * requires a per-request nonce on parser-inserted scripts; older releases lack
+ * the CactiSecureHeaders class, so this returns an empty string there.
+ *
+ * @return string The nonce attribute when supported, otherwise empty string.
+ */
+function plugin_apcupsd_csp_nonce(): string {
+	if (class_exists('CactiSecureHeaders')) {
+		return CactiSecureHeaders::getNonceAttribute();
+	}
+
+	return '';
+}
+
+/**
  * Installs the APCUPSD plugin: registers its Cacti hooks (config_arrays,
  * config_settings, poller_bottom, draw_navigation_text, replicate_out),
  * registers its upses.php realm, and creates its database tables. Invoked

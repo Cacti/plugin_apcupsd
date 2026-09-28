@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-25 08:29-0400\n"
+"POT-Creation-Date: 2026-09-27 10:59-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -278,23 +278,23 @@ msgstr ""
 msgid "Invalid apcupsd hostname or port configuration"
 msgstr ""
 
-#: setup.php:41
+#: setup.php:57
 msgid "Manage UPS's"
 msgstr ""
 
-#: setup.php:437
+#: setup.php:453
 msgid "Management"
 msgstr ""
 
-#: setup.php:437 upses.php:748 upses.php:815 upses.php:997
+#: setup.php:453 upses.php:748 upses.php:815 upses.php:997
 msgid "UPSes"
 msgstr ""
 
-#: setup.php:440
+#: setup.php:456
 msgid "System Administration"
 msgstr ""
 
-#: setup.php:519
+#: setup.php:535
 msgid "Manage UPSes"
 msgstr ""
 

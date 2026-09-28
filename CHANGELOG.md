@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* security: Add a version-safe CSP nonce (`plugin_apcupsd_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
 * issue: If an SNMP device goes down, once it returns to service the UPS status is missed
 
 --- 1.3.1 ---
