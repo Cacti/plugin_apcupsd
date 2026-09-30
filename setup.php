@@ -188,7 +188,7 @@ function apcupsd_check_upgrade(): void {
 function apcupsd_poller_bottom(): void {
 	global $config;
 
-	require_once($config['base_path'] . '/lib/poller.php');
+	include_once($config['base_path'] . '/lib/poller.php');
 
 	exec_background(read_config_option('path_php_binary'), ' -q ' . $config['base_path'] . '/plugins/apcupsd/poller_apcupsd.php');
 }
@@ -328,7 +328,7 @@ function apcupsd_config_settings(): void {
 function apcupsd_replicate_out($data): array {
 	global $config;
 
-	require_once($config['base_path'] . '/lib/poller.php');
+	include_once($config['base_path'] . '/lib/poller.php');
 
 	$upsdata = db_fetch_assoc_prepared('SELECT *
 		FROM apcupsd_ups',
