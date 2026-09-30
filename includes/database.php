@@ -147,6 +147,26 @@ function apcupsd_ups_stats_table_data(): array {
 }
 
 /**
+ * Returns a copy of a table definition with an array-valued 'primary'
+ * flattened to the scalar column list api_plugin_db_table_create() expects.
+ * Down to the plugin's minimum Cacti compat (1.2.24) that API interpolates
+ * $data['primary'] straight into PRIMARY KEY (`...`), so an array would
+ * render as PRIMARY KEY (`Array`) and fail the create. The array form is
+ * kept everywhere else for db_update_table().
+ *
+ * @param array<string,mixed> $data Table definition.
+ *
+ * @return array<string,mixed> The definition adapted for the create API.
+ */
+function apcupsd_table_data_for_create(array $data): array {
+	if (isset($data['primary']) && is_array($data['primary'])) {
+		$data['primary'] = implode('`,`', $data['primary']);
+	}
+
+	return $data;
+}
+
+/**
  * Creates this plugin's tables (apcupsd_ups, apcupsd_ups_stats) through
  * Cacti's tracked plugin table API. Called from plugin_apcupsd_install()
  * during installation, and re-run (safely) from apcupsd_upgrade_tables().
@@ -154,32 +174,37 @@ function apcupsd_ups_stats_table_data(): array {
  * @return bool Always returns true.
  */
 function apcupsd_setup_table(): bool {
-	api_plugin_db_table_create('apcupsd', 'apcupsd_ups', apcupsd_ups_table_data());
-	api_plugin_db_table_create('apcupsd', 'apcupsd_ups_stats', apcupsd_ups_stats_table_data());
+	api_plugin_db_table_create('apcupsd', 'apcupsd_ups', apcupsd_table_data_for_create(apcupsd_ups_table_data()));
+	api_plugin_db_table_create('apcupsd', 'apcupsd_ups_stats', apcupsd_table_data_for_create(apcupsd_ups_stats_table_data()));
 
 	return true;
 }
 
 /**
  * Refreshes this plugin's tables on upgrade. The apcupsd_ups_stats column
- * renames/adds below cannot be expressed by db_update_table(), so they run
- * first as guarded pre-steps to bring older installations onto the current
- * column layout; db_update_table() then reconciles the rest (or creates the
- * table outright when missing). Called from apcupsd_check_upgrade().
+ * renames below cannot be expressed by db_update_table(), so they run first
+ * as pre-steps (guarded by db_table_exists()) to bring older installations
+ * onto the current column layout; db_update_table() then reconciles the rest
+ * (or creates the table outright when missing). Called from
+ * apcupsd_check_upgrade().
  *
  * @return void
  */
 function apcupsd_upgrade_tables(): void {
-	if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
-		db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
-	}
+	// Column renames can't be expressed by db_update_table(), so run them
+	// first as guarded pre-steps -- but only when the stats table already
+	// exists, otherwise a fresh install would ALTER a table that hasn't been
+	// created yet. The ups_master column is intentionally left to
+	// db_update_table() to add (it is part of apcupsd_ups_stats_table_data()),
+	// so no db_column_exists() result is cached stale mid-reconciliation.
+	if (db_table_exists('apcupsd_ups_stats')) {
+		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
+			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
+		}
 
-	if (!db_column_exists('apcupsd_ups_stats', 'ups_master')) {
-		db_execute('ALTER TABLE apcupsd_ups_stats ADD COLUMN ups_master varchar(128) NOT NULL default "" AFTER ups_name');
-	}
-
-	if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
-		db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
+		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
+			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
+		}
 	}
 
 	$tables = [
@@ -191,7 +216,7 @@ function apcupsd_upgrade_tables(): void {
 		if (db_table_exists($table)) {
 			db_update_table($table, $table_data);
 		} else {
-			api_plugin_db_table_create('apcupsd', $table, $table_data);
+			api_plugin_db_table_create('apcupsd', $table, apcupsd_table_data_for_create($table_data));
 		}
 	}
 }

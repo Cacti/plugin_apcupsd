@@ -44,3 +44,38 @@ it('creates the apcupsd_ups and apcupsd_ups_stats tables', function () {
 it('returns true', function () {
 	expect(apcupsd_setup_table())->toBeTrue();
 });
+
+it('passes a scalar primary key to the create API', function () {
+	// api_plugin_db_table_create() interpolates data['primary'] straight into
+	// PRIMARY KEY (`...`) down to the 1.2.24 compat floor, so an array would
+	// render as PRIMARY KEY (`Array`) and the create would fail.
+	apcupsd_setup_table();
+
+	$creates = array_values(array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'api_plugin_db_table_create';
+	}));
+
+	expect($creates)->toHaveCount(2);
+
+	foreach ($creates as $create) {
+		expect($create['data']['primary'])->toBeString();
+	}
+});
+
+it('creates absent tables on upgrade without attempting rename ALTERs', function () {
+	$GLOBALS['__test_table_exists'] = array();
+
+	apcupsd_upgrade_tables();
+
+	$alters = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute' && stripos($call['sql'], 'ALTER TABLE') !== false;
+	});
+
+	expect($alters)->toBeEmpty();
+
+	$creates = array_values(array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'api_plugin_db_table_create';
+	}));
+
+	expect($creates)->toHaveCount(2);
+});
