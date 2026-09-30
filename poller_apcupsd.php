@@ -26,7 +26,7 @@
 chdir(__DIR__);
 chdir('../..');
 
-include('./include/cli_check.php');
+require('./include/cli_check.php');
 
 /** @var array<string,mixed> $config */
 require_once($config['base_path'] . '/lib/api_automation_tools.php');
@@ -40,7 +40,7 @@ require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/snmp.php');
 require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
-include('./plugins/apcupsd/database.php');
+require('./plugins/apcupsd/database.php');
 require_once('./plugins/apcupsd/apcupsd_functions.php');
 
 // process calling arguments
@@ -556,7 +556,7 @@ function display_version(): void {
 	global $config;
 
 	if (!function_exists('plugin_apcupsd_version')) {
-		include_once($config['base_path'] . '/plugins/apcupsd/setup.php');
+		require_once($config['base_path'] . '/plugins/apcupsd/setup.php');
 	}
 
 	$info = plugin_apcupsd_version();

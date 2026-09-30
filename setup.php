@@ -48,6 +48,10 @@ function plugin_apcupsd_csp_nonce(): string {
  * @return void
  */
 function plugin_apcupsd_install(): void {
+	global $config;
+
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
+
 	api_plugin_register_hook('apcupsd', 'config_arrays',        'apcupsd_config_arrays',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'config_settings',      'apcupsd_config_settings',      'setup.php');
 	api_plugin_register_hook('apcupsd', 'poller_bottom',        'apcupsd_poller_bottom',        'setup.php');
@@ -68,8 +72,11 @@ function plugin_apcupsd_install(): void {
  * @return bool Always returns true.
  */
 function plugin_apcupsd_uninstall(): bool {
-	db_execute('DROP TABLE IF EXISTS apcupsd_ups');
-	db_execute('DROP TABLE IF EXISTS apcupsd_ups_stats');
+	global $config;
+
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
+
+	apcupsd_drop_tables();
 
 	return true;
 }
@@ -117,14 +124,16 @@ function plugin_apcupsd_upgrade(): bool {
  */
 function apcupsd_check_upgrade(): void {
 	global $config, $database_default;
-	include_once($config['library_path'] . '/database.php');
-	include_once($config['library_path'] . '/functions.php');
 
 	$files = ['plugins.php', 'upses.php'];
 
 	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files, true)) {
 		return;
 	}
+
+	require_once($config['library_path'] . '/database.php');
+	require_once($config['library_path'] . '/functions.php');
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
 
 	$info    = plugin_apcupsd_version();
 	$current = $info['version'];
@@ -151,17 +160,7 @@ function apcupsd_check_upgrade(): void {
 			]
 		);
 
-		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
-		}
-
-		if (!db_column_exists('apcupsd_ups_stats', 'ups_master')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats ADD COLUMN ups_master varchar(128) NOT NULL default "" AFTER ups_name');
-		}
-
-		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
-		}
+		apcupsd_upgrade_tables();
 
 		// Installations that ran the old install routine (which registered
 		// 'replicate_out' twice) are stuck with a stale duplicate hook row
@@ -189,181 +188,9 @@ function apcupsd_check_upgrade(): void {
 function apcupsd_poller_bottom(): void {
 	global $config;
 
-	include_once($config['base_path'] . '/lib/poller.php');
+	require_once($config['base_path'] . '/lib/poller.php');
 
 	exec_background(read_config_option('path_php_binary'), ' -q ' . $config['base_path'] . '/plugins/apcupsd/poller_apcupsd.php');
-}
-
-/**
- * Creates this plugin's apcupsd_ups (configured UPS devices) and
- * apcupsd_ups_stats (polled UPS readings) database tables, if they don't
- * already exist. Called from plugin_apcupsd_install() during plugin
- * installation.
- *
- * @return bool Always returns true.
- *
- * @global array  $config           Cacti global configuration array;
- *                                   used to load database.php.
- * @global object $database_default Cacti's default database connection
- *                                   handle (unused directly here;
- *                                   declared for parity with other
- *                                   database-touching functions in this
- *                                   file).
- */
-function apcupsd_setup_table(): bool {
-	global $config, $database_default;
-	include_once($config['library_path'] . '/database.php');
-
-	db_execute("CREATE TABLE IF NOT EXISTS `apcupsd_ups` (
-		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-		`poller_id` int(10) unsigned DEFAULT 1,
-		`host_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`site_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`type_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`name` varchar(40) NOT NULL DEFAULT '',
-		`description` varchar(128) NOT NULL DEFAULT '',
-		`snmp_version` tinyint(3) unsigned DEFAULT 2,
-		`snmp_community` varchar(100) NOT NULL DEFAULT '',
-		`snmp_username` varchar(50) NOT NULL DEFAULT '',
-		`snmp_password` varchar(50) NOT NULL DEFAULT '',
-		`snmp_auth_protocol` varchar(6) NOT NULL DEFAULT '',
-		`snmp_priv_protocol` varchar(6) NOT NULL DEFAULT '',
-		`snmp_priv_passphrase` varchar(200) NOT NULL DEFAULT '',
-		`snmp_context` varchar(64) NOT NULL DEFAULT '',
-		`snmp_engine_id` varchar(64) NOT NULL DEFAULT '',
-		`snmp_port` tinyint(3) unsigned NOT NULL DEFAULT 161,
-		`snmp_timeout` int(10) unsigned NOT NULL DEFAULT 2000,
-		`snmp_skipped` varchar(255) NOT NULL DEFAULT '',
-		`status` int(10) unsigned NOT NULL DEFAULT 0,
-		`hostname` varchar(64) NOT NULL DEFAULT '',
-		`port` int(10) unsigned NOT NULL DEFAULT 3551,
-		`enabled` char(2) DEFAULT 'on',
-		`error_message` varchar(255) DEFAULT '',
-		`last_updated` timestamp NOT NULL DEFAULT current_timestamp(),
-		PRIMARY KEY (`id`))
-		ENGINE=InnoDB
-		COMMENT='Monitored UPS Table'");
-
-	// APC      : 001,036,0854
-	// DATE     : 2022-07-05 11:47:45 -0400
-	// HOSTNAME : vmhost3
-	// VERSION  : 3.14.14 (31 May 2016) redhat
-	// UPSNAME  : APC1500
-	// CABLE    : USB Cable
-	// DRIVER   : USB UPS Driver
-	// UPSMODE  : Stand Alone
-	// STARTTIME: 2022-07-04 20:30:55 -0400
-	// MODEL    : Back-UPS BX1500G
-	// STATUS   : ONLINE
-	// LINEV    : 121.0 Volts
-	// LOADPCT  : 12.0 Percent
-	// BCHARGE  : 100.0 Percent
-	// TIMELEFT : 48.5 Minutes
-	// MBATTCHG : 5 Percent
-	// MINTIMEL : 3 Minutes
-	// MAXTIME  : 0 Seconds
-	// SENSE    : Low
-	// LOTRANS  : 88.0 Volts
-	// HITRANS  : 136.0 Volts
-	// ALARMDEL : 30 Seconds
-	// BATTV    : 27.2 Volts
-	// LASTXFER : High line voltage
-	// NUMXFERS : 0
-	// TONBATT  : 0 Seconds
-	// CUMONBATT: 0 Seconds
-	// XOFFBATT : N/A
-	// SELFTEST : NO
-	// STATFLAG : 0x05000008
-	// SERIALNO : 3B1050X33233
-	// BATTDATE : 2021-04-01
-	// NOMINV   : 120 Volts
-	// NOMBATTV : 24.0 Volts
-	// NOMPOWER : 865 Watts
-	// FIRMWARE : 866.L5 .D USB FW:L5
-	// END APC  : 2022-07-05 11:47:47 -0400
-
-	db_execute("CREATE TABLE IF NOT exists `apcupsd_ups_stats` (
-		`ups_id` int(10) unsigned NOT NULL,
-		`ups_key` varchar(20) not null default '',
-		`ups_date` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_hostname` varchar(64) not null default '',
-		`ups_version` varchar(64) not null default '',
-		`ups_name` varchar(20) not null default '',
-		`ups_master` varchar(128) not null default '',
-		`ups_cable` varchar(20) not null default '',
-		`ups_driver` varchar(20) not null default '',
-		`ups_mode` varchar(20) not null default '',
-
-		`ups_starttime` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_mandate` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_masterupd` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_xonbatt` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_laststest` timestamp not null default CURRENT_TIMESTAMP,
-
-		`ups_model` varchar(40) not null default '',
-		`ups_status` varchar(20) not null default '',
-
-		`ups_dipsw` varchar(20) not null default '',
-		`ups_extbatts` int(10) unsigned default null,
-		`ups_badbatts` int(10) unsigned default null,
-		`ups_reg1` varchar(20) not null default '',
-		`ups_reg2` varchar(20) not null default '',
-		`ups_reg3` varchar(20) not null default '',
-
-		`ups_line_voltage` double default null,
-		`ups_line_fail` varchar(20) not null default '0',
-		`ups_load_percent` double default null,
-		`ups_line_frequency` double default null,
-		`ups_output_voltage` double default null,
-
-		`ups_max_line_voltage` double default null,
-		`ups_min_line_voltage` double default null,
-
-		`ups_timeleft` double default null,
-		`ups_mbattchg` double default null,
-		`ups_mintimel` double default null,
-		`ups_maxtime` double default null,
-		`ups_sense` varchar(20) not null default '',
-		`ups_lowtrans` double default null,
-		`ups_hitrans` double default null,
-		`ups_alarmdel` double default null,
-
-		`ups_dlowbatt` varchar(20) not null default '',
-		`ups_dshutd` varchar(20) not null default '',
-		`ups_dwake` varchar(20) not null default '',
-
-		`ups_battery_status` varchar(60) not null default '',
-		`ups_battery_charge` double default null,
-		`ups_battery_voltage` double default null,
-		`ups_battery_date` varchar(20) not null default '',
-		`ups_battery_retpct` double default null,
-
-		`ups_lastxfer` varchar(40) not null default '',
-		`ups_numxfers` int(10) unsigned default null,
-		`ups_tonbatt` int(10) unsigned default null,
-		`ups_cumonbatt` int(10) unsigned default null,
-		`ups_xoffbatt` int(10) unsigned default null,
-		`ups_selftest` varchar(10) not null default '',
-		`ups_selftest_interval` varchar(20) not null default '',
-		`ups_statflag` varchar(20) not null default '',
-		`ups_serialno` varchar(20) not null default '',
-
-		`ups_nominal_voltage` double default null,
-		`ups_nominal_batt_voltage` double default null,
-		`ups_nominal_power` double default null,
-		`ups_nominal_output_voltage` double default null,
-
-		`ups_ambtemp` double default null,
-		`ups_humidity` double default null,
-		`ups_internal_temp` double default null,
-
-		`ups_firmware` varchar(40) not null default '',
-		`ups_end_rec` timestamp not null default CURRENT_TIMESTAMP,
-		PRIMARY KEY(ups_id))
-		ENGINE=InnoDB
-		COMMENT='Monitored UPS Status Table'");
-
-	return true;
 }
 
 /**
@@ -501,7 +328,7 @@ function apcupsd_config_settings(): void {
 function apcupsd_replicate_out($data): array {
 	global $config;
 
-	include_once($config['base_path'] . '/lib/poller.php');
+	require_once($config['base_path'] . '/lib/poller.php');
 
 	$upsdata = db_fetch_assoc_prepared('SELECT *
 		FROM apcupsd_ups',
