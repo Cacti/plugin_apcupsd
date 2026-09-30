@@ -4,7 +4,7 @@
 
 When generating code for this repository:
 
-1. **Version Compatibility**: This is a Cacti plugin (`apcupsd`, version 1.3.1) targeting Cacti 1.2.24+
+1. **Version Compatibility**: This is a Cacti plugin (`apcupsd`, version 1.3.1) targeting Cacti 1.2.32+
 2. **Context Files**: Prioritize patterns and standards defined in this file (`.github/copilot-instructions.md`)
 3. **Codebase Patterns**: When context files don't provide specific guidance, scan the codebase for established patterns
 4. **Architectural Consistency**: Maintain plugin-based architecture extending Cacti core
