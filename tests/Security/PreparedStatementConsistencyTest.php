@@ -13,7 +13,7 @@ describe('prepared statement consistency in apcupsd', function () {
 		// (CREATE/DROP/ALTER TABLE) with no user-supplied parameters to bind,
 		// unlike the user-facing query code in the other target files.
 		$targetFiles = array(
-		'database.php',
+		'includes/field_maps.php',
 		'poller_apcupsd.php',
 		'upses.php',
 		);

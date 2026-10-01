@@ -17,6 +17,9 @@
 
 beforeAll(function () {
 	require_once __DIR__ . '/../../setup.php';
+	// Define apcupsd_upgrade_tables() etc. from the real checkout so
+	// apcupsd_check_upgrade() can run while base_path is sandboxed for the prune.
+	require_once dirname(__DIR__, 2) . '/includes/database.php';
 
 	$stubLibraryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'apcupsd-test-lib-stub';
 
@@ -34,7 +37,25 @@ beforeEach(function () {
 	apcupsd_test_reset_db_mocks();
 	$GLOBALS['__test_db_calls']           = array();
 	$GLOBALS['__test_enabled_hooks_calls'] = array();
+	$GLOBALS['__test_table_exists']        = array();
+	$GLOBALS['__test_db_update_table_result'] = true;
 	$_SERVER['PHP_SELF']                  = '/upses.php';
+
+	// Sandbox base_path (minimal INFO + empty includes/database.php stub) so any
+	// upgrade-path test runs apcupsd_prune_files() against a throwaway
+	// tree, never the real checkout.
+	$GLOBALS['__apcupsd_base_restore'] = $GLOBALS['config']['base_path'];
+	$base = sys_get_temp_dir() . '/apcupsd-test-' . uniqid();
+	mkdir($base . '/plugins/apcupsd/includes', 0777, true);
+	file_put_contents($base . '/plugins/apcupsd/INFO', "[info]\nversion = 9.9.9\nname = apcupsd\nlongname = APC UPS Daemon\nauthor = x\nhomepage = x\n");
+	file_put_contents($base . '/plugins/apcupsd/includes/database.php', "<?php\n");
+	$GLOBALS['config']['base_path'] = $base;
+});
+
+afterEach(function () {
+	if (isset($GLOBALS['__apcupsd_base_restore'])) {
+		$GLOBALS['config']['base_path'] = $GLOBALS['__apcupsd_base_restore'];
+	}
 });
 
 it('reports the config as always valid', function () {
@@ -76,6 +97,47 @@ it('re-enables hooks and updates plugin_config when the version drifts', functio
 	}));
 
 	expect($updates)->toHaveCount(1);
+});
+
+it('persists the new version after reconciling existing tables', function () {
+	apcupsd_test_mock_db('db_fetch_cell_prepared', 'plugin_config', '0.0.0');
+	$GLOBALS['__test_table_exists'] = array('apcupsd_ups' => true, 'apcupsd_ups_stats' => true);
+
+	apcupsd_check_upgrade();
+
+	$reconciled = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_update_table';
+	});
+
+	expect($reconciled)->toHaveCount(2);
+
+	$updates = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute_prepared' && stripos($call['sql'], 'UPDATE plugin_config') !== false;
+	});
+
+	expect($updates)->toHaveCount(1);
+});
+
+it('leaves plugin_config unchanged when a schema reconciliation fails', function () {
+	$GLOBALS['__test_cacti_log'] = array();
+
+	apcupsd_test_mock_db('db_fetch_cell_prepared', 'plugin_config', '0.0.0');
+	$GLOBALS['__test_table_exists']           = array('apcupsd_ups' => true, 'apcupsd_ups_stats' => true);
+	$GLOBALS['__test_db_update_table_result'] = false;
+
+	apcupsd_check_upgrade();
+
+	$updates = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute_prepared' && stripos($call['sql'], 'UPDATE plugin_config') !== false;
+	});
+
+	expect($updates)->toBeEmpty();
+
+	$warned = array_filter($GLOBALS['__test_cacti_log'], function ($line) {
+		return stripos($line, 'schema reconciliation failed') !== false;
+	});
+
+	expect($warned)->not->toBeEmpty();
 });
 
 it('does nothing when the stored version already matches the plugin version', function () {

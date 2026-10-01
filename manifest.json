@@ -1,0 +1,22 @@
+{
+    "tombstones": [
+        "apcupsd_functions.php",
+        "database.php",
+        "ui_helpers.php"
+    ],
+    "expected": [
+        "CHANGELOG.md",
+        "INFO",
+        "LICENSE",
+        "README.md",
+        "includes/",
+        "index.php",
+        "locales/",
+        "manifest.json",
+        "poller_apcupsd.php",
+        "setup.php",
+        "templates/",
+        "upses.php"
+    ],
+    "whitelist": []
+}

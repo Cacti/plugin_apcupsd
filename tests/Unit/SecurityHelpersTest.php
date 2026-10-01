@@ -19,7 +19,7 @@ if (!function_exists('cacti_escapeshellarg')) {
 	}
 }
 
-require_once __DIR__ . '/../../apcupsd_functions.php';
+require_once __DIR__ . '/../../includes/functions.php';
 
 describe('apcupsd security helpers', function () {
 	it('normalizes valid integers', function () {

@@ -48,6 +48,10 @@ function plugin_apcupsd_csp_nonce(): string {
  * @return void
  */
 function plugin_apcupsd_install(): void {
+	global $config;
+
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
+
 	api_plugin_register_hook('apcupsd', 'config_arrays',        'apcupsd_config_arrays',        'setup.php');
 	api_plugin_register_hook('apcupsd', 'config_settings',      'apcupsd_config_settings',      'setup.php');
 	api_plugin_register_hook('apcupsd', 'poller_bottom',        'apcupsd_poller_bottom',        'setup.php');
@@ -68,8 +72,11 @@ function plugin_apcupsd_install(): void {
  * @return bool Always returns true.
  */
 function plugin_apcupsd_uninstall(): bool {
-	db_execute('DROP TABLE IF EXISTS apcupsd_ups');
-	db_execute('DROP TABLE IF EXISTS apcupsd_ups_stats');
+	global $config;
+
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
+
+	apcupsd_drop_tables();
 
 	return true;
 }
@@ -99,11 +106,13 @@ function plugin_apcupsd_upgrade(): bool {
 /**
  * Detects whether the installed plugin_config version differs from this
  * plugin's INFO file version and, if so, re-enables its hooks (to pick
- * up any newly added ones), updates the stored plugin_config record, and
- * applies a handful of one-off apcupsd_ups_stats column migrations
- * (renaming/adding columns from older releases). Only runs on
- * plugins.php/upses.php. Called from apcupsd_config_arrays() on every
- * relevant page load.
+ * up any newly added ones), reconciles the database schema, and updates
+ * the stored plugin_config record. The schema reconciliation runs first:
+ * the stored version is only advanced once apcupsd_upgrade_tables()
+ * reports success, so a failed reconciliation is logged and retried on a
+ * later request rather than being recorded as a completed upgrade. Only
+ * runs on plugins.php/upses.php. Called from apcupsd_config_arrays() on
+ * every relevant page load.
  *
  * @return void
  *
@@ -117,14 +126,16 @@ function plugin_apcupsd_upgrade(): bool {
  */
 function apcupsd_check_upgrade(): void {
 	global $config, $database_default;
-	include_once($config['library_path'] . '/database.php');
-	include_once($config['library_path'] . '/functions.php');
 
 	$files = ['plugins.php', 'upses.php'];
 
 	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files, true)) {
 		return;
 	}
+
+	require_once($config['library_path'] . '/database.php');
+	require_once($config['library_path'] . '/functions.php');
+	require_once($config['base_path'] . '/plugins/apcupsd/includes/database.php');
 
 	$info    = plugin_apcupsd_version();
 	$current = $info['version'];
@@ -139,6 +150,15 @@ function apcupsd_check_upgrade(): void {
 			api_plugin_enable_hooks('apcupsd');
 		}
 
+		// Reconcile the schema before recording the new version. If it fails,
+		// leave plugin_config.version untouched so the upgrade runs again on a
+		// later request instead of being treated as complete.
+		if (!apcupsd_upgrade_tables()) {
+			cacti_log('WARNING: apcupsd schema reconciliation failed; leaving plugin_config.version unchanged so the upgrade retries on the next request', false, 'APCUPSD');
+
+			return;
+		}
+
 		db_execute_prepared('UPDATE plugin_config SET
 			version = ?, name = ?, author = ?, webpage = ?
 			WHERE directory = ?',
@@ -151,18 +171,6 @@ function apcupsd_check_upgrade(): void {
 			]
 		);
 
-		if (db_column_exists('apcupsd_ups_stats', 'ups_abmtemp')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_abmtemp ups_ambtemp DOUBLE default NULL');
-		}
-
-		if (!db_column_exists('apcupsd_ups_stats', 'ups_master')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats ADD COLUMN ups_master varchar(128) NOT NULL default "" AFTER ups_name');
-		}
-
-		if (db_column_exists('apcupsd_ups_stats', 'ups_dispsw')) {
-			db_execute('ALTER TABLE apcupsd_ups_stats CHANGE COLUMN ups_dispsw ups_dipsw VARCHAR(20) NOT NULL default ""');
-		}
-
 		// Installations that ran the old install routine (which registered
 		// 'replicate_out' twice) are stuck with a stale duplicate hook row
 		// that re-enabling hooks alone does not remove.
@@ -172,6 +180,9 @@ function apcupsd_check_upgrade(): void {
 			$keep_id = db_fetch_cell_prepared('SELECT MIN(id) FROM plugin_hooks WHERE name = ? AND hook = ?', ['apcupsd', 'replicate_out']);
 			db_execute_prepared('DELETE FROM plugin_hooks WHERE name = ? AND hook = ? AND id != ?', ['apcupsd', 'replicate_out', $keep_id]);
 		}
+
+		// Remove files tombstoned in manifest.json plus the dev-only tests/ tree.
+		apcupsd_prune_files();
 	}
 }
 
@@ -192,178 +203,6 @@ function apcupsd_poller_bottom(): void {
 	include_once($config['base_path'] . '/lib/poller.php');
 
 	exec_background(read_config_option('path_php_binary'), ' -q ' . $config['base_path'] . '/plugins/apcupsd/poller_apcupsd.php');
-}
-
-/**
- * Creates this plugin's apcupsd_ups (configured UPS devices) and
- * apcupsd_ups_stats (polled UPS readings) database tables, if they don't
- * already exist. Called from plugin_apcupsd_install() during plugin
- * installation.
- *
- * @return bool Always returns true.
- *
- * @global array  $config           Cacti global configuration array;
- *                                   used to load database.php.
- * @global object $database_default Cacti's default database connection
- *                                   handle (unused directly here;
- *                                   declared for parity with other
- *                                   database-touching functions in this
- *                                   file).
- */
-function apcupsd_setup_table(): bool {
-	global $config, $database_default;
-	include_once($config['library_path'] . '/database.php');
-
-	db_execute("CREATE TABLE IF NOT EXISTS `apcupsd_ups` (
-		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-		`poller_id` int(10) unsigned DEFAULT 1,
-		`host_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`site_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`type_id` int(10) unsigned NOT NULL DEFAULT 0,
-		`name` varchar(40) NOT NULL DEFAULT '',
-		`description` varchar(128) NOT NULL DEFAULT '',
-		`snmp_version` tinyint(3) unsigned DEFAULT 2,
-		`snmp_community` varchar(100) NOT NULL DEFAULT '',
-		`snmp_username` varchar(50) NOT NULL DEFAULT '',
-		`snmp_password` varchar(50) NOT NULL DEFAULT '',
-		`snmp_auth_protocol` varchar(6) NOT NULL DEFAULT '',
-		`snmp_priv_protocol` varchar(6) NOT NULL DEFAULT '',
-		`snmp_priv_passphrase` varchar(200) NOT NULL DEFAULT '',
-		`snmp_context` varchar(64) NOT NULL DEFAULT '',
-		`snmp_engine_id` varchar(64) NOT NULL DEFAULT '',
-		`snmp_port` tinyint(3) unsigned NOT NULL DEFAULT 161,
-		`snmp_timeout` int(10) unsigned NOT NULL DEFAULT 2000,
-		`snmp_skipped` varchar(255) NOT NULL DEFAULT '',
-		`status` int(10) unsigned NOT NULL DEFAULT 0,
-		`hostname` varchar(64) NOT NULL DEFAULT '',
-		`port` int(10) unsigned NOT NULL DEFAULT 3551,
-		`enabled` char(2) DEFAULT 'on',
-		`error_message` varchar(255) DEFAULT '',
-		`last_updated` timestamp NOT NULL DEFAULT current_timestamp(),
-		PRIMARY KEY (`id`))
-		ENGINE=InnoDB
-		COMMENT='Monitored UPS Table'");
-
-	// APC      : 001,036,0854
-	// DATE     : 2022-07-05 11:47:45 -0400
-	// HOSTNAME : vmhost3
-	// VERSION  : 3.14.14 (31 May 2016) redhat
-	// UPSNAME  : APC1500
-	// CABLE    : USB Cable
-	// DRIVER   : USB UPS Driver
-	// UPSMODE  : Stand Alone
-	// STARTTIME: 2022-07-04 20:30:55 -0400
-	// MODEL    : Back-UPS BX1500G
-	// STATUS   : ONLINE
-	// LINEV    : 121.0 Volts
-	// LOADPCT  : 12.0 Percent
-	// BCHARGE  : 100.0 Percent
-	// TIMELEFT : 48.5 Minutes
-	// MBATTCHG : 5 Percent
-	// MINTIMEL : 3 Minutes
-	// MAXTIME  : 0 Seconds
-	// SENSE    : Low
-	// LOTRANS  : 88.0 Volts
-	// HITRANS  : 136.0 Volts
-	// ALARMDEL : 30 Seconds
-	// BATTV    : 27.2 Volts
-	// LASTXFER : High line voltage
-	// NUMXFERS : 0
-	// TONBATT  : 0 Seconds
-	// CUMONBATT: 0 Seconds
-	// XOFFBATT : N/A
-	// SELFTEST : NO
-	// STATFLAG : 0x05000008
-	// SERIALNO : 3B1050X33233
-	// BATTDATE : 2021-04-01
-	// NOMINV   : 120 Volts
-	// NOMBATTV : 24.0 Volts
-	// NOMPOWER : 865 Watts
-	// FIRMWARE : 866.L5 .D USB FW:L5
-	// END APC  : 2022-07-05 11:47:47 -0400
-
-	db_execute("CREATE TABLE IF NOT exists `apcupsd_ups_stats` (
-		`ups_id` int(10) unsigned NOT NULL,
-		`ups_key` varchar(20) not null default '',
-		`ups_date` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_hostname` varchar(64) not null default '',
-		`ups_version` varchar(64) not null default '',
-		`ups_name` varchar(20) not null default '',
-		`ups_master` varchar(128) not null default '',
-		`ups_cable` varchar(20) not null default '',
-		`ups_driver` varchar(20) not null default '',
-		`ups_mode` varchar(20) not null default '',
-
-		`ups_starttime` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_mandate` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_masterupd` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_xonbatt` timestamp not null default CURRENT_TIMESTAMP,
-		`ups_laststest` timestamp not null default CURRENT_TIMESTAMP,
-
-		`ups_model` varchar(40) not null default '',
-		`ups_status` varchar(20) not null default '',
-
-		`ups_dipsw` varchar(20) not null default '',
-		`ups_extbatts` int(10) unsigned default null,
-		`ups_badbatts` int(10) unsigned default null,
-		`ups_reg1` varchar(20) not null default '',
-		`ups_reg2` varchar(20) not null default '',
-		`ups_reg3` varchar(20) not null default '',
-
-		`ups_line_voltage` double default null,
-		`ups_line_fail` varchar(20) not null default '0',
-		`ups_load_percent` double default null,
-		`ups_line_frequency` double default null,
-		`ups_output_voltage` double default null,
-
-		`ups_max_line_voltage` double default null,
-		`ups_min_line_voltage` double default null,
-
-		`ups_timeleft` double default null,
-		`ups_mbattchg` double default null,
-		`ups_mintimel` double default null,
-		`ups_maxtime` double default null,
-		`ups_sense` varchar(20) not null default '',
-		`ups_lowtrans` double default null,
-		`ups_hitrans` double default null,
-		`ups_alarmdel` double default null,
-
-		`ups_dlowbatt` varchar(20) not null default '',
-		`ups_dshutd` varchar(20) not null default '',
-		`ups_dwake` varchar(20) not null default '',
-
-		`ups_battery_status` varchar(60) not null default '',
-		`ups_battery_charge` double default null,
-		`ups_battery_voltage` double default null,
-		`ups_battery_date` varchar(20) not null default '',
-		`ups_battery_retpct` double default null,
-
-		`ups_lastxfer` varchar(40) not null default '',
-		`ups_numxfers` int(10) unsigned default null,
-		`ups_tonbatt` int(10) unsigned default null,
-		`ups_cumonbatt` int(10) unsigned default null,
-		`ups_xoffbatt` int(10) unsigned default null,
-		`ups_selftest` varchar(10) not null default '',
-		`ups_selftest_interval` varchar(20) not null default '',
-		`ups_statflag` varchar(20) not null default '',
-		`ups_serialno` varchar(20) not null default '',
-
-		`ups_nominal_voltage` double default null,
-		`ups_nominal_batt_voltage` double default null,
-		`ups_nominal_power` double default null,
-		`ups_nominal_output_voltage` double default null,
-
-		`ups_ambtemp` double default null,
-		`ups_humidity` double default null,
-		`ups_internal_temp` double default null,
-
-		`ups_firmware` varchar(40) not null default '',
-		`ups_end_rec` timestamp not null default CURRENT_TIMESTAMP,
-		PRIMARY KEY(ups_id))
-		ENGINE=InnoDB
-		COMMENT='Monitored UPS Status Table'");
-
-	return true;
 }
 
 /**
@@ -539,4 +378,174 @@ function apcupsd_draw_navigation_text($nav): array {
 	];
 
 	return $nav;
+}
+
+/**
+ * Removes files and directories that a previous version of this plugin
+ * shipped but that have since moved or been deleted, using the tombstone
+ * and whitelist lists in manifest.json. Whitelisted (user-data) paths and
+ * any VCS metadata (.git*) are never touched; the dev-only tests/ tree is
+ * removed. Any path that resolves outside the plugin directory (a tampered
+ * manifest.json) is refused, and any file/directory that cannot be removed
+ * (e.g. read-only) is reported to the Cacti log. Any top-level entry that is
+ * neither expected nor a tombstone nor whitelisted is logged to the Cacti
+ * log and left in place. Called on a plugin version change.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to resolve
+ *                       the plugin directory.
+ */
+function apcupsd_prune_files(): void {
+	global $config;
+
+	$plugin_dir    = $config['base_path'] . '/plugins/apcupsd';
+	$manifest_path = $plugin_dir . '/manifest.json';
+
+	if (!is_readable($manifest_path)) {
+		return;
+	}
+
+	$manifest = json_decode((string) file_get_contents($manifest_path), true);
+
+	if (!is_array($manifest)) {
+		cacti_log('WARNING: apcupsd manifest.json could not be parsed; skipping file prune', false, 'APCUPSD');
+
+		return;
+	}
+
+	$tombstones = isset($manifest['tombstones']) && is_array($manifest['tombstones']) ? $manifest['tombstones'] : [];
+	$expected   = isset($manifest['expected'])   && is_array($manifest['expected'])   ? $manifest['expected']   : [];
+	$whitelist  = isset($manifest['whitelist'])  && is_array($manifest['whitelist'])  ? $manifest['whitelist']  : [];
+
+	$protected = function (string $rel) use ($whitelist): bool {
+		if (strncmp($rel, '.git', 4) === 0 || strncmp($rel, '.md', 3) === 0) {
+			return true;
+		}
+
+		foreach ($whitelist as $entry) {
+			$entry = trim((string) $entry, '/');
+
+			if ($entry !== '' && ($rel === $entry
+				|| strncmp($rel, $entry . '/', strlen($entry) + 1) === 0
+				|| strncmp($entry, $rel . '/', strlen($rel) + 1) === 0)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	// Security: resolve the plugin directory so a tampered manifest.json
+	// cannot steer the prune outside of it.
+	$plugin_real = realpath($plugin_dir);
+
+	// Remove tombstoned (moved/deleted) paths plus the dev-only tests/
+	// tree and the phpunit.xml test configuration.
+	$remove   = $tombstones;
+	$remove[] = 'tests/';
+	$remove[] = 'phpunit.xml';
+
+	foreach ($remove as $rel) {
+		$rel = trim((string) $rel, '/');
+
+		if ($rel === '' || $protected($rel)) {
+			continue;
+		}
+
+		// A tombstone must never contain '.'/'..' segments; a tampered manifest
+		// could use them to escape the plugin directory or target its root.
+		$segments = explode('/', $rel);
+
+		if (in_array('.', $segments, true) || in_array('..', $segments, true)) {
+			cacti_log(sprintf('WARNING: apcupsd prune refused to remove %s: path contains a traversal segment (tampered manifest.json?)', $rel), false, 'APCUPSD');
+
+			continue;
+		}
+
+		$path = $plugin_dir . '/' . $rel;
+
+		if (!is_link($path) && !file_exists($path)) {
+			continue;
+		}
+
+		// Refuse any path that, after resolving symlinks and ../ segments,
+		// escapes the plugin directory (protects user data from a tampered
+		// manifest.json).
+		$anchor = is_link($path) ? dirname($path) : $path;
+		$real   = realpath($anchor);
+
+		if ($real === false || ($real !== $plugin_real && strncmp($real, $plugin_real . DIRECTORY_SEPARATOR, strlen((string) $plugin_real) + 1) !== 0)) {
+			cacti_log(sprintf('WARNING: apcupsd prune refused to remove %s: path resolves outside the plugin directory (tampered manifest.json?)', $rel), false, 'APCUPSD');
+
+			continue;
+		}
+
+		if (is_dir($path) && !is_link($path)) {
+			$removed = apcupsd_rmtree($path);
+		} else {
+			$removed = @unlink($path);
+		}
+
+		if (!$removed) {
+			cacti_log(sprintf('WARNING: apcupsd upgrade could not remove %s (check file/directory permissions)', $rel), false, 'APCUPSD');
+		}
+	}
+
+	// Surface any top-level entry the manifest does not account for.
+	$known = [];
+
+	foreach (array_merge($expected, $tombstones) as $entry) {
+		$top = explode('/', trim((string) $entry, '/'))[0];
+
+		if ($top !== '') {
+			$known[$top] = true;
+		}
+	}
+
+	$entries = scandir($plugin_dir);
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..' || $entry === 'tests' || $entry === 'phpunit.xml' || $protected($entry) || isset($known[$entry])) {
+			continue;
+		}
+
+		cacti_log(sprintf('WARNING: apcupsd upgrade found a file/directory not described in manifest.json: %s (left in place)', $entry), false, 'APCUPSD');
+	}
+}
+
+/**
+ * Recursively deletes a directory and its contents. Symlinks are removed
+ * without being followed. Helper for apcupsd_prune_files().
+ *
+ * @param string $dir Absolute path to the directory to remove.
+ *
+ * @return bool True if the directory and everything under it was removed;
+ *              false if any entry could not be deleted.
+ */
+function apcupsd_rmtree(string $dir): bool {
+	$entries = scandir($dir);
+	$ok      = true;
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..') {
+			continue;
+		}
+
+		$path = $dir . '/' . $entry;
+
+		if (is_dir($path) && !is_link($path)) {
+			if (!apcupsd_rmtree($path)) {
+				$ok = false;
+			}
+		} elseif (!@unlink($path)) {
+			$ok = false;
+		}
+	}
+
+	if (!@rmdir($dir)) {
+		$ok = false;
+	}
+
+	return $ok;
 }

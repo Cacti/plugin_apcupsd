@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-require_once __DIR__ . '/../../apcupsd_functions.php';
+require_once __DIR__ . '/../../includes/functions.php';
 
 describe('poller command construction path', function () {
 	it('keeps a valid poller command available', function () {
