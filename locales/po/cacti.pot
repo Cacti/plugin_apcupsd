@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-28 16:04-0400\n"
+"POT-Creation-Date: 2026-09-30 21:27-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -18,259 +18,259 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: database.php
+#: includes/field_maps.php
 msgid "Delay period before APCUPSD starts sounding alarm"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Ambient temperature"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "version, number of records and number of bytes following"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "APC model information"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Number of bad external battery packs (for XL models)"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date battery last replaced (if set)"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Battery status."
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current battery voltage"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current battery capacity charge percentage"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Cable type specified in the configuration file"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Cumulative seconds on battery since apcupsd startup"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date and time of last update from UPS"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current UPS DIP switch settings"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Low battery signal sent when this much runtime remains"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "The APCUPSD Driver when APCUPSD is the protocol"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Delay before UPS powers down after command received"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Time UPS waits after power off when the power is restored"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date and time of status information was written"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Number of external batteries (for XL models)"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS firmware version"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Input line voltage above which UPS will switch to battery"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "hostname of computer running apcupsd"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Ambient humidity"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS internal temperature in degrees Celsius"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Reason for last transfer to battery since apcupsd startup"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Input line voltage status."
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current line frequency in Hertz"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current input line voltage"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Percentage of UPS load capacity used as estimated by UPS"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Input line voltage below which UPS will switch to battery"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS date of manufacture"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Last time the master sent an update to the slave"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Maximum input line voltage since apcupsd started"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Min (observed) input line voltage since apcupsd started"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Min battery runtime (MINUTES) required for system shutdown"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS model derived from UPS information"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Nominal battery voltage"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Nominal input voltage delivered to the UPS."
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Nominal output voltage to supply when on battery power"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Nominal power output in watts"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Number of transfers to battery since apcupsd startup"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current UPS output voltage"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Fault register 1 in hex"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Fault register 2 in hex"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Fault register 3 in hex"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Battery charge %%% required after power off to restore power"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date and time of last self test since apcupsd startup"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Current UPS sensitivity setting for voltage fluctuations"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS serial number"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date and time apcupsd was started"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS status flag in hex"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date of the last UPS self test"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Self-test interval"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Remaining runtime left on battery as estimated by the UPS"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Seconds currently on battery"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Mode in which UPS is operating"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "apcupsd version number, date and operating system"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date, time of last transfer off battery since apcupsd startup"
 msgstr ""
 
-#: database.php
+#: includes/field_maps.php
 msgid "Date, time of last transfer to battery since apcupsd startup"
 msgstr ""
 
