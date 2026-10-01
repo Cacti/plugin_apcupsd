@@ -29,8 +29,8 @@ require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
-require_once(__DIR__ . '/apcupsd_functions.php');
-require_once(__DIR__ . '/ui_helpers.php');
+require_once(__DIR__ . '/includes/functions.php');
+require_once(__DIR__ . '/includes/helpers.php');
 
 $ups_actions = [
 	1 => __('Delete', 'apcupsd'),

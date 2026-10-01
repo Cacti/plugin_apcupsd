@@ -162,6 +162,7 @@ foreach ($clover->xpath('//file') as $file) {
 $unmeasured_allowlist = [
 	'includes/database.php', // install/upgrade/drop schema bootstrap; require_once's the live Cacti library, only runs during a real install/upgrade
 	'poller_apcupsd.php',    // CLI poller entry point (require cli_check.php); not loadable in the isolated unit process
+	'upses.php',             // web UI entry point (require auth.php); not loadable in the isolated unit process
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));

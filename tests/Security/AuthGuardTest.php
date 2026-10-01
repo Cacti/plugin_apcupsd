@@ -9,7 +9,7 @@
 
 describe('auth guard presence in apcupsd', function () {
 	it('includes auth.php or global.php in all UI entry points', function () {
-		// apcupsd_functions.php/setup.php/ui_helpers.php are library/setup
+		// includes/functions.php/setup.php/includes/helpers.php are library/setup
 		// files loaded by the real entry point, not pages served directly.
 		$uiFiles = array(
 		'upses.php',
@@ -39,9 +39,9 @@ describe('auth guard presence in apcupsd', function () {
 
 	it('validates numeric IDs from request variables before DB queries', function () {
 		$uiFiles = array(
-		'apcupsd_functions.php',
+		'includes/functions.php',
 		'setup.php',
-		'ui_helpers.php',
+		'includes/helpers.php',
 		'upses.php',
 		);
 

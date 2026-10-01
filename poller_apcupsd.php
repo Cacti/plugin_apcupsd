@@ -41,7 +41,7 @@ require_once($config['base_path'] . '/lib/snmp.php');
 require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
 require('./plugins/apcupsd/database.php');
-require_once('./plugins/apcupsd/apcupsd_functions.php');
+require_once('./plugins/apcupsd/includes/functions.php');
 
 // process calling arguments
 $parms = $_SERVER['argv'];

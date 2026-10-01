@@ -28,8 +28,8 @@
     <source>
         <include>
             <file>setup.php</file>
-            <file>apcupsd_functions.php</file>
-            <file>ui_helpers.php</file>
+            <file>includes/functions.php</file>
+            <file>includes/helpers.php</file>
         </include>
     </source>
 </phpunit>

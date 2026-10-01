@@ -19,7 +19,7 @@ if (!function_exists('bottom_footer')) {
 	}
 }
 
-require_once __DIR__ . '/../../ui_helpers.php';
+require_once __DIR__ . '/../../includes/helpers.php';
 
 beforeEach(function () {
 	$GLOBALS['__layout_events'] = [];
