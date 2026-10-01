@@ -173,7 +173,7 @@ function apcupsd_check_upgrade(): void {
 		}
 
 		// Remove files tombstoned in manifest.json plus the dev-only tests/ tree.
-		plugin_apcupsd_prune_files();
+		apcupsd_prune_files();
 	}
 }
 
@@ -387,7 +387,7 @@ function apcupsd_draw_navigation_text($nav): array {
  * @global array $config Cacti global configuration array; used to resolve
  *                       the plugin directory.
  */
-function plugin_apcupsd_prune_files(): void {
+function apcupsd_prune_files(): void {
 	global $config;
 
 	$plugin_dir    = $config['base_path'] . '/plugins/apcupsd';
@@ -473,7 +473,7 @@ function plugin_apcupsd_prune_files(): void {
 		}
 
 		if (is_dir($path) && !is_link($path)) {
-			$removed = plugin_apcupsd_rmtree($path);
+			$removed = apcupsd_rmtree($path);
 		} else {
 			$removed = @unlink($path);
 		}
@@ -507,14 +507,14 @@ function plugin_apcupsd_prune_files(): void {
 
 /**
  * Recursively deletes a directory and its contents. Symlinks are removed
- * without being followed. Helper for plugin_apcupsd_prune_files().
+ * without being followed. Helper for apcupsd_prune_files().
  *
  * @param string $dir Absolute path to the directory to remove.
  *
  * @return bool True if the directory and everything under it was removed;
  *              false if any entry could not be deleted.
  */
-function plugin_apcupsd_rmtree(string $dir): bool {
+function apcupsd_rmtree(string $dir): bool {
 	$entries = scandir($dir);
 	$ok      = true;
 
@@ -526,7 +526,7 @@ function plugin_apcupsd_rmtree(string $dir): bool {
 		$path = $dir . '/' . $entry;
 
 		if (is_dir($path) && !is_link($path)) {
-			if (!plugin_apcupsd_rmtree($path)) {
+			if (!apcupsd_rmtree($path)) {
 				$ok = false;
 			}
 		} elseif (!@unlink($path)) {

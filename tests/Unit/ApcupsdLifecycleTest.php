@@ -40,7 +40,7 @@ beforeEach(function () {
 	$_SERVER['PHP_SELF']                  = '/upses.php';
 
 	// Sandbox base_path (minimal INFO + empty includes/database.php stub) so any
-	// upgrade-path test runs plugin_apcupsd_prune_files() against a throwaway
+	// upgrade-path test runs apcupsd_prune_files() against a throwaway
 	// tree, never the real checkout.
 	$GLOBALS['__apcupsd_base_restore'] = $GLOBALS['config']['base_path'];
 	$base = sys_get_temp_dir() . '/apcupsd-test-' . uniqid();
