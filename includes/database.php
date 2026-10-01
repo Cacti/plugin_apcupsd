@@ -149,7 +149,7 @@ function apcupsd_ups_stats_table_data(): array {
 /**
  * Returns a copy of a table definition with an array-valued 'primary'
  * flattened to the scalar column list api_plugin_db_table_create() expects.
- * Down to the plugin's minimum Cacti compat (1.2.24) that API interpolates
+ * Down to the plugin's minimum Cacti compat (1.2.29) that API interpolates
  * $data['primary'] straight into PRIMARY KEY (`...`), so an array would
  * render as PRIMARY KEY (`Array`) and fail the create. The array form is
  * kept everywhere else for db_update_table().
