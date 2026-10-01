@@ -25,15 +25,15 @@ When generating code for this repository:
 ## Project Structure
 
 ```
-apcupsd/                # Repository root (install to plugins/apcupsd/ in Cacti)
-├── locales/               # Internationalization files
-├── templates/               # Graph/device template XML
-├── database.php                # DB helper routines
-├── poller_apcupsd.php            # Background poller entry point (CLI)
-├── upses.php                       # UPS device administration UI
-├── INFO                              # Plugin metadata (name, version, compat)
+apcupsd/               # Repository root (install to plugins/apcupsd/ in Cacti)
+├── locales/           # Internationalization files
+├── templates/         # Graph/device template XML
+├── includes/          # database.php (schema), functions.php (request/apcaccess helpers), helpers.php (page layout), field_maps.php (field/OID map)
+├── poller_apcupsd.php # Background poller entry point (CLI)
+├── upses.php          # UPS device administration UI
+├── INFO               # Plugin metadata (name, version, compat)
 ├── README.md
-└── setup.php                          # Plugin install/uninstall/upgrade hooks
+└── setup.php          # Plugin install/uninstall/upgrade hooks
 ```
 
 ## Naming Conventions
