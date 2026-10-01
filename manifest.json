@@ -1,6 +1,7 @@
 {
     "tombstones": [
         "apcupsd_functions.php",
+        "database.php",
         "ui_helpers.php"
     ],
     "expected": [
@@ -8,7 +9,6 @@
         "INFO",
         "LICENSE",
         "README.md",
-        "database.php",
         "includes/",
         "index.php",
         "locales/",

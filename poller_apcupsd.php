@@ -40,7 +40,7 @@ require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/snmp.php');
 require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
-require('./plugins/apcupsd/database.php');
+require('./plugins/apcupsd/includes/field_maps.php');
 require_once('./plugins/apcupsd/includes/functions.php');
 
 // process calling arguments
@@ -253,7 +253,7 @@ function add_ups_device($ups, $host_template_id, $force_up = false): void {
  *
  * @global array  $ups_database Map of apcupsd/SNMP field keys to their
  *                               db_column/snmp_ci/snmp_enum metadata,
- *                               defined in database.php, used to drive
+ *                               defined in includes/field_maps.php, used to drive
  *                               which OIDs are polled and how they're
  *                               stored.
  * @global string $snmp_error   Reserved/declared for parity with other
@@ -411,7 +411,7 @@ function collect_snmp_ups_data($ups): bool {
  *
  * @global array $ups_database Map of apcupsd field keys to their
  *                              db_column metadata, defined in
- *                              database.php, used to translate apcaccess
+ *                              includes/field_maps.php, used to translate apcaccess
  *                              output into database columns.
  */
 function collect_ups_data($ups) {
