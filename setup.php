@@ -106,11 +106,13 @@ function plugin_apcupsd_upgrade(): bool {
 /**
  * Detects whether the installed plugin_config version differs from this
  * plugin's INFO file version and, if so, re-enables its hooks (to pick
- * up any newly added ones), updates the stored plugin_config record, and
- * applies a handful of one-off apcupsd_ups_stats column migrations
- * (renaming/adding columns from older releases). Only runs on
- * plugins.php/upses.php. Called from apcupsd_config_arrays() on every
- * relevant page load.
+ * up any newly added ones), reconciles the database schema, and updates
+ * the stored plugin_config record. The schema reconciliation runs first:
+ * the stored version is only advanced once apcupsd_upgrade_tables()
+ * reports success, so a failed reconciliation is logged and retried on a
+ * later request rather than being recorded as a completed upgrade. Only
+ * runs on plugins.php/upses.php. Called from apcupsd_config_arrays() on
+ * every relevant page load.
  *
  * @return void
  *
@@ -148,6 +150,15 @@ function apcupsd_check_upgrade(): void {
 			api_plugin_enable_hooks('apcupsd');
 		}
 
+		// Reconcile the schema before recording the new version. If it fails,
+		// leave plugin_config.version untouched so the upgrade runs again on a
+		// later request instead of being treated as complete.
+		if (!apcupsd_upgrade_tables()) {
+			cacti_log('WARNING: apcupsd schema reconciliation failed; leaving plugin_config.version unchanged so the upgrade retries on the next request', false, 'APCUPSD');
+
+			return;
+		}
+
 		db_execute_prepared('UPDATE plugin_config SET
 			version = ?, name = ?, author = ?, webpage = ?
 			WHERE directory = ?',
@@ -159,8 +170,6 @@ function apcupsd_check_upgrade(): void {
 				$info['name']
 			]
 		);
-
-		apcupsd_upgrade_tables();
 
 		// Installations that ran the old install routine (which registered
 		// 'replicate_out' twice) are stuck with a stale duplicate hook row

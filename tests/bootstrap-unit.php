@@ -201,7 +201,7 @@ if (!function_exists('db_update_table')) {
 	function db_update_table($table, $data) {
 		$GLOBALS['__test_db_calls'][] = array('fn' => 'db_update_table', 'table' => $table, 'data' => $data, 'sql' => $table);
 
-		return true;
+		return $GLOBALS['__test_db_update_table_result'] ?? true;
 	}
 }
 

@@ -186,11 +186,13 @@ function apcupsd_setup_table(): bool {
  * as pre-steps (guarded by db_table_exists()) to bring older installations
  * onto the current column layout; db_update_table() then reconciles the rest
  * (or creates the table outright when missing). Called from
- * apcupsd_check_upgrade().
+ * apcupsd_check_upgrade(), which only advances the stored plugin version when
+ * this returns true so a failed reconciliation is retried on a later request.
  *
- * @return void
+ * @return bool True when every table reconciled/created successfully; false
+ *              if any db_update_table() reconciliation reported a failure.
  */
-function apcupsd_upgrade_tables(): void {
+function apcupsd_upgrade_tables(): bool {
 	// Column renames can't be expressed by db_update_table(), so run them
 	// first as guarded pre-steps -- but only when the stats table already
 	// exists, otherwise a fresh install would ALTER a table that hasn't been
@@ -212,13 +214,23 @@ function apcupsd_upgrade_tables(): void {
 		'apcupsd_ups_stats' => apcupsd_ups_stats_table_data(),
 	];
 
+	$success = true;
+
 	foreach ($tables as $table => $table_data) {
 		if (db_table_exists($table)) {
-			db_update_table($table, $table_data);
+			// db_update_table() returns false on a failed reconciliation;
+			// surface it so the caller can defer persisting the new version.
+			if (db_update_table($table, $table_data) === false) {
+				cacti_log(sprintf('ERROR: apcupsd upgrade failed to reconcile the %s table schema', $table), false, 'APCUPSD');
+
+				$success = false;
+			}
 		} else {
 			api_plugin_db_table_create('apcupsd', $table, apcupsd_table_data_for_create($table_data));
 		}
 	}
+
+	return $success;
 }
 
 /**

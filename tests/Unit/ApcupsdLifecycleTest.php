@@ -37,6 +37,8 @@ beforeEach(function () {
 	apcupsd_test_reset_db_mocks();
 	$GLOBALS['__test_db_calls']           = array();
 	$GLOBALS['__test_enabled_hooks_calls'] = array();
+	$GLOBALS['__test_table_exists']        = array();
+	$GLOBALS['__test_db_update_table_result'] = true;
 	$_SERVER['PHP_SELF']                  = '/upses.php';
 
 	// Sandbox base_path (minimal INFO + empty includes/database.php stub) so any
@@ -95,6 +97,47 @@ it('re-enables hooks and updates plugin_config when the version drifts', functio
 	}));
 
 	expect($updates)->toHaveCount(1);
+});
+
+it('persists the new version after reconciling existing tables', function () {
+	apcupsd_test_mock_db('db_fetch_cell_prepared', 'plugin_config', '0.0.0');
+	$GLOBALS['__test_table_exists'] = array('apcupsd_ups' => true, 'apcupsd_ups_stats' => true);
+
+	apcupsd_check_upgrade();
+
+	$reconciled = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_update_table';
+	});
+
+	expect($reconciled)->toHaveCount(2);
+
+	$updates = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute_prepared' && stripos($call['sql'], 'UPDATE plugin_config') !== false;
+	});
+
+	expect($updates)->toHaveCount(1);
+});
+
+it('leaves plugin_config unchanged when a schema reconciliation fails', function () {
+	$GLOBALS['__test_cacti_log'] = array();
+
+	apcupsd_test_mock_db('db_fetch_cell_prepared', 'plugin_config', '0.0.0');
+	$GLOBALS['__test_table_exists']           = array('apcupsd_ups' => true, 'apcupsd_ups_stats' => true);
+	$GLOBALS['__test_db_update_table_result'] = false;
+
+	apcupsd_check_upgrade();
+
+	$updates = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute_prepared' && stripos($call['sql'], 'UPDATE plugin_config') !== false;
+	});
+
+	expect($updates)->toBeEmpty();
+
+	$warned = array_filter($GLOBALS['__test_cacti_log'], function ($line) {
+		return stripos($line, 'schema reconciliation failed') !== false;
+	});
+
+	expect($warned)->not->toBeEmpty();
 });
 
 it('does nothing when the stored version already matches the plugin version', function () {
