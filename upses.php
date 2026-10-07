@@ -763,7 +763,7 @@ function upses(): void {
 						<?php print __('Site', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='site_id' onChange='applyFilter()'>
+						<select id='site_id'>
 							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
@@ -789,7 +789,7 @@ function upses(): void {
 						<?php print __('Location', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='location' onChange='applyFilter()'>
+						<select id='location'>
 							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
@@ -815,7 +815,7 @@ function upses(): void {
 						<?php print __('UPSes', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
 	if (cacti_sizeof($item_rows)) {
@@ -852,6 +852,10 @@ function upses(): void {
 			}
 
 			$(function() {
+				$('#site_id, #location, #rows').change(function() {
+					applyFilter();
+				});
+
 				$('#refresh').click(function() {
 					applyFilter();
 				});
