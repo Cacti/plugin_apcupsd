@@ -515,7 +515,7 @@ function form_actions(): void {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '2') { // duplicate
 			print "<tr>
@@ -528,7 +528,7 @@ function form_actions(): void {
 				</td>
 			</tr>';
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '3') { // reset
 			print "<tr>
@@ -538,7 +538,7 @@ function form_actions(): void {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<input type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
