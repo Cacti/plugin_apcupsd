@@ -515,7 +515,7 @@ function form_actions(): void {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Delete UPS', 'Delete UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '2') { // duplicate
 			print "<tr>
@@ -528,7 +528,7 @@ function form_actions(): void {
 				</td>
 			</tr>';
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Duplicate UPS', 'Duplicate UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		} elseif (get_nfilter_request_var('drp_action') == '3') { // reset
 			print "<tr>
@@ -538,7 +538,7 @@ function form_actions(): void {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' onClick='cactiReturnTo(\"upses.php\")'>" . __esc('Cancel', 'apcupsd') . "</button>
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<input type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
@@ -763,7 +763,7 @@ function upses(): void {
 						<?php print __('Site', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='site_id' onChange='applyFilter()'>
+						<select id='site_id'>
 							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
@@ -789,7 +789,7 @@ function upses(): void {
 						<?php print __('Location', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='location' onChange='applyFilter()'>
+						<select id='location'>
 							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
@@ -815,7 +815,7 @@ function upses(): void {
 						<?php print __('UPSes', 'apcupsd'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
 	if (cacti_sizeof($item_rows)) {
@@ -852,6 +852,10 @@ function upses(): void {
 			}
 
 			$(function() {
+				$('#site_id, #location, #rows').change(function() {
+					applyFilter();
+				});
+
 				$('#refresh').click(function() {
 					applyFilter();
 				});
