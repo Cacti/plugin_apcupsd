@@ -1,6 +1,7 @@
 # ChangeLog
 
 --- 1.4.0 ---
+* security: Pin CI fixtures and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
 * issue: Write a WARNING to the Cacti log (APCUPSD) naming the UPS, host, port and reason whenever a NUT query fails; before, the reason was only stored in the UPS's error message and shown with `-d`, so a NUT UPS that could not be reached left nothing in the log
 * issue: Save the Poller ID chosen on the UPS form; the field was displayed but never stored, so every UPS was always assigned to poller 1. Changing the Poller ID of a UPS that is linked to a Cacti Device is refused with an explanation, since the device's poller has to be changed on the device itself
