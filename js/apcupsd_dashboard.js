@@ -399,7 +399,13 @@ function apcupsdDashSaveLayout(grid) {
 	$.post(cfg.page, apcupsdDashPost(grid, {
 		action: cfg.layoutAction,
 		layout: JSON.stringify({order: order, expanded: expanded})
-	}), null, 'json').always(function() {
+	}), null, 'json').done(function(data) {
+		var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
+		if (status) {
+			status.textContent = data && data.error ? data.error : '';
+			status.hidden = !status.textContent;
+		}
+	}).always(function() {
 		apcupsdDashSaveInFlight = false;
 		if (apcupsdDashSaveQueued) {
 			apcupsdDashSaveQueued = false;

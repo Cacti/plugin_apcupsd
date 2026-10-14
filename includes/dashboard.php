@@ -1243,6 +1243,7 @@ if (!function_exists('apcupsd_dashboard')) {
 		print '</select>';
 		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="apcupsdDashCardTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
 		print '</div>';
+		print '<span class="apcupsdDashSaveStatus" role="status" aria-live="polite" hidden></span>';
 		print '</div>';
 
 		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid" data-ups="' . $ups_id . '"'
@@ -1759,6 +1760,7 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 		print '</select>';
 		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="apcupsdDashCardTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
 		print '</div>';
+		print '<span class="apcupsdDashSaveStatus" role="status" aria-live="polite" hidden></span>';
 		print '</div>';
 
 		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid"'
@@ -1783,5 +1785,4 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . '>var apcupsdDashCatalog = ' . json_encode($catalog, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; initApcupsdDashboard();</script>';
 	}
 }
-
 

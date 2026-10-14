@@ -61,6 +61,11 @@
 	margin-left: auto;
 }
 
+.apcupsdDashSaveStatus {
+	flex: 0 1 100%;
+	font-size: 12px;
+}
+
 /* The 8-column card grid; each card spans a number of columns via a span class. */
 .apcupsdDashGrid {
 	display: grid;
