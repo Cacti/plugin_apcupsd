@@ -1,0 +1,40 @@
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+/*
+ * Deepness-theme UPS Dashboard overrides: translucent status pills drawn from
+ * this theme's emerald/accent device-status hues so the Dashboard status pill
+ * matches the rest of the dark Deepness UI.
+ */
+
+.apcupsdDashboard { color: #8fb6e8; }
+
+.apcupsdDashPill--up {
+	background-color: rgba(24, 185, 129, 0.15);
+	color: #3dd9a1;
+}
+
+.apcupsdDashPill--warn {
+	background-color: rgba(255, 143, 30, 0.15);
+	color: #ffab52;
+}
+
+.apcupsdDashPill--down {
+	background-color: rgba(255, 64, 64, 0.15);
+	color: #ff6b6b;
+}
+
+.apcupsdDashPill--unknown {
+	background-color: rgba(161, 161, 161, 0.12);
+	color: #b8b8b8;
+}

@@ -156,7 +156,7 @@ if (!function_exists('apcupsd_build_apcaccess_command')) {
 		$hostname = trim((string)$hostname);
 		$port     = apcupsd_normalize_positive_int($port, 0);
 
-		if ($binary_path === '' || $hostname === '' || $port < 1 || $port > 65535) {
+		if ($binary_path === '' || $hostname === '' || !preg_match('/^[a-zA-Z0-9.\-]{1,253}$/', $hostname) || $port < 1 || $port > 65535) {
 			return false;
 		}
 

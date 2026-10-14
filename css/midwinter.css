@@ -1,0 +1,40 @@
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+/*
+ * Midwinter-theme UPS Dashboard overrides: solid status pills drawn from this
+ * theme's device-status hues (green/amber/red/grey), darkened enough to keep
+ * the white label text legible, matching the solid Midwinter device badges.
+ */
+
+.apcupsdDashboard { color: #4aa3df; }
+
+.apcupsdDashPill--up {
+	background-color: #007a00;
+	color: #ffffff;
+}
+
+.apcupsdDashPill--warn {
+	background-color: #8a6d12;
+	color: #ffffff;
+}
+
+.apcupsdDashPill--down {
+	background-color: #cc0000;
+	color: #ffffff;
+}
+
+.apcupsdDashPill--unknown {
+	background-color: #6d6d6d;
+	color: #ffffff;
+}
