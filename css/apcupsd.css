@@ -97,7 +97,9 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	box-sizing: border-box;
 	padding: 7px 10px;
+	min-height: 34px;
 	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
 	background: color-mix(in srgb, currentColor 8%, transparent);
 }
@@ -110,8 +112,10 @@
 
 .apcupsdDashCardDrag {
 	flex: 0 0 auto;
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve a transparent border so an inherited button:hover border cannot reflow the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -123,6 +127,7 @@
 .apcupsdDashCardDrag:hover,
 .apcupsdDashCardDrag:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
@@ -151,8 +156,10 @@
 }
 
 .apcupsdDashCardTool {
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve a transparent border so an inherited button:hover border cannot reflow the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -164,6 +171,7 @@
 .apcupsdDashCardTool:hover,
 .apcupsdDashCardTool:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
