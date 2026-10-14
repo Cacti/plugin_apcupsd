@@ -916,3 +916,60 @@ msgstr ""
 #: upses.php
 msgid "Not Avail"
 msgstr ""
+
+#: includes/dashboard.php
+msgid "At a Glance"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Cable"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Driver"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Avg Load"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Avg Battery Charge"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Avg Time Left"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "No readings are available for these gauges yet."
+msgstr ""
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s · max %s"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr ""

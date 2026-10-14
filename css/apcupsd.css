@@ -97,7 +97,9 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	box-sizing: border-box;
 	padding: 7px 10px;
+	min-height: 34px;
 	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
 	background: color-mix(in srgb, currentColor 8%, transparent);
 }
@@ -110,8 +112,10 @@
 
 .apcupsdDashCardDrag {
 	flex: 0 0 auto;
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve a transparent border so an inherited button:hover border cannot reflow the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -123,6 +127,7 @@
 .apcupsdDashCardDrag:hover,
 .apcupsdDashCardDrag:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
@@ -151,8 +156,10 @@
 }
 
 .apcupsdDashCardTool {
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve a transparent border so an inherited button:hover border cannot reflow the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -164,6 +171,7 @@
 .apcupsdDashCardTool:hover,
 .apcupsdDashCardTool:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
@@ -337,6 +345,91 @@
 	font-size: 10px;
 	font-variant-numeric: tabular-nums;
 	color: color-mix(in srgb, currentColor 60%, transparent);
+}
+
+/*
+ * Half-donut gauge: a 0..scale semicircular track, a current-value sweep tinted
+ * by severity, faint min/max ticks and the value printed large in the centre.
+ * Rendered alongside the bullet charts; mirrors the intropage / hmib gauges.
+ */
+.apcupsdGaugeGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 10px;
+	align-items: start;
+}
+
+.apcupsdGauge {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 6px 4px 2px;
+}
+
+.apcupsdGaugeDial {
+	position: relative;
+	width: 100%;
+	max-width: 170px;
+}
+
+.apcupsdGaugeSvg {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+
+.apcupsdGaugeTrack {
+	fill: none;
+	stroke: color-mix(in srgb, currentColor 14%, transparent);
+	stroke-width: 10;
+	stroke-linecap: round;
+}
+
+.apcupsdGaugeValue {
+	fill: none;
+	stroke-width: 10;
+	stroke-linecap: round;
+	stroke: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.apcupsdGaugeValue--up         { stroke: #3c9a5f; }
+.apcupsdGaugeValue--recovering { stroke: #d9830f; }
+.apcupsdGaugeValue--down       { stroke: #cc0000; }
+
+.apcupsdGaugeTick {
+	stroke: color-mix(in srgb, currentColor 55%, transparent);
+	stroke-width: 2;
+}
+
+.apcupsdGaugeValueText {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 2px;
+	text-align: center;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+
+.apcupsdGaugeValueText--up         { color: #3c9a5f; }
+.apcupsdGaugeValueText--recovering { color: #d9830f; }
+.apcupsdGaugeValueText--down       { color: #cc0000; }
+
+.apcupsdGaugeLabel {
+	margin-top: 2px;
+	font-size: 12px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.apcupsdGaugeSub {
+	font-size: 10px;
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+	color: color-mix(in srgb, currentColor 62%, transparent);
 }
 
 /* The maximize dialog body. */

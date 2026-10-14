@@ -116,11 +116,14 @@ function initApcupsdDashboard() {
 
 		// Changing the timespan reloads so Cacti's session timespan selector picks
 		// up predefined_timespan, which drives both the graph cards and the RRD
-		// bullet queries.
+		// bullet/gauge queries. The grid's reload target (per-UPS view or the fleet
+		// dashboard) carries the id, so build the URL from it.
 		var timespan = document.getElementById('apcupsd_dashboard_timespan');
 		if (timespan) {
 			$(timespan).off('change.apcupsddash').on('change.apcupsddash', function() {
-				window.location = 'upses.php?action=view&id=' + encodeURIComponent(grid.dataset.ups) + '&predefined_timespan=' + encodeURIComponent(this.value);
+				var reload = apcupsdDashCfg(grid).reload;
+				var sep = reload.indexOf('?') === -1 ? '?' : '&';
+				window.location = reload + sep + 'predefined_timespan=' + encodeURIComponent(this.value);
 			});
 		}
 
