@@ -969,3 +969,7 @@ msgstr ""
 #, php-format
 msgid "min %s · max %s"
 msgstr ""
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr ""

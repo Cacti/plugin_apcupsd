@@ -1589,6 +1589,10 @@ if (!function_exists('apcupsd_fleet_rrd_stats')) {
 	 * over the selected timespan: the minimum of the per-UPS minimums, the mean of
 	 * the per-UPS averages and the maximum of the per-UPS maximums.
 	 *
+	 * The result is held in a short-lived per-user session cache keyed by metric,
+	 * window and fleet scope, so the separate "Refresh all" POSTs for the Fleet
+	 * Readings and Fleet Gauges cards do not each re-read the same RRD files.
+	 *
 	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
 	 *
 	 * @return array{min: float|null, avg: float|null, max: float|null}
@@ -1611,6 +1615,23 @@ if (!function_exists('apcupsd_fleet_rrd_stats')) {
 		$start   = get_current_graph_start();
 		$end     = get_current_graph_end();
 		$aliases = $metrics[$metric_key]['aliases'];
+
+		// Best-effort cross-request reuse: the Fleet Readings and Fleet Gauges cards
+		// refresh as separate POSTs that request the same metrics over the same
+		// window, which the request-local static above cannot span. The window is
+		// quantized to the minute and the key carries a fleet-scope count; entries
+		// expire quickly so fresh polls still surface. If the session is read-only
+		// in this context the write is simply dropped and the value is recomputed.
+		$scope = (int) db_fetch_cell("SELECT COUNT(*)
+			FROM apcupsd_ups
+			WHERE enabled = 'on' AND host_id > 0");
+
+		$sig = $metric_key . '|' . (int) floor((int) $start / 60) . '|' . (int) floor((int) $end / 60) . '|' . $scope;
+
+		if (isset($_SESSION['apcupsd_fleet_rrd_cache'][$sig]['stats'], $_SESSION['apcupsd_fleet_rrd_cache'][$sig]['expires'])
+			&& (int) $_SESSION['apcupsd_fleet_rrd_cache'][$sig]['expires'] > time()) {
+			return $cache[$metric_key] = $_SESSION['apcupsd_fleet_rrd_cache'][$sig]['stats'];
+		}
 
 		$hosts = db_fetch_assoc("SELECT DISTINCT host_id
 			FROM apcupsd_ups
@@ -1644,11 +1665,25 @@ if (!function_exists('apcupsd_fleet_rrd_stats')) {
 			}
 		}
 
-		return $cache[$metric_key] = [
+		$result = [
 			'min' => cacti_sizeof($mins) ? min($mins) : null,
 			'avg' => cacti_sizeof($avgs) ? array_sum($avgs) / count($avgs) : null,
 			'max' => cacti_sizeof($maxs) ? max($maxs) : null,
 		];
+
+		// Prune expired entries before storing so the cache cannot grow unbounded.
+		$kept = [];
+
+		foreach ((array) ($_SESSION['apcupsd_fleet_rrd_cache'] ?? []) as $key => $entry) {
+			if (is_array($entry) && (int) ($entry['expires'] ?? 0) > time()) {
+				$kept[$key] = $entry;
+			}
+		}
+
+		$kept[$sig] = ['expires' => time() + 30, 'stats' => $result];
+		$_SESSION['apcupsd_fleet_rrd_cache'] = $kept;
+
+		return $cache[$metric_key] = $result;
 	}
 }
 
