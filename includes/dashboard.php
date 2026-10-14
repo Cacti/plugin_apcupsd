@@ -1656,29 +1656,40 @@ if (!function_exists('apcupsd_fleet_readings')) {
 	/**
 	 * The fleet load, battery-charge and runtime aggregates shared by the reading
 	 * and gauge cards: min/avg/max pulled from every enabled UPS's RRD files over
-	 * the selected timespan, falling back to the latest polled aggregates when no
-	 * RRD history is available.
+	 * the selected timespan, with each metric falling back to its latest-polled
+	 * aggregate independently when that metric has no RRD history.
 	 *
 	 * @return array<string, array{min: float|null, avg: float|null, max: float|null}>
 	 */
 	function apcupsd_fleet_readings(): array {
-		$load   = apcupsd_fleet_rrd_stats('load_percent');
-		$charge = apcupsd_fleet_rrd_stats('battery_charge');
-		$time   = apcupsd_fleet_rrd_stats('timeleft');
+		$stats = apcupsd_fleet_stats();
 
-		if ($load['avg'] === null && $charge['avg'] === null && $time['avg'] === null) {
-			$stats = apcupsd_fleet_stats();
+		$num = function($value): ?float {
+			return $value !== null && is_numeric($value) ? (float) $value : null;
+		};
 
-			$num = function($value): ?float {
-				return $value !== null && is_numeric($value) ? (float) $value : null;
-			};
+		// Each metric falls back to its latest-polled aggregate independently, so a
+		// metric with RRD history is never blanked just because another metric lacks
+		// any.
+		$resolve = function(string $metric_key, string $min_col, string $avg_col, string $max_col) use ($stats, $num): array {
+			$rrd = apcupsd_fleet_rrd_stats($metric_key);
 
-			$load   = ['min' => $num($stats['minLoad'] ?? null),   'avg' => $num($stats['avgLoad'] ?? null),   'max' => $num($stats['maxLoad'] ?? null)];
-			$charge = ['min' => $num($stats['minCharge'] ?? null), 'avg' => $num($stats['avgCharge'] ?? null), 'max' => $num($stats['maxCharge'] ?? null)];
-			$time   = ['min' => $num($stats['minTime'] ?? null),   'avg' => $num($stats['avgTime'] ?? null),   'max' => $num($stats['maxTime'] ?? null)];
-		}
+			if ($rrd['avg'] !== null) {
+				return $rrd;
+			}
 
-		return ['load' => $load, 'charge' => $charge, 'time' => $time];
+			return [
+				'min' => $num($stats[$min_col] ?? null),
+				'avg' => $num($stats[$avg_col] ?? null),
+				'max' => $num($stats[$max_col] ?? null),
+			];
+		};
+
+		return [
+			'load'   => $resolve('load_percent',   'minLoad',   'avgLoad',   'maxLoad'),
+			'charge' => $resolve('battery_charge', 'minCharge', 'avgCharge', 'maxCharge'),
+			'time'   => $resolve('timeleft',       'minTime',   'avgTime',   'maxTime'),
+		];
 	}
 }
 
