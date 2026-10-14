@@ -1,0 +1,359 @@
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+/*
+ * UPS Dashboard (per-UPS drilldown). The card grid, bullet charts, tables and
+ * graph panels are theme-adaptive: colours are derived from the surrounding
+ * text colour via color-mix(currentColor ...) so the same rules read correctly
+ * on every Cacti theme, with the per-theme css/<theme>.css files tuning accents.
+ * Severity accents (up/recovering/down) use fixed, theme-independent colours.
+ */
+
+.apcupsdDashboard {
+	color: #1b6ca8;
+}
+
+/* UPS + timespan + add-card + refresh toolbar above the grid. */
+.apcupsdDashToolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 4px 0;
+}
+
+.apcupsdDashToolbarLabel {
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.apcupsdDashUps,
+.apcupsdDashTimespan,
+.apcupsdDashAdd,
+.apcupsdDashRefreshInterval {
+	box-sizing: border-box;
+	padding: 4px 8px;
+	border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+	border-radius: 7px;
+	background: color-mix(in srgb, currentColor 4%, transparent);
+	color: inherit;
+	font-size: 12px;
+}
+
+.apcupsdDashAdd {
+	min-width: 180px;
+}
+
+.apcupsdDashRefresh {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
+
+/* The 8-column card grid; each card spans a number of columns via a span class. */
+.apcupsdDashGrid {
+	display: grid;
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+	align-items: start;
+	gap: 14px;
+	margin: 10px 4px;
+	font-variant-numeric: tabular-nums;
+}
+
+.apcupsdDashSpan2 { grid-column: span 2; }
+.apcupsdDashSpan3 { grid-column: span 3; }
+.apcupsdDashSpan4 { grid-column: span 4; }
+.apcupsdDashSpan6 { grid-column: span 6; }
+.apcupsdDashSpan8 { grid-column: span 8; }
+
+.apcupsdDashCard {
+	box-sizing: border-box;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+	background: color-mix(in srgb, currentColor 4%, transparent);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+}
+
+.apcupsdDashCardHeader {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 7px 10px;
+	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+	background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* Header severity accents: a translucent colour wash keeps strength consistent
+   across light and dark surfaces. */
+.apcupsdDashCardHeader--up         { background: color-mix(in srgb, #94b36b 30%, transparent); }
+.apcupsdDashCardHeader--recovering { background: color-mix(in srgb, #ff8f1e 30%, transparent); }
+.apcupsdDashCardHeader--down       { background: color-mix(in srgb, #cc0000 30%, transparent); }
+
+.apcupsdDashCardDrag {
+	flex: 0 0 auto;
+	padding: 2px 5px;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: color-mix(in srgb, currentColor 50%, transparent);
+	font-size: 13px;
+	line-height: 1;
+	cursor: grab;
+}
+
+.apcupsdDashCardDrag:hover,
+.apcupsdDashCardDrag:focus-visible {
+	color: currentColor;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+	outline: none;
+}
+
+.apcupsdDashCardDrag:active { cursor: grabbing; }
+
+.apcupsdDashCardTitle {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.apcupsdDashCardDragging { opacity: 0.5; }
+
+.apcupsdDashCardTools {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 1px;
+}
+
+.apcupsdDashCardTool {
+	padding: 2px 5px;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: color-mix(in srgb, currentColor 50%, transparent);
+	font-size: 12px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.apcupsdDashCardTool:hover,
+.apcupsdDashCardTool:focus-visible {
+	color: currentColor;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+	outline: none;
+}
+
+.apcupsdDashRefreshNow { font-size: 14px; }
+
+.apcupsdDashCard:not(.apcupsdDashCardExpanded) .apcupsdDashCardTool[data-tool="collapse"],
+.apcupsdDashCardExpanded .apcupsdDashCardTool[data-tool="expand"] {
+	display: none;
+}
+
+.apcupsdDashCardExpandable:not(.apcupsdDashCardExpanded) .apcupsdDashCardBody {
+	position: relative;
+	max-height: 230px;
+	overflow: hidden;
+}
+
+.apcupsdDashCardExpandable:not(.apcupsdDashCardExpanded) .apcupsdDashCardBody::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 30px;
+	pointer-events: none;
+	background: linear-gradient(transparent, color-mix(in srgb, currentColor 4%, transparent));
+}
+
+.apcupsdDashCardBody {
+	padding: 10px 12px;
+	overflow-x: auto;
+}
+
+/* Key/value and data tables inside cards. */
+.apcupsdDashTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.apcupsdDashTable th,
+.apcupsdDashTable td {
+	padding: 6px 8px;
+	text-align: left;
+	vertical-align: middle;
+	overflow-wrap: anywhere;
+}
+
+.apcupsdDashTable tbody tr + tr > th,
+.apcupsdDashTable tbody tr + tr > td {
+	border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent);
+}
+
+.apcupsdDashKv th {
+	width: 44%;
+	font-weight: normal;
+	color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+.apcupsdDashKv td { font-weight: 600; }
+
+/* Status line + pill. */
+.apcupsdDashStatus {
+	margin-bottom: 8px;
+}
+
+.apcupsdDashPill {
+	display: inline-block;
+	min-width: 72px;
+	padding: 2px 12px;
+	border-radius: 10px;
+	color: #fff;
+	font-size: 0.85em;
+	font-weight: 600;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.apcupsdDashPill--up      { background-color: #2e7d32; }
+.apcupsdDashPill--warn    { background-color: #8a6d12; }
+.apcupsdDashPill--down    { background-color: #a12820; }
+.apcupsdDashPill--unknown { background-color: #5f5f57; }
+
+.apcupsdDashEmpty {
+	color: color-mix(in srgb, currentColor 65%, transparent);
+	font-style: italic;
+}
+
+/* Graph cards: a Cacti graph image sized to the card. */
+.apcupsdDashGraph {
+	display: flex;
+	justify-content: center;
+}
+
+.apcupsdDashGraphImg {
+	max-width: 100%;
+	height: auto;
+}
+
+/*
+ * Min / avg / max bullet chart. The track is 0..scale; a translucent band spans
+ * min..max; a strong marker sits at the current value. Matches the thold /
+ * mactrack / hmib bullet visuals.
+ */
+.apcupsdBullet {
+	margin: 10px 0;
+}
+
+.apcupsdBulletHead {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 8px;
+	margin-bottom: 4px;
+}
+
+.apcupsdBulletLabel {
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.apcupsdBulletAvg {
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+.apcupsdBulletTrack {
+	position: relative;
+	height: 16px;
+	border-radius: 8px;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+	overflow: hidden;
+}
+
+.apcupsdBulletRange {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	border-radius: 8px;
+}
+
+.apcupsdBulletRange--up         { background: color-mix(in srgb, #3c9a5f 55%, transparent); }
+.apcupsdBulletRange--recovering { background: color-mix(in srgb, #d9830f 55%, transparent); }
+.apcupsdBulletRange--down       { background: color-mix(in srgb, #cc0000 55%, transparent); }
+.apcupsdBulletRange--none       { background: color-mix(in srgb, currentColor 32%, transparent); }
+
+.apcupsdBulletMarker {
+	position: absolute;
+	top: -2px;
+	bottom: -2px;
+	width: 3px;
+	transform: translateX(-1px);
+	background: currentColor;
+	border-radius: 2px;
+}
+
+.apcupsdBulletScale {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2px;
+	font-size: 10px;
+	font-variant-numeric: tabular-nums;
+	color: color-mix(in srgb, currentColor 60%, transparent);
+}
+
+/* The maximize dialog body. */
+.apcupsdDashDialogBody {
+	font-variant-numeric: tabular-nums;
+}
+
+/* Narrow the grid before cards get cramped. */
+@media (max-width: 1200px) {
+	.apcupsdDashGrid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.apcupsdDashSpan4,
+	.apcupsdDashSpan6,
+	.apcupsdDashSpan8 {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 760px) {
+	.apcupsdDashGrid {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.apcupsdDashSpan2,
+	.apcupsdDashSpan3,
+	.apcupsdDashSpan4,
+	.apcupsdDashSpan6,
+	.apcupsdDashSpan8 {
+		grid-column: 1 / -1;
+	}
+}

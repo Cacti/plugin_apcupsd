@@ -377,6 +377,13 @@ function apcupsd_draw_navigation_text($nav): array {
 		'level'   => '1'
 	];
 
+	$nav['upses.php:view'] = [
+		'title'   => __('UPS Dashboard', 'apcupsd'),
+		'mapping' => 'index.php:,upses.php:',
+		'url'     => 'upses.php?action=view',
+		'level'   => '2'
+	];
+
 	return $nav;
 }
 

@@ -29,8 +29,10 @@ require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
 require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
+require_once($config['base_path'] . '/lib/rrd.php');
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/helpers.php');
+require_once(__DIR__ . '/includes/dashboard.php');
 
 $ups_actions = [
 	1 => __('Delete', 'apcupsd'),
@@ -190,6 +192,21 @@ switch (get_request_var('action')) {
 		get_site_locations();
 
 		break;
+	case 'dashboard_card':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_dashboard_card_ajax();
+
+		break;
+	case 'dashboard_layout':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_dashboard_layout_save();
+
+		break;
+	case 'dashboard_refresh':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_dashboard_refresh_save();
+
+		break;
 	case 'ajax_tz':
 		print json_encode(db_fetch_assoc_prepared('SELECT Name AS label, Name AS `value`
 			FROM mysql.time_zone_name
@@ -201,6 +218,10 @@ switch (get_request_var('action')) {
 		break;
 	case 'edit':
 		apcupsd_render_with_layout('ups_edit');
+
+		break;
+	case 'view':
+		apcupsd_render_with_layout('apcupsd_dashboard');
 
 		break;
 	default:
@@ -1014,7 +1035,7 @@ function upses(): void {
 		foreach ($ups_list as $ups) {
 			form_alternate_row('line' . $ups['id'], true);
 
-			form_selectable_cell(filter_value($ups['name'], get_request_var('filter'), 'upses.php?action=edit&id=' . $ups['id']), $ups['id']);
+			form_selectable_cell("<a class='apcupsdDashGlyph' href='upses.php?action=view&id=" . $ups['id'] . "' title='" . __esc('View UPS Dashboard', 'apcupsd') . "'><i class='fas fa-gauge-high'></i></a> " . filter_value($ups['name'], get_request_var('filter'), 'upses.php?action=edit&id=' . $ups['id']), $ups['id']);
 			form_selectable_cell($ups['id'], $ups['id'], '', 'center');
 			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'center');
 			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD' : 'SNMPD', $ups['id'], '', 'left');

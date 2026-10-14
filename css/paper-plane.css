@@ -1,0 +1,40 @@
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+/*
+ * Paper-plane-theme UPS Dashboard overrides: light tinted status pills with
+ * dark, colour-matched labels drawn from this theme's device-status hues so the
+ * Dashboard status pill matches the rest of the light Paper-plane UI.
+ */
+
+.apcupsdDashboard { color: #1565c0; }
+
+.apcupsdDashPill--up {
+	background-color: rgba(46, 125, 50, 0.16);
+	color: #1b5e20;
+}
+
+.apcupsdDashPill--warn {
+	background-color: rgba(230, 126, 34, 0.16);
+	color: #d35400;
+}
+
+.apcupsdDashPill--down {
+	background-color: rgba(198, 40, 40, 0.16);
+	color: #b71c1c;
+}
+
+.apcupsdDashPill--unknown {
+	background-color: rgba(97, 97, 97, 0.16);
+	color: #424242;
+}
