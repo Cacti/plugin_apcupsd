@@ -384,6 +384,13 @@ function apcupsd_draw_navigation_text($nav): array {
 		'level'   => '2'
 	];
 
+	$nav['upses.php:dashboard'] = [
+		'title'   => __('Fleet Dashboard', 'apcupsd'),
+		'mapping' => 'index.php:,upses.php:',
+		'url'     => 'upses.php?action=dashboard',
+		'level'   => '2'
+	];
+
 	return $nav;
 }
 

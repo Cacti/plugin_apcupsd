@@ -207,6 +207,21 @@ switch (get_request_var('action')) {
 		print apcupsd_dashboard_refresh_save();
 
 		break;
+	case 'summary_card':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_fleet_card_ajax();
+
+		break;
+	case 'summary_layout':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_fleet_layout_save();
+
+		break;
+	case 'summary_refresh':
+		header('Content-Type: application/json; charset=UTF-8');
+		print apcupsd_fleet_refresh_save();
+
+		break;
 	case 'ajax_tz':
 		print json_encode(db_fetch_assoc_prepared('SELECT Name AS label, Name AS `value`
 			FROM mysql.time_zone_name
@@ -222,6 +237,10 @@ switch (get_request_var('action')) {
 		break;
 	case 'view':
 		apcupsd_render_with_layout('apcupsd_dashboard');
+
+		break;
+	case 'dashboard':
+		apcupsd_render_with_layout('apcupsd_fleet_dashboard');
 
 		break;
 	default:
@@ -713,6 +732,8 @@ function ups_edit(): void {
  */
 function upses(): void {
 	global $ups_actions, $item_rows, $config;
+
+	apcupsd_dashboard_tabs('list');
 
 	if (!apcupsd_host_template_imported()) {
 		raise_message('apcupsd_template_missing', __('The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!', 'apcupsd'), MESSAGE_LEVEL_ERROR);

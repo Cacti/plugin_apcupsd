@@ -398,7 +398,16 @@ if (!function_exists('apcupsd_dashboard_rrd_value')) {
 			return null;
 		}
 
-		$fetch = rrdtool_function_fetch((int) $local_data_id, $start, $end, 0, false, null, $cf);
+		// Resolve the RRD path explicitly: on Cacti develop the sixth parameter of
+		// rrdtool_function_fetch() is a non-nullable string, so passing null raises a
+		// TypeError. Passing the path is also compatible with Cacti 1.2.x.
+		$rrd_path = get_data_source_path((int) $local_data_id, true);
+
+		if (empty($rrd_path)) {
+			return null;
+		}
+
+		$fetch = rrdtool_function_fetch((int) $local_data_id, $start, $end, 0, false, $rrd_path, $cf);
 
 		if (!is_array($fetch) || empty($fetch['data_source_names']) || empty($fetch['values'])) {
 			return null;
@@ -465,9 +474,19 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 
 		$marker_value = $current !== null ? $current : $avg;
 
+		$summary = [];
+
+		if ($current !== null) {
+			$summary[] = __('now %s', $fmt($current), 'apcupsd');
+		}
+
+		if ($avg !== null) {
+			$summary[] = __('avg %s', $fmt($avg), 'apcupsd');
+		}
+
 		$head = '<div class="apcupsdBulletHead">'
 			. '<span class="apcupsdBulletLabel">' . html_escape($label) . '</span>'
-			. '<span class="apcupsdBulletAvg">' . html_escape($fmt($marker_value)) . '</span>'
+			. '<span class="apcupsdBulletAvg">' . html_escape(implode(' · ', $summary)) . '</span>'
 			. '</div>';
 
 		if ($marker_value === null || $scale <= 0) {
@@ -484,9 +503,19 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 
 		$sev = in_array($severity, ['up', 'recovering', 'down'], true) ? $severity : 'none';
 
+		// A faint tick marks the historical average, distinct from the strong marker
+		// at the current reading, so both are visible when they differ.
+		$avg_marker = '';
+
+		if ($avg !== null) {
+			$avg_pos = max(0.0, min($scale, (float) $avg)) / $scale * 100;
+			$avg_marker = '<div class="apcupsdBulletAvgMarker" style="left:' . number_format($avg_pos, 2, '.', '') . '%" title="' . __esc('Average', 'apcupsd') . '"></div>';
+		}
+
 		return '<div class="apcupsdBullet">' . $head
 			. '<div class="apcupsdBulletTrack">'
 			. '<div class="apcupsdBulletRange apcupsdBulletRange--' . $sev . '" style="left:' . number_format($left, 2, '.', '') . '%;width:' . number_format($width, 2, '.', '') . '%"></div>'
+			. $avg_marker
 			. '<div class="apcupsdBulletMarker" style="left:' . number_format($mark, 2, '.', '') . '%"></div>'
 			. '</div>'
 			. '<div class="apcupsdBulletScale"><span>' . html_escape($fmt($min)) . '</span><span>' . html_escape($fmt($max)) . '</span></div>'
@@ -806,8 +835,8 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv(__('Number of Transfers', 'apcupsd'), isset($ups['ups_numxfers']) && $ups['ups_numxfers'] !== null ? number_format_i18n((int) $ups['ups_numxfers'], 0) : '');
 				$kv(__('Time on Battery', 'apcupsd'), isset($ups['ups_tonbatt']) && $ups['ups_tonbatt'] !== null ? number_format_i18n((int) $ups['ups_tonbatt'], 0) . ' ' . __('sec', 'apcupsd') : '');
 				$kv(__('Cumulative on Battery', 'apcupsd'), isset($ups['ups_cumonbatt']) && $ups['ups_cumonbatt'] !== null ? number_format_i18n((int) $ups['ups_cumonbatt'], 0) . ' ' . __('sec', 'apcupsd') : '');
-				$kv(__('Last Self Test', 'apcupsd'), $ups['ups_selftest'] ?? '');
-				$kv(__('Self Test Result', 'apcupsd'), $ups['ups_laststest'] ?? '');
+				$kv(__('Last Self Test', 'apcupsd'), $ups['ups_laststest'] ?? '');
+				$kv(__('Self Test Result', 'apcupsd'), $ups['ups_selftest'] ?? '');
 				$kv(__('Last On Battery', 'apcupsd'), $ups['ups_xonbatt'] ?? '');
 				$kv(__('Last Off Battery', 'apcupsd'), isset($ups['ups_xoffbatt']) && $ups['ups_xoffbatt'] !== null ? number_format_i18n((int) $ups['ups_xoffbatt'], 0) : '');
 				print '</tbody></table>';
@@ -816,6 +845,57 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 		}
 
 		return (string) ob_get_clean();
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_card_chrome')) {
+	/**
+	 * Wrap a card body in the shared panel/card chrome (section, drag handle,
+	 * title and the expand/collapse/maximize/refresh/remove toolbar). Shared by
+	 * the per-UPS and fleet dashboards.
+	 *
+	 * @param string $key        The card identifier (data-card).
+	 * @param string $title      The card title.
+	 * @param int    $span       The column span (out of 8).
+	 * @param bool   $expandable Whether the card clips with a "show more" control.
+	 * @param bool   $expanded   Whether it opens expanded.
+	 * @param string $state      Header severity accent ('up'/'recovering'/'down'/'').
+	 * @param string $body       The card body HTML.
+	 *
+	 * @return string The card HTML.
+	 */
+	function apcupsd_dashboard_card_chrome(string $key, string $title, int $span, bool $expandable, bool $expanded, string $state, string $body): string {
+		$tools = '';
+
+		if ($expandable) {
+			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="expand" aria-label="' . __esc('Show more', 'apcupsd') . '" title="' . __esc('Show more', 'apcupsd') . '"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>';
+			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'apcupsd') . '" title="' . __esc('Show less', 'apcupsd') . '"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>';
+		}
+
+		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'apcupsd') . '" title="' . __esc('Open in a dialog', 'apcupsd') . '"><i class="fas fa-window-maximize" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'apcupsd') . '" title="' . __esc('Remove from page', 'apcupsd') . '"><i class="fas fa-times" aria-hidden="true"></i></button>';
+
+		$classes = 'apcupsdDashCard apcupsdDashSpan' . $span;
+
+		if ($expandable) {
+			$classes .= ' apcupsdDashCardExpandable';
+		}
+
+		if ($expanded) {
+			$classes .= ' apcupsdDashCardExpanded';
+		}
+
+		$header_class = 'apcupsdDashCardHeader' . ($state !== '' ? ' apcupsdDashCardHeader--' . $state : '');
+
+		return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
+			. '<header class="' . $header_class . '">'
+			. '<button type="button" class="apcupsdDashCardDrag" aria-label="' . __esc('Drag to reorder card', 'apcupsd') . '"><i class="fas fa-bars" aria-hidden="true"></i></button>'
+			. '<h2 class="apcupsdDashCardTitle">' . html_escape($title) . '</h2>'
+			. '<span class="apcupsdDashCardTools">' . $tools . '</span>'
+			. '</header>'
+			. '<div class="apcupsdDashCardBody">' . $body . '</div>'
+			. '</section>';
 	}
 }
 
@@ -839,38 +919,56 @@ if (!function_exists('apcupsd_dashboard_render_card')) {
 
 		$def = $meta[$key];
 
-		$tools = '';
+		return apcupsd_dashboard_card_chrome(
+			$key,
+			(string) $def['title'],
+			(int) $def['span'],
+			(bool) $def['expandable'],
+			$expanded,
+			apcupsd_dashboard_card_state($key, $ups_id),
+			apcupsd_dashboard_card_body($key, $ups_id)
+		);
+	}
+}
 
-		if ($def['expandable']) {
-			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="expand" aria-label="' . __esc('Show more', 'apcupsd') . '" title="' . __esc('Show more', 'apcupsd') . '"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>';
-			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'apcupsd') . '" title="' . __esc('Show less', 'apcupsd') . '"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>';
+if (!function_exists('apcupsd_dashboard_layout_key')) {
+	/**
+	 * The per-UPS settings_user key the Dashboard layout is stored under. Each UPS
+	 * uses its own row so no single value can exceed Cacti 1.2.x's 4096-character
+	 * settings_user.value limit.
+	 *
+	 * @param int $ups_id The UPS id.
+	 *
+	 * @return string The settings key.
+	 */
+	function apcupsd_dashboard_layout_key($ups_id): string {
+		return 'apcupsd_dashboard_layout_' . (int) $ups_id;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_read')) {
+	/**
+	 * Read a UPS's stored layout document, migrating a layout authored under the
+	 * pre-release combined map when the per-UPS row is not yet present.
+	 *
+	 * @param int $ups_id The UPS id.
+	 *
+	 * @return array|null The {order, expanded} document, or null when none saved.
+	 */
+	function apcupsd_dashboard_layout_read($ups_id): ?array {
+		$saved = json_decode((string) read_user_setting(apcupsd_dashboard_layout_key($ups_id), '', true), true);
+
+		if (is_array($saved) && isset($saved['order']) && is_array($saved['order'])) {
+			return $saved;
 		}
 
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'apcupsd') . '" title="' . __esc('Open in a dialog', 'apcupsd') . '"><i class="fas fa-window-maximize" aria-hidden="true"></i></button>';
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'apcupsd') . '" title="' . __esc('Remove from page', 'apcupsd') . '"><i class="fas fa-times" aria-hidden="true"></i></button>';
+		$all = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
 
-		$classes = 'apcupsdDashCard apcupsdDashSpan' . (int) $def['span'];
-
-		if ($def['expandable']) {
-			$classes .= ' apcupsdDashCardExpandable';
+		if (is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id])) {
+			return $all[(string) $ups_id];
 		}
 
-		if ($expanded) {
-			$classes .= ' apcupsdDashCardExpanded';
-		}
-
-		$state = apcupsd_dashboard_card_state($key, $ups_id);
-		$header_class = 'apcupsdDashCardHeader' . ($state !== '' ? ' apcupsdDashCardHeader--' . $state : '');
-
-		return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
-			. '<header class="' . $header_class . '">'
-			. '<button type="button" class="apcupsdDashCardDrag" aria-label="' . __esc('Drag to reorder card', 'apcupsd') . '"><i class="fas fa-bars" aria-hidden="true"></i></button>'
-			. '<h2 class="apcupsdDashCardTitle">' . html_escape($def['title']) . '</h2>'
-			. '<span class="apcupsdDashCardTools">' . $tools . '</span>'
-			. '</header>'
-			. '<div class="apcupsdDashCardBody">' . apcupsd_dashboard_card_body($key, $ups_id) . '</div>'
-			. '</section>';
+		return null;
 	}
 }
 
@@ -886,8 +984,7 @@ if (!function_exists('apcupsd_dashboard_layout')) {
 	 */
 	function apcupsd_dashboard_layout($ups_id): array {
 		$available = apcupsd_dashboard_available_cards($ups_id);
-		$all       = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
-		$saved     = (is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id])) ? $all[(string) $ups_id] : null;
+		$saved     = apcupsd_dashboard_layout_read($ups_id);
 
 		if (!is_array($saved) || !isset($saved['order']) || !is_array($saved['order'])) {
 			return ['order' => $available, 'expanded' => []];
@@ -958,15 +1055,15 @@ if (!function_exists('apcupsd_dashboard_layout_save')) {
 			}
 		}
 
-		$all = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
+		$encoded = json_encode(['order' => $order, 'expanded' => $expanded]);
 
-		if (!is_array($all)) {
-			$all = [];
+		// Cacti 1.2.x caps settings_user.value at 4096 characters; refuse rather than
+		// silently truncate a per-UPS layout and lose the user's saved preferences.
+		if ($encoded === false || strlen($encoded) > 4096) {
+			return (string) json_encode(['error' => __('This dashboard has too many cards to save its layout.', 'apcupsd')]);
 		}
 
-		$all[(string) $ups_id] = ['order' => $order, 'expanded' => $expanded];
-
-		set_user_setting('apcupsd_dashboard_layout', json_encode($all));
+		set_user_setting(apcupsd_dashboard_layout_key($ups_id), $encoded);
 
 		return (string) json_encode(['ok' => true]);
 	}
@@ -1055,6 +1152,7 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		if ($ups_id === 0) {
 			apcupsd_dashboard_print_css();
+			apcupsd_dashboard_tabs('view');
 			html_start_box(__('UPS Dashboard', 'apcupsd'), '100%', false, 3, 'center', '');
 			print '<tr class="even"><td class="textArea"><p>' . __esc('Open a UPS Dashboard from the Manage UPSes list by clicking the UPS\'s dashboard glyph. The Dashboard remembers the last UPS you opened.', 'apcupsd') . '</p></td></tr>';
 			html_end_box();
@@ -1063,6 +1161,7 @@ if (!function_exists('apcupsd_dashboard')) {
 		}
 
 		apcupsd_dashboard_print_css();
+		apcupsd_dashboard_tabs('view');
 
 		apcupsd_dashboard_init_timespan();
 
@@ -1146,7 +1245,9 @@ if (!function_exists('apcupsd_dashboard')) {
 		print '</div>';
 		print '</div>';
 
-		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid" data-ups="' . $ups_id . '">';
+		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid" data-ups="' . $ups_id . '"'
+			. ' data-scope-param="id" data-scope="' . $ups_id . '"'
+			. ' data-reload="' . html_escape('upses.php?action=view&id=' . $ups_id) . '">';
 
 		foreach ($layout['order'] as $key) {
 			print apcupsd_dashboard_render_card($key, $ups_id, !empty($layout['expanded'][$key]));
@@ -1166,3 +1267,521 @@ if (!function_exists('apcupsd_dashboard')) {
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . '>var apcupsdDashCatalog = ' . json_encode($catalog, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; initApcupsdDashboard();</script>';
 	}
 }
+
+/* ============================================================================
+ * Fleet Dashboard: a high-level overview across every managed UPS, with the
+ * same draggable panel/card chrome as the per-UPS Dashboard. Each UPS row in
+ * the overview carries a drilldown glyph into its per-UPS Dashboard.
+ * ========================================================================== */
+
+if (!function_exists('apcupsd_dashboard_tabs')) {
+	/**
+	 * Render the tab bar linking the Fleet Dashboard, the UPSes list and (once a
+	 * UPS has been opened) its per-UPS Dashboard.
+	 *
+	 * @param string $current The current tab key ('dashboard', 'list' or 'view').
+	 *
+	 * @return void
+	 */
+	function apcupsd_dashboard_tabs(string $current): void {
+		$tabs = [
+			'dashboard' => ['label' => __('Fleet Dashboard', 'apcupsd'), 'url' => 'upses.php?action=dashboard'],
+			'list'      => ['label' => __('UPSes', 'apcupsd'),           'url' => 'upses.php'],
+		];
+
+		$selected_ups = (int) read_user_setting('apcupsd_dashboard_ups', 0);
+
+		if ($current === 'view' || apcupsd_dashboard_ups_exists($selected_ups)) {
+			$tabs['view'] = [
+				'label' => __('UPS Dashboard', 'apcupsd'),
+				'url'   => 'upses.php?action=view' . (apcupsd_dashboard_ups_exists($selected_ups) ? '&id=' . $selected_ups : ''),
+			];
+		}
+
+		print "<div class='tabs'><nav><ul>";
+
+		foreach ($tabs as $key => $tab) {
+			print "<li><a class='pic" . ($key === $current ? " selected'" : "'") . " href='" . html_escape($tab['url']) . "'>" . html_escape($tab['label']) . '</a></li>';
+		}
+
+		print '</ul></nav></div>';
+	}
+}
+
+if (!function_exists('apcupsd_fleet_stats')) {
+	/**
+	 * Memoized fleet aggregates: UPS counts by status (online/on-battery/other/
+	 * disabled) and the min/avg/max of load, battery charge and runtime across
+	 * the enabled UPSes.
+	 *
+	 * @return array The aggregate row.
+	 */
+	function apcupsd_fleet_stats(): array {
+		static $cache = null;
+
+		if ($cache === null) {
+			$row = db_fetch_row("SELECT
+				COUNT(*) AS total,
+				SUM(CASE WHEN ups.enabled = 'on' THEN 1 ELSE 0 END) AS enabled,
+				SUM(CASE WHEN ups.enabled <> 'on' THEN 1 ELSE 0 END) AS disabled,
+				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_status LIKE '%ONLINE%' THEN 1 ELSE 0 END) AS online,
+				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_status LIKE '%ONBATT%' THEN 1 ELSE 0 END) AS onbatt,
+				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_load_percent END) AS minLoad,
+				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_load_percent END) AS avgLoad,
+				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_load_percent END) AS maxLoad,
+				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_battery_charge END) AS minCharge,
+				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_battery_charge END) AS avgCharge,
+				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_battery_charge END) AS maxCharge,
+				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS minTime,
+				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS avgTime,
+				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS maxTime
+				FROM apcupsd_ups AS ups
+				LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id");
+
+			$cache = is_array($row) ? $row : [];
+		}
+
+		return $cache;
+	}
+}
+
+if (!function_exists('apcupsd_fleet_card_meta')) {
+	/**
+	 * The Fleet Dashboard card registry: title, column span (out of 8) and
+	 * whether the card clips with a "show more" control.
+	 *
+	 * @return array<string, array{title: string, span: int, expandable: bool}>
+	 */
+	function apcupsd_fleet_card_meta(): array {
+		return [
+			'overview' => ['title' => __('Fleet Overview', 'apcupsd'),    'span' => 4, 'expandable' => false],
+			'status'   => ['title' => __('Status Distribution', 'apcupsd'), 'span' => 4, 'expandable' => false],
+			'readings' => ['title' => __('Fleet Readings', 'apcupsd'),     'span' => 4, 'expandable' => false],
+			'upses'    => ['title' => __('UPSes', 'apcupsd'),              'span' => 8, 'expandable' => true],
+		];
+	}
+}
+
+if (!function_exists('apcupsd_fleet_available_cards')) {
+	/**
+	 * The Fleet Dashboard card keys, in default order.
+	 *
+	 * @return string[]
+	 */
+	function apcupsd_fleet_available_cards(): array {
+		return array_keys(apcupsd_fleet_card_meta());
+	}
+}
+
+if (!function_exists('apcupsd_fleet_tile')) {
+	/**
+	 * Render a single fleet stat tile.
+	 *
+	 * @param string $value    The already-formatted value.
+	 * @param string $label    The tile label.
+	 * @param string $modifier An optional severity modifier ('up'/'rec'/'down').
+	 *
+	 * @return string The tile HTML.
+	 */
+	function apcupsd_fleet_tile(string $value, string $label, string $modifier = ''): string {
+		return '<div class="apcupsdFleetTile' . ($modifier !== '' ? ' apcupsdFleetTile--' . $modifier : '') . '">'
+			. '<span class="apcupsdFleetTileValue">' . html_escape($value) . '</span>'
+			. '<span class="apcupsdFleetTileLabel">' . html_escape($label) . '</span>'
+			. '</div>';
+	}
+}
+
+if (!function_exists('apcupsd_fleet_card_body')) {
+	/**
+	 * Render the inner body HTML of a single Fleet Dashboard card.
+	 *
+	 * @param string $key The card identifier.
+	 *
+	 * @return string The card body HTML (empty for an unknown key).
+	 */
+	function apcupsd_fleet_card_body(string $key): string {
+		$stats = apcupsd_fleet_stats();
+
+		$total    = (int) ($stats['total'] ?? 0);
+		$enabled  = (int) ($stats['enabled'] ?? 0);
+		$disabled = (int) ($stats['disabled'] ?? 0);
+		$online   = (int) ($stats['online'] ?? 0);
+		$onbatt   = (int) ($stats['onbatt'] ?? 0);
+		$other    = max(0, $enabled - $online - $onbatt);
+
+		ob_start();
+
+		switch ($key) {
+			case 'overview':
+				if ($total === 0) {
+					print '<p class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
+
+					break;
+				}
+
+				print '<div class="apcupsdFleetTiles">';
+				print apcupsd_fleet_tile(number_format_i18n($total, 0), __('Total', 'apcupsd'));
+				print apcupsd_fleet_tile(number_format_i18n($online, 0), __('Online', 'apcupsd'), $online > 0 ? 'up' : '');
+				print apcupsd_fleet_tile(number_format_i18n($onbatt, 0), __('On Battery', 'apcupsd'), $onbatt > 0 ? 'down' : '');
+				print apcupsd_fleet_tile(number_format_i18n($other, 0), __('Other', 'apcupsd'), $other > 0 ? 'rec' : '');
+				print apcupsd_fleet_tile(number_format_i18n($disabled, 0), __('Disabled', 'apcupsd'));
+				print '</div>';
+
+				break;
+			case 'status':
+				$segments = [
+					['count' => $online,   'class' => 'up',   'label' => __('Online', 'apcupsd')],
+					['count' => $onbatt,   'class' => 'down', 'label' => __('On Battery', 'apcupsd')],
+					['count' => $other,    'class' => 'rec',  'label' => __('Other', 'apcupsd')],
+					['count' => $disabled, 'class' => 'dis',  'label' => __('Disabled', 'apcupsd')],
+				];
+
+				$bar_total = array_sum(array_column($segments, 'count'));
+
+				if ($bar_total === 0) {
+					print '<p class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
+
+					break;
+				}
+
+				print '<div class="apcupsdStackBar">';
+
+				foreach ($segments as $segment) {
+					if ($segment['count'] > 0) {
+						$width = $segment['count'] / $bar_total * 100;
+						print '<div class="apcupsdStackSeg apcupsdStackSeg--' . $segment['class'] . '" style="width:' . number_format($width, 2, '.', '') . '%" title="' . html_escape($segment['label'] . ': ' . $segment['count']) . '"></div>';
+					}
+				}
+
+				print '</div>';
+				print '<div class="apcupsdStackLegend">';
+
+				foreach ($segments as $segment) {
+					print '<span><span class="apcupsdStackChip apcupsdStackSeg--' . $segment['class'] . '"></span>' . html_escape($segment['label'] . ' (' . $segment['count'] . ')') . '</span>';
+				}
+
+				print '</div>';
+
+				break;
+			case 'readings':
+				if ($enabled === 0) {
+					print '<p class="apcupsdDashEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
+
+					break;
+				}
+
+				$num = function($value): ?float {
+					return $value !== null && is_numeric($value) ? (float) $value : null;
+				};
+
+				print apcupsd_dashboard_bullet(__('Load', 'apcupsd'), null, $num($stats['minLoad'] ?? null), $num($stats['avgLoad'] ?? null), $num($stats['maxLoad'] ?? null), 100.0, '%', apcupsd_dashboard_metric_severity('load_percent', $num($stats['avgLoad'] ?? null)));
+				print apcupsd_dashboard_bullet(__('Battery Charge', 'apcupsd'), null, $num($stats['minCharge'] ?? null), $num($stats['avgCharge'] ?? null), $num($stats['maxCharge'] ?? null), 100.0, '%', apcupsd_dashboard_metric_severity('battery_charge', $num($stats['avgCharge'] ?? null)));
+
+				$max_time = $num($stats['maxTime'] ?? null);
+				$time_scale = max(30.0, $max_time !== null ? $max_time * 1.1 : 30.0);
+				print apcupsd_dashboard_bullet(__('Time Left', 'apcupsd'), null, $num($stats['minTime'] ?? null), $num($stats['avgTime'] ?? null), $max_time, $time_scale, ' min', apcupsd_dashboard_metric_severity('timeleft', $num($stats['avgTime'] ?? null)));
+
+				break;
+			case 'upses':
+				$upses = db_fetch_assoc("SELECT ups.id, ups.name, ups.host_id, ups.enabled, ups.last_updated,
+					stats.ups_status, stats.ups_load_percent, stats.ups_battery_charge, stats.ups_timeleft
+					FROM apcupsd_ups AS ups
+					LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id
+					ORDER BY ups.name");
+
+				print '<table class="apcupsdDashTable"><thead><tr>'
+					. '<th></th>'
+					. '<th>' . __esc('UPS', 'apcupsd') . '</th>'
+					. '<th>' . __esc('Status', 'apcupsd') . '</th>'
+					. '<th class="apcupsdDashNum">' . __esc('Load', 'apcupsd') . '</th>'
+					. '<th class="apcupsdDashNum">' . __esc('Charge', 'apcupsd') . '</th>'
+					. '<th class="apcupsdDashNum">' . __esc('Time Left', 'apcupsd') . '</th>'
+					. '<th>' . __esc('Last Updated', 'apcupsd') . '</th>'
+					. '</tr></thead><tbody>';
+
+				if (cacti_sizeof($upses)) {
+					foreach ($upses as $ups) {
+						$id   = (int) $ups['id'];
+						$view = 'upses.php?action=view&id=' . $id;
+						$load   = isset($ups['ups_load_percent']) && is_numeric($ups['ups_load_percent']) ? number_format_i18n((float) $ups['ups_load_percent'], 0) . '%' : __('N/A', 'apcupsd');
+						$charge = isset($ups['ups_battery_charge']) && is_numeric($ups['ups_battery_charge']) ? number_format_i18n((float) $ups['ups_battery_charge'], 0) . '%' : __('N/A', 'apcupsd');
+						$time   = isset($ups['ups_timeleft']) && is_numeric($ups['ups_timeleft']) ? number_format_i18n((float) $ups['ups_timeleft'], 0) . ' ' . __('min', 'apcupsd') : __('N/A', 'apcupsd');
+
+						print '<tr>'
+							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-gauge-high" aria-hidden="true"></i></a></td>'
+							. '<td><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
+							. '<td>' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
+							. '<td class="apcupsdDashNum">' . html_escape($load) . '</td>'
+							. '<td class="apcupsdDashNum">' . html_escape($charge) . '</td>'
+							. '<td class="apcupsdDashNum">' . html_escape($time) . '</td>'
+							. '<td>' . html_escape((string) ($ups['last_updated'] ?? '')) . '</td>'
+							. '</tr>';
+					}
+				} else {
+					print '<tr class="apcupsdDashEmptyRow"><td colspan="7" class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</td></tr>';
+				}
+
+				print '</tbody></table>';
+
+				break;
+		}
+
+		return (string) ob_get_clean();
+	}
+}
+
+if (!function_exists('apcupsd_fleet_render_card')) {
+	/**
+	 * Render a complete Fleet Dashboard card.
+	 *
+	 * @param string $key      The card identifier.
+	 * @param bool   $expanded Whether the card opens expanded.
+	 *
+	 * @return string The card HTML, or '' for an unknown key.
+	 */
+	function apcupsd_fleet_render_card(string $key, bool $expanded = false): string {
+		$meta = apcupsd_fleet_card_meta();
+
+		if (!isset($meta[$key])) {
+			return '';
+		}
+
+		$def   = $meta[$key];
+		$state = '';
+
+		if ($key === 'status') {
+			$stats = apcupsd_fleet_stats();
+
+			if ((int) ($stats['onbatt'] ?? 0) > 0) {
+				$state = 'down';
+			}
+		}
+
+		return apcupsd_dashboard_card_chrome($key, (string) $def['title'], (int) $def['span'], (bool) $def['expandable'], $expanded, $state, apcupsd_fleet_card_body($key));
+	}
+}
+
+if (!function_exists('apcupsd_fleet_layout')) {
+	/**
+	 * The current user's Fleet Dashboard layout (card order + expanded state).
+	 * With no saved layout every card is present in the default order.
+	 *
+	 * @return array{order: string[], expanded: array<string, bool>}
+	 */
+	function apcupsd_fleet_layout(): array {
+		$available = apcupsd_fleet_available_cards();
+		$saved     = json_decode((string) read_user_setting('apcupsd_summary_layout', '', true), true);
+
+		if (!is_array($saved) || !isset($saved['order']) || !is_array($saved['order'])) {
+			return ['order' => $available, 'expanded' => []];
+		}
+
+		$order = [];
+
+		foreach ($saved['order'] as $key) {
+			if (is_string($key) && in_array($key, $available, true) && !in_array($key, $order, true)) {
+				$order[] = $key;
+			}
+		}
+
+		$expanded = [];
+
+		if (isset($saved['expanded']) && is_array($saved['expanded'])) {
+			foreach ($saved['expanded'] as $key => $on) {
+				if ($on && in_array($key, $available, true)) {
+					$expanded[(string) $key] = true;
+				}
+			}
+		}
+
+		return ['order' => $order, 'expanded' => $expanded];
+	}
+}
+
+if (!function_exists('apcupsd_fleet_layout_save')) {
+	/**
+	 * Persist the posted Fleet Dashboard layout for the current user, validated
+	 * to the known fleet cards.
+	 *
+	 * @return string A JSON status document.
+	 */
+	function apcupsd_fleet_layout_save(): string {
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+			return (string) json_encode(['error' => __('Invalid request. Please try again.', 'apcupsd')]);
+		}
+
+		$available = apcupsd_fleet_available_cards();
+		$posted    = json_decode(isset_request_var('layout') ? (string) get_nfilter_request_var('layout') : '', true);
+
+		$order    = [];
+		$expanded = [];
+
+		if (is_array($posted)) {
+			if (isset($posted['order']) && is_array($posted['order'])) {
+				foreach ($posted['order'] as $key) {
+					if (is_string($key) && in_array($key, $available, true) && !in_array($key, $order, true)) {
+						$order[] = $key;
+					}
+				}
+			}
+
+			if (isset($posted['expanded']) && is_array($posted['expanded'])) {
+				foreach ($posted['expanded'] as $key => $on) {
+					if ($on && is_string($key) && in_array($key, $available, true)) {
+						$expanded[$key] = true;
+					}
+				}
+			}
+		}
+
+		set_user_setting('apcupsd_summary_layout', json_encode(['order' => $order, 'expanded' => $expanded]));
+
+		return (string) json_encode(['ok' => true]);
+	}
+}
+
+if (!function_exists('apcupsd_fleet_refresh_save')) {
+	/**
+	 * Persist the posted Fleet Dashboard auto-refresh interval for the current
+	 * user. Accepts only a CSRF-validated POST carrying an offered value.
+	 *
+	 * @return string A JSON status document.
+	 *
+	 * @global array $page_refresh_interval Cacti's allowed refresh intervals.
+	 */
+	function apcupsd_fleet_refresh_save(): string {
+		global $page_refresh_interval;
+
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+			return (string) json_encode(['error' => __('Invalid request. Please try again.', 'apcupsd')]);
+		}
+
+		$posted    = isset_request_var('refresh') ? (string) get_nfilter_request_var('refresh') : '';
+		$intervals = (is_array($page_refresh_interval) && cacti_sizeof($page_refresh_interval)) ? $page_refresh_interval : [30 => '', 60 => '', 300 => ''];
+		$allowed   = array_map('intval', array_keys($intervals));
+		$allowed[] = 0;
+
+		if (!preg_match('/^[0-9]+$/', $posted) || !in_array((int) $posted, $allowed, true)) {
+			return (string) json_encode(['error' => __('Invalid refresh interval.', 'apcupsd')]);
+		}
+
+		set_user_setting('apcupsd_summary_refresh', (int) $posted);
+
+		return (string) json_encode(['ok' => true]);
+	}
+}
+
+if (!function_exists('apcupsd_fleet_card_ajax')) {
+	/**
+	 * AJAX: render a single Fleet Dashboard card.
+	 *
+	 * @return string A JSON document with the card key and rendered HTML.
+	 */
+	function apcupsd_fleet_card_ajax(): string {
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+			return (string) json_encode(['error' => __('Invalid request. Please try again.', 'apcupsd')]);
+		}
+
+		$key = isset_request_var('card') ? (string) get_nfilter_request_var('card') : '';
+
+		if (!in_array($key, apcupsd_fleet_available_cards(), true)) {
+			return (string) json_encode(['error' => __('Unknown card.', 'apcupsd')]);
+		}
+
+		$expanded = isset_request_var('expanded') && get_nfilter_request_var('expanded') === '1';
+
+		return (string) json_encode(['card' => $key, 'html' => apcupsd_fleet_render_card($key, $expanded)]);
+	}
+}
+
+if (!function_exists('apcupsd_fleet_dashboard')) {
+	/**
+	 * Render the high-level Fleet Dashboard: a draggable grid of overview, status
+	 * distribution, fleet min/avg/max reading bullets and a UPSes table whose
+	 * rows drill down into each UPS's per-UPS Dashboard. Card order, expanded
+	 * state and the auto-refresh interval persist per user. Called from upses.php's
+	 * dispatcher when action=dashboard.
+	 *
+	 * @return void
+	 *
+	 * @global array $config                Cacti global configuration array.
+	 * @global array $page_refresh_interval Cacti's standard refresh-interval list.
+	 */
+	function apcupsd_fleet_dashboard(): void {
+		global $config, $page_refresh_interval;
+
+		apcupsd_dashboard_print_css();
+		apcupsd_dashboard_tabs('dashboard');
+
+		$current_refresh = (int) read_user_setting('apcupsd_summary_refresh', 0);
+
+		if ($current_refresh > 0 && function_exists('set_page_refresh')) {
+			set_page_refresh([
+				'seconds' => $current_refresh,
+				'page'    => $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false',
+				'logout'  => 'false'
+			]);
+		}
+
+		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
+
+		$meta   = apcupsd_fleet_card_meta();
+		$layout = apcupsd_fleet_layout();
+		$absent = array_values(array_diff(apcupsd_fleet_available_cards(), $layout['order']));
+
+		if (empty($page_refresh_interval) || !is_array($page_refresh_interval)) {
+			$page_refresh_interval = [0 => __('No Refresh', 'apcupsd'), 30 => __('30 Seconds', 'apcupsd'), 60 => __('1 Minute', 'apcupsd'), 300 => __('5 Minutes', 'apcupsd')];
+		}
+
+		print '<div class="apcupsdDashToolbar">';
+		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_add">' . __esc('Add card', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_add" class="apcupsdDashAdd"><option value="">' . __esc('Add a card…', 'apcupsd') . '</option>';
+
+		foreach ($absent as $key) {
+			print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
+		}
+
+		print '</select>';
+
+		print '<div class="apcupsdDashRefresh">';
+		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_refresh">' . __esc('Refresh', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_refresh" class="apcupsdDashRefreshInterval">';
+		print '<option value="0"' . ($current_refresh == 0 ? ' selected' : '') . '>' . __esc('No Refresh', 'apcupsd') . '</option>';
+
+		foreach ($page_refresh_interval as $seconds => $display_text) {
+			if ((int) $seconds === 0) {
+				continue;
+			}
+
+			print '<option value="' . (int) $seconds . '"' . ($current_refresh == $seconds ? ' selected' : '') . '>' . html_escape($display_text) . '</option>';
+		}
+
+		print '</select>';
+		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="apcupsdDashCardTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
+		print '</div>';
+		print '</div>';
+
+		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid"'
+			. ' data-card-action="summary_card" data-layout-action="summary_layout" data-refresh-action="summary_refresh"'
+			. ' data-reload="upses.php?action=dashboard">';
+
+		foreach ($layout['order'] as $key) {
+			print apcupsd_fleet_render_card($key, !empty($layout['expanded'][$key]));
+		}
+
+		print '</div>';
+
+		print '<div id="apcupsd_dashboard_dialog" class="apcupsdDashDialog" style="display:none"></div>';
+
+		$catalog = [];
+
+		foreach (apcupsd_fleet_available_cards() as $key) {
+			$catalog[$key] = $meta[$key]['title'];
+		}
+
+		// JSON_HEX_* prevents a card title from breaking out of the inline <script>.
+		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . '>var apcupsdDashCatalog = ' . json_encode($catalog, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; initApcupsdDashboard();</script>';
+	}
+}
+
+

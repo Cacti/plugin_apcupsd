@@ -24,6 +24,36 @@
 
 var apcupsdDashDragging = null;
 
+/** The endpoint/scope configuration for a grid, read from its data attributes so
+ *  the per-UPS and fleet dashboards can share this engine. */
+function apcupsdDashCfg(grid) {
+	return {
+		page:          grid.dataset.page          || 'upses.php',
+		cardAction:    grid.dataset.cardAction    || 'dashboard_card',
+		layoutAction:  grid.dataset.layoutAction  || 'dashboard_layout',
+		refreshAction: grid.dataset.refreshAction || 'dashboard_refresh',
+		scopeParam:    grid.dataset.scopeParam    || '',
+		scope:         grid.dataset.scope         || '',
+		reload:        grid.dataset.reload        || 'upses.php'
+	};
+}
+
+/** Build a POST payload for a grid, adding the CSRF token and the grid's scope
+ *  parameter (the UPS id for the per-UPS dashboard; absent for the fleet one). */
+function apcupsdDashPost(grid, extra) {
+	var cfg = apcupsdDashCfg(grid);
+	var data = {__csrf_magic: csrfMagicToken};
+	for (var key in extra) {
+		if (Object.prototype.hasOwnProperty.call(extra, key)) {
+			data[key] = extra[key];
+		}
+	}
+	if (cfg.scopeParam) {
+		data[cfg.scopeParam] = cfg.scope;
+	}
+	return data;
+}
+
 function initApcupsdDashboard() {
 	$(function() {
 		var grid = document.getElementById('apcupsd_dashboard');
@@ -99,8 +129,9 @@ function initApcupsdDashboard() {
 		var interval = document.getElementById('apcupsd_dashboard_refresh');
 		if (interval) {
 			$(interval).off('change.apcupsddash').on('change.apcupsddash', function() {
-				$.post('upses.php', {action: 'dashboard_refresh', refresh: this.value, __csrf_magic: csrfMagicToken}, null, 'json').always(function() {
-					window.location = 'upses.php?action=view&id=' + encodeURIComponent(grid.dataset.ups);
+				var cfg = apcupsdDashCfg(grid);
+				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: this.value}), null, 'json').always(function() {
+					window.location = cfg.reload;
 				});
 			});
 		}
@@ -192,7 +223,8 @@ function apcupsdDashAddCard(grid, key) {
 	if (apcupsdDashHasCard(grid, key)) {
 		return;
 	}
-	$.post('upses.php', {action: 'dashboard_card', card: key, id: grid.dataset.ups, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+	var cfg = apcupsdDashCfg(grid);
+	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: key}), null, 'json').done(function(data) {
 		if (!data || !data.html || apcupsdDashHasCard(grid, key)) {
 			return;
 		}
@@ -240,7 +272,8 @@ function apcupsdDashRefreshCard(grid, card, done) {
 		}
 	};
 	var expanded = card.classList.contains('apcupsdDashCardExpanded') ? '1' : '0';
-	$.post('upses.php', {action: 'dashboard_card', card: card.dataset.card, id: grid.dataset.ups, expanded: expanded, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+	var cfg = apcupsdDashCfg(grid);
+	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: card.dataset.card, expanded: expanded}), null, 'json').done(function(data) {
 		if (!data || !data.html || !card.parentNode) {
 			settle();
 			return;
@@ -249,6 +282,14 @@ function apcupsdDashRefreshCard(grid, card, done) {
 		if (!fresh) {
 			settle();
 			return;
+		}
+		// Re-read the card's expanded state at swap time: the user may have toggled
+		// it while this request was in flight, and that live state must win over the
+		// state captured when the request was sent.
+		if (card.classList.contains('apcupsdDashCardExpanded')) {
+			fresh.classList.add('apcupsdDashCardExpanded');
+		} else {
+			fresh.classList.remove('apcupsdDashCardExpanded');
 		}
 		card.parentNode.replaceChild(fresh, card);
 		apcupsdDashBindCard(grid, fresh);
@@ -354,12 +395,11 @@ function apcupsdDashSaveLayout(grid) {
 		}
 	});
 
-	$.post('upses.php', {
-		action: 'dashboard_layout',
-		id: grid.dataset.ups,
-		layout: JSON.stringify({order: order, expanded: expanded}),
-		__csrf_magic: csrfMagicToken
-	}, null, 'json').always(function() {
+	var cfg = apcupsdDashCfg(grid);
+	$.post(cfg.page, apcupsdDashPost(grid, {
+		action: cfg.layoutAction,
+		layout: JSON.stringify({order: order, expanded: expanded})
+	}), null, 'json').always(function() {
 		apcupsdDashSaveInFlight = false;
 		if (apcupsdDashSaveQueued) {
 			apcupsdDashSaveQueued = false;
