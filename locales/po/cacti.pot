@@ -999,6 +999,11 @@ msgid "Est. Power"
 msgstr ""
 
 #: includes/dashboard.php
+#, php-format
+msgid "min %s · avg %s · max %s"
+msgstr ""
+
+#: includes/dashboard.php
 msgid "Estimated Power"
 msgstr ""
 
@@ -1024,4 +1029,12 @@ msgstr ""
 
 #: upses.php
 msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
 msgstr ""

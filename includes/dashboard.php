@@ -782,20 +782,18 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 	}
 }
 
-if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
+if (!function_exists('apcupsd_dashboard_gauge_from_reading')) {
 	/**
-	 * Render a single-metric gauge card body: the current reading swept on the
-	 * dial with the value in the centre and a min/max caption from the RRD window.
+	 * Render a gauge from a resolved reading: the current value swept on the dial
+	 * with the value in the centre and a min/avg/max caption from the RRD window.
 	 *
-	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
-	 * @param int    $ups_id     The UPS to render for.
+	 * @param array|null $reading A reading from apcupsd_dashboard_metric_reading()
+	 *                            or apcupsd_dashboard_est_power_reading().
 	 *
 	 * @return string The gauge HTML, or an empty-state message.
 	 */
-	function apcupsd_dashboard_gauge_card_body(string $metric_key, $ups_id): string {
-		$reading = apcupsd_dashboard_metric_reading($metric_key, $ups_id);
-
-		if ($reading === null) {
+	function apcupsd_dashboard_gauge_from_reading(?array $reading): string {
+		if (!is_array($reading)) {
 			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
 		}
 
@@ -805,15 +803,81 @@ if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
 			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for this gauge yet.', 'apcupsd') . '</p>';
 		}
 
-		$center = apcupsd_dashboard_format_value($value, $reading['unit']);
+		$unit   = $reading['unit'];
+		$center = apcupsd_dashboard_format_value($value, $unit);
 
 		$sub = '';
 
-		if ($reading['min'] !== null || $reading['max'] !== null) {
-			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $reading['unit']), apcupsd_dashboard_format_value($reading['max'], $reading['unit']), 'apcupsd');
+		if ($reading['avg'] !== null) {
+			$sub = __('min %s · avg %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['avg'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
+		} elseif ($reading['min'] !== null || $reading['max'] !== null) {
+			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
 		}
 
 		return apcupsd_dashboard_gauge($value, $reading['min'], $reading['max'], $reading['scale'], $reading['severity'], $center, $sub);
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
+	/**
+	 * Render a single-metric gauge card body.
+	 *
+	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
+	 * @param int    $ups_id     The UPS to render for.
+	 *
+	 * @return string The gauge HTML, or an empty-state message.
+	 */
+	function apcupsd_dashboard_gauge_card_body(string $metric_key, $ups_id): string {
+		return apcupsd_dashboard_gauge_from_reading(apcupsd_dashboard_metric_reading($metric_key, $ups_id));
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_est_power_reading')) {
+	/**
+	 * Estimate real output power for UPSes that do not report it: the nominal
+	 * power rating scaled by the load percentage, with the min/avg/max derived
+	 * from the load's RRD window. Returns null when no nominal power rating or
+	 * load reading is available.
+	 *
+	 * @param int $ups_id The UPS to read.
+	 *
+	 * @return array{label: string, current: float|null, min: float|null, avg: float|null, max: float|null, scale: float, unit: string, severity: string}|null
+	 */
+	function apcupsd_dashboard_est_power_reading($ups_id): ?array {
+		$ups = apcupsd_dashboard_ups($ups_id);
+
+		if (!cacti_sizeof($ups)) {
+			return null;
+		}
+
+		$nominal = isset($ups['ups_nominal_power']) && is_numeric($ups['ups_nominal_power']) ? (float) $ups['ups_nominal_power'] : 0.0;
+
+		if ($nominal <= 0) {
+			return null;
+		}
+
+		$load = apcupsd_dashboard_metric_reading('load_percent', $ups_id);
+
+		if ($load === null) {
+			return null;
+		}
+
+		$watts = function(?float $pct) use ($nominal): ?float {
+			return $pct === null ? null : $nominal * $pct / 100.0;
+		};
+
+		$load_display = $load['current'] !== null ? $load['current'] : $load['avg'];
+
+		return [
+			'label'    => __('Estimated Power', 'apcupsd'),
+			'current'  => $watts($load['current']),
+			'min'      => $watts($load['min']),
+			'avg'      => $watts($load['avg']),
+			'max'      => $watts($load['max']),
+			'scale'    => $nominal,
+			'unit'     => ' W',
+			'severity' => apcupsd_dashboard_metric_severity('load_percent', $load_display),
+		];
 	}
 }
 
@@ -839,6 +903,8 @@ if (!function_exists('apcupsd_dashboard_card_meta')) {
 				$meta[$card_key] = ['title' => (string) $metrics[$metric_key]['label'], 'span' => 2, 'expandable' => false];
 			}
 		}
+
+		$meta['gauge_est_power'] = ['title' => __('Estimated Power', 'apcupsd'), 'span' => 2, 'expandable' => false];
 
 		$meta['power']   = ['title' => __('Input and Load', 'apcupsd'),       'span' => 2, 'expandable' => false];
 		$meta['battery'] = ['title' => __('Battery and Runtime', 'apcupsd'),  'span' => 2, 'expandable' => false];
@@ -892,6 +958,12 @@ if (!function_exists('apcupsd_dashboard_card_state')) {
 		$status = strtoupper((string) ($ups['ups_status'] ?? ''));
 
 		if (strncmp($key, 'gauge_', 6) === 0) {
+			if ($key === 'gauge_est_power') {
+				$reading = apcupsd_dashboard_est_power_reading($ups_id);
+
+				return $reading !== null ? $reading['severity'] : '';
+			}
+
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (isset($cards[$key])) {
@@ -1006,6 +1078,16 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 		}
 
 		if (strncmp($key, 'gauge_', 6) === 0) {
+			if ($key === 'gauge_est_power') {
+				$reading = apcupsd_dashboard_est_power_reading($ups_id);
+
+				if ($reading === null) {
+					return '<p class="apcupsdDashEmpty">' . __esc('Estimated power needs a nominal power rating and a load reading.', 'apcupsd') . '</p>';
+				}
+
+				return apcupsd_dashboard_gauge_from_reading($reading);
+			}
+
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (!isset($cards[$key])) {
@@ -1028,8 +1110,9 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv = function(string $label, $value): void {
 					$value = trim((string) $value);
 
+					// Hide anything we have no value for: show only what the database holds.
 					if ($value === '') {
-						$value = __('N/A', 'apcupsd');
+						return;
 					}
 
 					print '<tr><th>' . html_escape($label) . '</th><td>' . html_escape($value) . '</td></tr>';
@@ -1059,8 +1142,9 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv(__('Model', 'apcupsd'), $ups['ups_model'] ?? '');
 				$kv(__('Serial Number', 'apcupsd'), $ups['ups_serialno'] ?? '');
 				$kv(__('Firmware', 'apcupsd'), $ups['ups_firmware'] ?? '');
-				$kv(__('Cable', 'apcupsd'), $ups['ups_cable'] ?? '');
-				$kv(__('Driver', 'apcupsd'), $ups['ups_driver'] ?? '');
+				$cable  = trim((string) ($ups['ups_cable'] ?? ''));
+				$driver = trim((string) ($ups['ups_driver'] ?? ''));
+				$kv(__('Cable / Driver', 'apcupsd'), implode(' / ', array_filter([$cable, $driver], 'strlen')));
 				$kv(__('Collector', 'apcupsd'), $type);
 				$kv(__('Hostname', 'apcupsd'), $host);
 				$kv(__('Nominal Power', 'apcupsd'), $watts($ups['ups_nominal_power'] ?? null));
@@ -1203,25 +1287,26 @@ if (!function_exists('apcupsd_dashboard_render_card')) {
 
 if (!function_exists('apcupsd_dashboard_layout_key')) {
 	/**
-	 * The per-UPS settings_user key the Dashboard layout is stored under. Each UPS
-	 * uses its own row so no single value can exceed Cacti 1.2.x's 4096-character
-	 * settings_user.value limit.
+	 * The settings_user key the per-UPS Dashboard layout is stored under. The
+	 * arrangement is shared across every UPS, so the key is constant; $ups_id is
+	 * accepted for call compatibility but ignored.
 	 *
-	 * @param int $ups_id The UPS id.
+	 * @param int $ups_id The UPS id (ignored).
 	 *
 	 * @return string The settings key.
 	 */
 	function apcupsd_dashboard_layout_key($ups_id): string {
-		return 'apcupsd_dashboard_layout_' . (int) $ups_id;
+		return 'apcupsd_dashboard_layout_shared';
 	}
 }
 
 if (!function_exists('apcupsd_dashboard_layout_read')) {
 	/**
-	 * Read a UPS's stored layout document, migrating a layout authored under the
-	 * pre-release combined map when the per-UPS row is not yet present.
+	 * Read the stored Dashboard layout document, migrating a layout authored under
+	 * the earlier per-UPS row or the pre-release combined map when the shared row
+	 * is not yet present.
 	 *
-	 * @param int $ups_id The UPS id.
+	 * @param int $ups_id The UPS id (used only to locate a legacy layout to migrate).
 	 *
 	 * @return array|null The {order, expanded} document, or null when none saved.
 	 */
@@ -1230,6 +1315,13 @@ if (!function_exists('apcupsd_dashboard_layout_read')) {
 
 		if (is_array($saved) && isset($saved['order']) && is_array($saved['order'])) {
 			return $saved;
+		}
+
+		// Migrate a layout authored under the earlier per-UPS row.
+		$legacy = json_decode((string) read_user_setting('apcupsd_dashboard_layout_' . (int) $ups_id, '', true), true);
+
+		if (is_array($legacy) && isset($legacy['order']) && is_array($legacy['order'])) {
+			return $legacy;
 		}
 
 		$all = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
@@ -1296,9 +1388,8 @@ if (!function_exists('apcupsd_dashboard_layout')) {
 
 if (!function_exists('apcupsd_dashboard_layout_save')) {
 	/**
-	 * Persist the posted layout (card order and expanded state) for a UPS for the
-	 * current user, validated to the UPS's known cards and merged into the user's
-	 * per-UPS layout map.
+	 * Persist the posted layout (card order and expanded state) for the current
+	 * user, validated to the current UPS's known cards and shared across every UPS.
 	 *
 	 * @return string A JSON status document.
 	 */
