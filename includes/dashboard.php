@@ -706,16 +706,26 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 	 * @return array{label: string, current: float|null, min: float|null, avg: float|null, max: float|null, scale: float, unit: string, severity: string}|null
 	 */
 	function apcupsd_dashboard_metric_reading(string $key, $ups_id): ?array {
+		// Memoized per request so the gauge card header and body resolve one reading
+		// (and read the RRD once) rather than twice.
+		static $cache = [];
+
+		$cache_key = $key . ':' . (int) $ups_id;
+
+		if (array_key_exists($cache_key, $cache)) {
+			return $cache[$cache_key];
+		}
+
 		$metrics = apcupsd_dashboard_metrics();
 
 		if (!isset($metrics[$key])) {
-			return null;
+			return $cache[$cache_key] = null;
 		}
 
 		$ups = apcupsd_dashboard_ups($ups_id);
 
 		if (!cacti_sizeof($ups)) {
-			return null;
+			return $cache[$cache_key] = null;
 		}
 
 		apcupsd_dashboard_init_timespan();
@@ -755,7 +765,11 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 			}
 		}
 
-		return [
+		// Severity follows the value the gauge actually displays (the polled reading,
+		// else the RRD fallback) so the card header accent matches the sweep.
+		$display = $current !== null ? $current : $avg;
+
+		return $cache[$cache_key] = [
 			'label'    => $def['label'],
 			'current'  => $current,
 			'min'      => $min,
@@ -763,7 +777,7 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 			'max'      => $max,
 			'scale'    => $scale,
 			'unit'     => $def['unit'],
-			'severity' => apcupsd_dashboard_metric_severity($key, $current),
+			'severity' => apcupsd_dashboard_metric_severity($key, $display),
 		];
 	}
 }
@@ -881,14 +895,12 @@ if (!function_exists('apcupsd_dashboard_card_state')) {
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (isset($cards[$key])) {
-				$metric  = $cards[$key];
-				$metrics = apcupsd_dashboard_metrics();
+				// Reuse the gauge body's resolved reading so the header accent and the
+				// sweep share one value (and one RRD read).
+				$reading = apcupsd_dashboard_metric_reading($cards[$key], $ups_id);
 
-				if (isset($metrics[$metric])) {
-					$col   = $metrics[$metric]['col'];
-					$value = isset($ups[$col]) && is_numeric($ups[$col]) ? (float) $ups[$col] : null;
-
-					return $value === null ? '' : apcupsd_dashboard_metric_severity($metric, $value);
+				if ($reading !== null) {
+					return $reading['severity'];
 				}
 			}
 
