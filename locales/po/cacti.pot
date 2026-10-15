@@ -973,3 +973,11 @@ msgstr ""
 #: includes/dashboard.php
 msgid "Nominal Battery Voltage"
 msgstr ""
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr ""

@@ -348,49 +348,57 @@
 }
 
 /*
- * Half-donut gauge: a 0..scale semicircular track, a current-value sweep tinted
- * by severity, faint min/max ticks and the value printed large in the centre.
- * Rendered alongside the bullet charts; mirrors the intropage / hmib gauges.
+ * Semicircular SVG gauge, one per card, mirroring the hmib CPU/memory/swap
+ * gauges: a 0..scale track, a current-value sweep tinted by severity, faint
+ * min/max ticks over the selected timespan, and the value centred in the dial.
  */
 .apcupsdGaugeGrid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	gap: 10px;
 	align-items: start;
 }
 
-.apcupsdGauge {
+.apcupsdGaugeCell {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 6px 4px 2px;
 }
 
-.apcupsdGaugeDial {
+.apcupsdGaugeCellLabel {
+	font-size: 12px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.apcupsdGauge {
 	position: relative;
-	width: 100%;
-	max-width: 170px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 2px 0 4px;
 }
 
 .apcupsdGaugeSvg {
-	display: block;
 	width: 100%;
+	max-width: 190px;
 	height: auto;
 	overflow: visible;
 }
 
 .apcupsdGaugeTrack {
 	fill: none;
-	stroke: color-mix(in srgb, currentColor 14%, transparent);
-	stroke-width: 10;
+	stroke: color-mix(in srgb, currentColor 16%, transparent);
+	stroke-width: 11;
 	stroke-linecap: round;
 }
 
 .apcupsdGaugeValue {
 	fill: none;
-	stroke-width: 10;
+	stroke-width: 11;
 	stroke-linecap: round;
 	stroke: color-mix(in srgb, currentColor 45%, transparent);
+	transition: stroke-dasharray 0.4s ease;
 }
 
 .apcupsdGaugeValue--up         { stroke: #3c9a5f; }
@@ -402,34 +410,35 @@
 	stroke-width: 2;
 }
 
-.apcupsdGaugeValueText {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 2px;
+.apcupsdGaugeText {
+	margin-top: -22px;
 	text-align: center;
-	font-size: 20px;
-	font-weight: 700;
-	line-height: 1;
-	font-variant-numeric: tabular-nums;
+	line-height: 1.2;
 }
 
-.apcupsdGaugeValueText--up         { color: #3c9a5f; }
-.apcupsdGaugeValueText--recovering { color: #d9830f; }
-.apcupsdGaugeValueText--down       { color: #cc0000; }
-
-.apcupsdGaugeLabel {
-	margin-top: 2px;
-	font-size: 12px;
-	font-weight: 600;
-	text-align: center;
+.apcupsdGaugeValueText {
+	display: block;
+	font-size: 20px;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
 }
 
 .apcupsdGaugeSub {
-	font-size: 10px;
+	display: block;
+	font-size: 11px;
 	font-variant-numeric: tabular-nums;
-	text-align: center;
-	color: color-mix(in srgb, currentColor 62%, transparent);
+	color: color-mix(in srgb, currentColor 65%, transparent);
+}
+
+/* Per-UPS drilldown action glyph in the UPSes list and the fleet table. */
+.apcupsdDashGlyph {
+	color: #3c9a5f;
+	text-decoration: none;
+}
+
+.apcupsdDashGlyph:hover,
+.apcupsdDashGlyph:focus-visible {
+	color: #2e7d32;
 }
 
 /* The maximize dialog body. */
