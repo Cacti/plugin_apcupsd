@@ -842,6 +842,14 @@ msgid "The unique id associated with this UPS."
 msgstr ""
 
 #: upses.php
+msgid "DID"
+msgstr ""
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr ""
+
+#: upses.php
 msgid "The Status of the apcupsd daemon on the target Host."
 msgstr ""
 
