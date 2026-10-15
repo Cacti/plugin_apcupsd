@@ -978,6 +978,12 @@ function upses(): void {
 			'sort'    => 'ASC',
 			'tip'     => __('The unique id associated with this UPS.', 'apcupsd')
 		],
+		'host_id' => [
+			'display' => __('DID', 'apcupsd'),
+			'align'   => 'center',
+			'sort'    => 'ASC',
+			'tip'     => __('The Cacti Device ID.', 'apcupsd')
+		],
 		'status' => [
 			'display' => __('Status', 'apcupsd'),
 			'align'   => 'center',
@@ -1058,6 +1064,7 @@ function upses(): void {
 
 			form_selectable_cell("<a class='apcupsdDashGlyph' href='upses.php?action=view&id=" . $ups['id'] . "' title='" . __esc('View UPS Dashboard', 'apcupsd') . "'><i class='fas fa-tachometer-alt'></i></a> " . filter_value($ups['name'], get_request_var('filter'), 'upses.php?action=edit&id=' . $ups['id']), $ups['id']);
 			form_selectable_cell($ups['id'], $ups['id'], '', 'center');
+			form_selectable_cell($ups['host_id'], $ups['id'], '', 'center');
 			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'center');
 			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD' : 'SNMPD', $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_status'], $ups['id'], '', 'left');
