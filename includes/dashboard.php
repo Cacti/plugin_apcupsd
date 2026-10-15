@@ -530,78 +530,50 @@ if (!function_exists('apcupsd_dashboard_gauge')) {
 	 * value printed large in the centre. Mirrors the intropage / hmib gauge
 	 * visuals that sit alongside the bullet charts.
 	 *
-	 * @param string     $label    The reading label.
-	 * @param float|null $current  The current value (sweep + centre), or null.
-	 * @param float|null $min      The window minimum, or null.
-	 * @param float|null $max      The window maximum, or null.
-	 * @param float      $scale    The axis maximum (full sweep value).
-	 * @param string     $unit     The value unit suffix (e.g. ' V', '%').
-	 * @param string     $severity 'up'/'recovering'/'down' sweep tint, else ''.
-	 * @param string     $sub      An optional caption under the label.
+	 * @param float|null $current      The current value (sweep + centre), or null.
+	 * @param float|null $min          The window minimum (faint tick), or null.
+	 * @param float|null $max          The window maximum (faint tick), or null.
+	 * @param float      $scale        The axis maximum (full sweep value).
+	 * @param string     $severity     'up'/'recovering'/'down' sweep tint, else ''.
+	 * @param string     $center_label The large value printed inside the dial.
+	 * @param string     $sub_label    An optional caption under the value.
 	 *
 	 * @return string The gauge HTML.
 	 */
-	function apcupsd_dashboard_gauge(string $label, ?float $current, ?float $min, ?float $max, float $scale, string $unit, string $severity, string $sub = ''): string {
-		$fmt = function(?float $value) use ($unit): string {
-			if ($value === null) {
-				return __('N/A', 'apcupsd');
-			}
-
-			$decimals = (abs($value) >= 100 || floor($value) == $value) ? 0 : 1;
-
-			return number_format_i18n($value, $decimals) . $unit;
-		};
-
+	function apcupsd_dashboard_gauge(?float $current, ?float $min, ?float $max, float $scale, string $severity, string $center_label, string $sub_label = ''): string {
 		$sev = in_array($severity, ['up', 'recovering', 'down'], true) ? $severity : 'none';
 
-		// A 180° arc centred at (60,60), radius 50; its length is pi * r.
-		$radius = 50.0;
-		$circ   = M_PI * $radius;
-		$track  = 'M 10 60 A 50 50 0 0 1 110 60';
+		$frac = ($current !== null && $scale > 0) ? max(0.0, min(1.0, $current / $scale)) : 0.0;
+		$dash = number_format($frac * 100, 2, '.', '');
 
-		$value_arc = '';
-
-		if ($current !== null && $scale > 0) {
-			$frac = max(0.0, min(1.0, $current / $scale));
-			$len  = number_format($frac * $circ, 2, '.', '');
-			$gap  = number_format($circ, 2, '.', '');
-			$value_arc = '<path class="apcupsdGaugeValue apcupsdGaugeValue--' . $sev . '" d="' . $track . '" stroke-dasharray="' . $len . ' ' . $gap . '"></path>';
-		}
-
-		$tick = function(?float $value) use ($scale, $radius): string {
+		// Faint radial ticks mark the window min and max on the 180° arc (centre
+		// (60,60), radius 50), straddling the 11px-wide value band.
+		$tick = function(?float $value) use ($scale): string {
 			if ($value === null || $scale <= 0) {
 				return '';
 			}
 
 			$frac  = max(0.0, min(1.0, $value / $scale));
 			$angle = M_PI * (1 - $frac);
-			$ix = 60 + ($radius - 6) * cos($angle);
-			$iy = 60 - ($radius - 6) * sin($angle);
-			$ox = 60 + ($radius + 6) * cos($angle);
-			$oy = 60 - ($radius + 6) * sin($angle);
+			$ix = 60 + 44 * cos($angle);
+			$iy = 60 - 44 * sin($angle);
+			$ox = 60 + 56 * cos($angle);
+			$oy = 60 - 56 * sin($angle);
 
 			return '<line class="apcupsdGaugeTick" x1="' . number_format($ix, 2, '.', '') . '" y1="' . number_format($iy, 2, '.', '')
-				. '" x2="' . number_format($ox, 2, '.', '') . '" y2="' . number_format($oy, 2, '.', '') . '"></line>';
+				. '" x2="' . number_format($ox, 2, '.', '') . '" y2="' . number_format($oy, 2, '.', '') . '" />';
 		};
 
-		$center = $current !== null ? $fmt($current) : __('N/A', 'apcupsd');
-
-		if ($sub === '' && ($min !== null || $max !== null)) {
-			$sub = __('min %s · max %s', $fmt($min), $fmt($max), 'apcupsd');
-		}
-
 		return '<div class="apcupsdGauge">'
-			. '<div class="apcupsdGaugeDial">'
-			. '<svg class="apcupsdGaugeSvg" viewBox="0 0 120 68" role="img" aria-label="' . html_escape($label . ': ' . $center) . '">'
-			. '<path class="apcupsdGaugeTrack" d="' . $track . '"></path>'
-			. $value_arc
+			. '<svg class="apcupsdGaugeSvg" viewBox="0 0 120 68" role="img" aria-label="' . html_escape($center_label) . '">'
+			. '<path class="apcupsdGaugeTrack" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" />'
+			. '<path class="apcupsdGaugeValue apcupsdGaugeValue--' . $sev . '" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" stroke-dasharray="' . $dash . ' 100" />'
 			. $tick($min) . $tick($max)
 			. '</svg>'
-			. '<div class="apcupsdGaugeValueText apcupsdGaugeValueText--' . $sev . '">' . html_escape($center) . '</div>'
-			. '</div>'
-			. '<div class="apcupsdGaugeLabel">' . html_escape($label) . '</div>'
-			. ($sub !== '' ? '<div class="apcupsdGaugeSub">' . html_escape($sub) . '</div>' : '')
-			. '</div>';
+			. '<div class="apcupsdGaugeText">'
+			. '<span class="apcupsdGaugeValueText">' . html_escape($center_label) . '</span>'
+			. ($sub_label !== '' ? '<span class="apcupsdGaugeSub">' . html_escape($sub_label) . '</span>' : '')
+			. '</div></div>';
 	}
 }
 
@@ -686,22 +658,64 @@ if (!function_exists('apcupsd_dashboard_render_bullets')) {
 	}
 }
 
-if (!function_exists('apcupsd_dashboard_render_gauges')) {
+if (!function_exists('apcupsd_dashboard_format_value')) {
 	/**
-	 * Render a half-donut gauge for each named metric of a UPS, sourcing the
-	 * current value from the latest poll and the window min/max from the UPS's RRD
-	 * files over the selected timespan.
+	 * Format a reading with its unit, dropping decimals for whole or large values.
 	 *
-	 * @param string[] $keys   The metric keys to render, in order.
-	 * @param int      $ups_id The UPS to render for.
+	 * @param float|null $value The value, or null for an unknown reading.
+	 * @param string     $unit  The unit suffix (e.g. ' V', '%').
 	 *
-	 * @return string The gauges HTML, or an empty-state message.
+	 * @return string The formatted value, or a localized 'N/A'.
 	 */
-	function apcupsd_dashboard_render_gauges(array $keys, $ups_id): string {
+	function apcupsd_dashboard_format_value(?float $value, string $unit): string {
+		if ($value === null) {
+			return __('N/A', 'apcupsd');
+		}
+
+		$decimals = (abs($value) >= 100 || floor($value) == $value) ? 0 : 1;
+
+		return number_format_i18n($value, $decimals) . $unit;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_gauge_cards')) {
+	/**
+	 * The per-UPS gauge cards, each mapping a card key to the metric it renders.
+	 * One gauge per card, mirroring the hmib CPU/memory/swap gauge cards.
+	 *
+	 * @return array<string, string> Card key => metric key.
+	 */
+	function apcupsd_dashboard_gauge_cards(): array {
+		return [
+			'gauge_charge'  => 'battery_charge',
+			'gauge_load'    => 'load_percent',
+			'gauge_voltage' => 'line_voltage',
+			'gauge_runtime' => 'timeleft',
+		];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_metric_reading')) {
+	/**
+	 * Resolve a UPS metric's current value plus its min/avg/max from the RRD files
+	 * over the selected timespan, and the display scale for a gauge.
+	 *
+	 * @param string $key    A key from apcupsd_dashboard_metrics().
+	 * @param int    $ups_id The UPS to read.
+	 *
+	 * @return array{label: string, current: float|null, min: float|null, avg: float|null, max: float|null, scale: float, unit: string, severity: string}|null
+	 */
+	function apcupsd_dashboard_metric_reading(string $key, $ups_id): ?array {
+		$metrics = apcupsd_dashboard_metrics();
+
+		if (!isset($metrics[$key])) {
+			return null;
+		}
+
 		$ups = apcupsd_dashboard_ups($ups_id);
 
 		if (!cacti_sizeof($ups)) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
+			return null;
 		}
 
 		apcupsd_dashboard_init_timespan();
@@ -709,61 +723,83 @@ if (!function_exists('apcupsd_dashboard_render_gauges')) {
 		$start   = get_current_graph_start();
 		$end     = get_current_graph_end();
 		$host_id = (int) ($ups['host_id'] ?? 0);
-		$metrics = apcupsd_dashboard_metrics();
+		$def     = $metrics[$key];
 
-		$out      = '';
-		$rendered = 0;
+		$current = isset($ups[$def['col']]) && is_numeric($ups[$def['col']]) ? (float) $ups[$def['col']] : null;
 
-		foreach ($keys as $key) {
-			if (!isset($metrics[$key])) {
-				continue;
+		list($local_data_id, $ds_name) = apcupsd_dashboard_find_data_source($host_id, $def['aliases']);
+
+		$min = $avg = $max = null;
+
+		if ($local_data_id > 0) {
+			$min = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MIN');
+			$avg = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'AVERAGE');
+			$max = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MAX');
+
+			if ($current === null) {
+				$current = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'LAST');
 			}
-
-			$def     = $metrics[$key];
-			$current = isset($ups[$def['col']]) && is_numeric($ups[$def['col']]) ? (float) $ups[$def['col']] : null;
-
-			list($local_data_id, $ds_name) = apcupsd_dashboard_find_data_source($host_id, $def['aliases']);
-
-			$min = $max = null;
-
-			if ($local_data_id > 0) {
-				$min = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MIN');
-				$max = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MAX');
-
-				if ($current === null) {
-					$current = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'LAST');
-				}
-			}
-
-			if ($current === null && $min === null && $max === null) {
-				continue;
-			}
-
-			$scale = (float) $def['scale'];
-
-			if (!$def['pct']) {
-				if (!empty($def['nominal']) && isset($ups[$def['nominal']]) && is_numeric($ups[$def['nominal']]) && (float) $ups[$def['nominal']] > 0) {
-					$scale = max($scale, (float) $ups[$def['nominal']] * 1.3);
-				}
-
-				foreach ([$current, $max] as $candidate) {
-					if ($candidate !== null) {
-						$scale = max($scale, (float) $candidate * 1.15);
-					}
-				}
-			}
-
-			$severity = apcupsd_dashboard_metric_severity($key, $current);
-
-			$out .= apcupsd_dashboard_gauge($def['label'], $current, $min, $max, $scale, $def['unit'], $severity);
-			$rendered++;
 		}
 
-		if ($rendered === 0) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for these gauges yet.', 'apcupsd') . '</p>';
+		$scale = (float) $def['scale'];
+
+		if (!$def['pct']) {
+			if (!empty($def['nominal']) && isset($ups[$def['nominal']]) && is_numeric($ups[$def['nominal']]) && (float) $ups[$def['nominal']] > 0) {
+				$scale = max($scale, (float) $ups[$def['nominal']] * 1.3);
+			}
+
+			foreach ([$current, $max] as $candidate) {
+				if ($candidate !== null) {
+					$scale = max($scale, (float) $candidate * 1.15);
+				}
+			}
 		}
 
-		return '<div class="apcupsdGaugeGrid">' . $out . '</div>';
+		return [
+			'label'    => $def['label'],
+			'current'  => $current,
+			'min'      => $min,
+			'avg'      => $avg,
+			'max'      => $max,
+			'scale'    => $scale,
+			'unit'     => $def['unit'],
+			'severity' => apcupsd_dashboard_metric_severity($key, $current),
+		];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
+	/**
+	 * Render a single-metric gauge card body: the current reading swept on the
+	 * dial with the value in the centre and a min/max caption from the RRD window.
+	 *
+	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
+	 * @param int    $ups_id     The UPS to render for.
+	 *
+	 * @return string The gauge HTML, or an empty-state message.
+	 */
+	function apcupsd_dashboard_gauge_card_body(string $metric_key, $ups_id): string {
+		$reading = apcupsd_dashboard_metric_reading($metric_key, $ups_id);
+
+		if ($reading === null) {
+			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
+		}
+
+		$value = $reading['current'] !== null ? $reading['current'] : $reading['avg'];
+
+		if ($value === null && $reading['min'] === null && $reading['max'] === null) {
+			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for this gauge yet.', 'apcupsd') . '</p>';
+		}
+
+		$center = apcupsd_dashboard_format_value($value, $reading['unit']);
+
+		$sub = '';
+
+		if ($reading['min'] !== null || $reading['max'] !== null) {
+			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $reading['unit']), apcupsd_dashboard_format_value($reading['max'], $reading['unit']), 'apcupsd');
+		}
+
+		return apcupsd_dashboard_gauge($value, $reading['min'], $reading['max'], $reading['scale'], $reading['severity'], $center, $sub);
 	}
 }
 
@@ -778,13 +814,21 @@ if (!function_exists('apcupsd_dashboard_card_meta')) {
 	 * @return array<string, array{title: string, span: int, expandable: bool}>
 	 */
 	function apcupsd_dashboard_card_meta($ups_id): array {
+		$metrics = apcupsd_dashboard_metrics();
+
 		$meta = [
-			'identity' => ['title' => __('UPS Information', 'apcupsd'),  'span' => 4, 'expandable' => false],
-			'gauges'   => ['title' => __('At a Glance', 'apcupsd'),      'span' => 4, 'expandable' => false],
-			'power'    => ['title' => __('Input and Load', 'apcupsd'),   'span' => 2, 'expandable' => false],
-			'battery'  => ['title' => __('Battery and Runtime', 'apcupsd'), 'span' => 2, 'expandable' => false],
-			'events'   => ['title' => __('Events and Transfers', 'apcupsd'), 'span' => 4, 'expandable' => true],
+			'identity' => ['title' => __('UPS Information', 'apcupsd'), 'span' => 4, 'expandable' => false],
 		];
+
+		foreach (apcupsd_dashboard_gauge_cards() as $card_key => $metric_key) {
+			if (isset($metrics[$metric_key])) {
+				$meta[$card_key] = ['title' => (string) $metrics[$metric_key]['label'], 'span' => 2, 'expandable' => false];
+			}
+		}
+
+		$meta['power']   = ['title' => __('Input and Load', 'apcupsd'),       'span' => 2, 'expandable' => false];
+		$meta['battery'] = ['title' => __('Battery and Runtime', 'apcupsd'),  'span' => 2, 'expandable' => false];
+		$meta['events']  = ['title' => __('Events and Transfers', 'apcupsd'), 'span' => 4, 'expandable' => true];
 
 		$ups = apcupsd_dashboard_ups($ups_id);
 		$host_id = (int) ($ups['host_id'] ?? 0);
@@ -832,6 +876,24 @@ if (!function_exists('apcupsd_dashboard_card_state')) {
 		}
 
 		$status = strtoupper((string) ($ups['ups_status'] ?? ''));
+
+		if (strncmp($key, 'gauge_', 6) === 0) {
+			$cards = apcupsd_dashboard_gauge_cards();
+
+			if (isset($cards[$key])) {
+				$metric  = $cards[$key];
+				$metrics = apcupsd_dashboard_metrics();
+
+				if (isset($metrics[$metric])) {
+					$col   = $metrics[$metric]['col'];
+					$value = isset($ups[$col]) && is_numeric($ups[$col]) ? (float) $ups[$col] : null;
+
+					return $value === null ? '' : apcupsd_dashboard_metric_severity($metric, $value);
+				}
+			}
+
+			return '';
+		}
 
 		if ($key === 'power') {
 			if (strpos($status, 'ONBATT') !== false) {
@@ -931,6 +993,16 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				. '</a></div>';
 		}
 
+		if (strncmp($key, 'gauge_', 6) === 0) {
+			$cards = apcupsd_dashboard_gauge_cards();
+
+			if (!isset($cards[$key])) {
+				return '<p class="apcupsdDashEmpty">' . __esc('This gauge is no longer available.', 'apcupsd') . '</p>';
+			}
+
+			return apcupsd_dashboard_gauge_card_body($cards[$key], $ups_id);
+		}
+
 		ob_start();
 
 		switch ($key) {
@@ -989,10 +1061,6 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv(__('Manufactured', 'apcupsd'), $ups['ups_mandate'] ?? '');
 				$kv(__('Last Updated', 'apcupsd'), $ups['last_updated'] ?? '');
 				print '</tbody></table>';
-
-				break;
-			case 'gauges':
-				print apcupsd_dashboard_render_gauges(['battery_charge', 'load_percent', 'line_voltage', 'timeleft'], $ups_id);
 
 				break;
 			case 'power':
@@ -1183,6 +1251,18 @@ if (!function_exists('apcupsd_dashboard_layout')) {
 		$order = [];
 
 		foreach ($saved['order'] as $key) {
+			// Migrate the retired combined 'gauges' card to the per-metric gauge cards
+			// so existing layouts surface the new gauges where the old card sat.
+			if ($key === 'gauges') {
+				foreach (array_keys(apcupsd_dashboard_gauge_cards()) as $gauge_key) {
+					if (in_array($gauge_key, $available, true) && !in_array($gauge_key, $order, true)) {
+						$order[] = $gauge_key;
+					}
+				}
+
+				continue;
+			}
+
 			if (is_string($key) && in_array($key, $available, true) && !in_array($key, $order, true)) {
 				$order[] = $key;
 			}
@@ -1828,16 +1908,33 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				}
 
 				$readings = apcupsd_fleet_readings();
-				$load     = $readings['load'];
-				$charge   = $readings['charge'];
-				$time     = $readings['time'];
 
-				$time_scale = max(30.0, $time['max'] !== null ? $time['max'] * 1.1 : 30.0);
+				$gauges = [
+					['metric' => 'load_percent',   'label' => __('Load', 'apcupsd'),           'reading' => $readings['load'],   'unit' => '%',    'scale' => 100.0],
+					['metric' => 'battery_charge', 'label' => __('Battery Charge', 'apcupsd'), 'reading' => $readings['charge'], 'unit' => '%',    'scale' => 100.0],
+					['metric' => 'timeleft',       'label' => __('Time Left', 'apcupsd'),      'reading' => $readings['time'],   'unit' => ' min', 'scale' => max(30.0, $readings['time']['max'] !== null ? $readings['time']['max'] * 1.1 : 30.0)],
+				];
 
 				print '<div class="apcupsdGaugeGrid">';
-				print apcupsd_dashboard_gauge(__('Avg Load', 'apcupsd'), $load['avg'], $load['min'], $load['max'], 100.0, '%', apcupsd_dashboard_metric_severity('load_percent', $load['avg']));
-				print apcupsd_dashboard_gauge(__('Avg Battery Charge', 'apcupsd'), $charge['avg'], $charge['min'], $charge['max'], 100.0, '%', apcupsd_dashboard_metric_severity('battery_charge', $charge['avg']));
-				print apcupsd_dashboard_gauge(__('Avg Time Left', 'apcupsd'), $time['avg'], $time['min'], $time['max'], $time_scale, ' min', apcupsd_dashboard_metric_severity('timeleft', $time['avg']));
+
+				foreach ($gauges as $gauge) {
+					$reading = $gauge['reading'];
+					$center  = apcupsd_dashboard_format_value($reading['avg'], $gauge['unit']);
+
+					$sub = '';
+
+					if ($reading['min'] !== null || $reading['max'] !== null) {
+						$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $gauge['unit']), apcupsd_dashboard_format_value($reading['max'], $gauge['unit']), 'apcupsd');
+					}
+
+					$severity = apcupsd_dashboard_metric_severity($gauge['metric'], $reading['avg']);
+
+					print '<div class="apcupsdGaugeCell">'
+						. '<span class="apcupsdGaugeCellLabel">' . html_escape($gauge['label']) . '</span>'
+						. apcupsd_dashboard_gauge($reading['avg'], $reading['min'], $reading['max'], $gauge['scale'], $severity, $center, $sub)
+						. '</div>';
+				}
+
 				print '</div>';
 
 				break;
@@ -1867,7 +1964,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 						$time   = isset($ups['ups_timeleft']) && is_numeric($ups['ups_timeleft']) ? number_format_i18n((float) $ups['ups_timeleft'], 0) . ' ' . __('min', 'apcupsd') : __('N/A', 'apcupsd');
 
 						print '<tr>'
-							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-gauge-high" aria-hidden="true"></i></a></td>'
+							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
 							. '<td><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
 							. '<td>' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
 							. '<td class="apcupsdDashNum">' . html_escape($load) . '</td>'
