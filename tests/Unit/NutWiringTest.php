@@ -168,26 +168,21 @@ describe('NUT wiring', function () {
 		expect(strpos($poller, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
 	});
 
-	it('logs a failed NUT query to the Cacti log without exposing credentials', function () use ($read) {
+	it('keeps the NUT failure log line and the Poller ID save in place', function (string $file, string $needle) use ($read) {
+		expect($read($file))->toContain($needle);
+	})->with([
+		'failure logged'          => ['poller_apcupsd.php', "cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', \$ups['name'], \$ups['hostname'], \$ups['port'], \$result['error']), false, 'APCUPSD');"],
+		'poller id saved'         => ['upses.php', "if (isset_request_var('poller_id')) {"],
+		'poller id digits only'   => ['upses.php', "get_nfilter_request_var('poller_id'), 'poller_id', '^[0-9]+\$', false, 3);"],
+		'linked poller move held' => ['upses.php', "form_input_validate('', 'poller_id', '^\$', false, 3);"],
+	]);
+
+	it('logs the NUT failure before recording it and never logs credentials', function () use ($read) {
 		$poller = $read('poller_apcupsd.php');
-		$log    = "cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', \$ups['name'], \$ups['hostname'], \$ups['port'], \$result['error']), false, 'APCUPSD');";
 
-		expect($poller)->toContain($log);
-
-		// The failure is logged before the status is written and the function returns.
-		expect(strpos($poller, $log))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
-
-		// Neither the NUT username nor password may reach the log line.
-		expect($log)->not->toContain('nut_password');
-		expect($log)->not->toContain('nut_username');
-	});
-
-	it('stores the Poller ID chosen on the UPS form', function () use ($read) {
-		$page = $read('upses.php');
-
-		expect($page)->toContain("if (isset_request_var('poller_id')) {");
-		expect($page)->toContain("\$save['poller_id'] = form_input_validate(get_nfilter_request_var('poller_id'), 'poller_id', '^[0-9]+\$', false, 3);");
-		expect(strpos($page, "\$save['poller_id']"))->toBeLessThan(strpos($page, "sql_save(\$save, 'apcupsd_ups')"));
+		expect(preg_match("/WARNING: NUT query.*?substr\\(\\\$result\\['error'\\], 0, 255\\)/s", $poller))->toBe(1);
+		expect(preg_match('/WARNING: NUT query[^\n]*nut_(password|username)/', $poller))->toBe(0);
+		expect(preg_match("/\\\$current_poller != \\\$save\\['poller_id'\\].*?sql_save\\(\\\$save, 'apcupsd_ups'\\)/s", $read('upses.php')))->toBe(1);
 	});
 
 	it('does not rewrite an existing UPS\'s port when the edit form opens', function () use ($read) {

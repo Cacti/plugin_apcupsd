@@ -420,6 +420,17 @@ function form_save(): void {
 			$host = [];
 		}
 
+		// Moving a device to another poller needs Cacti's own device handling (poller cache and remote
+		// replication), which this form does not do, so a linked UPS keeps the poller its device is on.
+		if (cacti_sizeof($host) && !empty($save['id']) && isset($save['poller_id'])) {
+			$current_poller = (int) db_fetch_cell_prepared('SELECT poller_id FROM apcupsd_ups WHERE id = ?', [$save['id']]);
+
+			if ($current_poller > 0 && $current_poller != $save['poller_id']) {
+				form_input_validate('', 'poller_id', '^$', false, 3);
+				raise_message('apcupsd_poller_linked', __('The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead.', 'apcupsd'), MESSAGE_LEVEL_ERROR);
+			}
+		}
+
 		if (!is_error_message()) {
 			$ups_id = sql_save($save, 'apcupsd_ups');
 
