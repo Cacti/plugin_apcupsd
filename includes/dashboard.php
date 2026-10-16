@@ -1363,12 +1363,108 @@ if (!function_exists('apcupsd_dashboard_layout_normalize')) {
 	}
 }
 
+if (!function_exists('apcupsd_dashboard_layout_split')) {
+	/**
+	 * Split a flat card order into the shared fixed-card order and the UPS's
+	 * graph runs. Each run of consecutive graph cards becomes one 'graphs_slot'
+	 * marker in the shared order and one list in the runs, so graphs interleaved
+	 * with fixed cards keep their placement.
+	 *
+	 * @param string[] $order A validated card order.
+	 *
+	 * @return array{0: string[], 1: array<int, string[]>} The shared order and the graph runs.
+	 */
+	function apcupsd_dashboard_layout_split(array $order): array {
+		$shared = [];
+		$runs   = [];
+		$in_run = false;
+
+		foreach ($order as $key) {
+			if (strncmp($key, 'graph_', 6) === 0) {
+				if (!$in_run) {
+					$shared[] = 'graphs_slot';
+					$runs[]   = [];
+					$in_run   = true;
+				}
+
+				$runs[count($runs) - 1][] = $key;
+			} else {
+				$shared[] = $key;
+				$in_run   = false;
+			}
+		}
+
+		return [$shared, $runs];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_keep_slots')) {
+	/**
+	 * Carry the 'graphs_slot' markers of an existing shared order into a new
+	 * fixed-card order. Each slot stays after the nearest preceding fixed card
+	 * that is still present (or at the start), so a UPS with no graphs of its
+	 * own can reorder or remove fixed cards without moving other UPSes' graphs.
+	 *
+	 * @param array    $old_order   The stored shared order, markers included.
+	 * @param string[] $fixed_order The new fixed-card order.
+	 *
+	 * @return string[] The new shared order with the markers re-anchored.
+	 */
+	function apcupsd_dashboard_layout_keep_slots(array $old_order, array $fixed_order): array {
+		$present = array_flip($fixed_order);
+		$after   = [];
+		$anchor  = '';
+
+		foreach ($old_order as $key) {
+			if ($key === 'graphs_slot') {
+				$after[$anchor] = ($after[$anchor] ?? 0) + 1;
+			} elseif (is_string($key) && isset($present[$key])) {
+				$anchor = $key;
+			}
+		}
+
+		$out = [];
+
+		for ($i = 0; $i < ($after[''] ?? 0); $i++) {
+			$out[] = 'graphs_slot';
+		}
+
+		foreach ($fixed_order as $key) {
+			$out[] = $key;
+
+			for ($i = 0; $i < ($after[$key] ?? 0); $i++) {
+				$out[] = 'graphs_slot';
+			}
+		}
+
+		return $out;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_graphs_encode')) {
+	/**
+	 * Encode a UPS's graph runs for settings_user, or null when they do not fit.
+	 * Cacti 1.2.x caps settings_user.value at 4096 characters; refuse rather than
+	 * silently truncate a layout and lose the user's saved preferences.
+	 *
+	 * @param array<int, string[]> $runs The graph runs.
+	 *
+	 * @return string|null The JSON document, or null when it cannot be saved.
+	 */
+	function apcupsd_dashboard_layout_graphs_encode(array $runs): ?string {
+		$json = json_encode(['runs' => $runs]);
+
+		return $json === false || strlen($json) > 4096 ? null : $json;
+	}
+}
+
 if (!function_exists('apcupsd_dashboard_layout_store')) {
 	/**
 	 * Persist a layout for the current user. Fixed cards and expanded state go to
-	 * the shared row; graph cards go to the UPS's own row, with a 'graphs_slot'
-	 * marker in the shared order recording where the graph group sits so another
-	 * UPS places its own graphs in the same spot.
+	 * the shared row; graph cards go to the UPS's own row, with one 'graphs_slot'
+	 * marker per run of graphs in the shared order so another UPS places its own
+	 * graphs in the same spots. A UPS with no graphs leaves the shared graph
+	 * slots in place.
 	 *
 	 * @param int      $ups_id   The UPS the layout was arranged for.
 	 * @param string[] $order    The validated card order.
@@ -1377,27 +1473,20 @@ if (!function_exists('apcupsd_dashboard_layout_store')) {
 	 * @return bool False, without saving anything, when a document exceeds the settings size cap.
 	 */
 	function apcupsd_dashboard_layout_store($ups_id, array $order, array $expanded): bool {
-		$shared = [];
-		$graphs = [];
+		[$shared, $runs] = apcupsd_dashboard_layout_split($order);
 
-		foreach ($order as $key) {
-			if (strncmp($key, 'graph_', 6) === 0) {
-				if (!cacti_sizeof($graphs)) {
-					$shared[] = 'graphs_slot';
-				}
+		if (!cacti_sizeof($runs)) {
+			$existing = json_decode((string) read_user_setting(apcupsd_dashboard_layout_key($ups_id), '', true), true);
 
-				$graphs[] = $key;
-			} else {
-				$shared[] = $key;
+			if (is_array($existing) && isset($existing['order']) && is_array($existing['order'])) {
+				$shared = apcupsd_dashboard_layout_keep_slots($existing['order'], $shared);
 			}
 		}
 
 		$shared_json = json_encode(['order' => $shared, 'expanded' => $expanded]);
-		$graphs_json = json_encode(['order' => $graphs]);
+		$graphs_json = apcupsd_dashboard_layout_graphs_encode($runs);
 
-		// Cacti 1.2.x caps settings_user.value at 4096 characters; refuse rather than
-		// silently truncate a layout and lose the user's saved preferences.
-		if ($shared_json === false || $graphs_json === false || strlen($shared_json) > 4096 || strlen($graphs_json) > 4096) {
+		if ($shared_json === false || strlen($shared_json) > 4096 || $graphs_json === null) {
 			return false;
 		}
 
@@ -1408,14 +1497,35 @@ if (!function_exists('apcupsd_dashboard_layout_store')) {
 	}
 }
 
+if (!function_exists('apcupsd_dashboard_layout_legacy')) {
+	/**
+	 * A layout authored under the earlier per-UPS row, or failing that the
+	 * pre-release combined map, for a UPS.
+	 *
+	 * @param int $ups_id The UPS id.
+	 *
+	 * @return array|null The {order, expanded} document, or null when none exists.
+	 */
+	function apcupsd_dashboard_layout_legacy($ups_id): ?array {
+		$legacy = json_decode((string) read_user_setting('apcupsd_dashboard_layout_' . (int) $ups_id, '', true), true);
+
+		if (!is_array($legacy) || !isset($legacy['order']) || !is_array($legacy['order'])) {
+			$all    = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
+			$legacy = is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id]) ? $all[(string) $ups_id] : null;
+		}
+
+		return is_array($legacy) && isset($legacy['order']) && is_array($legacy['order']) ? $legacy : null;
+	}
+}
+
 if (!function_exists('apcupsd_dashboard_layout_read')) {
 	/**
 	 * Read the stored Dashboard layout for a UPS: the shared fixed-card order with
-	 * the UPS's own graph cards placed at the stored graph slot (or, with no
-	 * graph preference saved for it, all of its graphs in default order). When
-	 * the shared row is not yet present, a layout authored under the earlier
-	 * per-UPS row or the pre-release combined map is migrated: it is persisted to
-	 * the shared row so every UPS picks it up, then returned.
+	 * the UPS's own graph runs filled into the shared graph slots (extra runs go
+	 * last). A UPS with no graph row yet migrates its own legacy graph selection
+	 * and persists it, or else shows all of its graphs in default order, leaving
+	 * the shared fixed-card layout unchanged. When the shared row is not yet
+	 * present, a legacy layout is persisted to it so every UPS picks it up.
 	 *
 	 * @param int      $ups_id    The UPS the layout is read for.
 	 * @param string[] $available The card keys available for the UPS.
@@ -1428,39 +1538,49 @@ if (!function_exists('apcupsd_dashboard_layout_read')) {
 		if (is_array($saved) && isset($saved['order']) && is_array($saved['order'])) {
 			$own = json_decode((string) read_user_setting(apcupsd_dashboard_layout_graphs_key($ups_id), '', true), true);
 
-			if (is_array($own) && isset($own['order']) && is_array($own['order'])) {
-				$graphs = $own['order'];
+			if (is_array($own) && isset($own['runs']) && is_array($own['runs'])) {
+				$runs = array_values($own['runs']);
 			} else {
-				$graphs = [];
+				$legacy = apcupsd_dashboard_layout_legacy($ups_id);
 
-				foreach ($available as $key) {
-					if (strncmp($key, 'graph_', 6) === 0) {
-						$graphs[] = $key;
+				if ($legacy !== null) {
+					[, $runs] = apcupsd_dashboard_layout_split(apcupsd_dashboard_layout_normalize($legacy, $available)['order']);
+
+					$json = apcupsd_dashboard_layout_graphs_encode($runs);
+
+					if ($json !== null) {
+						set_user_setting(apcupsd_dashboard_layout_graphs_key($ups_id), $json);
+					}
+				} else {
+					$runs = [[]];
+
+					foreach ($available as $key) {
+						if (strncmp($key, 'graph_', 6) === 0) {
+							$runs[0][] = $key;
+						}
 					}
 				}
 			}
 
-			$order  = [];
-			$placed = false;
+			$order = [];
+			$next  = 0;
 
 			foreach ($saved['order'] as $key) {
-				if ($key === 'graphs_slot') {
-					if (!$placed) {
-						foreach ($graphs as $graph_key) {
-							$order[] = $graph_key;
-						}
-
-						$placed = true;
-					}
+				if ($key !== 'graphs_slot') {
+					$order[] = $key;
 
 					continue;
 				}
 
-				$order[] = $key;
+				foreach (is_array($runs[$next] ?? null) ? $runs[$next] : [] as $graph_key) {
+					$order[] = $graph_key;
+				}
+
+				$next++;
 			}
 
-			if (!$placed) {
-				foreach ($graphs as $graph_key) {
+			for (; $next < count($runs); $next++) {
+				foreach (is_array($runs[$next]) ? $runs[$next] : [] as $graph_key) {
 					$order[] = $graph_key;
 				}
 			}
@@ -1468,15 +1588,9 @@ if (!function_exists('apcupsd_dashboard_layout_read')) {
 			return ['order' => $order, 'expanded' => isset($saved['expanded']) && is_array($saved['expanded']) ? $saved['expanded'] : []];
 		}
 
-		// Migrate a layout authored under the earlier per-UPS row, then the older combined map.
-		$legacy = json_decode((string) read_user_setting('apcupsd_dashboard_layout_' . (int) $ups_id, '', true), true);
+		$legacy = apcupsd_dashboard_layout_legacy($ups_id);
 
-		if (!is_array($legacy) || !isset($legacy['order']) || !is_array($legacy['order'])) {
-			$all    = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
-			$legacy = is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id]) ? $all[(string) $ups_id] : null;
-		}
-
-		if (!is_array($legacy) || !isset($legacy['order']) || !is_array($legacy['order'])) {
+		if ($legacy === null) {
 			return null;
 		}
 
