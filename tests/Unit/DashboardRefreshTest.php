@@ -48,6 +48,35 @@ describe('dashboard auto-refresh', function () {
 		expect($source)->toContain("apcupsd_dashboard_print_refresh(\$current_refresh, \$config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . \$ups_id . '&header=false')");
 	});
 
+	it('refreshes the cards in place through Cacti\'s refreshFunction hook, not a page reload', function () use ($read) {
+		$source = $read('includes/dashboard.php');
+
+		expect($source)->toContain("'refreshFunction = typeof apcupsdDashAutoRefresh === \"function\" ? \"apcupsdDashAutoRefresh()\" : \"\";'");
+
+		// refreshFunction must be set before the timer is armed, and refreshPage kept as the fallback.
+		expect(strpos($source, "'refreshFunction = "))->toBeLessThan(strpos($source, "'setupPageTimeout();'"));
+
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('function apcupsdDashAutoRefresh()');
+		expect($js)->toContain("apcupsdDashRefreshAll(grid, document.getElementById('apcupsd_dashboard_refresh_now'))");
+	});
+
+	it('hands another page back to Cacti\'s own refresh when the dashboard has gone', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain("refreshFunction = '';");
+		expect($js)->toContain('loadUrl({url: refreshPage});');
+	});
+
+	it('does not stack refresh rounds and keeps the chosen sort across an in-place refresh', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('if (!pending || apcupsdDashRefreshing) {');
+		expect($js)->toContain('var sorted = apcupsdDashSortSnapshot(card);');
+		expect($js)->toContain('apcupsdDashSortRestore(fresh, sorted);');
+	});
+
 	it('does not run its own refresh timer in the browser', function () use ($read) {
 		$js = $read('js/apcupsd_dashboard.js');
 

@@ -524,35 +524,32 @@
 	white-space: nowrap;
 }
 
-/* Sortable column headers: the button inherits the header look and shows an
-   arrow for the active direction (exposed to assistive tech via aria-sort). */
-.apcupsdDashSortBtn {
-	appearance: none;
-	background: none;
-	border: 0;
-	padding: 0;
-	margin: 0;
-	font: inherit;
-	font-weight: inherit;
-	color: inherit;
+.apcupsdDashTable td.apcupsdDashNum,
+.apcupsdDashTable th.apcupsdDashNum {
+	text-align: right;
+	white-space: nowrap;
+}
+
+/* Sortable column headers (same behaviour as the HMIB dashboards): click or
+   press Enter/Space to sort; the arrow shows the active direction. */
+.apcupsdDashTable th.apcupsdDashSortable {
 	cursor: pointer;
-	text-align: inherit;
+	user-select: none;
 }
 
-.apcupsdDashSortBtn:hover,
-.apcupsdDashSortBtn:focus-visible {
-	text-decoration: underline;
+.apcupsdDashTable th.apcupsdDashSortable:hover {
+	background: color-mix(in srgb, currentColor 8%, transparent);
 }
 
-.apcupsdDashSortable[aria-sort="ascending"] .apcupsdDashSortBtn::after {
-	content: " \25B2";
-	font-size: 0.75em;
+.apcupsdDashTable th.apcupsdDashSortable::after {
+	content: '\2195';
+	margin-left: 5px;
+	opacity: 0.4;
+	font-size: 10px;
 }
 
-.apcupsdDashSortable[aria-sort="descending"] .apcupsdDashSortBtn::after {
-	content: " \25BC";
-	font-size: 0.75em;
-}
+.apcupsdDashTable th.apcupsdDashSortAsc::after  { content: '\2191'; opacity: 0.9; }
+.apcupsdDashTable th.apcupsdDashSortDesc::after { content: '\2193'; opacity: 0.9; }
 
 /* Fleet total row under the UPSes table. */
 .apcupsdDashTotalRow > td {

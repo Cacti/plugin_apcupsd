@@ -54,118 +54,114 @@ function apcupsdDashPost(grid, extra) {
 	return data;
 }
 
-var apcupsdDashSortStorageKey = 'apcupsd_dashboard_sort';
-var apcupsdDashSortState = null;
-
-/** The sort choices ({tableId: {key, direction}}). They live in memory so sorting
- *  and direction toggling still work when browser storage is blocked, and are
- *  seeded once from localStorage so a saved choice survives page loads. */
-function apcupsdDashSortRead() {
-	if (apcupsdDashSortState === null) {
-		try {
-			var saved = JSON.parse(window.localStorage.getItem(apcupsdDashSortStorageKey));
-			apcupsdDashSortState = saved && typeof saved === 'object' ? saved : {};
-		} catch (e) {
-			apcupsdDashSortState = {};
-		}
-	}
-
-	return apcupsdDashSortState;
-}
-
-/** Record the sort choices in memory, then persist them best-effort: a blocked
- *  or failing storage write must never lose the choice just made. */
-function apcupsdDashSortWrite(state) {
-	apcupsdDashSortState = state;
-
-	try {
-		window.localStorage.setItem(apcupsdDashSortStorageKey, JSON.stringify(state));
-	} catch (e) {
+/** Make a container's sortable headers focusable and screen-reader friendly. */
+function apcupsdDashPrepSortHeaders(container) {
+	if (!container) {
 		return;
 	}
-}
-
-/** Sort a table's body rows by the header with the given key. Cells carry their
- *  sortable value in data-sort; rows with an empty value (N/A) always sort last,
- *  and ties keep their original order. */
-function apcupsdDashSortTable(table, key, direction) {
-	var body = table.tBodies[0];
-	var header = table.querySelector('thead th[data-sort-key="' + key + '"]');
-	if (!body || !header) {
-		return;
-	}
-
-	var column  = header.cellIndex;
-	var numeric = header.dataset.sortType === 'num';
-	var factor  = direction === 'desc' ? -1 : 1;
-
-	var rows = Array.prototype.map.call(body.rows, function(row, index) {
-		// Remember the server's row order the first time, so ties always fall back
-		// to it rather than to whatever the previous sort left behind.
-		if (row.getAttribute('data-sort-index') === null) {
-			row.setAttribute('data-sort-index', String(index));
+	container.querySelectorAll('th.apcupsdDashSortable').forEach(function(th) {
+		if (!th.hasAttribute('tabindex')) {
+			th.setAttribute('tabindex', '0');
 		}
-
-		var cell = row.cells[column];
-		return {row: row, index: parseInt(row.getAttribute('data-sort-index'), 10), value: cell ? cell.getAttribute('data-sort') : null};
+		// Keep the native columnheader role: aria-sort is only valid there, and the
+		// tabindex + Enter/Space keydown handler already makes it operable.
+		if (!th.hasAttribute('aria-sort')) {
+			th.setAttribute('aria-sort', 'none');
+		}
 	});
+}
+
+/** Sort a card table by the clicked column header, toggling asc/desc. Numeric
+ *  columns (data-sort="num") sort by the cell's data-sort-value when present. */
+function apcupsdDashSortTable(th) {
+	var table = th.closest('table');
+	if (!table) {
+		return;
+	}
+	var tbody = table.tBodies[0];
+	if (!tbody) {
+		return;
+	}
+	var headers = Array.prototype.slice.call(th.parentNode.children);
+	var index = headers.indexOf(th);
+	var numeric = th.dataset.sort === 'num';
+	var asc = !th.classList.contains('apcupsdDashSortAsc');
+
+	headers.forEach(function(header) {
+		header.classList.remove('apcupsdDashSortAsc', 'apcupsdDashSortDesc');
+		if (header.classList.contains('apcupsdDashSortable')) {
+			header.setAttribute('aria-sort', 'none');
+		}
+	});
+	th.classList.add(asc ? 'apcupsdDashSortAsc' : 'apcupsdDashSortDesc');
+	th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
+
+	var rows = Array.prototype.slice.call(tbody.rows).filter(function(row) {
+		return !row.classList.contains('apcupsdDashEmptyRow');
+	});
+
+	var value = function(row) {
+		var cell = row.cells[index];
+		if (!cell) {
+			return numeric ? 0 : '';
+		}
+		if (numeric) {
+			var raw = cell.dataset.sortValue !== undefined ? cell.dataset.sortValue : cell.textContent;
+			var num = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
+			return isNaN(num) ? 0 : num;
+		}
+		return cell.textContent.trim().toLowerCase();
+	};
 
 	rows.sort(function(a, b) {
-		var aEmpty = a.value === null || a.value === '';
-		var bEmpty = b.value === null || b.value === '';
-		if (aEmpty || bEmpty) {
-			return aEmpty && bEmpty ? a.index - b.index : (aEmpty ? 1 : -1);
-		}
-
-		var result = numeric
-			? parseFloat(a.value) - parseFloat(b.value)
-			: a.value.localeCompare(b.value, undefined, {numeric: true, sensitivity: 'base'});
-
-		return result !== 0 ? result * factor : a.index - b.index;
+		var va = value(a);
+		var vb = value(b);
+		if (va < vb) { return asc ? -1 : 1; }
+		if (va > vb) { return asc ? 1 : -1; }
+		return 0;
 	});
 
-	rows.forEach(function(item) {
-		body.appendChild(item.row);
-	});
-
-	table.querySelectorAll('thead th.apcupsdDashSortable').forEach(function(th) {
-		th.setAttribute('aria-sort', th === header ? (direction === 'desc' ? 'descending' : 'ascending') : 'none');
+	rows.forEach(function(row) {
+		tbody.appendChild(row);
 	});
 }
 
-/** Re-apply the saved sort to every sortable table under a root, so a sort
- *  survives card refreshes and newly added cards. */
-function apcupsdDashApplySort(root) {
-	var state = apcupsdDashSortRead();
-
-	root.querySelectorAll('table[data-sort-table]').forEach(function(table) {
-		var saved = state[table.dataset.sortTable];
-		if (saved && typeof saved.key === 'string' && (saved.direction === 'asc' || saved.direction === 'desc')) {
-			apcupsdDashSortTable(table, saved.key, saved.direction);
-		}
-	});
+/** Remember which header a card's table is sorted by, and in which direction. */
+function apcupsdDashSortSnapshot(card) {
+	var th = card.querySelector('th.apcupsdDashSortAsc, th.apcupsdDashSortDesc');
+	if (!th) {
+		return null;
+	}
+	return {index: Array.prototype.indexOf.call(th.parentNode.children, th), asc: th.classList.contains('apcupsdDashSortAsc')};
 }
 
-/** Handle a sort-button click: the first click on a column uses its natural
- *  direction (numbers largest first, text A-Z), later clicks toggle it. */
-function apcupsdDashSortClick(button) {
-	var header = button.closest('th');
-	var table  = header ? header.closest('table[data-sort-table]') : null;
-	if (!header || !table) {
+/** Re-apply a remembered sort to a freshly rendered card, so an in-place refresh
+ *  does not throw away the order the user picked. */
+function apcupsdDashSortRestore(card, snapshot) {
+	if (!snapshot) {
 		return;
 	}
+	var th = card.querySelector('th.apcupsdDashSortable:nth-child(' + (snapshot.index + 1) + ')');
+	if (!th) {
+		return;
+	}
+	// apcupsdDashSortTable() toggles the direction, so seed the opposite one.
+	th.classList.toggle('apcupsdDashSortAsc', !snapshot.asc);
+	apcupsdDashSortTable(th);
+}
 
-	var id      = table.dataset.sortTable;
-	var key     = header.dataset.sortKey;
-	var state   = apcupsdDashSortRead();
-	var current = state[id];
-	var direction = current && current.key === key
-		? (current.direction === 'asc' ? 'desc' : 'asc')
-		: (header.dataset.sortFirst === 'desc' ? 'desc' : 'asc');
-
-	state[id] = {key: key, direction: direction};
-	apcupsdDashSortWrite(state);
-	apcupsdDashApplySort(document);
+/** Wire click and Enter/Space sorting on the sortable headers under a root. The
+ *  handlers are delegated, so cards that are refreshed or added later keep working. */
+function apcupsdDashBindSort(root) {
+	$(root).off('click.apcupsdsort').on('click.apcupsdsort', 'th.apcupsdDashSortable', function() {
+		apcupsdDashSortTable(this);
+	});
+	$(root).off('keydown.apcupsdsort').on('keydown.apcupsdsort', 'th.apcupsdDashSortable', function(event) {
+		if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+			event.preventDefault();
+			apcupsdDashSortTable(this);
+		}
+	});
 }
 
 function initApcupsdDashboard() {
@@ -175,11 +171,9 @@ function initApcupsdDashboard() {
 			return;
 		}
 
-		// Delegated so the sort buttons also work in cards that are refreshed, added
-		// later, or copied into the maximize dialog.
-		$(document).off('click.apcupsdsort').on('click.apcupsdsort', '.apcupsdDashSortBtn', function() {
-			apcupsdDashSortClick(this);
-		});
+		// Delegated so the sortable headers also work in cards that are refreshed or
+		// added later.
+		apcupsdDashBindSort(grid);
 
 		grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
 			apcupsdDashBindCard(grid, card);
@@ -270,7 +264,7 @@ function initApcupsdDashboard() {
 
 /** Wire a single card's drag handle (mouse + keyboard) and drag events. */
 function apcupsdDashBindCard(grid, card) {
-	apcupsdDashApplySort(card);
+	apcupsdDashPrepSortHeaders(card);
 
 	var handle = card.querySelector('.apcupsdDashCardDrag');
 	if (!handle) {
@@ -397,6 +391,7 @@ function apcupsdDashRefreshCard(grid, card, done) {
 		}
 	};
 	var expanded = card.classList.contains('apcupsdDashCardExpanded') ? '1' : '0';
+	var sorted = apcupsdDashSortSnapshot(card);
 	var cfg = apcupsdDashCfg(grid);
 	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: card.dataset.card, expanded: expanded}), null, 'json').done(function(data) {
 		if (!data || !data.html || !card.parentNode) {
@@ -418,31 +413,58 @@ function apcupsdDashRefreshCard(grid, card, done) {
 		}
 		card.parentNode.replaceChild(fresh, card);
 		apcupsdDashBindCard(grid, fresh);
+		apcupsdDashSortRestore(fresh, sorted);
 		if (done) {
 			done();
 		}
 	}).fail(settle);
 }
 
-/** Refresh every card on the page, spinning the toolbar glyph until all land. */
+/** Refresh every card on the page, spinning the toolbar glyph until all land. A
+ *  refresh that is still in flight is not stacked on, so a slow server is never
+ *  hit by overlapping rounds. */
+var apcupsdDashRefreshing = false;
+
 function apcupsdDashRefreshAll(grid, button) {
 	var icon = button ? button.querySelector('.fa, .fas') : null;
 	var cards = Array.prototype.slice.call(grid.querySelectorAll('.apcupsdDashCard'));
 	var pending = cards.length;
-	if (!pending) {
+	if (!pending || apcupsdDashRefreshing) {
 		return;
 	}
+	apcupsdDashRefreshing = true;
 	if (icon) {
 		icon.classList.add('fa-spin');
 	}
 	cards.forEach(function(card) {
 		apcupsdDashRefreshCard(grid, card, function() {
 			pending--;
-			if (pending <= 0 && icon) {
-				icon.classList.remove('fa-spin');
+			if (pending <= 0) {
+				apcupsdDashRefreshing = false;
+				if (icon) {
+					icon.classList.remove('fa-spin');
+				}
 			}
 		});
 	});
+}
+
+/** Called by Cacti's page timer (the refreshFunction global, the hook the Graphs
+ *  page uses too): refresh the cards in place instead of reloading the page. Cacti
+ *  re-arms the timer after this returns. The timer outlives ajax page loads, so if
+ *  the dashboard is no longer on screen the page that replaced it gets Cacti's
+ *  normal full-page refresh back. */
+function apcupsdDashAutoRefresh() {
+	var grid = document.getElementById('apcupsd_dashboard');
+	if (grid) {
+		apcupsdDashRefreshAll(grid, document.getElementById('apcupsd_dashboard_refresh_now'));
+		return;
+	}
+
+	refreshFunction = '';
+	if (typeof loadUrl === 'function' && typeof refreshPage !== 'undefined' && refreshPage !== '') {
+		loadUrl({url: refreshPage});
+	}
 }
 
 /** Open a copy of a card's body in a large modal dialog. */
@@ -454,6 +476,10 @@ function apcupsdDashMaximize(card) {
 	var title = card.querySelector('.apcupsdDashCardTitle');
 	var body  = card.querySelector('.apcupsdDashCardBody');
 	dialog.innerHTML = '<div class="apcupsdDashDialogBody">' + (body ? body.innerHTML : '') + '</div>';
+
+	// The dialog is a clone outside the grid, so wire its own sort handlers.
+	apcupsdDashPrepSortHeaders(dialog);
+	apcupsdDashBindSort(dialog);
 
 	$(dialog).dialog({
 		modal: true,

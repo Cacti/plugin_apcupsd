@@ -1,0 +1,145 @@
+<?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+/*
+ * NUT (Network UPS Tools) is a third collector type (type_id 3). These tests
+ * pin the schema and the places that have to know about the new type.
+ */
+
+require_once __DIR__ . '/../../includes/database.php';
+
+describe('NUT schema', function () {
+	$columns = function (array $data): array {
+		$out = [];
+
+		foreach ($data['columns'] as $column) {
+			$out[$column['name']] = $column;
+		}
+
+		return $out;
+	};
+
+	it('adds the NUT connection settings to apcupsd_ups', function () use ($columns) {
+		$ups = $columns(apcupsd_ups_table_data());
+
+		foreach (['nut_ups_name', 'nut_username', 'nut_password', 'nut_tls'] as $name) {
+			expect($ups)->toHaveKey($name);
+		}
+
+		expect($ups['nut_ups_name']['type'])->toBe('varchar(64)');
+		expect($ups['nut_password']['type'])->toBe('varchar(128)');
+		expect($ups['nut_tls']['type'])->toBe('char(2)');
+		expect($ups['nut_ups_name']['default'])->toBe('');
+	});
+
+	it('keeps the NUT settings out of the primary key and indexes', function () {
+		$data = apcupsd_ups_table_data();
+
+		expect($data['primary'])->toBe(['id']);
+		expect($data)->not->toHaveKey('keys');
+	});
+
+	it('widens the stats columns multi-flag NUT values need', function () use ($columns) {
+		$stats = $columns(apcupsd_ups_stats_table_data());
+
+		expect($stats['ups_status']['type'])->toBe('varchar(64)');
+		expect($stats['ups_model']['type'])->toBe('varchar(64)');
+		expect($stats['ups_serialno']['type'])->toBe('varchar(64)');
+		expect($stats['ups_firmware']['type'])->toBe('varchar(64)');
+		expect($stats['ups_driver']['type'])->toBe('varchar(40)');
+		expect($stats['ups_name']['type'])->toBe('varchar(64)');
+	});
+});
+
+describe('NUT wiring', function () {
+	$read = function (string $relative): string {
+		$contents = file_get_contents(__DIR__ . '/../../' . $relative);
+
+		expect($contents)->not->toBeFalse("Unable to read {$relative}");
+
+		return (string) $contents;
+	};
+
+	it('polls NUT UPSes from the poller and creates their devices like apcupsd ones', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain("require_once('./plugins/apcupsd/includes/nut.php');");
+		expect($poller)->toContain('WHERE type_id = 3');
+		expect($poller)->toContain('function collect_nut_ups_data(');
+		expect($poller)->toContain('apcupsd_nut_query(');
+		expect($poller)->toContain('apcupsd_nut_build_stats(');
+		expect($poller)->toContain('NUTUPSes:%s');
+		expect($poller)->toContain("if (\$ups['type_id'] != 2) {");
+	});
+
+	it('writes the NUT reading with prepared statements and clears the old error', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain("db_execute_prepared('REPLACE INTO apcupsd_ups_stats");
+		expect($poller)->toContain('error_message = ""');
+		expect(preg_match('/\bdb_execute\s*\(/', $poller))->toBe(0);
+	});
+
+	it('offers the NUT type and its settings on the UPS form', function () use ($read) {
+		$page = $read('upses.php');
+
+		expect($page)->toContain("3 => __('NUT Based', 'apcupsd')");
+		expect($page)->toContain("require_once(__DIR__ . '/includes/nut.php');");
+
+		foreach (['nut_ups_name', 'nut_username', 'nut_password', 'nut_tls'] as $field) {
+			expect($page)->toContain("'{$field}' => [");
+		}
+
+		foreach (['nut_ups_name', 'nut_username', 'nut_password'] as $field) {
+			expect($page)->toContain("get_nfilter_request_var('{$field}')");
+		}
+
+		expect($page)->toContain("isset_request_var('nut_tls')");
+
+		expect($page)->toContain("'method'        => 'textbox_password'");
+		expect($page)->toContain('apcupsd_nut_valid_host(');
+		expect($page)->toContain('APCUPSD_NUT_DEFAULT_PORT');
+		expect($page)->toContain("\$('[id^=\"row_nut\"]')");
+	});
+
+	it('labels the NUT collector on the dashboard and shows its port', function () use ($read) {
+		$dashboard = $read('includes/dashboard.php');
+
+		expect($dashboard)->toContain("3 => __('NUT', 'apcupsd')");
+		expect($dashboard)->toContain("(int) (\$ups['type_id'] ?? 0) !== 2 ? (\$ups['port']");
+	});
+
+	it('uses no external program or shell to talk to NUT', function () use ($read) {
+		$nut = $read('includes/nut.php');
+
+		foreach (['exec(', 'shell_exec', 'proc_open', 'popen(', 'passthru', 'system(', 'eval(', 'curl'] as $forbidden) {
+			expect(strpos($nut, $forbidden))->toBeFalse("includes/nut.php must not use {$forbidden}");
+		}
+
+		expect($nut)->toContain('stream_socket_client');
+		expect($nut)->toContain("'verify_peer'      => true");
+	});
+
+	it('is measured by the coverage run', function () use ($read) {
+		expect($read('phpunit.xml'))->toContain('<file>includes/nut.php</file>');
+	});
+
+	it('is documented and ships a new plugin version', function () use ($read) {
+		$readme = $read('README.md');
+
+		expect($readme)->toContain('Network UPS Tools (NUT)');
+		expect($readme)->toContain('NUT Based');
+		expect($readme)->toContain('3493');
+
+		$info = parse_ini_string($read('INFO'), true);
+
+		expect(version_compare($info['info']['version'], '1.4.0', '>='))->toBeTrue();
+		expect($read('CHANGELOG.md'))->toContain('--- ' . $info['info']['version'] . ' ---');
+	});
+});

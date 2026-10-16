@@ -116,6 +116,10 @@ msgstr ""
 msgid "SNMP"
 msgstr ""
 
+#: includes/dashboard.php
+msgid "NUT"
+msgstr ""
+
 #: includes/dashboard.php upses.php
 msgid "UPS Name"
 msgstr ""
@@ -637,7 +641,11 @@ msgid "SNMP Based"
 msgstr ""
 
 #: upses.php
-msgid "The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgid "NUT Based"
+msgstr ""
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
 msgstr ""
 
 #: upses.php
@@ -713,7 +721,7 @@ msgid "APC UPSD Information"
 msgstr ""
 
 #: upses.php
-msgid "The hostname of the host running apcupsd."
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
 msgstr ""
 
 #: upses.php
@@ -721,7 +729,7 @@ msgid "TCP Port"
 msgstr ""
 
 #: upses.php
-msgid "Enter the TCP Port for this UPS."
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
 msgstr ""
 
 #: upses.php
@@ -854,7 +862,7 @@ msgid "The Status of the apcupsd daemon on the target Host."
 msgstr ""
 
 #: upses.php
-msgid "The Type of Collector.  Currently APCUPSD and SNMP are supported."
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
 msgstr ""
 
 #: upses.php
@@ -894,7 +902,7 @@ msgid "Hostname:Port"
 msgstr ""
 
 #: upses.php
-msgid "The Hostname:Port that is running the apcupsd daemon."
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
 msgstr ""
 
 #: upses.php
@@ -1037,4 +1045,87 @@ msgstr ""
 
 #: includes/dashboard.php
 msgid "Cable / Driver"
+msgstr ""
+
+#: upses.php
+msgid "NUT Options"
+msgstr ""
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr ""
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr ""
+
+#: upses.php
+msgid "NUT Username"
+msgstr ""
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr ""
+
+#: upses.php
+msgid "NUT Password"
+msgstr ""
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr ""
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr ""
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller."
+msgstr ""
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr ""
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr ""
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr ""
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr ""
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr ""
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
 msgstr ""
