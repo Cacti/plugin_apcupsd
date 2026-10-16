@@ -565,10 +565,35 @@ function collect_ups_data($ups) {
 }
 
 /**
+ * Records a UPS's linked Cacti host as up or down, stamping the recovery or
+ * failure time only when the state actually changes. Does nothing for a UPS
+ * that has no linked host yet.
+ *
+ * @param int|string $host_id The linked Cacti host id; 0 when none.
+ * @param bool       $up      True to mark the host up, false to mark it down.
+ *
+ * @return void
+ */
+function set_ups_host_state($host_id, bool $up): void {
+	if ($host_id <= 0) {
+		return;
+	}
+
+	$status = db_fetch_cell_prepared('SELECT status FROM host WHERE id = ?', [$host_id]);
+
+	if ($up && $status != 3) {
+		db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', [$host_id]);
+	} elseif (!$up && $status != 4) {
+		db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', [$host_id]);
+	}
+}
+
+/**
  * Polls a single NUT-based UPS by asking its upsd server for every variable
  * over the native NUT protocol (see includes/nut.php), translating them into
  * apcupsd_ups_stats columns, and updating the UPS's linked host up/down
- * status from the translated ups.status. Called from this script's main flow
+ * status from the translated ups.status, or marking it down when the query
+ * fails. Called from this script's main flow
  * for each enabled NUT-type UPS.
  *
  * @param array $ups The apcupsd_ups row for the UPS being polled.
@@ -597,6 +622,10 @@ function collect_nut_ups_data($ups): bool {
 	if ($result['error'] !== '') {
 		debug('NUT query failed: ' . $result['error']);
 
+		// These devices have availability checking disabled, so core polling cannot
+		// notice the failure: mark the linked host down here.
+		set_ups_host_state($ups['host_id'], false);
+
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
 			WHERE id = ?',
@@ -608,15 +637,7 @@ function collect_nut_ups_data($ups): bool {
 	$stats  = apcupsd_nut_build_stats($result['vars'], $ups, $result['version']);
 	$online = apcupsd_nut_status_online($stats['ups_status']);
 
-	if ($ups['host_id'] > 0) {
-		$status = db_fetch_cell_prepared('SELECT status FROM host WHERE id = ?', [$ups['host_id']]);
-
-		if ($online && $status != 3) {
-			db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', [$ups['host_id']]);
-		} elseif (!$online && $status != 4) {
-			db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', [$ups['host_id']]);
-		}
-	}
+	set_ups_host_state($ups['host_id'], $online);
 
 	// The column names come from apcupsd_nut_build_stats(), never from the server.
 	db_execute_prepared('REPLACE INTO apcupsd_ups_stats (`' . implode('`, `', array_keys($stats)) . '`)

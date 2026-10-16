@@ -485,6 +485,52 @@ describe('NUT socket layer', function () {
 		fclose($server);
 	});
 
+	it('stops at the deadline when a server never finishes a line', function () {
+		$domain = DIRECTORY_SEPARATOR === '\\' ? STREAM_PF_INET : STREAM_PF_UNIX;
+		[$client, $server] = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+
+		// A partial reply and then silence, with the connection held open: a blocking
+		// fgets() would sit here for the whole read timeout instead of the deadline.
+		fwrite($server, 'upsd 2.8');
+
+		$started = microtime(true);
+		$result  = apcupsd_nut_query_stream($client, 'nut.example.com', 'ups', '', '', false, 30, microtime(true) + 1);
+
+		expect($result['error'])->toContain('did not answer within 30 seconds');
+		expect(microtime(true) - $started)->toBeLessThan(3);
+
+		fclose($client);
+		fclose($server);
+	});
+
+	it('gives up on a line that never ends', function () use ($pair) {
+		[$client, $server] = $pair([str_repeat('a', 9000)]);
+
+		$result = apcupsd_nut_query_stream($client, 'nut.example.com', 'ups', '', '', false, 2);
+
+		expect($result['error'])->toContain('closed the connection');
+
+		fclose($client);
+		fclose($server);
+	});
+
+	it('reads replies that arrive in pieces and with CRLF endings', function () {
+		$domain = DIRECTORY_SEPARATOR === '\\' ? STREAM_PF_INET : STREAM_PF_UNIX;
+		[$client, $server] = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+
+		fwrite($server, "upsd 2.8.0\r\nBEGIN LIST VAR ups\r\nVAR ups battery.ch");
+		fwrite($server, "arge \"88\"\r\nEND LIST VAR ups\r\n");
+		stream_socket_shutdown($server, STREAM_SHUT_WR);
+
+		$result = apcupsd_nut_query_stream($client, 'nut.example.com', 'ups', '', '', false, 2);
+
+		expect($result['error'])->toBe('');
+		expect($result['vars'])->toBe(['battery.charge' => '88']);
+
+		fclose($client);
+		fclose($server);
+	});
+
 	it('connects over TCP and reports a server that never answers', function () {
 		$listener = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
 		$port     = (int) substr((string) strrchr((string) stream_socket_get_name($listener, false), ':'), 1);

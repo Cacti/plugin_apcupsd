@@ -313,40 +313,67 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 	 * @param string     $username The upsd.users user; empty for anonymous access.
 	 * @param string     $password The upsd.users password.
 	 * @param bool       $tls      Whether to require STARTTLS before sending credentials.
-	 * @param int        $timeout  Seconds allowed per read.
+	 * @param int        $timeout  Seconds the exchange may take per step; used for the default deadline and the timeout message.
 	 * @param float|null $deadline Unix time (microtime) the whole exchange must end by; defaults to twice the timeout from now.
-	 *                             Each read waits no longer than the time left, so the deadline is honoured to within a second.
+	 *                             Reads are polled against it without blocking, so it holds even when a server trickles bytes.
 	 *
 	 * @return array{vars: array<string, string>, version: string, error: string}
 	 */
 	function apcupsd_nut_query_stream($stream, string $hostname, string $ups, string $username, string $password, bool $tls, int $timeout, ?float $deadline = null): array {
 		$deadline = $deadline ?? microtime(true) + ($timeout * 2);
+		$buffer   = '';
 
-		stream_set_timeout($stream, $timeout);
-
+		// A command is a few hundred bytes written into an empty socket buffer, so it completes in one call.
 		$send = function(string $command) use ($stream): void {
 			fwrite($stream, $command . "\n");
 		};
 
-		$recv = function() use ($stream, $deadline, $timeout): ?string {
-			$left = $deadline - microtime(true);
-			$wait = max(0.05, min($timeout, $left));
+		// Reads are non-blocking and polled against the deadline. fgets() would block for the
+		// stream timeout on every read, so a server dripping bytes without ever finishing a
+		// line could hold it open well past the deadline.
+		stream_set_blocking($stream, false);
 
-			stream_set_timeout($stream, (int) floor($wait), (int) (($wait - floor($wait)) * 1000000));
+		$recv = function() use ($stream, $deadline, &$buffer): ?string {
+			while (($end = strpos($buffer, "\n")) === false) {
+				if (microtime(true) >= $deadline || strlen($buffer) > 8192) {
+					return null;
+				}
 
-			$line = $left <= 0 ? false : fgets($stream, 8192);
+				$chunk = fread($stream, 8192);
 
-			return $line === false ? null : rtrim($line, "\r\n");
+				if ($chunk === false || ($chunk === '' && feof($stream))) {
+					return null;
+				}
+
+				if ($chunk === '') {
+					usleep(10000);
+				}
+
+				$buffer .= $chunk;
+			}
+
+			$line   = substr($buffer, 0, $end);
+			$buffer = (string) substr($buffer, $end + 1);
+
+			return rtrim($line, "\r");
 		};
 
-		$enable_tls = $tls ? function() use ($stream): bool {
-			return (bool) @stream_socket_enable_crypto($stream, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+		// The handshake needs a blocking stream, bounded by what is left of the deadline.
+		$enable_tls = $tls ? function() use ($stream, $deadline): bool {
+			stream_set_blocking($stream, true);
+			stream_set_timeout($stream, max(1, (int) ceil($deadline - microtime(true))));
+
+			$enabled = (bool) @stream_socket_enable_crypto($stream, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+
+			stream_set_blocking($stream, false);
+
+			return $enabled;
 		} : null;
 
 		$result = apcupsd_nut_session($send, $recv, $ups, $username, $password, $enable_tls);
 
 		// A read that gave up because time ran out looks like a closed connection to the session.
-		if ($result['error'] === __('The NUT server closed the connection unexpectedly.', 'apcupsd') && (stream_get_meta_data($stream)['timed_out'] || microtime(true) >= $deadline)) {
+		if ($result['error'] === __('The NUT server closed the connection unexpectedly.', 'apcupsd') && microtime(true) >= $deadline) {
 			$result['error'] = sprintf(__('The NUT server did not answer within %s seconds.', 'apcupsd'), $timeout);
 		}
 

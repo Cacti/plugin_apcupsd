@@ -391,7 +391,6 @@ function apcupsdDashRefreshCard(grid, card, done) {
 		}
 	};
 	var expanded = card.classList.contains('apcupsdDashCardExpanded') ? '1' : '0';
-	var sorted = apcupsdDashSortSnapshot(card);
 	var cfg = apcupsdDashCfg(grid);
 	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: card.dataset.card, expanded: expanded}), null, 'json').done(function(data) {
 		if (!data || !data.html || !card.parentNode) {
@@ -403,9 +402,10 @@ function apcupsdDashRefreshCard(grid, card, done) {
 			settle();
 			return;
 		}
-		// Re-read the card's expanded state at swap time: the user may have toggled
-		// it while this request was in flight, and that live state must win over the
-		// state captured when the request was sent.
+		// Read the card's expanded state and sort at swap time: the user may have toggled
+		// or sorted it while this request was in flight, and that live state must win over
+		// anything captured when the request was sent.
+		var sorted = apcupsdDashSortSnapshot(card);
 		if (card.classList.contains('apcupsdDashCardExpanded')) {
 			fresh.classList.add('apcupsdDashCardExpanded');
 		} else {
@@ -465,6 +465,47 @@ function apcupsdDashAutoRefresh() {
 	if (typeof loadUrl === 'function' && typeof refreshPage !== 'undefined' && refreshPage !== '') {
 		loadUrl({url: refreshPage});
 	}
+}
+
+var apcupsdDashTimer = null;
+var apcupsdDashTimerMs = 0;
+
+/** One tick of the timer used where Cacti has no refreshFunction hook. It stops
+ *  for good once the dashboard is no longer on screen, so it can never follow
+ *  the user to another page. */
+function apcupsdDashOwnTick() {
+	apcupsdDashTimer = null;
+
+	var grid = document.getElementById('apcupsd_dashboard');
+	if (!grid) {
+		return;
+	}
+
+	apcupsdDashRefreshAll(grid, document.getElementById('apcupsd_dashboard_refresh_now'));
+	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
+}
+
+/** Start automatic refresh with the interval the page script put in Cacti's
+ *  refreshMSeconds global. Cacti 1.3+ has a refreshFunction hook in its page
+ *  timer, so use that. Cacti 1.2.x has no such hook and its timer would reload
+ *  the whole page (losing the cards' state), so there the page timer is stopped
+ *  and a timer of our own refreshes the cards instead. */
+function apcupsdDashStartRefresh() {
+	if (typeof refreshFunction !== 'undefined') {
+		refreshFunction = 'apcupsdDashAutoRefresh()';
+		setupPageTimeout();
+		return;
+	}
+
+	if (typeof myRefresh !== 'undefined') {
+		clearTimeout(myRefresh);
+	}
+	if (apcupsdDashTimer !== null) {
+		clearTimeout(apcupsdDashTimer);
+	}
+
+	apcupsdDashTimerMs = refreshMSeconds;
+	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
 }
 
 /** Open a copy of a card's body in a large modal dialog. */

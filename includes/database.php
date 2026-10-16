@@ -92,11 +92,11 @@ function apcupsd_ups_stats_table_data(): array {
 	$data['columns'][] = ['name' => 'ups_cable',                  'type' => 'varchar(20)',  'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'ups_driver',                 'type' => 'varchar(40)',  'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'ups_mode',                   'type' => 'varchar(20)',  'NULL' => false, 'default' => ''];
-	$data['columns'][] = ['name' => 'ups_starttime',             'type' => 'timestamp',    'NULL' => false, 'default' => 'CURRENT_TIMESTAMP'];
-	$data['columns'][] = ['name' => 'ups_mandate',               'type' => 'timestamp',    'NULL' => false, 'default' => 'CURRENT_TIMESTAMP'];
-	$data['columns'][] = ['name' => 'ups_masterupd',             'type' => 'timestamp',    'NULL' => false, 'default' => 'CURRENT_TIMESTAMP'];
-	$data['columns'][] = ['name' => 'ups_xonbatt',               'type' => 'timestamp',    'NULL' => false, 'default' => 'CURRENT_TIMESTAMP'];
-	$data['columns'][] = ['name' => 'ups_laststest',             'type' => 'timestamp',    'NULL' => false, 'default' => 'CURRENT_TIMESTAMP'];
+	$data['columns'][] = ['name' => 'ups_starttime',             'type' => 'timestamp',    'NULL' => true, 'default' => null];
+	$data['columns'][] = ['name' => 'ups_mandate',               'type' => 'timestamp',    'NULL' => true, 'default' => null];
+	$data['columns'][] = ['name' => 'ups_masterupd',             'type' => 'timestamp',    'NULL' => true, 'default' => null];
+	$data['columns'][] = ['name' => 'ups_xonbatt',               'type' => 'timestamp',    'NULL' => true, 'default' => null];
+	$data['columns'][] = ['name' => 'ups_laststest',             'type' => 'timestamp',    'NULL' => true, 'default' => null];
 	$data['columns'][] = ['name' => 'ups_model',                 'type' => 'varchar(64)',  'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'ups_status',                'type' => 'varchar(64)',  'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'ups_dipsw',                 'type' => 'varchar(20)',  'NULL' => false, 'default' => ''];

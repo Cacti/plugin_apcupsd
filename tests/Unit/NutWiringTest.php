@@ -56,6 +56,28 @@ describe('NUT schema', function () {
 		expect($ups['timeout']['NULL'])->toBeFalse();
 	});
 
+	it('stores unreported timestamps as unknown instead of the poll time', function () use ($columns) {
+		$stats = $columns(apcupsd_ups_stats_table_data());
+
+		foreach (['ups_starttime', 'ups_mandate', 'ups_masterupd', 'ups_xonbatt', 'ups_laststest'] as $name) {
+			expect($stats[$name]['type'])->toBe('timestamp');
+			expect($stats[$name]['NULL'])->toBeTrue("{$name} must allow NULL");
+			expect($stats[$name]['default'])->toBeNull("{$name} must not default to the current time");
+		}
+
+		// The poll and record times are real readings and keep their defaults.
+		expect($stats['ups_date']['default'])->toBe('CURRENT_TIMESTAMP');
+		expect($stats['ups_end_rec']['default'])->toBe('CURRENT_TIMESTAMP');
+	});
+
+	it('does not invent the timestamps NUT does not report', function () {
+		$stats = apcupsd_nut_build_stats(['ups.status' => 'OL'], ['id' => 1, 'hostname' => 'h', 'nut_ups_name' => 'ups']);
+
+		foreach (['ups_starttime', 'ups_mandate', 'ups_masterupd', 'ups_xonbatt', 'ups_laststest'] as $name) {
+			expect($stats)->not->toHaveKey($name);
+		}
+	});
+
 	it('keeps the NUT settings out of the primary key and indexes', function () {
 		$data = apcupsd_ups_table_data();
 
@@ -131,6 +153,29 @@ describe('NUT wiring', function () {
 
 		expect($dashboard)->toContain("3 => __('NUT', 'apcupsd')");
 		expect($dashboard)->toContain("(int) (\$ups['type_id'] ?? 0) !== 2 ? (\$ups['port']");
+	});
+
+	it('marks the linked host down when a NUT query fails, and up or down from the status otherwise', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain('function set_ups_host_state(');
+		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], false);");
+		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], \$online);");
+		expect($poller)->toContain("db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?'");
+
+		// The failure branch must mark the host before it returns false.
+		expect(strpos($poller, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
+	});
+
+	it('does not rewrite an existing UPS\'s port when the edit form opens', function () use ($read) {
+		$page = $read('upses.php');
+
+		expect($page)->toContain('function changeType(userChanged) {');
+		expect($page)->toContain("if (userChanged && \$('#port').val() == '3493') {");
+		expect($page)->toContain("if (userChanged && (\$('#port').val() == '' || \$('#port').val() == '3551')) {");
+		expect($page)->toContain('changeType(false);');
+		expect($page)->toContain('changeType(true);');
+		expect($page)->not->toContain('changeType();');
 	});
 
 	it('enforces the per-UPS timeout for both the apcaccess and NUT collectors', function () use ($read) {

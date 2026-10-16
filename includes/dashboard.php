@@ -1676,13 +1676,14 @@ if (!function_exists('apcupsd_dashboard_layout_save')) {
 
 if (!function_exists('apcupsd_dashboard_print_refresh')) {
 	/**
-	 * Arm Cacti's page timer for a dashboard through the refreshMSeconds,
-	 * refreshFunction, refreshPage and refreshIsLogout globals that Cacti's
-	 * setupPageTimeout() reads, the same way graph_view.php does. With
-	 * refreshFunction set, Cacti calls apcupsdDashAutoRefresh() on each tick (and
-	 * re-arms itself), which refreshes the dashboard's cards in place instead of
-	 * reloading the page; refreshPage stays as the full-page fallback used when
-	 * the dashboard script is not loaded. Nothing is stored in the session
+	 * Arm automatic refresh for a dashboard. The refreshMSeconds, refreshPage and
+	 * refreshIsLogout globals that Cacti's setupPageTimeout() reads are set the
+	 * same way graph_view.php does, then apcupsdDashStartRefresh() (js/apcupsd_dashboard.js)
+	 * picks how to use them. Cacti 1.3+ has a refreshFunction hook in that timer,
+	 * so the cards are refreshed in place; Cacti 1.2.x has no hook, so the page
+	 * timer is stopped and the script runs its own timer, which ends when the
+	 * dashboard leaves the screen. Without the script, Cacti's timer is armed
+	 * as usual and reloads the page. Nothing is stored in the session
 	 * (Cacti's session-based page refresh leaves its value there for whichever
 	 * page renders next), so the interval cannot follow the user to another
 	 * page: Cacti clears its timer when navigating, and the next page's footer
@@ -1705,9 +1706,8 @@ if (!function_exists('apcupsd_dashboard_print_refresh')) {
 			. 'if (!document.getElementById("apcupsd_dashboard") || typeof setupPageTimeout !== "function") { return; }'
 			. 'refreshIsLogout = false;'
 			. 'refreshPage = ' . json_encode($page, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';'
-			. 'refreshFunction = typeof apcupsdDashAutoRefresh === "function" ? "apcupsdDashAutoRefresh()" : "";'
 			. 'refreshMSeconds = ' . ($seconds * 1000) . ';'
-			. 'setupPageTimeout();'
+			. 'if (typeof apcupsdDashStartRefresh === "function") { apcupsdDashStartRefresh(); } else { setupPageTimeout(); }'
 			. '});</script>';
 	}
 }

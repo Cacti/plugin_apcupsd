@@ -780,7 +780,9 @@ function ups_edit(): void {
 		$('#row_nut_cafile, #row_nut_tls_selfsigned').toggle(on);
 	}
 
-	function changeType() {
+	// userChanged is true only when the collector type is changed by hand: the default
+	// port is swapped then, never when an existing UPS's form is first drawn.
+	function changeType(userChanged) {
 		var type = $('#type_id').val();
 
 		if (type == 1) {
@@ -792,7 +794,7 @@ function ups_edit(): void {
 			$('[id^="row_snmp"]').hide();
 			$('[id^="row_nut"]').hide();
 
-			if ($('#port').val() == '3493') {
+			if (userChanged && $('#port').val() == '3493') {
 				$('#port').val('3551');
 			}
 		} else if (type == 2) {
@@ -815,7 +817,7 @@ function ups_edit(): void {
 			$('[id^="row_nut"]').show();
 			syncNutTls();
 
-			if ($('#port').val() == '' || $('#port').val() == '3551') {
+			if (userChanged && ($('#port').val() == '' || $('#port').val() == '3551')) {
 				$('#port').val('3493');
 			}
 		} else {
@@ -827,7 +829,7 @@ function ups_edit(): void {
 
 	$(function() {
 		$('#type_id').change(function() {
-			changeType();
+			changeType(true);
 		});
 
 		$('#nut_tls').change(function() {
@@ -839,7 +841,7 @@ function ups_edit(): void {
 		});
 
 		setSNMP();
-		changeType();
+		changeType(false);
 	});
 	</script>
 	<?php
