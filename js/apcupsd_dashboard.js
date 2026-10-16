@@ -24,6 +24,16 @@
 
 var apcupsdDashDragging = null;
 
+/** Cacti's browser auto-logout timer as it was when this script loaded, before the
+ *  dashboard replaces it with its own refresh. Choosing "No Refresh" puts it back (a
+ *  page reload used to). It is kept across re-runs of this script, which can find the
+ *  dashboard's own override in place of the original. */
+var apcupsdDashCoreTimer = typeof apcupsdDashCoreTimer === 'undefined' ? null : apcupsdDashCoreTimer;
+
+if (typeof refreshIsLogout !== 'undefined' && refreshIsLogout === true && typeof refreshMSeconds !== 'undefined' && typeof refreshPage !== 'undefined') {
+	apcupsdDashCoreTimer = {ms: refreshMSeconds, page: refreshPage};
+}
+
 /** The endpoint/scope configuration for a grid, read from its data attributes so
  *  the per-UPS and fleet dashboards can share this engine. */
 function apcupsdDashCfg(grid) {
@@ -249,23 +259,7 @@ function initApcupsdDashboard() {
 		if (interval) {
 			interval.dataset.previous = interval.value;
 			$(interval).off('change.apcupsddash').on('change.apcupsddash', function() {
-				var select = this;
-				var cfg = apcupsdDashCfg(grid);
-				var revert = function(message) {
-					select.value = select.dataset.previous;
-					apcupsdDashShowStatus(grid, message);
-				};
-				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: select.value}), null, 'json').done(function(data) {
-					if (!data || !data.ok) {
-						revert(data && data.error ? data.error : '');
-						return;
-					}
-					select.dataset.previous = select.value;
-					apcupsdDashShowStatus(grid, '');
-					apcupsdDashSetRefresh(parseInt(select.value, 10) || 0, cfg.refreshPage);
-				}).fail(function() {
-					revert('');
-				});
+				apcupsdDashSaveRefresh(grid, this);
 			});
 		}
 
@@ -524,8 +518,27 @@ function apcupsdDashStartRefresh() {
 	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
 }
 
+/** Put Cacti's own browser auto-logout timer back, as it was before the dashboard
+ *  replaced it with a refresh. Does nothing when the page had no such timer. */
+function apcupsdDashRestoreCoreTimer() {
+	if (apcupsdDashCoreTimer === null || typeof setupPageTimeout !== 'function') {
+		return;
+	}
+
+	refreshIsLogout = true;
+	refreshPage = apcupsdDashCoreTimer.page;
+	refreshMSeconds = apcupsdDashCoreTimer.ms;
+
+	if (typeof refreshFunction !== 'undefined') {
+		refreshFunction = '';
+	}
+
+	setupPageTimeout();
+}
+
 /** Apply a new auto-refresh interval without reloading the page: stop whichever
- *  timer is running, then start one for the new interval unless it is 0 (off). */
+ *  timer is running, then start one for the new interval, or for 0 (off) hand the
+ *  page back to Cacti's own timer. */
 function apcupsdDashSetRefresh(seconds, page) {
 	if (typeof myRefresh !== 'undefined') {
 		clearTimeout(myRefresh);
@@ -536,6 +549,7 @@ function apcupsdDashSetRefresh(seconds, page) {
 	}
 
 	if (seconds <= 0) {
+		apcupsdDashRestoreCoreTimer();
 		return;
 	}
 
@@ -543,6 +557,72 @@ function apcupsdDashSetRefresh(seconds, page) {
 	refreshPage = page;
 	refreshMSeconds = seconds * 1000;
 	apcupsdDashStartRefresh();
+}
+
+/** Set a dropdown's value and bring the widget Cacti draws over it (Select2 on
+ *  1.2.x, a jQuery UI selectmenu on 1.3) back in line, without running the change
+ *  handlers that save a preference. */
+function apcupsdDashSetSelect(select, value) {
+	var $select = $(select);
+
+	select.value = value;
+
+	if ($select.data('select2')) {
+		$select.trigger('change.select2');
+	}
+
+	if ($select.data('ui-selectmenu')) {
+		$select.selectmenu('refresh');
+	}
+}
+
+var apcupsdDashRefreshSaving = false;
+var apcupsdDashRefreshPending = false;
+
+/** Save the Refresh dropdown's choice, then apply it. One save is in flight at a
+ *  time: a choice made meanwhile is sent once it settles, so saves cannot finish
+ *  out of order and only a value that was actually saved updates the timer or
+ *  becomes the one a failed save rolls back to. */
+function apcupsdDashSaveRefresh(grid, select) {
+	if (apcupsdDashRefreshSaving) {
+		apcupsdDashRefreshPending = true;
+		return;
+	}
+
+	apcupsdDashRefreshSaving = true;
+
+	var cfg = apcupsdDashCfg(grid);
+	var value = select.value;
+	var saved = false;
+	var message = '';
+
+	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: value}), null, 'json').done(function(data) {
+		if (data && data.ok) {
+			saved = true;
+			select.dataset.previous = value;
+			apcupsdDashSetRefresh(parseInt(value, 10) || 0, cfg.refreshPage);
+		} else if (data && data.error) {
+			message = data.error;
+		}
+	}).always(function() {
+		apcupsdDashRefreshSaving = false;
+
+		if (apcupsdDashRefreshPending) {
+			apcupsdDashRefreshPending = false;
+
+			if (select.value !== select.dataset.previous) {
+				apcupsdDashSaveRefresh(grid, select);
+				return;
+			}
+		}
+
+		if (saved) {
+			apcupsdDashShowStatus(grid, '');
+		} else {
+			apcupsdDashSetSelect(select, select.dataset.previous);
+			apcupsdDashShowStatus(grid, message);
+		}
+	});
 }
 
 /** Open a copy of a card's body in a large modal dialog. */

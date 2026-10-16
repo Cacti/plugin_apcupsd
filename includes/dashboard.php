@@ -1930,9 +1930,11 @@ if (!function_exists('apcupsd_dashboard')) {
 		$current_refresh = (int) read_user_setting('apcupsd_dashboard_refresh', 0);
 		$refresh_page    = $config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . $ups_id . '&header=false';
 
-		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
-
+		// The dashboard script goes first: when Cacti loads this page through ajax the
+		// scripts run in order, and the refresh script below needs its functions.
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
+
+		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
 
 		$ups  = apcupsd_dashboard_ups($ups_id);
 		$meta = apcupsd_dashboard_card_meta($ups_id);
@@ -2808,9 +2810,11 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 		$current_refresh = (int) read_user_setting('apcupsd_summary_refresh', 0);
 		$refresh_page    = $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false';
 
-		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
-
+		// The dashboard script goes first: when Cacti loads this page through ajax the
+		// scripts run in order, and the refresh script below needs its functions.
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
+
+		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
 
 		$meta   = apcupsd_fleet_card_meta();
 		$layout = apcupsd_fleet_layout();

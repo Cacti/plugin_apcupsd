@@ -67,10 +67,80 @@ describe('dashboard auto-refresh', function () {
 
 		$handler = substr($js, $start, $end - $start);
 
+		expect($handler)->toContain('apcupsdDashSaveRefresh(grid, this);');
 		expect($handler)->not->toContain('window.location');
-		expect($handler)->not->toContain('location.reload');
-		expect($handler)->toContain('apcupsdDashSetRefresh(parseInt(select.value, 10) || 0, cfg.refreshPage);');
-		expect($handler)->toContain('select.value = select.dataset.previous;');
+
+		$save = substr($js, (int) strpos($js, 'function apcupsdDashSaveRefresh('));
+
+		expect($save)->not->toContain('window.location');
+		expect($save)->not->toContain('location.reload');
+		expect($save)->toContain('apcupsdDashSetRefresh(parseInt(value, 10) || 0, cfg.refreshPage);');
+	});
+
+	it('applies only the interval that was saved, using the value that was submitted', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('var value = select.value;');
+		expect($js)->toContain('refresh: value}');
+		expect($js)->toContain('select.dataset.previous = value;');
+		expect($js)->not->toContain('select.dataset.previous = select.value;');
+	});
+
+	it('keeps one save in flight and sends a choice made meanwhile after it settles', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('var apcupsdDashRefreshSaving = false;');
+		expect($js)->toContain('apcupsdDashRefreshPending = true;');
+		expect($js)->toContain('if (select.value !== select.dataset.previous) {');
+		expect($js)->toContain('apcupsdDashSaveRefresh(grid, select);');
+	});
+
+	it('rolls the picker back through its widget without running the save handler', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('function apcupsdDashSetSelect(select, value) {');
+		expect($js)->toContain("\$select.trigger('change.select2');");
+		expect($js)->toContain("\$select.selectmenu('refresh');");
+		expect($js)->toContain('apcupsdDashSetSelect(select, select.dataset.previous);');
+
+		// A namespaced trigger, so the 'change.apcupsddash' save handler does not run.
+		expect($js)->not->toContain("trigger('change')");
+	});
+
+	it('puts Cacti\'s browser logout timer back when Refresh is turned off', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		// Remembered when the script loads, before the dashboard overrides it.
+		expect($js)->toContain('var apcupsdDashCoreTimer = typeof apcupsdDashCoreTimer === \'undefined\' ? null : apcupsdDashCoreTimer;');
+		expect($js)->toContain('refreshIsLogout === true');
+		expect(strpos($js, 'apcupsdDashCoreTimer = {ms: refreshMSeconds, page: refreshPage};'))->toBeLessThan(strpos($js, 'function apcupsdDashCfg('));
+
+		expect($js)->toContain('function apcupsdDashRestoreCoreTimer() {');
+		expect($js)->toContain('refreshIsLogout = true;');
+		expect($js)->toContain('refreshPage = apcupsdDashCoreTimer.page;');
+		expect($js)->toContain('refreshMSeconds = apcupsdDashCoreTimer.ms;');
+
+		// "Off" restores it, and never when there was no such timer to restore.
+		expect(preg_match('/if \(seconds <= 0\) \{\s*apcupsdDashRestoreCoreTimer\(\);\s*return;\s*\}/', $js))->toBe(1);
+		expect($js)->toContain('if (apcupsdDashCoreTimer === null || typeof setupPageTimeout !== \'function\') {');
+	});
+
+	it('loads the dashboard script before the script that starts the refresh', function () use ($read) {
+		$source = $read('includes/dashboard.php');
+
+		// Cacti runs ajax-loaded scripts in order, so the functions must be defined first.
+		expect(substr_count($source, 'plugins/apcupsd/js/apcupsd_dashboard.js?v='))->toBe(2);
+
+		$offset = 0;
+
+		for ($i = 0; $i < 2; $i++) {
+			$script  = strpos($source, 'plugins/apcupsd/js/apcupsd_dashboard.js?v=', $offset);
+			$refresh = strpos($source, 'apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);', $offset);
+
+			expect($script)->toBeLessThan($refresh);
+
+			$offset = $refresh + 1;
+		}
 	});
 
 	it('swaps the running timer for the new interval, or stops it for No Refresh', function () use ($read) {
