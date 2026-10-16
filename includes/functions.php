@@ -26,6 +26,22 @@ if (!function_exists('apcupsd_host_template_imported')) {
 	}
 }
 
+if (!function_exists('apcupsd_is_slave_status')) {
+	/**
+	 * Whether a UPS status string reports the UPS as a slave (e.g. "ONLINE SLAVE"
+	 * or "SLAVEDOWN"). A slave draws power already attributed to the master UPS it
+	 * is attached to, so its estimated power must not be counted again in fleet
+	 * totals.
+	 *
+	 * @param mixed $status The apcupsd STATUS value.
+	 *
+	 * @return bool True when the status contains the SLAVE flag.
+	 */
+	function apcupsd_is_slave_status($status): bool {
+		return is_string($status) && stripos($status, 'SLAVE') !== false;
+	}
+}
+
 if (!function_exists('apcupsd_estimate_watts')) {
 	/**
 	 * Estimates a UPS's real output power in watts as

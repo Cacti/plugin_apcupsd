@@ -782,20 +782,18 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 	}
 }
 
-if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
+if (!function_exists('apcupsd_dashboard_gauge_from_reading')) {
 	/**
-	 * Render a single-metric gauge card body: the current reading swept on the
-	 * dial with the value in the centre and a min/max caption from the RRD window.
+	 * Render a gauge from a resolved reading: the current value swept on the dial
+	 * with the value in the centre and a min/avg/max caption from the RRD window.
 	 *
-	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
-	 * @param int    $ups_id     The UPS to render for.
+	 * @param array|null $reading A reading from apcupsd_dashboard_metric_reading()
+	 *                            or apcupsd_dashboard_est_power_reading().
 	 *
 	 * @return string The gauge HTML, or an empty-state message.
 	 */
-	function apcupsd_dashboard_gauge_card_body(string $metric_key, $ups_id): string {
-		$reading = apcupsd_dashboard_metric_reading($metric_key, $ups_id);
-
-		if ($reading === null) {
+	function apcupsd_dashboard_gauge_from_reading(?array $reading): string {
+		if (!is_array($reading)) {
 			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
 		}
 
@@ -805,15 +803,82 @@ if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
 			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for this gauge yet.', 'apcupsd') . '</p>';
 		}
 
-		$center = apcupsd_dashboard_format_value($value, $reading['unit']);
+		$unit   = $reading['unit'];
+		$center = apcupsd_dashboard_format_value($value, $unit);
 
 		$sub = '';
 
-		if ($reading['min'] !== null || $reading['max'] !== null) {
-			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $reading['unit']), apcupsd_dashboard_format_value($reading['max'], $reading['unit']), 'apcupsd');
+		if ($reading['avg'] !== null) {
+			$sub = __('min %s · avg %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['avg'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
+		} elseif ($reading['min'] !== null || $reading['max'] !== null) {
+			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
 		}
 
 		return apcupsd_dashboard_gauge($value, $reading['min'], $reading['max'], $reading['scale'], $reading['severity'], $center, $sub);
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_gauge_card_body')) {
+	/**
+	 * Render a single-metric gauge card body.
+	 *
+	 * @param string $metric_key A key from apcupsd_dashboard_metrics().
+	 * @param int    $ups_id     The UPS to render for.
+	 *
+	 * @return string The gauge HTML, or an empty-state message.
+	 */
+	function apcupsd_dashboard_gauge_card_body(string $metric_key, $ups_id): string {
+		return apcupsd_dashboard_gauge_from_reading(apcupsd_dashboard_metric_reading($metric_key, $ups_id));
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_est_power_reading')) {
+	/**
+	 * Estimate real output power for UPSes that do not report it, via the shared
+	 * apcupsd_estimate_watts() formula (nominal power x load %), with the
+	 * min/avg/max derived from the load's RRD window. Complements the Fleet
+	 * Dashboard's fleet-wide estimate with the per-UPS drilldown card. Returns
+	 * null when no nominal power rating or load reading is available.
+	 *
+	 * @param int $ups_id The UPS to read.
+	 *
+	 * @return array{label: string, current: float|null, min: float|null, avg: float|null, max: float|null, scale: float, unit: string, severity: string}|null
+	 */
+	function apcupsd_dashboard_est_power_reading($ups_id): ?array {
+		$ups = apcupsd_dashboard_ups($ups_id);
+
+		if (!cacti_sizeof($ups)) {
+			return null;
+		}
+
+		$nominal = isset($ups['ups_nominal_power']) && is_numeric($ups['ups_nominal_power']) ? (float) $ups['ups_nominal_power'] : 0.0;
+
+		if ($nominal <= 0) {
+			return null;
+		}
+
+		$load = apcupsd_dashboard_metric_reading('load_percent', $ups_id);
+
+		if ($load === null) {
+			return null;
+		}
+
+		$watts = function(?float $pct) use ($nominal): ?float {
+			return apcupsd_estimate_watts($nominal, $pct);
+		};
+
+		$load_display = $load['current'] !== null ? $load['current'] : $load['avg'];
+
+		return [
+			'label'    => __('Estimated Power', 'apcupsd'),
+			'current'  => $watts($load['current']),
+			'min'      => $watts($load['min']),
+			'avg'      => $watts($load['avg']),
+			'max'      => $watts($load['max']),
+			'scale'    => $nominal,
+			'unit'     => ' W',
+			'severity' => apcupsd_dashboard_metric_severity('load_percent', $load_display),
+		];
 	}
 }
 
@@ -839,6 +904,8 @@ if (!function_exists('apcupsd_dashboard_card_meta')) {
 				$meta[$card_key] = ['title' => (string) $metrics[$metric_key]['label'], 'span' => 2, 'expandable' => false];
 			}
 		}
+
+		$meta['gauge_est_power'] = ['title' => __('Estimated Power', 'apcupsd'), 'span' => 2, 'expandable' => false];
 
 		$meta['power']   = ['title' => __('Input and Load', 'apcupsd'),       'span' => 2, 'expandable' => false];
 		$meta['battery'] = ['title' => __('Battery and Runtime', 'apcupsd'),  'span' => 2, 'expandable' => false];
@@ -892,6 +959,12 @@ if (!function_exists('apcupsd_dashboard_card_state')) {
 		$status = strtoupper((string) ($ups['ups_status'] ?? ''));
 
 		if (strncmp($key, 'gauge_', 6) === 0) {
+			if ($key === 'gauge_est_power') {
+				$reading = apcupsd_dashboard_est_power_reading($ups_id);
+
+				return $reading !== null ? $reading['severity'] : '';
+			}
+
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (isset($cards[$key])) {
@@ -1006,6 +1079,16 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 		}
 
 		if (strncmp($key, 'gauge_', 6) === 0) {
+			if ($key === 'gauge_est_power') {
+				$reading = apcupsd_dashboard_est_power_reading($ups_id);
+
+				if ($reading === null) {
+					return '<p class="apcupsdDashEmpty">' . __esc('Estimated power needs a nominal power rating and a load reading.', 'apcupsd') . '</p>';
+				}
+
+				return apcupsd_dashboard_gauge_from_reading($reading);
+			}
+
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (!isset($cards[$key])) {
@@ -1028,8 +1111,9 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv = function(string $label, $value): void {
 					$value = trim((string) $value);
 
+					// Hide anything we have no value for: show only what the database holds.
 					if ($value === '') {
-						$value = __('N/A', 'apcupsd');
+						return;
 					}
 
 					print '<tr><th>' . html_escape($label) . '</th><td>' . html_escape($value) . '</td></tr>';
@@ -1059,8 +1143,9 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$kv(__('Model', 'apcupsd'), $ups['ups_model'] ?? '');
 				$kv(__('Serial Number', 'apcupsd'), $ups['ups_serialno'] ?? '');
 				$kv(__('Firmware', 'apcupsd'), $ups['ups_firmware'] ?? '');
-				$kv(__('Cable', 'apcupsd'), $ups['ups_cable'] ?? '');
-				$kv(__('Driver', 'apcupsd'), $ups['ups_driver'] ?? '');
+				$cable  = trim((string) ($ups['ups_cable'] ?? ''));
+				$driver = trim((string) ($ups['ups_driver'] ?? ''));
+				$kv(__('Cable / Driver', 'apcupsd'), implode(' / ', array_filter([$cable, $driver], 'strlen')));
 				$kv(__('Collector', 'apcupsd'), $type);
 				$kv(__('Hostname', 'apcupsd'), $host);
 				$kv(__('Nominal Power', 'apcupsd'), $watts($ups['ups_nominal_power'] ?? null));
@@ -1203,66 +1288,50 @@ if (!function_exists('apcupsd_dashboard_render_card')) {
 
 if (!function_exists('apcupsd_dashboard_layout_key')) {
 	/**
-	 * The per-UPS settings_user key the Dashboard layout is stored under. Each UPS
-	 * uses its own row so no single value can exceed Cacti 1.2.x's 4096-character
-	 * settings_user.value limit.
+	 * The settings_user key the shared Dashboard layout is stored under. It holds
+	 * the fixed-card arrangement and expanded state used by every UPS, so the key
+	 * is constant; $ups_id is accepted for call compatibility but ignored. Graph
+	 * cards are device-specific and live under apcupsd_dashboard_layout_graphs_key().
+	 *
+	 * @param int $ups_id The UPS id (ignored).
+	 *
+	 * @return string The settings key.
+	 */
+	function apcupsd_dashboard_layout_key($ups_id): string {
+		return 'apcupsd_dashboard_layout_shared';
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_graphs_key')) {
+	/**
+	 * The settings_user key a UPS's graph-card order is stored under. Graph cards
+	 * are keyed by local_graph_id, which only exists on that UPS's device, so
+	 * they are kept per UPS while the fixed cards are shared.
 	 *
 	 * @param int $ups_id The UPS id.
 	 *
 	 * @return string The settings key.
 	 */
-	function apcupsd_dashboard_layout_key($ups_id): string {
-		return 'apcupsd_dashboard_layout_' . (int) $ups_id;
+	function apcupsd_dashboard_layout_graphs_key($ups_id): string {
+		return 'apcupsd_dashboard_layout_graphs_' . (int) $ups_id;
 	}
 }
 
-if (!function_exists('apcupsd_dashboard_layout_read')) {
+if (!function_exists('apcupsd_dashboard_layout_normalize')) {
 	/**
-	 * Read a UPS's stored layout document, migrating a layout authored under the
-	 * pre-release combined map when the per-UPS row is not yet present.
+	 * Reduce a stored layout document to the cards a UPS has available: retired
+	 * combined 'gauges' cards expand to the per-metric gauge cards, and unknown or
+	 * duplicate keys are dropped.
 	 *
-	 * @param int $ups_id The UPS id.
-	 *
-	 * @return array|null The {order, expanded} document, or null when none saved.
-	 */
-	function apcupsd_dashboard_layout_read($ups_id): ?array {
-		$saved = json_decode((string) read_user_setting(apcupsd_dashboard_layout_key($ups_id), '', true), true);
-
-		if (is_array($saved) && isset($saved['order']) && is_array($saved['order'])) {
-			return $saved;
-		}
-
-		$all = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
-
-		if (is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id])) {
-			return $all[(string) $ups_id];
-		}
-
-		return null;
-	}
-}
-
-if (!function_exists('apcupsd_dashboard_layout')) {
-	/**
-	 * The current user's saved layout for a UPS: the present cards in order plus
-	 * their expanded state. With no saved layout every card is present in the
-	 * default order; cards absent from a saved order live in the "Add" catalogue.
-	 *
-	 * @param int $ups_id The UPS the layout is rendered for.
+	 * @param array    $saved     The {order, expanded} document.
+	 * @param string[] $available The card keys available for the UPS.
 	 *
 	 * @return array{order: string[], expanded: array<string, bool>}
 	 */
-	function apcupsd_dashboard_layout($ups_id): array {
-		$available = apcupsd_dashboard_available_cards($ups_id);
-		$saved     = apcupsd_dashboard_layout_read($ups_id);
-
-		if (!is_array($saved) || !isset($saved['order']) || !is_array($saved['order'])) {
-			return ['order' => $available, 'expanded' => []];
-		}
-
+	function apcupsd_dashboard_layout_normalize(array $saved, array $available): array {
 		$order = [];
 
-		foreach ($saved['order'] as $key) {
+		foreach (isset($saved['order']) && is_array($saved['order']) ? $saved['order'] : [] as $key) {
 			// Migrate the retired combined 'gauges' card to the per-metric gauge cards
 			// so existing layouts surface the new gauges where the old card sat.
 			if ($key === 'gauges') {
@@ -1284,7 +1353,7 @@ if (!function_exists('apcupsd_dashboard_layout')) {
 
 		if (isset($saved['expanded']) && is_array($saved['expanded'])) {
 			foreach ($saved['expanded'] as $key => $on) {
-				if ($on && in_array($key, $available, true)) {
+				if ($on && in_array((string) $key, $available, true)) {
 					$expanded[(string) $key] = true;
 				}
 			}
@@ -1294,11 +1363,271 @@ if (!function_exists('apcupsd_dashboard_layout')) {
 	}
 }
 
+if (!function_exists('apcupsd_dashboard_layout_split')) {
+	/**
+	 * Split a flat card order into the shared fixed-card order and the UPS's
+	 * graph runs. Each run of consecutive graph cards becomes one 'graphs_slot'
+	 * marker in the shared order and one list in the runs, so graphs interleaved
+	 * with fixed cards keep their placement.
+	 *
+	 * @param string[] $order A validated card order.
+	 *
+	 * @return array{0: string[], 1: array<int, string[]>} The shared order and the graph runs.
+	 */
+	function apcupsd_dashboard_layout_split(array $order): array {
+		$shared = [];
+		$runs   = [];
+		$in_run = false;
+
+		foreach ($order as $key) {
+			if (strncmp($key, 'graph_', 6) === 0) {
+				if (!$in_run) {
+					$shared[] = 'graphs_slot';
+					$runs[]   = [];
+					$in_run   = true;
+				}
+
+				$runs[count($runs) - 1][] = $key;
+			} else {
+				$shared[] = $key;
+				$in_run   = false;
+			}
+		}
+
+		return [$shared, $runs];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_keep_slots')) {
+	/**
+	 * Carry the 'graphs_slot' markers of an existing shared order into a new
+	 * fixed-card order. Each slot stays after the nearest preceding fixed card
+	 * that is still present (or at the start), so a UPS with no graphs of its
+	 * own can reorder or remove fixed cards without moving other UPSes' graphs.
+	 *
+	 * @param array    $old_order   The stored shared order, markers included.
+	 * @param string[] $fixed_order The new fixed-card order.
+	 *
+	 * @return string[] The new shared order with the markers re-anchored.
+	 */
+	function apcupsd_dashboard_layout_keep_slots(array $old_order, array $fixed_order): array {
+		$present = array_flip($fixed_order);
+		$after   = [];
+		$anchor  = '';
+
+		foreach ($old_order as $key) {
+			if ($key === 'graphs_slot') {
+				$after[$anchor] = ($after[$anchor] ?? 0) + 1;
+			} elseif (is_string($key) && isset($present[$key])) {
+				$anchor = $key;
+			}
+		}
+
+		$out = [];
+
+		for ($i = 0; $i < ($after[''] ?? 0); $i++) {
+			$out[] = 'graphs_slot';
+		}
+
+		foreach ($fixed_order as $key) {
+			$out[] = $key;
+
+			for ($i = 0; $i < ($after[$key] ?? 0); $i++) {
+				$out[] = 'graphs_slot';
+			}
+		}
+
+		return $out;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_graphs_encode')) {
+	/**
+	 * Encode a UPS's graph runs for settings_user, or null when they do not fit.
+	 * Cacti 1.2.x caps settings_user.value at 4096 characters; refuse rather than
+	 * silently truncate a layout and lose the user's saved preferences.
+	 *
+	 * @param array<int, string[]> $runs The graph runs.
+	 *
+	 * @return string|null The JSON document, or null when it cannot be saved.
+	 */
+	function apcupsd_dashboard_layout_graphs_encode(array $runs): ?string {
+		$json = json_encode(['runs' => $runs]);
+
+		return $json === false || strlen($json) > 4096 ? null : $json;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_store')) {
+	/**
+	 * Persist a layout for the current user. Fixed cards and expanded state go to
+	 * the shared row; graph cards go to the UPS's own row, with one 'graphs_slot'
+	 * marker per run of graphs in the shared order so another UPS places its own
+	 * graphs in the same spots. A UPS with no graphs leaves the shared graph
+	 * slots in place.
+	 *
+	 * @param int      $ups_id   The UPS the layout was arranged for.
+	 * @param string[] $order    The validated card order.
+	 * @param array    $expanded The validated expanded state.
+	 *
+	 * @return bool False, without saving anything, when a document exceeds the settings size cap.
+	 */
+	function apcupsd_dashboard_layout_store($ups_id, array $order, array $expanded): bool {
+		[$shared, $runs] = apcupsd_dashboard_layout_split($order);
+
+		if (!cacti_sizeof($runs)) {
+			$existing = json_decode((string) read_user_setting(apcupsd_dashboard_layout_key($ups_id), '', true), true);
+
+			if (is_array($existing) && isset($existing['order']) && is_array($existing['order'])) {
+				$shared = apcupsd_dashboard_layout_keep_slots($existing['order'], $shared);
+			}
+		}
+
+		$shared_json = json_encode(['order' => $shared, 'expanded' => $expanded]);
+		$graphs_json = apcupsd_dashboard_layout_graphs_encode($runs);
+
+		if ($shared_json === false || strlen($shared_json) > 4096 || $graphs_json === null) {
+			return false;
+		}
+
+		set_user_setting(apcupsd_dashboard_layout_key($ups_id), $shared_json);
+		set_user_setting(apcupsd_dashboard_layout_graphs_key($ups_id), $graphs_json);
+
+		return true;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_legacy')) {
+	/**
+	 * A layout authored under the earlier per-UPS row, or failing that the
+	 * pre-release combined map, for a UPS.
+	 *
+	 * @param int $ups_id The UPS id.
+	 *
+	 * @return array|null The {order, expanded} document, or null when none exists.
+	 */
+	function apcupsd_dashboard_layout_legacy($ups_id): ?array {
+		$legacy = json_decode((string) read_user_setting('apcupsd_dashboard_layout_' . (int) $ups_id, '', true), true);
+
+		if (!is_array($legacy) || !isset($legacy['order']) || !is_array($legacy['order'])) {
+			$all    = json_decode((string) read_user_setting('apcupsd_dashboard_layout', '', true), true);
+			$legacy = is_array($all) && isset($all[(string) $ups_id]) && is_array($all[(string) $ups_id]) ? $all[(string) $ups_id] : null;
+		}
+
+		return is_array($legacy) && isset($legacy['order']) && is_array($legacy['order']) ? $legacy : null;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout_read')) {
+	/**
+	 * Read the stored Dashboard layout for a UPS: the shared fixed-card order with
+	 * the UPS's own graph runs filled into the shared graph slots (extra runs go
+	 * last). A UPS with no graph row yet migrates its own legacy graph selection
+	 * and persists it, or else shows all of its graphs in default order, leaving
+	 * the shared fixed-card layout unchanged. When the shared row is not yet
+	 * present, a legacy layout is persisted to it so every UPS picks it up.
+	 *
+	 * @param int      $ups_id    The UPS the layout is read for.
+	 * @param string[] $available The card keys available for the UPS.
+	 *
+	 * @return array{order: string[], expanded: array<string, bool>}|null The layout, or null when none saved.
+	 */
+	function apcupsd_dashboard_layout_read($ups_id, array $available): ?array {
+		$saved = json_decode((string) read_user_setting(apcupsd_dashboard_layout_key($ups_id), '', true), true);
+
+		if (is_array($saved) && isset($saved['order']) && is_array($saved['order'])) {
+			$own = json_decode((string) read_user_setting(apcupsd_dashboard_layout_graphs_key($ups_id), '', true), true);
+
+			if (is_array($own) && isset($own['runs']) && is_array($own['runs'])) {
+				$runs = array_values($own['runs']);
+			} else {
+				$legacy = apcupsd_dashboard_layout_legacy($ups_id);
+
+				if ($legacy !== null) {
+					[, $runs] = apcupsd_dashboard_layout_split(apcupsd_dashboard_layout_normalize($legacy, $available)['order']);
+
+					$json = apcupsd_dashboard_layout_graphs_encode($runs);
+
+					if ($json !== null) {
+						set_user_setting(apcupsd_dashboard_layout_graphs_key($ups_id), $json);
+					}
+				} else {
+					$runs = [[]];
+
+					foreach ($available as $key) {
+						if (strncmp($key, 'graph_', 6) === 0) {
+							$runs[0][] = $key;
+						}
+					}
+				}
+			}
+
+			$order = [];
+			$next  = 0;
+
+			foreach ($saved['order'] as $key) {
+				if ($key !== 'graphs_slot') {
+					$order[] = $key;
+
+					continue;
+				}
+
+				foreach (is_array($runs[$next] ?? null) ? $runs[$next] : [] as $graph_key) {
+					$order[] = $graph_key;
+				}
+
+				$next++;
+			}
+
+			for (; $next < count($runs); $next++) {
+				foreach (is_array($runs[$next]) ? $runs[$next] : [] as $graph_key) {
+					$order[] = $graph_key;
+				}
+			}
+
+			return ['order' => $order, 'expanded' => isset($saved['expanded']) && is_array($saved['expanded']) ? $saved['expanded'] : []];
+		}
+
+		$legacy = apcupsd_dashboard_layout_legacy($ups_id);
+
+		if ($legacy === null) {
+			return null;
+		}
+
+		$migrated = apcupsd_dashboard_layout_normalize($legacy, $available);
+
+		apcupsd_dashboard_layout_store($ups_id, $migrated['order'], $migrated['expanded']);
+
+		return $migrated;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_layout')) {
+	/**
+	 * The current user's saved layout for a UPS: the present cards in order plus
+	 * their expanded state. With no saved layout every card is present in the
+	 * default order; cards absent from a saved order live in the "Add" catalogue.
+	 *
+	 * @param int $ups_id The UPS the layout is rendered for.
+	 *
+	 * @return array{order: string[], expanded: array<string, bool>}
+	 */
+	function apcupsd_dashboard_layout($ups_id): array {
+		$available = apcupsd_dashboard_available_cards($ups_id);
+		$saved     = apcupsd_dashboard_layout_read($ups_id, $available);
+
+		if ($saved === null) {
+			return ['order' => $available, 'expanded' => []];
+		}
+
+		return apcupsd_dashboard_layout_normalize($saved, $available);
+	}
+}
+
 if (!function_exists('apcupsd_dashboard_layout_save')) {
 	/**
-	 * Persist the posted layout (card order and expanded state) for a UPS for the
-	 * current user, validated to the UPS's known cards and merged into the user's
-	 * per-UPS layout map.
+	 * Persist the posted layout (card order and expanded state) for the current
+	 * user, validated to the current UPS's known cards and shared across every UPS.
 	 *
 	 * @return string A JSON status document.
 	 */
@@ -1337,15 +1666,9 @@ if (!function_exists('apcupsd_dashboard_layout_save')) {
 			}
 		}
 
-		$encoded = json_encode(['order' => $order, 'expanded' => $expanded]);
-
-		// Cacti 1.2.x caps settings_user.value at 4096 characters; refuse rather than
-		// silently truncate a per-UPS layout and lose the user's saved preferences.
-		if ($encoded === false || strlen($encoded) > 4096) {
+		if (!apcupsd_dashboard_layout_store($ups_id, $order, $expanded)) {
 			return (string) json_encode(['error' => __('This dashboard has too many cards to save its layout.', 'apcupsd')]);
 		}
-
-		set_user_setting(apcupsd_dashboard_layout_key($ups_id), $encoded);
 
 		return (string) json_encode(['ok' => true]);
 	}
@@ -1623,7 +1946,8 @@ if (!function_exists('apcupsd_fleet_stats')) {
 	 * Memoized fleet aggregates: UPS counts by status (online/on-battery/other/
 	 * disabled), the min/avg/max of load, battery charge and runtime across the
 	 * enabled UPSes, and the estimated total power draw (nominal power x load %)
-	 * with the rated capacity and UPS count it was summed over.
+	 * with the rated capacity and UPS count it was summed over. Slave UPSes are
+	 * left out of the power figures: their draw is already part of the master's.
 	 *
 	 * @return array The aggregate row.
 	 */
@@ -1631,6 +1955,8 @@ if (!function_exists('apcupsd_fleet_stats')) {
 		static $cache = null;
 
 		if ($cache === null) {
+			$estimable = "ups.enabled = 'on' AND COALESCE(stats.ups_status, '') NOT LIKE '%SLAVE%' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0";
+
 			$row = db_fetch_row("SELECT
 				COUNT(*) AS total,
 				SUM(CASE WHEN ups.enabled = 'on' THEN 1 ELSE 0 END) AS enabled,
@@ -1646,9 +1972,9 @@ if (!function_exists('apcupsd_fleet_stats')) {
 				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS minTime,
 				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS avgTime,
 				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS maxTime,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power * stats.ups_load_percent / 100 END) AS estWatts,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power END) AS estCapacity,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN 1 ELSE 0 END) AS estCount
+				SUM(CASE WHEN $estimable THEN stats.ups_nominal_power * stats.ups_load_percent / 100 END) AS estWatts,
+				SUM(CASE WHEN $estimable THEN stats.ups_nominal_power END) AS estCapacity,
+				SUM(CASE WHEN $estimable THEN 1 ELSE 0 END) AS estCount
 				FROM apcupsd_ups AS ups
 				LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id");
 
@@ -2048,8 +2374,9 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 						$charge = isset($ups['ups_battery_charge']) && is_numeric($ups['ups_battery_charge']) ? number_format_i18n((float) $ups['ups_battery_charge'], 0) . '%' : __('N/A', 'apcupsd');
 						$time   = isset($ups['ups_timeleft']) && is_numeric($ups['ups_timeleft']) ? number_format_i18n((float) $ups['ups_timeleft'], 0) . ' ' . __('min', 'apcupsd') : __('N/A', 'apcupsd');
 
-						// A disabled UPS is not being polled, so its last reading is not an estimate.
-						$watts = ($ups['enabled'] ?? '') === 'on' ? apcupsd_estimate_watts($ups['ups_nominal_power'] ?? null, $ups['ups_load_percent'] ?? null) : null;
+						// A disabled UPS is not being polled, so its last reading is not an estimate,
+						// and a slave's draw is already counted in its master's power.
+						$watts = ($ups['enabled'] ?? '') === 'on' && !apcupsd_is_slave_status($ups['ups_status'] ?? null) ? apcupsd_estimate_watts($ups['ups_nominal_power'] ?? null, $ups['ups_load_percent'] ?? null) : null;
 
 						print '<tr>'
 							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
