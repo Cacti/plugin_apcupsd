@@ -337,6 +337,25 @@ describe('NUT stats row', function () {
 	});
 });
 
+describe('timeout normalisation', function () {
+	it('keeps sane values and defaults the rest', function () {
+		expect(apcupsd_normalize_timeout(10))->toBe(10);
+		expect(apcupsd_normalize_timeout('7'))->toBe(7);
+		expect(apcupsd_normalize_timeout(null))->toBe(5);
+		expect(apcupsd_normalize_timeout(''))->toBe(5);
+		expect(apcupsd_normalize_timeout('abc'))->toBe(5);
+		expect(apcupsd_normalize_timeout(0))->toBe(5);
+		expect(apcupsd_normalize_timeout('-3'))->toBe(5);
+		expect(apcupsd_normalize_timeout(null, 9))->toBe(9);
+	});
+
+	it('never allows more than two minutes', function () {
+		expect(apcupsd_normalize_timeout(120))->toBe(120);
+		expect(apcupsd_normalize_timeout(121))->toBe(120);
+		expect(apcupsd_normalize_timeout('99999'))->toBe(120);
+	});
+});
+
 describe('NUT socket layer', function () {
 	$pair = function (array $lines): array {
 		$domain = DIRECTORY_SEPARATOR === '\\' ? STREAM_PF_INET : STREAM_PF_UNIX;
@@ -403,13 +422,30 @@ describe('NUT socket layer', function () {
 		expect($result['error'])->toContain('Unable to connect to the NUT server');
 	});
 
+	it('stops at the overall deadline even when the server has more to say', function () use ($pair) {
+		[$client, $server] = $pair(['upsd 2.8.0', 'BEGIN LIST VAR ups', 'VAR ups battery.charge "99"', 'END LIST VAR ups']);
+
+		$started = microtime(true);
+		$result  = apcupsd_nut_query_stream($client, 'nut.example.com', 'ups', '', '', false, 5, microtime(true) - 1);
+
+		expect($result['error'])->toContain('did not answer within 5 seconds');
+		expect(microtime(true) - $started)->toBeLessThan(2);
+
+		fclose($client);
+		fclose($server);
+	});
+
 	it('connects over TCP and reports a server that never answers', function () {
 		$listener = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
 		$port     = (int) substr((string) strrchr((string) stream_socket_get_name($listener, false), ':'), 1);
 
-		$result = apcupsd_nut_query('127.0.0.1', (string) $port, 'ups', '', '', false, 1);
+		$started = microtime(true);
+		$result  = apcupsd_nut_query('127.0.0.1', (string) $port, 'ups', '', '', false, 1);
 
-		expect($result['error'])->toContain('closed the connection');
+		expect($result['error'])->toContain('did not answer within 1 seconds');
+
+		// One second to wait for the reply, never more than twice the timeout in total.
+		expect(microtime(true) - $started)->toBeLessThan(3);
 
 		fclose($listener);
 	});

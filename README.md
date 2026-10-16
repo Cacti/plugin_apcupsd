@@ -87,6 +87,14 @@ type:
   certificate must be trusted by the Cacti poller (the `openssl` PHP extension
   is required).
 
+* **Timeout (seconds)**: how long the poller waits for the NUT server, from 1
+  to 120 seconds (5 by default).  It bounds the connection attempt and each
+  reply, and the connection plus the whole conversation together never take
+  longer than twice the timeout, so an unresponsive server cannot hold up the
+  poller.  The same setting applies to `apcupsd` UPS', where `apcaccess` is
+  stopped if it has not finished in time.  SNMP UPS' keep using the SNMP
+  timeout.
+
 On the NUT server, `upsd` only listens on localhost by default.  To let a
 Cacti poller reach it, add a `LISTEN` line to `upsd.conf` (for example
 `LISTEN 0.0.0.0 3493`), restart `upsd`, and allow the poller through the

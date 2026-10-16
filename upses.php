@@ -145,6 +145,16 @@ $fields_ups_edit = [
 		'placeholder'   => '3551',
 		'max_length'    => '10'
 	],
+	'timeout' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('Timeout (seconds)', 'apcupsd'),
+		'description'   => __('How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS\'s use the SNMP timeout instead.', 'apcupsd'),
+		'value'         => '|arg1:timeout|',
+		'size'          => '5',
+		'default'       => '5',
+		'placeholder'   => '5',
+		'max_length'    => '3'
+	],
 	'nut_spacer' => [
 		'method'        => 'spacer',
 		'friendly_name' => __('NUT Options', 'apcupsd'),
@@ -323,6 +333,7 @@ function form_save(): void {
 		}
 
 		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '^[0-9]+$', true, 3);
+		$save['timeout']      = apcupsd_normalize_timeout(get_nfilter_request_var('timeout'));
 		$save['enabled']      = isset_request_var('enabled') ? 'on' : '';
 
 		if ($save['type_id'] == 3) {
@@ -747,6 +758,7 @@ function ups_edit(): void {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
+			$('#row_timeout').show();
 			$('#row_host_snmp_head').hide();
 			$('[id^="row_snmp"]').hide();
 			$('[id^="row_nut"]').hide();
@@ -759,6 +771,7 @@ function ups_edit(): void {
 			$('#row_spacer1').hide();
 			$('#row_hostname').hide();
 			$('#row_port').hide();
+			$('#row_timeout').hide();
 			$('[id^="row_nut"]').hide();
 			$('#row_host_snmp_head').show();
 			$('[id^="row_snmp"]').show();
@@ -767,6 +780,7 @@ function ups_edit(): void {
 			$('#row_spacer1').hide();
 			$('#row_hostname').show();
 			$('#row_port').show();
+			$('#row_timeout').show();
 			$('#row_host_snmp_head').hide();
 			$('[id^="row_snmp"]').hide();
 			$('[id^="row_nut"]').show();

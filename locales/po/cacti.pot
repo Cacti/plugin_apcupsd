@@ -1087,6 +1087,19 @@ msgstr ""
 msgid "The NUT server did not return any variables for this UPS."
 msgstr ""
 
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr ""
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr ""
+
+#: poller_apcupsd.php
+#, php-format
+msgid "apcaccess failed or did not answer within %s seconds."
+msgstr ""
+
 #: includes/nut.php
 msgid "Invalid NUT hostname, port or UPS name configuration"
 msgstr ""
@@ -1123,6 +1136,11 @@ msgstr ""
 
 #: includes/nut.php
 msgid "The NUT server sent too much data."
+msgstr ""
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
 msgstr ""
 
 #: includes/nut.php

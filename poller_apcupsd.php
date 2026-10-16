@@ -432,7 +432,9 @@ function collect_snmp_ups_data($ups): bool {
 
 /**
  * Polls a single apcaccess-based UPS by locating the apcaccess binary,
- * running it against the UPS's configured hostname/port, and parsing its
+ * running it against the UPS's configured hostname/port (killed by Cacti's
+ * exec_with_timeout() when it does not finish within the UPS's timeout), and
+ * parsing its
  * "KEY: value" output into apcupsd_ups_stats columns (per the global
  * $ups_database mapping), also updating the UPS's linked host's up/down
  * status based on the STATUS field. Called from this script's main flow
@@ -486,10 +488,17 @@ function collect_ups_data($ups) {
 		return 1;
 	}
 
-	$results = exec($command, $output, $return);
+	$timeout = apcupsd_normalize_timeout($ups['timeout'] ?? null);
+	$results = exec_with_timeout($command, $output, $return, $timeout);
 
-	if ($return > 0) {
-		$message = implode(', ', $output);
+	// exec_with_timeout() kills apcaccess when it has not finished in time, which
+	// leaves a non-zero code (or none) and no output, and ends the output with a blank line.
+	$output = array_values(array_filter($output, function($line) {
+		return trim((string) $line) !== '';
+	}));
+
+	if ($return != 0 || !cacti_sizeof($output)) {
+		$message = cacti_sizeof($output) ? implode(', ', $output) : sprintf(__('apcaccess failed or did not answer within %s seconds.', 'apcupsd'), $timeout);
 
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
@@ -575,7 +584,8 @@ function collect_nut_ups_data($ups): bool {
 		$ups['nut_ups_name'],
 		$ups['nut_username'],
 		$ups['nut_password'],
-		$ups['nut_tls'] == 'on'
+		$ups['nut_tls'] == 'on',
+		apcupsd_normalize_timeout($ups['timeout'] ?? null)
 	);
 
 	if ($result['error'] === '' && !cacti_sizeof($result['vars'])) {

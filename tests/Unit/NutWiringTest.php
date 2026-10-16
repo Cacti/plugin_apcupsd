@@ -38,6 +38,15 @@ describe('NUT schema', function () {
 		expect($ups['nut_ups_name']['default'])->toBe('');
 	});
 
+	it('adds a per-UPS timeout that defaults to five seconds', function () use ($columns) {
+		$ups = $columns(apcupsd_ups_table_data());
+
+		expect($ups)->toHaveKey('timeout');
+		expect($ups['timeout']['type'])->toBe('int(10)');
+		expect($ups['timeout']['default'])->toBe(5);
+		expect($ups['timeout']['NULL'])->toBeFalse();
+	});
+
 	it('keeps the NUT settings out of the primary key and indexes', function () {
 		$data = apcupsd_ups_table_data();
 
@@ -113,6 +122,28 @@ describe('NUT wiring', function () {
 
 		expect($dashboard)->toContain("3 => __('NUT', 'apcupsd')");
 		expect($dashboard)->toContain("(int) (\$ups['type_id'] ?? 0) !== 2 ? (\$ups['port']");
+	});
+
+	it('enforces the per-UPS timeout for both the apcaccess and NUT collectors', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain('exec_with_timeout($command, $output, $return, $timeout);');
+		expect($poller)->not->toContain('exec($command');
+		expect($poller)->toContain("\$timeout = apcupsd_normalize_timeout(\$ups['timeout'] ?? null);");
+		expect(preg_match("/\\\$ups\\['nut_tls'\\] == 'on',\\s+apcupsd_normalize_timeout\\(\\\$ups\\['timeout'\\] \\?\\? null\\)\\s+\\);/", $poller))->toBe(1);
+		expect($poller)->toContain('if ($return != 0 || !cacti_sizeof($output)) {');
+
+		$page = $read('upses.php');
+
+		expect($page)->toContain("\$save['timeout']      = apcupsd_normalize_timeout(get_nfilter_request_var('timeout'));");
+		expect($page)->toContain("\$('#row_timeout').show();");
+		expect($page)->toContain("\$('#row_timeout').hide();");
+	});
+
+	it('keeps the timeout field narrow on the form', function () use ($read) {
+		$page = $read('upses.php');
+
+		expect(preg_match("/'timeout' => \\[.*?'size'\\s+=> '5',.*?'max_length'\\s+=> '3'/s", $page))->toBe(1);
 	});
 
 	it('uses no external program or shell to talk to NUT', function () use ($read) {

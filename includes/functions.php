@@ -104,6 +104,25 @@ if (!function_exists('apcupsd_normalize_positive_int')) {
 	}
 }
 
+if (!function_exists('apcupsd_normalize_timeout')) {
+	/**
+	 * Coerces a configured timeout to whole seconds between 1 and 120, falling
+	 * back to a default when the value is not a positive number. Used for the
+	 * per-UPS timeout of the apcaccess and NUT collectors so a blank, zero or
+	 * absurd value can neither disable the timeout nor stall the poller.
+	 *
+	 * @param mixed $value   The configured timeout in seconds.
+	 * @param int   $default The timeout to use when $value is not a positive number.
+	 *
+	 * @return int The timeout in seconds, from 1 to 120.
+	 */
+	function apcupsd_normalize_timeout($value, $default = 5): int {
+		$seconds = apcupsd_normalize_positive_int($value, (int) $default);
+
+		return max(1, min(120, $seconds));
+	}
+}
+
 if (!function_exists('apcupsd_get_site_sql_where')) {
 	/**
 	 * Builds a SQL condition restricting results to a single site id, when

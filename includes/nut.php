@@ -307,18 +307,20 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 	/**
 	 * Run a NUT conversation over an already connected stream.
 	 *
-	 * @param resource $stream   The connected stream.
-	 * @param string   $hostname The server name (kept for TLS peer verification, set on the stream context).
-	 * @param string   $ups      The NUT UPS name to read.
-	 * @param string   $username The upsd.users user; empty for anonymous access.
-	 * @param string   $password The upsd.users password.
-	 * @param bool     $tls      Whether to require STARTTLS before sending credentials.
-	 * @param int      $timeout  Seconds allowed per read; the whole exchange is capped at four times this.
+	 * @param resource   $stream   The connected stream.
+	 * @param string     $hostname The server name (kept for TLS peer verification, set on the stream context).
+	 * @param string     $ups      The NUT UPS name to read.
+	 * @param string     $username The upsd.users user; empty for anonymous access.
+	 * @param string     $password The upsd.users password.
+	 * @param bool       $tls      Whether to require STARTTLS before sending credentials.
+	 * @param int        $timeout  Seconds allowed per read.
+	 * @param float|null $deadline Unix time (microtime) the whole exchange must end by; defaults to twice the timeout from now.
+	 *                             Each read waits no longer than the time left, so the deadline is honoured to within a second.
 	 *
 	 * @return array{vars: array<string, string>, version: string, error: string}
 	 */
-	function apcupsd_nut_query_stream($stream, string $hostname, string $ups, string $username, string $password, bool $tls, int $timeout): array {
-		$deadline = microtime(true) + ($timeout * 4);
+	function apcupsd_nut_query_stream($stream, string $hostname, string $ups, string $username, string $password, bool $tls, int $timeout, ?float $deadline = null): array {
+		$deadline = $deadline ?? microtime(true) + ($timeout * 2);
 
 		stream_set_timeout($stream, $timeout);
 
@@ -326,8 +328,13 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 			fwrite($stream, $command . "\n");
 		};
 
-		$recv = function() use ($stream, $deadline): ?string {
-			$line = microtime(true) > $deadline ? false : fgets($stream, 8192);
+		$recv = function() use ($stream, $deadline, $timeout): ?string {
+			$left = $deadline - microtime(true);
+			$wait = max(0.05, min($timeout, $left));
+
+			stream_set_timeout($stream, (int) floor($wait), (int) (($wait - floor($wait)) * 1000000));
+
+			$line = $left <= 0 ? false : fgets($stream, 8192);
 
 			return $line === false ? null : rtrim($line, "\r\n");
 		};
@@ -336,15 +343,24 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 			return (bool) @stream_socket_enable_crypto($stream, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 		} : null;
 
-		return apcupsd_nut_session($send, $recv, $ups, $username, $password, $enable_tls);
+		$result = apcupsd_nut_session($send, $recv, $ups, $username, $password, $enable_tls);
+
+		// A read that gave up because time ran out looks like a closed connection to the session.
+		if ($result['error'] === __('The NUT server closed the connection unexpectedly.', 'apcupsd') && (stream_get_meta_data($stream)['timed_out'] || microtime(true) >= $deadline)) {
+			$result['error'] = sprintf(__('The NUT server did not answer within %s seconds.', 'apcupsd'), $timeout);
+		}
+
+		return $result;
 	}
 }
 
 if (!function_exists('apcupsd_nut_query')) {
 	/**
-	 * Connect to a NUT server over TCP and read every variable of one UPS. When
-	 * TLS is requested the certificate and host name are verified, so install
-	 * the server's CA (or use a trusted certificate) for STARTTLS to succeed.
+	 * Connect to a NUT server over TCP and read every variable of one UPS. The
+	 * connect and the whole conversation together are bounded by twice the
+	 * timeout. When TLS is requested the certificate and host name are verified,
+	 * so install the server's CA (or use a trusted certificate) for STARTTLS to
+	 * succeed.
 	 *
 	 * @param string $hostname The NUT server's hostname or IP address.
 	 * @param mixed  $port     The NUT server's TCP port.
@@ -352,14 +368,15 @@ if (!function_exists('apcupsd_nut_query')) {
 	 * @param string $username The upsd.users user; empty for anonymous access.
 	 * @param string $password The upsd.users password.
 	 * @param bool   $tls      Whether to require STARTTLS.
-	 * @param int    $timeout  Seconds allowed to connect and per read.
+	 * @param int    $timeout  Seconds allowed to connect and per read, clamped to 1-120.
 	 *
 	 * @return array{vars: array<string, string>, version: string, error: string}
 	 */
 	function apcupsd_nut_query(string $hostname, $port, string $ups, string $username = '', string $password = '', bool $tls = false, int $timeout = 5): array {
+		$started  = microtime(true);
 		$hostname = trim($hostname);
 		$port     = apcupsd_normalize_positive_int($port, APCUPSD_NUT_DEFAULT_PORT);
-		$timeout  = max(1, $timeout);
+		$timeout  = apcupsd_normalize_timeout($timeout);
 
 		if (!apcupsd_nut_valid_host($hostname) || $port > 65535 || !apcupsd_nut_valid_ups_name($ups)) {
 			return ['vars' => [], 'version' => '', 'error' => __('Invalid NUT hostname, port or UPS name configuration', 'apcupsd')];
@@ -379,7 +396,7 @@ if (!function_exists('apcupsd_nut_query')) {
 			return ['vars' => [], 'version' => '', 'error' => sprintf(__('Unable to connect to the NUT server %s: %s', 'apcupsd'), $target, $errstr)];
 		}
 
-		$result = apcupsd_nut_query_stream($stream, $hostname, $ups, $username, $password, $tls, $timeout);
+		$result = apcupsd_nut_query_stream($stream, $hostname, $ups, $username, $password, $tls, $timeout, $started + ($timeout * 2));
 
 		fclose($stream);
 
