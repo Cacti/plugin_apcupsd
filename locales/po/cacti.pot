@@ -65,6 +65,16 @@ msgid "avg %s"
 msgstr ""
 
 #: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr ""
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr ""
+
+#: includes/dashboard.php
 msgid "Average"
 msgstr ""
 
@@ -787,6 +797,34 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: upses.php
+msgid "Run Graph Automation"
+msgstr ""
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr ""
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] ""
+msgstr[1] ""
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr ""
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr ""
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr ""
+
+#: upses.php
 msgid "Reset UPS"
 msgid_plural "Reset UPSes"
 msgstr[0] ""
@@ -982,11 +1020,6 @@ msgid "No readings are available for these gauges yet."
 msgstr ""
 
 #: includes/dashboard.php
-#, php-format
-msgid "min %s · max %s"
-msgstr ""
-
-#: includes/dashboard.php
 msgid "Nominal Battery Voltage"
 msgstr ""
 
@@ -1004,11 +1037,6 @@ msgstr ""
 
 #: includes/dashboard.php upses.php
 msgid "Est. Power"
-msgstr ""
-
-#: includes/dashboard.php
-#, php-format
-msgid "min %s · avg %s · max %s"
 msgstr ""
 
 #: includes/dashboard.php

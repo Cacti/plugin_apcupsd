@@ -91,7 +91,7 @@ describe('estimated watts wiring', function () {
 			expect($source)->toContain("\$th(__('{$label}', 'apcupsd')");
 		}
 
-		expect($source)->toContain("class=\"apcupsdDashSortable'");
+		expect($source)->toContain("\$classes = ['apcupsdDashSortable'];");
 		expect($source)->toContain('data-sort="num"');
 		expect($source)->toContain('data-sort-value="');
 		expect($source)->not->toContain('apcupsdDashSortBtn');
@@ -125,10 +125,10 @@ describe('estimated watts wiring', function () {
 		$source = $read('includes/dashboard.php');
 
 		foreach (['Load', 'Charge', 'Time Left', 'Est. Power'] as $label) {
-			expect($source)->toContain("\$th(__('{$label}', 'apcupsd'), true, true)");
+			expect($source)->toContain("\$th(__('{$label}', 'apcupsd'), true, 'right')");
 		}
 
-		expect($source)->toContain("\$th(__('Last Updated', 'apcupsd'), false, true)");
+		expect($source)->toContain("\$th(__('Last Updated', 'apcupsd'), false, 'right')");
 		expect($source)->toContain("'<td class=\"apcupsdDashNum\">' . html_escape((string) (\$ups['last_updated']");
 
 		$css = $read('css/apcupsd.css');
@@ -136,6 +136,24 @@ describe('estimated watts wiring', function () {
 		// Must outrank ".apcupsdDashTable th, .apcupsdDashTable td { text-align: left }".
 		expect($css)->toContain('.apcupsdDashTable td.apcupsdDashNum,');
 		expect($css)->toContain('.apcupsdDashTable th.apcupsdDashNum {');
+	});
+
+	it('centres the Status column of the UPSes card, header and cells', function () use ($read) {
+		$source = $read('includes/dashboard.php');
+
+		expect($source)->toContain("\$th(__('Status', 'apcupsd'), false, 'center')");
+		expect($source)->toContain("elseif (\$align === 'center') {");
+		expect($source)->toContain("'<td class=\"apcupsdDashCenter\">' . apcupsd_dashboard_status_pill(");
+
+		// No other column is centred by accident.
+		expect(substr_count($source, ", 'center')"))->toBe(1);
+
+		$css = $read('css/apcupsd.css');
+
+		// Must outrank ".apcupsdDashTable th, .apcupsdDashTable td { text-align: left }".
+		expect($css)->toContain('.apcupsdDashTable td.apcupsdDashCenter,');
+		expect($css)->toContain('.apcupsdDashTable th.apcupsdDashCenter {');
+		expect(preg_match('/\.apcupsdDashTable th\.apcupsdDashCenter \{\s*text-align: center;\s*\}/', $css))->toBe(1);
 	});
 
 	it('adds a sortable estimated power column to the UPS list', function () use ($read) {

@@ -530,6 +530,13 @@
 	white-space: nowrap;
 }
 
+/* Centred columns, such as the status pill. Must outrank
+   ".apcupsdDashTable th, .apcupsdDashTable td { text-align: left }". */
+.apcupsdDashTable td.apcupsdDashCenter,
+.apcupsdDashTable th.apcupsdDashCenter {
+	text-align: center;
+}
+
 /* Sortable column headers (same behaviour as the HMIB dashboards): click or
    press Enter/Space to sort; the arrow shows the active direction. */
 .apcupsdDashTable th.apcupsdDashSortable {

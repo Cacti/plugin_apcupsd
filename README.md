@@ -57,6 +57,15 @@ After you have installed the plugin, install the Device Package in the
 templates folder from Console > Import/Export > Import Package.  This 
 Device Template will be used for showing available graphs.
 
+The dashboards read each reading's min, average and max from the RRD files of
+the UPS's Cacti Device, so the device needs its graphs.  They are created when
+the device is first added, but if a device has none (for example the Device
+Package was imported afterwards), tick the UPS on the UPSes page and choose
+`Run Graph Automation` from the action dropdown.  It runs Cacti's graph
+automation for the linked device, the same as `Apply Automation Rules` on the
+Devices page, and leaves graphs that already exist alone.  It needs the
+`Sites/Devices/Data` permission.
+
 ## Monitoring UPS' with NUT
 
 Support for Network UPS Tools (NUT) is new in version 1.4.0.  The plugin talks

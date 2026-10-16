@@ -24,6 +24,16 @@
 
 var apcupsdDashDragging = null;
 
+/** Cacti's browser auto-logout timer as it was when this script loaded, before the
+ *  dashboard replaces it with its own refresh. Choosing "No Refresh" puts it back (a
+ *  page reload used to). It is kept across re-runs of this script, which can find the
+ *  dashboard's own override in place of the original. */
+var apcupsdDashCoreTimer = typeof apcupsdDashCoreTimer === 'undefined' ? null : apcupsdDashCoreTimer;
+
+if (typeof refreshIsLogout !== 'undefined' && refreshIsLogout === true && typeof refreshMSeconds !== 'undefined' && typeof refreshPage !== 'undefined') {
+	apcupsdDashCoreTimer = {ms: refreshMSeconds, page: refreshPage};
+}
+
 /** The endpoint/scope configuration for a grid, read from its data attributes so
  *  the per-UPS and fleet dashboards can share this engine. */
 function apcupsdDashCfg(grid) {
@@ -34,7 +44,8 @@ function apcupsdDashCfg(grid) {
 		refreshAction: grid.dataset.refreshAction || 'dashboard_refresh',
 		scopeParam:    grid.dataset.scopeParam    || '',
 		scope:         grid.dataset.scope         || '',
-		reload:        grid.dataset.reload        || 'upses.php'
+		reload:        grid.dataset.reload        || 'upses.php',
+		refreshPage:   grid.dataset.refreshPage   || ''
 	};
 }
 
@@ -241,15 +252,14 @@ function initApcupsdDashboard() {
 			});
 		}
 
-		// Changing the interval persists the preference through a CSRF-protected
-		// POST (never a drive-by GET), then reloads so Cacti's page refresh applies.
+		// Changing the interval persists the preference through a CSRF-protected POST
+		// (never a drive-by GET), then applies it straight away without reloading the
+		// page. If the save fails the dropdown goes back to the interval in force.
 		var interval = document.getElementById('apcupsd_dashboard_refresh');
 		if (interval) {
+			interval.dataset.previous = interval.value;
 			$(interval).off('change.apcupsddash').on('change.apcupsddash', function() {
-				var cfg = apcupsdDashCfg(grid);
-				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: this.value}), null, 'json').always(function() {
-					window.location = cfg.reload;
-				});
+				apcupsdDashSaveRefresh(grid, this);
 			});
 		}
 
@@ -508,6 +518,113 @@ function apcupsdDashStartRefresh() {
 	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
 }
 
+/** Put Cacti's own browser auto-logout timer back, as it was before the dashboard
+ *  replaced it with a refresh. Does nothing when the page had no such timer. */
+function apcupsdDashRestoreCoreTimer() {
+	if (apcupsdDashCoreTimer === null || typeof setupPageTimeout !== 'function') {
+		return;
+	}
+
+	refreshIsLogout = true;
+	refreshPage = apcupsdDashCoreTimer.page;
+	refreshMSeconds = apcupsdDashCoreTimer.ms;
+
+	if (typeof refreshFunction !== 'undefined') {
+		refreshFunction = '';
+	}
+
+	setupPageTimeout();
+}
+
+/** Apply a new auto-refresh interval without reloading the page: stop whichever
+ *  timer is running, then start one for the new interval, or for 0 (off) hand the
+ *  page back to Cacti's own timer. */
+function apcupsdDashSetRefresh(seconds, page) {
+	if (typeof myRefresh !== 'undefined') {
+		clearTimeout(myRefresh);
+	}
+	if (apcupsdDashTimer !== null) {
+		clearTimeout(apcupsdDashTimer);
+		apcupsdDashTimer = null;
+	}
+
+	if (seconds <= 0) {
+		apcupsdDashRestoreCoreTimer();
+		return;
+	}
+
+	refreshIsLogout = false;
+	refreshPage = page;
+	refreshMSeconds = seconds * 1000;
+	apcupsdDashStartRefresh();
+}
+
+/** Set a dropdown's value and bring the widget Cacti draws over it (Select2 on
+ *  1.2.x, a jQuery UI selectmenu on 1.3) back in line, without running the change
+ *  handlers that save a preference. */
+function apcupsdDashSetSelect(select, value) {
+	var $select = $(select);
+
+	select.value = value;
+
+	if ($select.data('select2')) {
+		$select.trigger('change.select2');
+	}
+
+	if ($select.data('ui-selectmenu')) {
+		$select.selectmenu('refresh');
+	}
+}
+
+var apcupsdDashRefreshSaving = false;
+var apcupsdDashRefreshPending = false;
+
+/** Save the Refresh dropdown's choice, then apply it. One save is in flight at a
+ *  time: a choice made meanwhile is sent once it settles, so saves cannot finish
+ *  out of order and only a value that was actually saved updates the timer or
+ *  becomes the one a failed save rolls back to. */
+function apcupsdDashSaveRefresh(grid, select) {
+	if (apcupsdDashRefreshSaving) {
+		apcupsdDashRefreshPending = true;
+		return;
+	}
+
+	apcupsdDashRefreshSaving = true;
+
+	var cfg = apcupsdDashCfg(grid);
+	var value = select.value;
+	var saved = false;
+	var message = '';
+
+	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: value}), null, 'json').done(function(data) {
+		if (data && data.ok) {
+			saved = true;
+			select.dataset.previous = value;
+			apcupsdDashSetRefresh(parseInt(value, 10) || 0, cfg.refreshPage);
+		} else if (data && data.error) {
+			message = data.error;
+		}
+	}).always(function() {
+		apcupsdDashRefreshSaving = false;
+
+		if (apcupsdDashRefreshPending) {
+			apcupsdDashRefreshPending = false;
+
+			if (select.value !== select.dataset.previous) {
+				apcupsdDashSaveRefresh(grid, select);
+				return;
+			}
+		}
+
+		if (saved) {
+			apcupsdDashShowStatus(grid, '');
+		} else {
+			apcupsdDashSetSelect(select, select.dataset.previous);
+			apcupsdDashShowStatus(grid, message);
+		}
+	});
+}
+
 /** Open a copy of a card's body in a large modal dialog. */
 function apcupsdDashMaximize(card) {
 	var dialog = document.getElementById('apcupsd_dashboard_dialog');
@@ -562,6 +679,15 @@ function apcupsdDashSyncAddOptions(grid) {
 	});
 }
 
+/** Show (or clear, with an empty message) the status line above the grid. */
+function apcupsdDashShowStatus(grid, message) {
+	var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
+	if (status) {
+		status.textContent = message;
+		status.hidden = !status.textContent;
+	}
+}
+
 /** Serialize layout POSTs so rapid actions can't persist out of order: one
  *  request is in flight at a time, and a save requested meanwhile is coalesced
  *  into a single follow-up that reads the latest DOM, so the final state wins. */
@@ -592,11 +718,7 @@ function apcupsdDashSaveLayout(grid) {
 		action: cfg.layoutAction,
 		layout: JSON.stringify({order: order, expanded: expanded})
 	}), null, 'json').done(function(data) {
-		var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
-		if (status) {
-			status.textContent = data && data.error ? data.error : '';
-			status.hidden = !status.textContent;
-		}
+		apcupsdDashShowStatus(grid, data && data.error ? data.error : '');
 	}).always(function() {
 		apcupsdDashSaveInFlight = false;
 		if (apcupsdDashSaveQueued) {
