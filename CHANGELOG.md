@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* feature: Share the UPS Dashboard card arrangement across every UPS (graph cards stay per UPS since they belong to each device), hide N/A rows in the UPS Information card, combine Cable and Driver on one row, and add a per-UPS Estimated Power gauge card that reuses the shared nominal power x load % estimate
+
 * feature: Estimate each UPS's power draw as nominal power x load % for UPSes that do not report real wattage, and show it on the Fleet Dashboard (an "Est. Power" tile, a new "Fleet Power" gauge card of total estimated watts against rated capacity, and an "Est. Power" column with a fleet total in the UPSes card) and as a sortable "Est. Power" column in the UPSes list
 * feature: Make the Fleet Dashboard UPSes table sortable by UPS, Status, Load, Charge, Time Left, Est. Power and Last Updated; the choice persists in the browser and survives card refreshes
 * issue: Stop the dashboard auto-refresh interval following the user to another page by driving Cacti's `refreshMSeconds`/`refreshPage` page-timer globals (as the Graphs page does) instead of storing the interval in the session
