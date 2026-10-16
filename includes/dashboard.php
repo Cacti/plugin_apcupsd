@@ -1351,6 +1351,39 @@ if (!function_exists('apcupsd_dashboard_layout_save')) {
 	}
 }
 
+if (!function_exists('apcupsd_dashboard_print_refresh')) {
+	/**
+	 * Arm Cacti's page timer for a dashboard through the refreshMSeconds,
+	 * refreshPage and refreshIsLogout globals that Cacti's setupPageTimeout()
+	 * reads, the same way graph_view.php does. Nothing is stored in the session
+	 * (Cacti's session-based page refresh leaves its value there for whichever
+	 * page renders next), so the interval cannot follow the user to another
+	 * page: Cacti clears its timer when navigating, and the next page's footer
+	 * re-emits its own refresh globals. The script runs from a ready callback so
+	 * it applies after Cacti's footer script, and only while the dashboard is
+	 * still shown.
+	 *
+	 * @param int    $seconds The auto-refresh interval; 0 or less leaves Cacti's default timer.
+	 * @param string $page    The URL Cacti re-fetches on each tick.
+	 *
+	 * @return void
+	 */
+	function apcupsd_dashboard_print_refresh(int $seconds, string $page): void {
+		if ($seconds <= 0) {
+			return;
+		}
+
+		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . '>'
+			. '$(function() {'
+			. 'if (!document.getElementById("apcupsd_dashboard") || typeof setupPageTimeout !== "function") { return; }'
+			. 'refreshIsLogout = false;'
+			. 'refreshPage = ' . json_encode($page, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';'
+			. 'refreshMSeconds = ' . ($seconds * 1000) . ';'
+			. 'setupPageTimeout();'
+			. '});</script>';
+	}
+}
+
 if (!function_exists('apcupsd_dashboard_refresh_save')) {
 	/**
 	 * Persist the posted auto-refresh interval for the current user. Accepts only
@@ -1449,13 +1482,7 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		$current_refresh = (int) read_user_setting('apcupsd_dashboard_refresh', 0);
 
-		if ($current_refresh > 0 && function_exists('set_page_refresh')) {
-			set_page_refresh([
-				'seconds' => $current_refresh,
-				'page'    => $config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . $ups_id . '&header=false',
-				'logout'  => 'false'
-			]);
-		}
+		apcupsd_dashboard_print_refresh($current_refresh, $config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . $ups_id . '&header=false');
 
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 
@@ -1594,8 +1621,9 @@ if (!function_exists('apcupsd_dashboard_tabs')) {
 if (!function_exists('apcupsd_fleet_stats')) {
 	/**
 	 * Memoized fleet aggregates: UPS counts by status (online/on-battery/other/
-	 * disabled) and the min/avg/max of load, battery charge and runtime across
-	 * the enabled UPSes.
+	 * disabled), the min/avg/max of load, battery charge and runtime across the
+	 * enabled UPSes, and the estimated total power draw (nominal power x load %)
+	 * with the rated capacity and UPS count it was summed over.
 	 *
 	 * @return array The aggregate row.
 	 */
@@ -1617,7 +1645,10 @@ if (!function_exists('apcupsd_fleet_stats')) {
 				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_battery_charge END) AS maxCharge,
 				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS minTime,
 				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS avgTime,
-				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS maxTime
+				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS maxTime,
+				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power * stats.ups_load_percent / 100 END) AS estWatts,
+				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power END) AS estCapacity,
+				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN 1 ELSE 0 END) AS estCount
 				FROM apcupsd_ups AS ups
 				LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id");
 
@@ -1640,6 +1671,7 @@ if (!function_exists('apcupsd_fleet_card_meta')) {
 			'overview' => ['title' => __('Fleet Overview', 'apcupsd'),    'span' => 4, 'expandable' => false],
 			'status'   => ['title' => __('Status Distribution', 'apcupsd'), 'span' => 4, 'expandable' => false],
 			'readings' => ['title' => __('Fleet Readings', 'apcupsd'),     'span' => 4, 'expandable' => false],
+			'power'    => ['title' => __('Fleet Power', 'apcupsd'),        'span' => 4, 'expandable' => false],
 			'gauges'   => ['title' => __('Fleet Gauges', 'apcupsd'),       'span' => 4, 'expandable' => false],
 			'upses'    => ['title' => __('UPSes', 'apcupsd'),              'span' => 8, 'expandable' => true],
 		];
@@ -1838,6 +1870,10 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 		$onbatt   = (int) ($stats['onbatt'] ?? 0);
 		$other    = max(0, $enabled - $online - $onbatt);
 
+		$est_count    = (int) ($stats['estCount'] ?? 0);
+		$est_watts    = isset($stats['estWatts']) && is_numeric($stats['estWatts']) ? (float) $stats['estWatts'] : null;
+		$est_capacity = isset($stats['estCapacity']) && is_numeric($stats['estCapacity']) ? (float) $stats['estCapacity'] : null;
+
 		ob_start();
 
 		switch ($key) {
@@ -1854,6 +1890,11 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				print apcupsd_fleet_tile(number_format_i18n($onbatt, 0), __('On Battery', 'apcupsd'), $onbatt > 0 ? 'down' : '');
 				print apcupsd_fleet_tile(number_format_i18n($other, 0), __('Other', 'apcupsd'), $other > 0 ? 'rec' : '');
 				print apcupsd_fleet_tile(number_format_i18n($disabled, 0), __('Disabled', 'apcupsd'));
+
+				if ($est_count > 0) {
+					print apcupsd_fleet_tile(apcupsd_dashboard_format_value($est_watts, ' W'), __('Est. Power', 'apcupsd'));
+				}
+
 				print '</div>';
 
 				break;
@@ -1912,6 +1953,25 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				print apcupsd_dashboard_bullet(__('Time Left', 'apcupsd'), null, $time['min'], $time['avg'], $max_time, $time_scale, ' min', apcupsd_dashboard_metric_severity('timeleft', $time['avg']));
 
 				break;
+			case 'power':
+				if ($est_count === 0 || $est_watts === null || $est_capacity === null || $est_capacity <= 0) {
+					print '<p class="apcupsdDashEmpty">' . __esc('Estimated power needs an enabled UPS with a nominal power rating and a load reading.', 'apcupsd') . '</p>';
+
+					break;
+				}
+
+				$est_load = $est_watts / $est_capacity * 100;
+				$est_sub  = __('%s of %s rated', apcupsd_dashboard_format_value($est_load, '%'), apcupsd_dashboard_format_value($est_capacity, ' W'), 'apcupsd');
+
+				print '<div class="apcupsdGaugeGrid"><div class="apcupsdGaugeCell">'
+					. '<span class="apcupsdGaugeCellLabel">' . __esc('Estimated Power', 'apcupsd') . '</span>'
+					. apcupsd_dashboard_gauge($est_watts, null, null, $est_capacity, apcupsd_dashboard_metric_severity('load_percent', $est_load), apcupsd_dashboard_format_value($est_watts, ' W'), $est_sub)
+					. '</div></div>';
+
+				print '<p class="apcupsdDashNote">' . __esc('Estimated as nominal power x load %, from the latest poll.', 'apcupsd') . ' '
+					. html_escape(__('Counted %s of %s enabled UPSes.', number_format_i18n($est_count, 0), number_format_i18n($enabled, 0), 'apcupsd')) . '</p>';
+
+				break;
 			case 'gauges':
 				if ($enabled === 0) {
 					print '<p class="apcupsdDashEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
@@ -1952,19 +2012,32 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				break;
 			case 'upses':
 				$upses = db_fetch_assoc("SELECT ups.id, ups.name, ups.host_id, ups.enabled, ups.last_updated,
-					stats.ups_status, stats.ups_load_percent, stats.ups_battery_charge, stats.ups_timeleft
+					stats.ups_status, stats.ups_load_percent, stats.ups_battery_charge, stats.ups_timeleft, stats.ups_nominal_power
 					FROM apcupsd_ups AS ups
 					LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id
 					ORDER BY ups.name");
 
-				print '<table class="apcupsdDashTable"><thead><tr>'
+				// Headers carry data-sort-* hooks that js/apcupsd_dashboard.js uses to sort
+				// the rows client-side; numeric columns open descending (largest first).
+				$th = function(string $key, string $label, string $type, string $class = '') {
+					return '<th class="apcupsdDashSortable' . ($class !== '' ? ' ' . $class : '') . '" data-sort-key="' . $key . '" data-sort-type="' . $type . '" data-sort-first="' . ($type === 'num' ? 'desc' : 'asc') . '" aria-sort="none">'
+						. '<button type="button" class="apcupsdDashSortBtn">' . html_escape($label) . '</button></th>';
+				};
+
+				// Empty data-sort values (N/A) always sort last.
+				$sort_num = function($value): string {
+					return $value !== null && is_numeric($value) ? (string) (float) $value : '';
+				};
+
+				print '<table class="apcupsdDashTable" data-sort-table="fleet_upses"><thead><tr>'
 					. '<th></th>'
-					. '<th>' . __esc('UPS', 'apcupsd') . '</th>'
-					. '<th>' . __esc('Status', 'apcupsd') . '</th>'
-					. '<th class="apcupsdDashNum">' . __esc('Load', 'apcupsd') . '</th>'
-					. '<th class="apcupsdDashNum">' . __esc('Charge', 'apcupsd') . '</th>'
-					. '<th class="apcupsdDashNum">' . __esc('Time Left', 'apcupsd') . '</th>'
-					. '<th>' . __esc('Last Updated', 'apcupsd') . '</th>'
+					. $th('name', __('UPS', 'apcupsd'), 'text')
+					. $th('status', __('Status', 'apcupsd'), 'text')
+					. $th('load', __('Load', 'apcupsd'), 'num', 'apcupsdDashNum')
+					. $th('charge', __('Charge', 'apcupsd'), 'num', 'apcupsdDashNum')
+					. $th('timeleft', __('Time Left', 'apcupsd'), 'num', 'apcupsdDashNum')
+					. $th('power', __('Est. Power', 'apcupsd'), 'num', 'apcupsdDashNum')
+					. $th('updated', __('Last Updated', 'apcupsd'), 'text')
 					. '</tr></thead><tbody>';
 
 				if (cacti_sizeof($upses)) {
@@ -1975,21 +2048,36 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 						$charge = isset($ups['ups_battery_charge']) && is_numeric($ups['ups_battery_charge']) ? number_format_i18n((float) $ups['ups_battery_charge'], 0) . '%' : __('N/A', 'apcupsd');
 						$time   = isset($ups['ups_timeleft']) && is_numeric($ups['ups_timeleft']) ? number_format_i18n((float) $ups['ups_timeleft'], 0) . ' ' . __('min', 'apcupsd') : __('N/A', 'apcupsd');
 
+						// A disabled UPS is not being polled, so its last reading is not an estimate.
+						$watts = ($ups['enabled'] ?? '') === 'on' ? apcupsd_estimate_watts($ups['ups_nominal_power'] ?? null, $ups['ups_load_percent'] ?? null) : null;
+
 						print '<tr>'
 							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
-							. '<td><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
-							. '<td>' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
-							. '<td class="apcupsdDashNum">' . html_escape($load) . '</td>'
-							. '<td class="apcupsdDashNum">' . html_escape($charge) . '</td>'
-							. '<td class="apcupsdDashNum">' . html_escape($time) . '</td>'
-							. '<td>' . html_escape((string) ($ups['last_updated'] ?? '')) . '</td>'
+							. '<td data-sort="' . html_escape((string) $ups['name']) . '"><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
+							. '<td data-sort="' . html_escape((string) ($ups['ups_status'] ?? '')) . '">' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_load_percent'] ?? null) . '">' . html_escape($load) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_battery_charge'] ?? null) . '">' . html_escape($charge) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_timeleft'] ?? null) . '">' . html_escape($time) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($watts) . '">' . html_escape(apcupsd_dashboard_format_value($watts, ' W')) . '</td>'
+							. '<td data-sort="' . html_escape((string) ($ups['last_updated'] ?? '')) . '">' . html_escape((string) ($ups['last_updated'] ?? '')) . '</td>'
 							. '</tr>';
 					}
 				} else {
-					print '<tr class="apcupsdDashEmptyRow"><td colspan="7" class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</td></tr>';
+					print '<tr class="apcupsdDashEmptyRow"><td colspan="8" class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</td></tr>';
 				}
 
-				print '</tbody></table>';
+				print '</tbody>';
+
+				if ($est_count > 0) {
+					print '<tfoot><tr class="apcupsdDashTotalRow">'
+						. '<td></td>'
+						. '<td colspan="5">' . __esc('Fleet Total', 'apcupsd') . '</td>'
+						. '<td class="apcupsdDashNum">' . html_escape(apcupsd_dashboard_format_value($est_watts, ' W')) . '</td>'
+						. '<td></td>'
+						. '</tr></tfoot>';
+				}
+
+				print '</table>';
 
 				break;
 		}
@@ -2185,13 +2273,7 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 
 		$current_refresh = (int) read_user_setting('apcupsd_summary_refresh', 0);
 
-		if ($current_refresh > 0 && function_exists('set_page_refresh')) {
-			set_page_refresh([
-				'seconds' => $current_refresh,
-				'page'    => $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false',
-				'logout'  => 'false'
-			]);
-		}
+		apcupsd_dashboard_print_refresh($current_refresh, $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false');
 
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 

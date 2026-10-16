@@ -989,3 +989,39 @@ msgstr ""
 #: includes/dashboard.php
 msgid "No readings are available for this gauge yet."
 msgstr ""
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr ""
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "%s of %s rated"
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Counted %s of %s enabled UPSes."
+msgstr ""
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr ""
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr ""

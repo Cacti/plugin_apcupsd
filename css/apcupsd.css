@@ -524,6 +524,49 @@
 	white-space: nowrap;
 }
 
+/* Sortable column headers: the button inherits the header look and shows an
+   arrow for the active direction (exposed to assistive tech via aria-sort). */
+.apcupsdDashSortBtn {
+	appearance: none;
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	font-weight: inherit;
+	color: inherit;
+	cursor: pointer;
+	text-align: inherit;
+}
+
+.apcupsdDashSortBtn:hover,
+.apcupsdDashSortBtn:focus-visible {
+	text-decoration: underline;
+}
+
+.apcupsdDashSortable[aria-sort="ascending"] .apcupsdDashSortBtn::after {
+	content: " \25B2";
+	font-size: 0.75em;
+}
+
+.apcupsdDashSortable[aria-sort="descending"] .apcupsdDashSortBtn::after {
+	content: " \25BC";
+	font-size: 0.75em;
+}
+
+/* Fleet total row under the UPSes table. */
+.apcupsdDashTotalRow > td {
+	border-top: 2px solid color-mix(in srgb, currentColor 22%, transparent);
+	font-weight: 600;
+}
+
+.apcupsdDashNote {
+	margin: 8px 0 0;
+	text-align: center;
+	font-size: 11px;
+	color: color-mix(in srgb, currentColor 65%, transparent);
+}
+
 /* Narrow the grid before cards get cramped. */
 @media (max-width: 1200px) {
 	.apcupsdDashGrid {

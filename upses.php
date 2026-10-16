@@ -954,7 +954,10 @@ function upses(): void {
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
-	$ups_list = db_fetch_assoc_prepared("SELECT ups.*, stats.*
+	$ups_list = db_fetch_assoc_prepared("SELECT ups.*, stats.*,
+		CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0
+			THEN stats.ups_nominal_power * stats.ups_load_percent / 100
+		END AS est_watts
 		FROM apcupsd_ups AS ups
 		LEFT JOIN apcupsd_ups_stats AS stats
 		ON ups.id = stats.ups_id
@@ -1020,6 +1023,12 @@ function upses(): void {
 			'sort'    => 'DESC',
 			'tip'     => __('The Load Percent of the monitored UPS on the target Host.', 'apcupsd')
 		],
+		'est_watts' => [
+			'display' => __('Est. Power', 'apcupsd'),
+			'align'   => 'right',
+			'sort'    => 'DESC',
+			'tip'     => __('The estimated power draw in watts: the nominal power rating multiplied by the Load Percent.', 'apcupsd')
+		],
 		'ups_timeleft' => [
 			'display' => __('Time Left', 'apcupsd'),
 			'align'   => 'right',
@@ -1071,6 +1080,7 @@ function upses(): void {
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
 			form_selectable_ecell(checkNullandReturn($ups['ups_load_percent']), $ups['id'], '', 'right');
+			form_selectable_ecell($ups['est_watts'] === null ? checkNullandReturn(null) : apcupsd_dashboard_format_value((float) $ups['est_watts'], ' W'), $ups['id'], '', 'right');
 			form_selectable_ecell(round((float)($ups['ups_timeleft'] ?? 0), 2), $ups['id'], '', 'right');
 
 			if ($ups['type_id'] == 1) {

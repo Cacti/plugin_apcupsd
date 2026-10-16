@@ -26,6 +26,36 @@ if (!function_exists('apcupsd_host_template_imported')) {
 	}
 }
 
+if (!function_exists('apcupsd_estimate_watts')) {
+	/**
+	 * Estimates a UPS's real output power in watts as
+	 * nominal power x load percent / 100, for UPSes that do not report a
+	 * measured wattage. Called from the Fleet Dashboard aggregates and the UPS
+	 * tables so every view derives the figure the same way.
+	 *
+	 * @param mixed $nominal_power The UPS nominal power rating in watts.
+	 * @param mixed $load_percent  The UPS load as a percentage of that rating.
+	 *
+	 * @return float|null The estimated watts, or null when either input is
+	 *                    missing, non-numeric or negative, or when the
+	 *                    nominal power is not a positive rating.
+	 */
+	function apcupsd_estimate_watts($nominal_power, $load_percent): ?float {
+		if (!is_numeric($nominal_power) || !is_numeric($load_percent)) {
+			return null;
+		}
+
+		$nominal = (float) $nominal_power;
+		$load    = (float) $load_percent;
+
+		if ($nominal <= 0 || $load < 0) {
+			return null;
+		}
+
+		return $nominal * $load / 100;
+	}
+}
+
 if (!function_exists('apcupsd_normalize_positive_int')) {
 	/**
 	 * Coerces a value (int, numeric string, or otherwise) to a positive
