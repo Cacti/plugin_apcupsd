@@ -34,7 +34,8 @@ function apcupsdDashCfg(grid) {
 		refreshAction: grid.dataset.refreshAction || 'dashboard_refresh',
 		scopeParam:    grid.dataset.scopeParam    || '',
 		scope:         grid.dataset.scope         || '',
-		reload:        grid.dataset.reload        || 'upses.php'
+		reload:        grid.dataset.reload        || 'upses.php',
+		refreshPage:   grid.dataset.refreshPage   || ''
 	};
 }
 
@@ -241,14 +242,29 @@ function initApcupsdDashboard() {
 			});
 		}
 
-		// Changing the interval persists the preference through a CSRF-protected
-		// POST (never a drive-by GET), then reloads so Cacti's page refresh applies.
+		// Changing the interval persists the preference through a CSRF-protected POST
+		// (never a drive-by GET), then applies it straight away without reloading the
+		// page. If the save fails the dropdown goes back to the interval in force.
 		var interval = document.getElementById('apcupsd_dashboard_refresh');
 		if (interval) {
+			interval.dataset.previous = interval.value;
 			$(interval).off('change.apcupsddash').on('change.apcupsddash', function() {
+				var select = this;
 				var cfg = apcupsdDashCfg(grid);
-				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: this.value}), null, 'json').always(function() {
-					window.location = cfg.reload;
+				var revert = function(message) {
+					select.value = select.dataset.previous;
+					apcupsdDashShowStatus(grid, message);
+				};
+				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: select.value}), null, 'json').done(function(data) {
+					if (!data || !data.ok) {
+						revert(data && data.error ? data.error : '');
+						return;
+					}
+					select.dataset.previous = select.value;
+					apcupsdDashShowStatus(grid, '');
+					apcupsdDashSetRefresh(parseInt(select.value, 10) || 0, cfg.refreshPage);
+				}).fail(function() {
+					revert('');
 				});
 			});
 		}
@@ -508,6 +524,27 @@ function apcupsdDashStartRefresh() {
 	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
 }
 
+/** Apply a new auto-refresh interval without reloading the page: stop whichever
+ *  timer is running, then start one for the new interval unless it is 0 (off). */
+function apcupsdDashSetRefresh(seconds, page) {
+	if (typeof myRefresh !== 'undefined') {
+		clearTimeout(myRefresh);
+	}
+	if (apcupsdDashTimer !== null) {
+		clearTimeout(apcupsdDashTimer);
+		apcupsdDashTimer = null;
+	}
+
+	if (seconds <= 0) {
+		return;
+	}
+
+	refreshIsLogout = false;
+	refreshPage = page;
+	refreshMSeconds = seconds * 1000;
+	apcupsdDashStartRefresh();
+}
+
 /** Open a copy of a card's body in a large modal dialog. */
 function apcupsdDashMaximize(card) {
 	var dialog = document.getElementById('apcupsd_dashboard_dialog');
@@ -562,6 +599,15 @@ function apcupsdDashSyncAddOptions(grid) {
 	});
 }
 
+/** Show (or clear, with an empty message) the status line above the grid. */
+function apcupsdDashShowStatus(grid, message) {
+	var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
+	if (status) {
+		status.textContent = message;
+		status.hidden = !status.textContent;
+	}
+}
+
 /** Serialize layout POSTs so rapid actions can't persist out of order: one
  *  request is in flight at a time, and a save requested meanwhile is coalesced
  *  into a single follow-up that reads the latest DOM, so the final state wins. */
@@ -592,11 +638,7 @@ function apcupsdDashSaveLayout(grid) {
 		action: cfg.layoutAction,
 		layout: JSON.stringify({order: order, expanded: expanded})
 	}), null, 'json').done(function(data) {
-		var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
-		if (status) {
-			status.textContent = data && data.error ? data.error : '';
-			status.hidden = !status.textContent;
-		}
+		apcupsdDashShowStatus(grid, data && data.error ? data.error : '');
 	}).always(function() {
 		apcupsdDashSaveInFlight = false;
 		if (apcupsdDashSaveQueued) {

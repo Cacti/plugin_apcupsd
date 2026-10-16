@@ -1809,8 +1809,9 @@ if (!function_exists('apcupsd_dashboard')) {
 		apcupsd_dashboard_init_timespan();
 
 		$current_refresh = (int) read_user_setting('apcupsd_dashboard_refresh', 0);
+		$refresh_page    = $config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . $ups_id . '&header=false';
 
-		apcupsd_dashboard_print_refresh($current_refresh, $config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . $ups_id . '&header=false');
+		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
 
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 
@@ -1885,6 +1886,7 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid" data-ups="' . $ups_id . '"'
 			. ' data-scope-param="id" data-scope="' . $ups_id . '"'
+			. ' data-refresh-page="' . html_escape($refresh_page) . '"'
 			. ' data-reload="' . html_escape('upses.php?action=view&id=' . $ups_id) . '">';
 
 		foreach ($layout['order'] as $key) {
@@ -2350,9 +2352,17 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 
 				// Sortable headers follow the HMIB dashboards: js/apcupsd_dashboard.js sorts
 				// the rows client-side, numeric columns (data-sort="num") by the cell's
-				// data-sort-value and the rest by their text.
-				$th = function(string $label, bool $numeric = false, bool $right = false) {
-					return '<th class="apcupsdDashSortable' . ($right ? ' apcupsdDashNum' : '') . '"' . ($numeric ? ' data-sort="num"' : '') . '>' . html_escape($label) . '</th>';
+				// data-sort-value and the rest by their text. $align is '', 'right' or 'center'.
+				$th = function(string $label, bool $numeric = false, string $align = '') {
+					$classes = ['apcupsdDashSortable'];
+
+					if ($align === 'right') {
+						$classes[] = 'apcupsdDashNum';
+					} elseif ($align === 'center') {
+						$classes[] = 'apcupsdDashCenter';
+					}
+
+					return '<th class="' . implode(' ', $classes) . '"' . ($numeric ? ' data-sort="num"' : '') . '>' . html_escape($label) . '</th>';
 				};
 
 				$sort_num = function($value): string {
@@ -2362,12 +2372,12 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				print '<table class="apcupsdDashTable"><thead><tr>'
 					. '<th></th>'
 					. $th(__('UPS', 'apcupsd'))
-					. $th(__('Status', 'apcupsd'))
-					. $th(__('Load', 'apcupsd'), true, true)
-					. $th(__('Charge', 'apcupsd'), true, true)
-					. $th(__('Time Left', 'apcupsd'), true, true)
-					. $th(__('Est. Power', 'apcupsd'), true, true)
-					. $th(__('Last Updated', 'apcupsd'), false, true)
+					. $th(__('Status', 'apcupsd'), false, 'center')
+					. $th(__('Load', 'apcupsd'), true, 'right')
+					. $th(__('Charge', 'apcupsd'), true, 'right')
+					. $th(__('Time Left', 'apcupsd'), true, 'right')
+					. $th(__('Est. Power', 'apcupsd'), true, 'right')
+					. $th(__('Last Updated', 'apcupsd'), false, 'right')
 					. '</tr></thead><tbody>';
 
 				if (cacti_sizeof($upses)) {
@@ -2385,7 +2395,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 						print '<tr>'
 							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
 							. '<td><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
-							. '<td>' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
+							. '<td class="apcupsdDashCenter">' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
 							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_load_percent'] ?? null) . '">' . html_escape($load) . '</td>'
 							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_battery_charge'] ?? null) . '">' . html_escape($charge) . '</td>'
 							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_timeleft'] ?? null) . '">' . html_escape($time) . '</td>'
@@ -2603,8 +2613,9 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 		apcupsd_dashboard_init_timespan();
 
 		$current_refresh = (int) read_user_setting('apcupsd_summary_refresh', 0);
+		$refresh_page    = $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false';
 
-		apcupsd_dashboard_print_refresh($current_refresh, $config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false');
+		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
 
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 
@@ -2662,6 +2673,7 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 
 		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid"'
 			. ' data-card-action="summary_card" data-layout-action="summary_layout" data-refresh-action="summary_refresh"'
+			. ' data-refresh-page="' . html_escape($refresh_page) . '"'
 			. ' data-reload="upses.php?action=dashboard">';
 
 		foreach ($layout['order'] as $key) {

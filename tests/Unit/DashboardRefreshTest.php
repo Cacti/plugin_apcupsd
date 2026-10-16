@@ -44,8 +44,46 @@ describe('dashboard auto-refresh', function () {
 	it('arms the timer from both the Fleet and the per-UPS dashboard', function () use ($read) {
 		$source = $read('includes/dashboard.php');
 
-		expect($source)->toContain("apcupsd_dashboard_print_refresh(\$current_refresh, \$config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false')");
-		expect($source)->toContain("apcupsd_dashboard_print_refresh(\$current_refresh, \$config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . \$ups_id . '&header=false')");
+		expect($source)->toContain("\$refresh_page    = \$config['url_path'] . 'plugins/apcupsd/upses.php?action=dashboard&header=false';");
+		expect($source)->toContain("\$refresh_page    = \$config['url_path'] . 'plugins/apcupsd/upses.php?action=view&id=' . \$ups_id . '&header=false';");
+		expect(substr_count($source, 'apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);'))->toBe(2);
+	});
+
+	it('exposes the refresh URL on both grids so the dropdown can arm the timer', function () use ($read) {
+		$source = $read('includes/dashboard.php');
+
+		expect(substr_count($source, "' data-refresh-page=\"' . html_escape(\$refresh_page) . '\"'"))->toBe(2);
+		expect($read('js/apcupsd_dashboard.js'))->toContain("refreshPage:   grid.dataset.refreshPage   || ''");
+	});
+
+	it('applies a changed Refresh interval without reloading the page', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		$start = strpos($js, "document.getElementById('apcupsd_dashboard_refresh')");
+		$end   = strpos($js, "document.getElementById('apcupsd_dashboard_refresh_now')");
+
+		expect($start)->toBeGreaterThan(0);
+		expect($end)->toBeGreaterThan($start);
+
+		$handler = substr($js, $start, $end - $start);
+
+		expect($handler)->not->toContain('window.location');
+		expect($handler)->not->toContain('location.reload');
+		expect($handler)->toContain('apcupsdDashSetRefresh(parseInt(select.value, 10) || 0, cfg.refreshPage);');
+		expect($handler)->toContain('select.value = select.dataset.previous;');
+	});
+
+	it('swaps the running timer for the new interval, or stops it for No Refresh', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect(preg_match('/function apcupsdDashSetRefresh\(seconds, page\) \{\s*if \(typeof myRefresh !== \'undefined\'\) \{\s*clearTimeout\(myRefresh\);\s*\}/', $js))->toBe(1);
+		expect($js)->toContain('if (seconds <= 0) {');
+		expect($js)->toContain('refreshMSeconds = seconds * 1000;');
+		expect($js)->toContain('refreshPage = page;');
+
+		// Stopping must happen before the early return for "off", and starting after it.
+		expect(strpos($js, 'clearTimeout(myRefresh);', strpos($js, 'function apcupsdDashSetRefresh(')))->toBeLessThan(strpos($js, 'if (seconds <= 0) {'));
+		expect(strpos($js, 'if (seconds <= 0) {'))->toBeLessThan(strpos($js, 'refreshMSeconds = seconds * 1000;'));
 	});
 
 	it('hands the interval to the dashboard script and falls back to the page timer without it', function () use ($read) {
