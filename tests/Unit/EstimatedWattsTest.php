@@ -83,6 +83,14 @@ describe('estimated watts wiring', function () {
 		expect($js)->toContain('aria-sort');
 	});
 
+	it('keeps the active sort in memory so it works without browser storage', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->toContain('var apcupsdDashSortState = null;');
+		expect($js)->toContain('apcupsdDashSortState = state;');
+		expect(preg_match('/function apcupsdDashSortRead\(\) \{\s*if \(apcupsdDashSortState === null\)/', $js))->toBe(1);
+	});
+
 	it('adds a sortable estimated power column to the UPS list', function () use ($read) {
 		$source = $read('upses.php');
 

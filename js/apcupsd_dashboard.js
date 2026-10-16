@@ -55,20 +55,29 @@ function apcupsdDashPost(grid, extra) {
 }
 
 var apcupsdDashSortStorageKey = 'apcupsd_dashboard_sort';
+var apcupsdDashSortState = null;
 
-/** Read the saved sort choices ({tableId: {key, direction}}) from localStorage. */
+/** The sort choices ({tableId: {key, direction}}). They live in memory so sorting
+ *  and direction toggling still work when browser storage is blocked, and are
+ *  seeded once from localStorage so a saved choice survives page loads. */
 function apcupsdDashSortRead() {
-	try {
-		var saved = JSON.parse(window.localStorage.getItem(apcupsdDashSortStorageKey));
-		return saved && typeof saved === 'object' ? saved : {};
-	} catch (e) {
-		return {};
+	if (apcupsdDashSortState === null) {
+		try {
+			var saved = JSON.parse(window.localStorage.getItem(apcupsdDashSortStorageKey));
+			apcupsdDashSortState = saved && typeof saved === 'object' ? saved : {};
+		} catch (e) {
+			apcupsdDashSortState = {};
+		}
 	}
+
+	return apcupsdDashSortState;
 }
 
-/** Save the sort choices; storage can be unavailable, in which case the sort
- *  still applies for the current view. */
+/** Record the sort choices in memory, then persist them best-effort: a blocked
+ *  or failing storage write must never lose the choice just made. */
 function apcupsdDashSortWrite(state) {
+	apcupsdDashSortState = state;
+
 	try {
 		window.localStorage.setItem(apcupsdDashSortStorageKey, JSON.stringify(state));
 	} catch (e) {
