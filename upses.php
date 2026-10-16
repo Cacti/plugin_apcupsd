@@ -25,9 +25,14 @@
 require('../../include/auth.php');
 
 /** @var array<string,mixed> $config */
+require_once($config['base_path'] . '/lib/api_automation.php');
 require_once($config['base_path'] . '/lib/api_graph.php');
 require_once($config['base_path'] . '/lib/api_data_source.php');
+require_once($config['base_path'] . '/lib/api_device.php');
+require_once($config['base_path'] . '/lib/api_tree.php');
+require_once($config['base_path'] . '/lib/data_query.php');
 require_once($config['base_path'] . '/lib/poller.php');
+require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
 require_once($config['base_path'] . '/lib/rrd.php');
 require_once(__DIR__ . '/includes/functions.php');
@@ -40,6 +45,11 @@ $ups_actions = [
 	2 => __('Duplicate', 'apcupsd'),
 	3 => __('Reset Detection', 'apcupsd')
 ];
+
+// Creating graphs needs the same realm as Cacti's own "Apply Automation Rules" device action.
+if (is_realm_allowed(3)) {
+	$ups_actions[4] = __('Run Graph Automation', 'apcupsd');
+}
 
 $ups_types = [
 	1 => __('APC UPSD Based', 'apcupsd'),
@@ -565,6 +575,49 @@ function duplicate_ups($template_id, $name): void {
    ------------------------ */
 
 /**
+ * Runs Cacti's Graph Automation (the same as the Devices page's "Apply
+ * Automation Rules" action) for the Cacti Device linked to each selected UPS,
+ * creating the graphs, data sources and tree items its templates and
+ * automation rules call for. Graphs that already exist are left alone. A UPS
+ * that has no Cacti Device yet (one is created on the first successful poll)
+ * is skipped, and the outcome is reported as a message on the UPSes page.
+ *
+ * @param array $ups_ids The validated apcupsd_ups ids to run it for.
+ *
+ * @return void
+ */
+function run_graph_automation(array $ups_ids): void {
+	ini_set('max_execution_time', '-1');
+
+	$ran     = 0;
+	$skipped = 0;
+
+	foreach ($ups_ids as $ups_id) {
+		$host_id = (int) db_fetch_cell_prepared('SELECT host.id
+			FROM apcupsd_ups AS ups
+			INNER JOIN host ON host.id = ups.host_id
+			WHERE ups.id = ?',
+			[(int) $ups_id]);
+
+		if ($host_id > 0) {
+			automation_update_device($host_id);
+
+			$ran++;
+		} else {
+			$skipped++;
+		}
+	}
+
+	if ($ran === 0) {
+		raise_message('apcupsd_automation', __('None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll.', 'apcupsd'), MESSAGE_LEVEL_WARN);
+	} elseif ($skipped > 0) {
+		raise_message('apcupsd_automation', sprintf(__('Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped.', 'apcupsd'), $ran, $skipped), MESSAGE_LEVEL_WARN);
+	} else {
+		raise_message('apcupsd_automation', sprintf(__('Graph Automation was run for %d UPS(es).', 'apcupsd'), $ran), MESSAGE_LEVEL_INFO);
+	}
+}
+
+/**
  * Handles the bulk-actions form for the UPSes list (delete/duplicate/
  * reset detection). On first display, renders the confirmation dialog
  * listing the selected UPSes (with a name field for duplication); once
@@ -586,7 +639,7 @@ function form_actions(): void {
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
 	// ====================================================
 
-	if (!in_array(get_nfilter_request_var('drp_action'), ['1', '2', '3'], true)) {
+	if (!array_key_exists((int) get_nfilter_request_var('drp_action'), $ups_actions) || !ctype_digit((string) get_nfilter_request_var('drp_action'))) {
 		header('Location: upses.php?header=false');
 		exit;
 	}
@@ -610,6 +663,8 @@ function form_actions(): void {
 					SET snmp_skipped = ''
 					WHERE id IN ($selected_placeholders)",
 					$selected_items);
+			} elseif (get_nfilter_request_var('drp_action') == '4') { // Run Graph Automation
+				run_graph_automation($selected_items);
 			}
 		}
 
@@ -629,9 +684,12 @@ function form_actions(): void {
 			input_validate_input_number($matches[1]);
 			// ====================================================
 
-			$name = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', [$matches[1]]);
+			$name    = db_fetch_cell_prepared('SELECT name FROM apcupsd_ups WHERE id = ?', [$matches[1]]);
+			$host_id = (int) db_fetch_cell_prepared('SELECT host_id FROM apcupsd_ups WHERE id = ?', [$matches[1]]);
 
-			$ups_list .= '<li>' . html_escape($name) . '</li>';
+			$ups_list .= '<li>' . html_escape($name)
+				. (get_nfilter_request_var('drp_action') == '4' && $host_id <= 0 ? ' <em>' . __esc('(no Cacti Device yet)', 'apcupsd') . '</em>' : '')
+				. '</li>';
 			$ups_array[$i] = $matches[1];
 
 			$i++;
@@ -678,6 +736,16 @@ function form_actions(): void {
 
 			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<input type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Reset UPS', 'Reset UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
+		} elseif (get_nfilter_request_var('drp_action') == '4') { // run graph automation
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device\'s templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected.', 'Click \'Continue\' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device\'s templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __esc('Run Graph Automation', 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
 		raise_message(40);
