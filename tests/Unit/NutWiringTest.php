@@ -13,6 +13,7 @@
  */
 
 require_once __DIR__ . '/../../includes/database.php';
+require_once __DIR__ . '/../../includes/nut.php';
 
 describe('NUT schema', function () {
 	$columns = function (array $data): array {

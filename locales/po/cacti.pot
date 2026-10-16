@@ -65,6 +65,16 @@ msgid "avg %s"
 msgstr ""
 
 #: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr ""
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr ""
+
+#: includes/dashboard.php
 msgid "Average"
 msgstr ""
 
@@ -982,11 +992,6 @@ msgid "No readings are available for these gauges yet."
 msgstr ""
 
 #: includes/dashboard.php
-#, php-format
-msgid "min %s · max %s"
-msgstr ""
-
-#: includes/dashboard.php
 msgid "Nominal Battery Voltage"
 msgstr ""
 
@@ -1004,11 +1009,6 @@ msgstr ""
 
 #: includes/dashboard.php upses.php
 msgid "Est. Power"
-msgstr ""
-
-#: includes/dashboard.php
-#, php-format
-msgid "min %s · avg %s · max %s"
 msgstr ""
 
 #: includes/dashboard.php

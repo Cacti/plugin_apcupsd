@@ -214,7 +214,7 @@ if (!function_exists('apcupsd_dashboard_metrics')) {
 				'col'     => 'ups_line_voltage',
 				'unit'    => ' V',
 				'group'   => 'power',
-				'aliases' => ['linev', 'line_voltage', 'voltage', 'inputv'],
+				'aliases' => ['line_volts', 'linev', 'line_voltage', 'voltage', 'inputv'],
 				'scale'   => 150.0,
 				'nominal' => 'ups_nominal_voltage',
 				'pct'     => false,
@@ -224,7 +224,7 @@ if (!function_exists('apcupsd_dashboard_metrics')) {
 				'col'     => 'ups_output_voltage',
 				'unit'    => ' V',
 				'group'   => 'power',
-				'aliases' => ['outputv', 'output_voltage', 'outv'],
+				'aliases' => ['output_volts', 'outputv', 'output_voltage', 'outv'],
 				'scale'   => 150.0,
 				'nominal' => 'ups_nominal_output_voltage',
 				'pct'     => false,
@@ -254,7 +254,7 @@ if (!function_exists('apcupsd_dashboard_metrics')) {
 				'col'     => 'ups_battery_charge',
 				'unit'    => '%',
 				'group'   => 'battery',
-				'aliases' => ['bcharge', 'battery_charge', 'charge'],
+				'aliases' => ['batt_charge', 'bcharge', 'battery_charge', 'charge'],
 				'scale'   => 100.0,
 				'nominal' => '',
 				'pct'     => true,
@@ -264,7 +264,7 @@ if (!function_exists('apcupsd_dashboard_metrics')) {
 				'col'     => 'ups_battery_voltage',
 				'unit'    => ' V',
 				'group'   => 'battery',
-				'aliases' => ['battv', 'battery_voltage', 'batteryv'],
+				'aliases' => ['batt_volts', 'battv', 'battery_voltage', 'batteryv'],
 				'scale'   => 30.0,
 				'nominal' => 'ups_nominal_batt_voltage',
 				'pct'     => false,
@@ -379,23 +379,61 @@ if (!function_exists('apcupsd_dashboard_find_data_source')) {
 	}
 }
 
-if (!function_exists('apcupsd_dashboard_rrd_value')) {
+if (!function_exists('apcupsd_dashboard_rrd_consolidations')) {
 	/**
-	 * Fetch a single consolidated value for a data source over a window from its
-	 * RRD file. The requested consolidation function is applied across the whole
-	 * series (min of the MINs, max of the MAXs, etc.).
+	 * The consolidation functions a data source's RRD keeps, from its data source
+	 * profile. Cacti's current default profiles keep AVERAGE, MIN, MAX and LAST,
+	 * but RRDs created from older or customised profiles often have no MIN
+	 * archive, and fetching a consolidation the file lacks only returns an error.
+	 *
+	 * @param int $local_data_id The data source to look up.
+	 *
+	 * @return string[] Any of 'AVERAGE', 'MIN', 'MAX', 'LAST'; AVERAGE and MAX when the profile cannot be read.
+	 */
+	function apcupsd_dashboard_rrd_consolidations($local_data_id): array {
+		static $cache = [];
+
+		$local_data_id = (int) $local_data_id;
+
+		if (!array_key_exists($local_data_id, $cache)) {
+			$rows = db_fetch_assoc_prepared('SELECT dspc.consolidation_function_id AS cf
+				FROM data_template_data AS dtd
+				INNER JOIN data_source_profiles_cf AS dspc ON dspc.data_source_profile_id = dtd.data_source_profile_id
+				WHERE dtd.local_data_id = ?',
+				[$local_data_id]);
+
+			$names = [1 => 'AVERAGE', 2 => 'MIN', 3 => 'MAX', 4 => 'LAST'];
+			$cfs   = [];
+
+			foreach (is_array($rows) ? $rows : [] as $row) {
+				if (isset($names[(int) $row['cf']])) {
+					$cfs[] = $names[(int) $row['cf']];
+				}
+			}
+
+			$cache[$local_data_id] = cacti_sizeof($cfs) ? $cfs : ['AVERAGE', 'MAX'];
+		}
+
+		return $cache[$local_data_id];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_rrd_series')) {
+	/**
+	 * Fetch the finite values of one data source over a window from its RRD file,
+	 * oldest first, for one consolidation function.
 	 *
 	 * @param int    $local_data_id The data source to read.
 	 * @param string $ds_name       The RRD data-source (column) name.
-	 * @param int    $start         The window start (relative seconds, negative).
-	 * @param int    $end           The window end (relative seconds, <= 0).
-	 * @param string $cf            'MIN', 'MAX', 'AVERAGE' or 'LAST'.
+	 * @param int    $start         The window start (absolute, or relative seconds when negative).
+	 * @param int    $end           The window end (absolute, or relative seconds when <= 0).
+	 * @param string $cf            'AVERAGE', 'MIN', 'MAX' or 'LAST'.
 	 *
-	 * @return float|null The reduced value, or null when no finite data exists.
+	 * @return float[] The values, or [] when the RRD is missing, empty or has no such column.
 	 */
-	function apcupsd_dashboard_rrd_value($local_data_id, string $ds_name, $start, $end, string $cf): ?float {
+	function apcupsd_dashboard_rrd_series($local_data_id, string $ds_name, $start, $end, string $cf): array {
 		if ((int) $local_data_id <= 0) {
-			return null;
+			return [];
 		}
 
 		// Resolve the RRD path explicitly: on Cacti develop the sixth parameter of
@@ -404,19 +442,19 @@ if (!function_exists('apcupsd_dashboard_rrd_value')) {
 		$rrd_path = get_data_source_path((int) $local_data_id, true);
 
 		if (empty($rrd_path)) {
-			return null;
+			return [];
 		}
 
 		$fetch = rrdtool_function_fetch((int) $local_data_id, $start, $end, 0, false, $rrd_path, $cf);
 
 		if (!is_array($fetch) || empty($fetch['data_source_names']) || empty($fetch['values'])) {
-			return null;
+			return [];
 		}
 
 		$index = array_search($ds_name, $fetch['data_source_names'], true);
 
 		if ($index === false || !isset($fetch['values'][$index])) {
-			return null;
+			return [];
 		}
 
 		$numbers = [];
@@ -427,28 +465,81 @@ if (!function_exists('apcupsd_dashboard_rrd_value')) {
 			}
 		}
 
-		if (!cacti_sizeof($numbers)) {
-			return null;
+		return $numbers;
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_rrd_stats')) {
+	/**
+	 * The min, average, max and most recent value of a data source over a window.
+	 * The averages are always read. MIN and MAX archives are used when the RRD
+	 * keeps them; without one (RRDs often have no MIN archive) the window is
+	 * bounded by its averages instead, so the lower and upper bounds are not lost.
+	 * Memoized per request.
+	 *
+	 * @param int    $local_data_id The data source to read.
+	 * @param string $ds_name       The RRD data-source (column) name.
+	 * @param int    $start         The window start.
+	 * @param int    $end           The window end.
+	 *
+	 * @return array{min: float|null, avg: float|null, max: float|null, last: float|null} All null when the RRD has no data in the window.
+	 */
+	function apcupsd_dashboard_rrd_stats($local_data_id, string $ds_name, $start, $end): array {
+		static $cache = [];
+
+		$key = (int) $local_data_id . ':' . $ds_name . ':' . $start . ':' . $end;
+
+		if (array_key_exists($key, $cache)) {
+			return $cache[$key];
 		}
 
-		switch ($cf) {
-			case 'MIN':
-				return min($numbers);
-			case 'MAX':
-				return max($numbers);
-			case 'LAST':
-				return (float) end($numbers);
-			default:
-				return array_sum($numbers) / count($numbers);
+		$average = apcupsd_dashboard_rrd_series($local_data_id, $ds_name, $start, $end, 'AVERAGE');
+		$cfs     = apcupsd_dashboard_rrd_consolidations($local_data_id);
+		$mins    = in_array('MIN', $cfs, true) ? apcupsd_dashboard_rrd_series($local_data_id, $ds_name, $start, $end, 'MIN') : [];
+		$maxs    = in_array('MAX', $cfs, true) ? apcupsd_dashboard_rrd_series($local_data_id, $ds_name, $start, $end, 'MAX') : [];
+
+		if (!cacti_sizeof($average) && !cacti_sizeof($mins) && !cacti_sizeof($maxs)) {
+			apcupsd_dashboard_debug(sprintf('no RRD data for data source %d (%s) between %s and %s', (int) $local_data_id, $ds_name, $start, $end));
+
+			return $cache[$key] = ['min' => null, 'avg' => null, 'max' => null, 'last' => null];
 		}
+
+		// The average and latest value only exist when the AVERAGE archive has data;
+		// the bounds fall back to the averages when a MIN or MAX archive is missing.
+		$lows  = cacti_sizeof($mins) ? $mins : $average;
+		$highs = cacti_sizeof($maxs) ? $maxs : $average;
+
+		return $cache[$key] = [
+			'min'  => cacti_sizeof($lows) ? min($lows) : null,
+			'avg'  => cacti_sizeof($average) ? array_sum($average) / count($average) : null,
+			'max'  => cacti_sizeof($highs) ? max($highs) : null,
+			'last' => cacti_sizeof($average) ? (float) end($average) : null,
+		];
+	}
+}
+
+if (!function_exists('apcupsd_dashboard_debug')) {
+	/**
+	 * Write a line to the Cacti log at debug verbosity, to help work out why a
+	 * dashboard reading has no RRD history (no matching data source, no data in
+	 * the window, ...).
+	 *
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 */
+	function apcupsd_dashboard_debug(string $message): void {
+		cacti_log('DEBUG: ' . $message, false, 'APCUPSD', defined('POLLER_VERBOSITY_DEBUG') ? POLLER_VERBOSITY_DEBUG : 5);
 	}
 }
 
 if (!function_exists('apcupsd_dashboard_bullet')) {
 	/**
 	 * Render a min/avg/max bullet chart: a 0..scale track, a translucent band
-	 * from min to max, and a strong marker at the current value. The average and
-	 * min/max endpoints are labelled.
+	 * from min to max, and a strong marker at the current value. The track ends
+	 * are labelled with the axis (0 and the full-scale value); the current, min,
+	 * average and max readings are written above it, leaving out any that are
+	 * unknown rather than printing N/A.
 	 *
 	 * @param string     $label    The reading label.
 	 * @param float|null $current  The current value (marker), or null.
@@ -462,26 +553,24 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 	 * @return string The bullet HTML.
 	 */
 	function apcupsd_dashboard_bullet(string $label, ?float $current, ?float $min, ?float $avg, ?float $max, float $scale, string $unit, string $severity): string {
-		$fmt = function(?float $value) use ($unit): string {
-			if ($value === null) {
-				return __('N/A', 'apcupsd');
-			}
-
-			$decimals = (abs($value) >= 100 || floor($value) == $value) ? 0 : 1;
-
-			return number_format_i18n($value, $decimals) . $unit;
-		};
-
 		$marker_value = $current !== null ? $current : $avg;
 
 		$summary = [];
 
 		if ($current !== null) {
-			$summary[] = __('now %s', $fmt($current), 'apcupsd');
+			$summary[] = sprintf(__('now %s', 'apcupsd'), apcupsd_dashboard_format_value($current, $unit));
+		}
+
+		if ($min !== null) {
+			$summary[] = sprintf(__('min %s', 'apcupsd'), apcupsd_dashboard_format_value($min, $unit));
 		}
 
 		if ($avg !== null) {
-			$summary[] = __('avg %s', $fmt($avg), 'apcupsd');
+			$summary[] = sprintf(__('avg %s', 'apcupsd'), apcupsd_dashboard_format_value($avg, $unit));
+		}
+
+		if ($max !== null) {
+			$summary[] = sprintf(__('max %s', 'apcupsd'), apcupsd_dashboard_format_value($max, $unit));
 		}
 
 		$head = '<div class="apcupsdBulletHead">'
@@ -518,7 +607,7 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 			. $avg_marker
 			. '<div class="apcupsdBulletMarker" style="left:' . number_format($mark, 2, '.', '') . '%"></div>'
 			. '</div>'
-			. '<div class="apcupsdBulletScale"><span>' . html_escape($fmt($min)) . '</span><span>' . html_escape($fmt($max)) . '</span></div>'
+			. '<div class="apcupsdBulletScale"><span>' . html_escape(apcupsd_dashboard_format_value(0.0, $unit)) . '</span><span>' . html_escape(apcupsd_dashboard_format_value($scale, $unit)) . '</span></div>'
 			. '</div>';
 	}
 }
@@ -617,12 +706,14 @@ if (!function_exists('apcupsd_dashboard_render_bullets')) {
 			$min = $avg = $max = null;
 
 			if ($local_data_id > 0) {
-				$min = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MIN');
-				$avg = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'AVERAGE');
-				$max = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MAX');
+				$stats = apcupsd_dashboard_rrd_stats($local_data_id, $ds_name, $start, $end);
+
+				$min = $stats['min'];
+				$avg = $stats['avg'];
+				$max = $stats['max'];
 
 				if ($current === null) {
-					$current = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'LAST');
+					$current = $stats['last'];
 				}
 			}
 
@@ -742,13 +833,17 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 		$min = $avg = $max = null;
 
 		if ($local_data_id > 0) {
-			$min = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MIN');
-			$avg = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'AVERAGE');
-			$max = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MAX');
+			$stats = apcupsd_dashboard_rrd_stats($local_data_id, $ds_name, $start, $end);
+
+			$min = $stats['min'];
+			$avg = $stats['avg'];
+			$max = $stats['max'];
 
 			if ($current === null) {
-				$current = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'LAST');
+				$current = $stats['last'];
 			}
+		} else {
+			apcupsd_dashboard_debug(sprintf('no data source on device %d matches %s (looked for %s)', $host_id, $key, implode(', ', $def['aliases'])));
 		}
 
 		$scale = (float) $def['scale'];
@@ -782,6 +877,37 @@ if (!function_exists('apcupsd_dashboard_metric_reading')) {
 	}
 }
 
+if (!function_exists('apcupsd_dashboard_stats_caption')) {
+	/**
+	 * The "min x · avg y · max z" caption under a gauge. Only the readings that
+	 * are known are listed; an unknown one is left out rather than printed as N/A.
+	 *
+	 * @param float|null $min  The window minimum, or null.
+	 * @param float|null $avg  The window average, or null (also null to leave it out, e.g. when it is the centre value).
+	 * @param float|null $max  The window maximum, or null.
+	 * @param string     $unit The value unit suffix.
+	 *
+	 * @return string The caption, or '' when nothing is known.
+	 */
+	function apcupsd_dashboard_stats_caption(?float $min, ?float $avg, ?float $max, string $unit): string {
+		$parts = [];
+
+		if ($min !== null) {
+			$parts[] = sprintf(__('min %s', 'apcupsd'), apcupsd_dashboard_format_value($min, $unit));
+		}
+
+		if ($avg !== null) {
+			$parts[] = sprintf(__('avg %s', 'apcupsd'), apcupsd_dashboard_format_value($avg, $unit));
+		}
+
+		if ($max !== null) {
+			$parts[] = sprintf(__('max %s', 'apcupsd'), apcupsd_dashboard_format_value($max, $unit));
+		}
+
+		return implode(' · ', $parts);
+	}
+}
+
 if (!function_exists('apcupsd_dashboard_gauge_from_reading')) {
 	/**
 	 * Render a gauge from a resolved reading: the current value swept on the dial
@@ -805,14 +931,7 @@ if (!function_exists('apcupsd_dashboard_gauge_from_reading')) {
 
 		$unit   = $reading['unit'];
 		$center = apcupsd_dashboard_format_value($value, $unit);
-
-		$sub = '';
-
-		if ($reading['avg'] !== null) {
-			$sub = __('min %s · avg %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['avg'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
-		} elseif ($reading['min'] !== null || $reading['max'] !== null) {
-			$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $unit), apcupsd_dashboard_format_value($reading['max'], $unit), 'apcupsd');
-		}
+		$sub    = apcupsd_dashboard_stats_caption($reading['min'], $reading['avg'], $reading['max'], $unit);
 
 		return apcupsd_dashboard_gauge($value, $reading['min'], $reading['max'], $reading['scale'], $reading['severity'], $center, $sub);
 	}
@@ -1948,6 +2067,79 @@ if (!function_exists('apcupsd_dashboard_tabs')) {
 	}
 }
 
+if (!function_exists('apcupsd_fleet_estimable_sql')) {
+	/**
+	 * The SQL condition (over the `ups` and `stats` aliases) for the UPSes whose
+	 * power is estimated and counted in the fleet totals: enabled, not a slave
+	 * (its draw is already part of its master's) and with a nominal power rating
+	 * and a load reading.
+	 *
+	 * @return string The condition; constant text, safe to embed in a query.
+	 */
+	function apcupsd_fleet_estimable_sql(): string {
+		return "ups.enabled = 'on' AND COALESCE(stats.ups_status, '') NOT LIKE '%SLAVE%' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0";
+	}
+}
+
+if (!function_exists('apcupsd_fleet_power_stats')) {
+	/**
+	 * The min, average and max of the fleet's estimated power draw over a window.
+	 * Each counted UPS has a load RRD and a nominal power rating that is a
+	 * constant, so its power history is the load history scaled by the rating; the
+	 * fleet figure is the sum across UPSes. A UPS with no load history counts at
+	 * its latest estimate, so the range stays consistent with the total shown. The
+	 * minimum and maximum are the sums of each UPS's own minimum and maximum, so
+	 * they bound the fleet's draw rather than being the exact extremes of the sum.
+	 *
+	 * @param int $start The window start.
+	 * @param int $end   The window end.
+	 *
+	 * @return array{min: float|null, avg: float|null, max: float|null} All null when no UPS has load history.
+	 */
+	function apcupsd_fleet_power_stats($start, $end): array {
+		static $cache = [];
+
+		$key = $start . ':' . $end;
+
+		if (array_key_exists($key, $cache)) {
+			return $cache[$key];
+		}
+
+		$rows = db_fetch_assoc('SELECT ups.host_id, stats.ups_nominal_power, stats.ups_load_percent
+			FROM apcupsd_ups AS ups
+			INNER JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id
+			WHERE ' . apcupsd_fleet_estimable_sql());
+
+		$aliases = apcupsd_dashboard_metrics()['load_percent']['aliases'];
+		$totals  = ['min' => 0.0, 'avg' => 0.0, 'max' => 0.0];
+		$with    = 0;
+
+		foreach (is_array($rows) ? $rows : [] as $row) {
+			$nominal = (float) $row['ups_nominal_power'];
+			$now     = (float) apcupsd_estimate_watts($nominal, $row['ups_load_percent']);
+			$stats   = ['min' => null, 'avg' => null, 'max' => null];
+
+			list($local_data_id, $ds_name) = apcupsd_dashboard_find_data_source((int) $row['host_id'], $aliases);
+
+			if ($local_data_id > 0) {
+				$stats = apcupsd_dashboard_rrd_stats($local_data_id, $ds_name, $start, $end);
+			}
+
+			if ($stats['avg'] !== null || $stats['min'] !== null || $stats['max'] !== null) {
+				$with++;
+			}
+
+			foreach ($totals as $name => $total) {
+				$watts = $stats[$name] !== null ? apcupsd_estimate_watts($nominal, $stats[$name]) : null;
+
+				$totals[$name] += $watts !== null ? $watts : $now;
+			}
+		}
+
+		return $cache[$key] = $with > 0 ? $totals : ['min' => null, 'avg' => null, 'max' => null];
+	}
+}
+
 if (!function_exists('apcupsd_fleet_stats')) {
 	/**
 	 * Memoized fleet aggregates: UPS counts by status (online/on-battery/other/
@@ -1962,7 +2154,7 @@ if (!function_exists('apcupsd_fleet_stats')) {
 		static $cache = null;
 
 		if ($cache === null) {
-			$estimable = "ups.enabled = 'on' AND COALESCE(stats.ups_status, '') NOT LIKE '%SLAVE%' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0";
+			$estimable = apcupsd_fleet_estimable_sql();
 
 			$row = db_fetch_row("SELECT
 				COUNT(*) AS total,
@@ -2104,20 +2296,18 @@ if (!function_exists('apcupsd_fleet_rrd_stats')) {
 					continue;
 				}
 
-				$min = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MIN');
-				$avg = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'AVERAGE');
-				$max = apcupsd_dashboard_rrd_value($local_data_id, $ds_name, $start, $end, 'MAX');
+				$stats = apcupsd_dashboard_rrd_stats($local_data_id, $ds_name, $start, $end);
 
-				if ($min !== null) {
-					$mins[] = $min;
+				if ($stats['min'] !== null) {
+					$mins[] = $stats['min'];
 				}
 
-				if ($avg !== null) {
-					$avgs[] = $avg;
+				if ($stats['avg'] !== null) {
+					$avgs[] = $stats['avg'];
 				}
 
-				if ($max !== null) {
-					$maxs[] = $max;
+				if ($stats['max'] !== null) {
+					$maxs[] = $stats['max'];
 				}
 			}
 		}
@@ -2294,14 +2484,21 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				}
 
 				$est_load = $est_watts / $est_capacity * 100;
-				$est_sub  = __('%s of %s rated', apcupsd_dashboard_format_value($est_load, '%'), apcupsd_dashboard_format_value($est_capacity, ' W'), 'apcupsd');
+				$rated    = sprintf(__('%s of %s rated', 'apcupsd'), apcupsd_dashboard_format_value($est_load, '%'), apcupsd_dashboard_format_value($est_capacity, ' W'));
+
+				// The range comes from each UPS's load RRD scaled by its (constant) nominal power,
+				// like the Load gauge; without load history the rating is the caption instead.
+				apcupsd_dashboard_init_timespan();
+
+				$range = apcupsd_fleet_power_stats(get_current_graph_start(), get_current_graph_end());
+				$sub   = apcupsd_dashboard_stats_caption($range['min'], $range['avg'], $range['max'], ' W');
 
 				print '<div class="apcupsdGaugeGrid"><div class="apcupsdGaugeCell">'
 					. '<span class="apcupsdGaugeCellLabel">' . __esc('Estimated Power', 'apcupsd') . '</span>'
-					. apcupsd_dashboard_gauge($est_watts, null, null, $est_capacity, apcupsd_dashboard_metric_severity('load_percent', $est_load), apcupsd_dashboard_format_value($est_watts, ' W'), $est_sub)
+					. apcupsd_dashboard_gauge($est_watts, $range['min'], $range['max'], $est_capacity, apcupsd_dashboard_metric_severity('load_percent', $est_load), apcupsd_dashboard_format_value($est_watts, ' W'), $sub !== '' ? $sub : $rated)
 					. '</div></div>';
 
-				print '<p class="apcupsdDashNote">' . __esc('Estimated as nominal power x load %, from the latest poll.', 'apcupsd') . ' '
+				print '<p class="apcupsdDashNote">' . html_escape($sub !== '' ? $rated . '. ' : '') . __esc('Estimated as nominal power x load %, from the latest poll.', 'apcupsd') . ' '
 					. html_escape(__('Counted %s of %s enabled UPSes.', number_format_i18n($est_count, 0), number_format_i18n($enabled, 0), 'apcupsd')) . '</p>';
 
 				break;
@@ -2326,11 +2523,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 					$reading = $gauge['reading'];
 					$center  = apcupsd_dashboard_format_value($reading['avg'], $gauge['unit']);
 
-					$sub = '';
-
-					if ($reading['min'] !== null || $reading['max'] !== null) {
-						$sub = __('min %s · max %s', apcupsd_dashboard_format_value($reading['min'], $gauge['unit']), apcupsd_dashboard_format_value($reading['max'], $gauge['unit']), 'apcupsd');
-					}
+					$sub = apcupsd_dashboard_stats_caption($reading['min'], null, $reading['max'], $gauge['unit']);
 
 					$severity = apcupsd_dashboard_metric_severity($gauge['metric'], $reading['avg']);
 
