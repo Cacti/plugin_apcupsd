@@ -42,6 +42,7 @@ require_once($config['base_path'] . '/lib/template.php');
 require_once($config['base_path'] . '/lib/utility.php');
 require('./plugins/apcupsd/includes/field_maps.php');
 require_once('./plugins/apcupsd/includes/functions.php');
+require_once('./plugins/apcupsd/includes/nut.php');
 
 // process calling arguments
 $parms = $_SERVER['argv'];
@@ -171,12 +172,46 @@ if ($snmpupses > 0) {
 	printf('NOTE: Did not find any snmp enabled UPS\'s' . PHP_EOL);
 }
 
+// NUT (Network UPS Tools) upses last
+$upses = db_fetch_assoc_prepared('SELECT *
+	FROM apcupsd_ups
+	WHERE type_id = 3
+	AND enabled = "on"
+	AND poller_id = ?',
+	[$config['poller_id']]);
+
+$nutupses = cacti_sizeof($upses);
+
+if ($nutupses > 0) {
+	printf('NOTE: Found %s NUT enabled UPS\'s' . PHP_EOL, $nutupses);
+
+	foreach ($upses as $ups) {
+		debug(sprintf('=================== Collecting UPS Information for %s ===================', $ups['name']));
+
+		$ups_up = collect_nut_ups_data($ups);
+
+		if ($ups['host_id'] > 0) {
+			$exists = db_fetch_cell_prepared('SELECT id FROM host WHERE id = ?', [$ups['host_id']]);
+
+			if (!$exists) {
+				$ups['host_id'] = 0;
+			}
+		}
+
+		if ($ups['host_id'] == 0 && $add_devices && $ups_up) {
+			add_ups_device($ups, $host_template_id);
+		}
+	}
+} else {
+	printf('NOTE: Did not find any NUT enabled UPS\'s' . PHP_EOL);
+}
+
 $end = microtime(true);
 
 $cacti_stats = sprintf(
-	'Time:%01.2f APCAUPSes:%s SNMPUPSes:%s',
+	'Time:%01.2f APCAUPSes:%s SNMPUPSes:%s NUTUPSes:%s',
 	$end - $start,
-	$apcupsd, $snmpupses
+	$apcupsd, $snmpupses, $nutupses
 );
 
 cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
@@ -186,7 +221,8 @@ set_config_option('stats_apcupsd', $cacti_stats);
 
 /**
  * Creates a new Cacti device for a discovered UPS (apcaccess-based or
- * SNMP-based, using the type-appropriate api_device_save() parameters),
+ * NUT-based UPSes get a local device, SNMP-based UPSes use the
+ * type-appropriate api_device_save() parameters),
  * links it back to the apcupsd_ups row, and triggers device automation.
  * Called from this script's main flow for each enabled UPS that doesn't
  * yet have an associated host_id.
@@ -205,7 +241,7 @@ set_config_option('stats_apcupsd', $cacti_stats);
 function add_ups_device($ups, $host_template_id, $force_up = false): void {
 	$save = [];
 
-	if ($ups['type_id'] == 1) {
+	if ($ups['type_id'] != 2) {
 		$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
 			'', 0, '', '',                     // snmp community, snmp_version, snmp_username, snmp_password
 			161, 500, '', 0,                   // snmp_port, snmp_timeout, disabled, availability_method
@@ -396,7 +432,9 @@ function collect_snmp_ups_data($ups): bool {
 
 /**
  * Polls a single apcaccess-based UPS by locating the apcaccess binary,
- * running it against the UPS's configured hostname/port, and parsing its
+ * running it against the UPS's configured hostname/port (killed by Cacti's
+ * exec_with_timeout() when it does not finish within the UPS's timeout), and
+ * parsing its
  * "KEY: value" output into apcupsd_ups_stats columns (per the global
  * $ups_database mapping), also updating the UPS's linked host's up/down
  * status based on the STATUS field. Called from this script's main flow
@@ -450,10 +488,17 @@ function collect_ups_data($ups) {
 		return 1;
 	}
 
-	$results = exec($command, $output, $return);
+	$timeout = apcupsd_normalize_timeout($ups['timeout'] ?? null);
+	$results = exec_with_timeout($command, $output, $return, $timeout);
 
-	if ($return > 0) {
-		$message = implode(', ', $output);
+	// exec_with_timeout() kills apcaccess when it has not finished in time, which
+	// leaves a non-zero code (or none) and no output, and ends the output with a blank line.
+	$output = array_values(array_filter($output, function($line) {
+		return trim((string) $line) !== '';
+	}));
+
+	if ($return != 0 || !cacti_sizeof($output)) {
+		$message = cacti_sizeof($output) ? implode(', ', $output) : sprintf(__('apcaccess failed or did not answer within %s seconds.', 'apcupsd'), $timeout);
 
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
@@ -517,6 +562,94 @@ function collect_ups_data($ups) {
 			WHERE id = ?',
 			[$ups_status, $ups['id']]);
 	}
+}
+
+/**
+ * Records a UPS's linked Cacti host as up or down, stamping the recovery or
+ * failure time only when the state actually changes. Does nothing for a UPS
+ * that has no linked host yet.
+ *
+ * @param int|string $host_id The linked Cacti host id; 0 when none.
+ * @param bool       $up      True to mark the host up, false to mark it down.
+ *
+ * @return void
+ */
+function set_ups_host_state($host_id, bool $up): void {
+	if ($host_id <= 0) {
+		return;
+	}
+
+	$status = db_fetch_cell_prepared('SELECT status FROM host WHERE id = ?', [$host_id]);
+
+	if ($up && $status != 3) {
+		db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', [$host_id]);
+	} elseif (!$up && $status != 4) {
+		db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', [$host_id]);
+	}
+}
+
+/**
+ * Polls a single NUT-based UPS by asking its upsd server for every variable
+ * over the native NUT protocol (see includes/nut.php), translating them into
+ * apcupsd_ups_stats columns, and updating the UPS's linked host up/down
+ * status from the translated ups.status, or marking it down when the query
+ * fails. Called from this script's main flow
+ * for each enabled NUT-type UPS.
+ *
+ * @param array $ups The apcupsd_ups row for the UPS being polled.
+ *
+ * @return bool True when the NUT server responded and a reading was
+ *              recorded; false when the query failed, in which case the
+ *              error is stored in the UPS's error_message.
+ */
+function collect_nut_ups_data($ups): bool {
+	$result = apcupsd_nut_query(
+		$ups['hostname'],
+		$ups['port'],
+		$ups['nut_ups_name'],
+		$ups['nut_username'],
+		$ups['nut_password'],
+		$ups['nut_tls'] == 'on',
+		apcupsd_normalize_timeout($ups['timeout'] ?? null),
+		(string) ($ups['nut_cafile'] ?? ''),
+		($ups['nut_tls_selfsigned'] ?? '') == 'on'
+	);
+
+	if ($result['error'] === '' && !cacti_sizeof($result['vars'])) {
+		$result['error'] = __('The NUT server did not return any variables for this UPS.', 'apcupsd');
+	}
+
+	if ($result['error'] !== '') {
+		debug('NUT query failed: ' . $result['error']);
+
+		// These devices have availability checking disabled, so core polling cannot
+		// notice the failure: mark the linked host down here.
+		set_ups_host_state($ups['host_id'], false);
+
+		db_execute_prepared('UPDATE apcupsd_ups
+			SET status = 1, error_message = ?
+			WHERE id = ?',
+			[substr($result['error'], 0, 255), $ups['id']]);
+
+		return false;
+	}
+
+	$stats  = apcupsd_nut_build_stats($result['vars'], $ups, $result['version']);
+	$online = apcupsd_nut_status_online($stats['ups_status']);
+
+	set_ups_host_state($ups['host_id'], $online);
+
+	// The column names come from apcupsd_nut_build_stats(), never from the server.
+	db_execute_prepared('REPLACE INTO apcupsd_ups_stats (`' . implode('`, `', array_keys($stats)) . '`)
+		VALUES (' . implode(', ', array_fill(0, count($stats), '?')) . ')',
+		array_values($stats));
+
+	db_execute_prepared('UPDATE apcupsd_ups
+		SET status = ?, error_message = "", last_updated = NOW()
+		WHERE id = ?',
+		[$online ? 3 : 1, $ups['id']]);
+
+	return true;
 }
 
 /**

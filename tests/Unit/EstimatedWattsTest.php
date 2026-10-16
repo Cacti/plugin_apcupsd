@@ -78,34 +78,64 @@ describe('estimated watts wiring', function () {
 	it('shows the estimate in the Fleet Dashboard table with a fleet total', function () use ($read) {
 		$source = $read('includes/dashboard.php');
 
-		expect($source)->toContain("\$th('power', __('Est. Power', 'apcupsd')");
+		expect($source)->toContain("\$th(__('Est. Power', 'apcupsd')");
 		expect($source)->toContain('apcupsd_estimate_watts(');
 		expect($source)->toContain('!apcupsd_is_slave_status(');
 		expect($source)->toContain('apcupsdDashTotalRow');
 	});
 
-	it('makes the Fleet Dashboard table columns sortable without inline handlers', function () use ($read) {
+	it('sorts the Fleet Dashboard table like the HMIB dashboards, without inline handlers', function () use ($read) {
 		$source = $read('includes/dashboard.php');
 
-		foreach (['name', 'status', 'load', 'charge', 'timeleft', 'power', 'updated'] as $key) {
-			expect($source)->toContain("\$th('{$key}'");
+		foreach (['UPS', 'Status', 'Load', 'Charge', 'Time Left', 'Est. Power', 'Last Updated'] as $label) {
+			expect($source)->toContain("\$th(__('{$label}', 'apcupsd')");
 		}
 
+		expect($source)->toContain("class=\"apcupsdDashSortable'");
+		expect($source)->toContain('data-sort="num"');
+		expect($source)->toContain('data-sort-value="');
+		expect($source)->not->toContain('apcupsdDashSortBtn');
+		expect($source)->not->toContain('data-sort-key');
 		expect(preg_match('/\sonclick\s*=/i', $source))->toBe(0);
 
 		$js = $read('js/apcupsd_dashboard.js');
 
-		expect($js)->toContain("on('click.apcupsdsort', '.apcupsdDashSortBtn'");
-		expect($js)->toContain('apcupsdDashApplySort(card)');
-		expect($js)->toContain('aria-sort');
+		expect($js)->toContain("on('click.apcupsdsort', 'th.apcupsdDashSortable'");
+		expect($js)->toContain("on('keydown.apcupsdsort', 'th.apcupsdDashSortable'");
+		expect($js)->toContain('function apcupsdDashSortTable(th)');
+		expect($js)->toContain('apcupsdDashPrepSortHeaders(card)');
+		expect($js)->toContain("setAttribute('aria-sort'");
 	});
 
-	it('keeps the active sort in memory so it works without browser storage', function () use ($read) {
+	it('also sorts in the maximize dialog', function () use ($read) {
 		$js = $read('js/apcupsd_dashboard.js');
 
-		expect($js)->toContain('var apcupsdDashSortState = null;');
-		expect($js)->toContain('apcupsdDashSortState = state;');
-		expect(preg_match('/function apcupsdDashSortRead\(\) \{\s*if \(apcupsdDashSortState === null\)/', $js))->toBe(1);
+		expect($js)->toContain('apcupsdDashPrepSortHeaders(dialog);');
+		expect($js)->toContain('apcupsdDashBindSort(dialog);');
+	});
+
+	it('keeps no persisted sort state beyond a click-to-sort header like HMIB', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		expect($js)->not->toContain('localStorage');
+		expect($js)->not->toContain('apcupsdDashSortState');
+	});
+
+	it('right-aligns the numeric and last-updated columns of the UPSes card', function () use ($read) {
+		$source = $read('includes/dashboard.php');
+
+		foreach (['Load', 'Charge', 'Time Left', 'Est. Power'] as $label) {
+			expect($source)->toContain("\$th(__('{$label}', 'apcupsd'), true, true)");
+		}
+
+		expect($source)->toContain("\$th(__('Last Updated', 'apcupsd'), false, true)");
+		expect($source)->toContain("'<td class=\"apcupsdDashNum\">' . html_escape((string) (\$ups['last_updated']");
+
+		$css = $read('css/apcupsd.css');
+
+		// Must outrank ".apcupsdDashTable th, .apcupsdDashTable td { text-align: left }".
+		expect($css)->toContain('.apcupsdDashTable td.apcupsdDashNum,');
+		expect($css)->toContain('.apcupsdDashTable th.apcupsdDashNum {');
 	});
 
 	it('adds a sortable estimated power column to the UPS list', function () use ($read) {

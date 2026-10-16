@@ -30,6 +30,7 @@
             <file>setup.php</file>
             <file>includes/functions.php</file>
             <file>includes/helpers.php</file>
+            <file>includes/nut.php</file>
         </include>
     </source>
 </phpunit>

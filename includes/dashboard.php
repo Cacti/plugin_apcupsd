@@ -1119,8 +1119,8 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 					print '<tr><th>' . html_escape($label) . '</th><td>' . html_escape($value) . '</td></tr>';
 				};
 
-				$type = (int) ($ups['type_id'] ?? 0) === 1 ? __('APC UPSD', 'apcupsd') : __('SNMP', 'apcupsd');
-				$port = (int) ($ups['type_id'] ?? 0) === 1 ? ($ups['port'] ?? '') : ($ups['snmp_port'] ?? '');
+				$type = [1 => __('APC UPSD', 'apcupsd'), 2 => __('SNMP', 'apcupsd'), 3 => __('NUT', 'apcupsd')][(int) ($ups['type_id'] ?? 0)] ?? '';
+				$port = (int) ($ups['type_id'] ?? 0) !== 2 ? ($ups['port'] ?? '') : ($ups['snmp_port'] ?? '');
 				$host = trim((string) ($ups['hostname'] ?? '')) . ($port !== '' ? ':' . $port : '');
 
 				$volts = function($value): string {
@@ -1676,9 +1676,14 @@ if (!function_exists('apcupsd_dashboard_layout_save')) {
 
 if (!function_exists('apcupsd_dashboard_print_refresh')) {
 	/**
-	 * Arm Cacti's page timer for a dashboard through the refreshMSeconds,
-	 * refreshPage and refreshIsLogout globals that Cacti's setupPageTimeout()
-	 * reads, the same way graph_view.php does. Nothing is stored in the session
+	 * Arm automatic refresh for a dashboard. The refreshMSeconds, refreshPage and
+	 * refreshIsLogout globals that Cacti's setupPageTimeout() reads are set the
+	 * same way graph_view.php does, then apcupsdDashStartRefresh() (js/apcupsd_dashboard.js)
+	 * picks how to use them. Cacti 1.3+ has a refreshFunction hook in that timer,
+	 * so the cards are refreshed in place; Cacti 1.2.x has no hook, so the page
+	 * timer is stopped and the script runs its own timer, which ends when the
+	 * dashboard leaves the screen. Without the script, Cacti's timer is armed
+	 * as usual and reloads the page. Nothing is stored in the session
 	 * (Cacti's session-based page refresh leaves its value there for whichever
 	 * page renders next), so the interval cannot follow the user to another
 	 * page: Cacti clears its timer when navigating, and the next page's footer
@@ -1687,7 +1692,7 @@ if (!function_exists('apcupsd_dashboard_print_refresh')) {
 	 * still shown.
 	 *
 	 * @param int    $seconds The auto-refresh interval; 0 or less leaves Cacti's default timer.
-	 * @param string $page    The URL Cacti re-fetches on each tick.
+	 * @param string $page    The URL Cacti falls back to re-fetching on each tick.
 	 *
 	 * @return void
 	 */
@@ -1702,7 +1707,7 @@ if (!function_exists('apcupsd_dashboard_print_refresh')) {
 			. 'refreshIsLogout = false;'
 			. 'refreshPage = ' . json_encode($page, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';'
 			. 'refreshMSeconds = ' . ($seconds * 1000) . ';'
-			. 'setupPageTimeout();'
+			. 'if (typeof apcupsdDashStartRefresh === "function") { apcupsdDashStartRefresh(); } else { setupPageTimeout(); }'
 			. '});</script>';
 	}
 }
@@ -2343,27 +2348,26 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 					LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id
 					ORDER BY ups.name");
 
-				// Headers carry data-sort-* hooks that js/apcupsd_dashboard.js uses to sort
-				// the rows client-side; numeric columns open descending (largest first).
-				$th = function(string $key, string $label, string $type, string $class = '') {
-					return '<th class="apcupsdDashSortable' . ($class !== '' ? ' ' . $class : '') . '" data-sort-key="' . $key . '" data-sort-type="' . $type . '" data-sort-first="' . ($type === 'num' ? 'desc' : 'asc') . '" aria-sort="none">'
-						. '<button type="button" class="apcupsdDashSortBtn">' . html_escape($label) . '</button></th>';
+				// Sortable headers follow the HMIB dashboards: js/apcupsd_dashboard.js sorts
+				// the rows client-side, numeric columns (data-sort="num") by the cell's
+				// data-sort-value and the rest by their text.
+				$th = function(string $label, bool $numeric = false, bool $right = false) {
+					return '<th class="apcupsdDashSortable' . ($right ? ' apcupsdDashNum' : '') . '"' . ($numeric ? ' data-sort="num"' : '') . '>' . html_escape($label) . '</th>';
 				};
 
-				// Empty data-sort values (N/A) always sort last.
 				$sort_num = function($value): string {
 					return $value !== null && is_numeric($value) ? (string) (float) $value : '';
 				};
 
-				print '<table class="apcupsdDashTable" data-sort-table="fleet_upses"><thead><tr>'
+				print '<table class="apcupsdDashTable"><thead><tr>'
 					. '<th></th>'
-					. $th('name', __('UPS', 'apcupsd'), 'text')
-					. $th('status', __('Status', 'apcupsd'), 'text')
-					. $th('load', __('Load', 'apcupsd'), 'num', 'apcupsdDashNum')
-					. $th('charge', __('Charge', 'apcupsd'), 'num', 'apcupsdDashNum')
-					. $th('timeleft', __('Time Left', 'apcupsd'), 'num', 'apcupsdDashNum')
-					. $th('power', __('Est. Power', 'apcupsd'), 'num', 'apcupsdDashNum')
-					. $th('updated', __('Last Updated', 'apcupsd'), 'text')
+					. $th(__('UPS', 'apcupsd'))
+					. $th(__('Status', 'apcupsd'))
+					. $th(__('Load', 'apcupsd'), true, true)
+					. $th(__('Charge', 'apcupsd'), true, true)
+					. $th(__('Time Left', 'apcupsd'), true, true)
+					. $th(__('Est. Power', 'apcupsd'), true, true)
+					. $th(__('Last Updated', 'apcupsd'), false, true)
 					. '</tr></thead><tbody>';
 
 				if (cacti_sizeof($upses)) {
@@ -2380,13 +2384,13 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 
 						print '<tr>'
 							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
-							. '<td data-sort="' . html_escape((string) $ups['name']) . '"><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
-							. '<td data-sort="' . html_escape((string) ($ups['ups_status'] ?? '')) . '">' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
-							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_load_percent'] ?? null) . '">' . html_escape($load) . '</td>'
-							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_battery_charge'] ?? null) . '">' . html_escape($charge) . '</td>'
-							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($ups['ups_timeleft'] ?? null) . '">' . html_escape($time) . '</td>'
-							. '<td class="apcupsdDashNum" data-sort="' . $sort_num($watts) . '">' . html_escape(apcupsd_dashboard_format_value($watts, ' W')) . '</td>'
-							. '<td data-sort="' . html_escape((string) ($ups['last_updated'] ?? '')) . '">' . html_escape((string) ($ups['last_updated'] ?? '')) . '</td>'
+							. '<td><a href="' . html_escape($view) . '">' . html_escape($ups['name']) . '</a></td>'
+							. '<td>' . apcupsd_dashboard_status_pill((string) ($ups['ups_status'] ?? '')) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_load_percent'] ?? null) . '">' . html_escape($load) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_battery_charge'] ?? null) . '">' . html_escape($charge) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($ups['ups_timeleft'] ?? null) . '">' . html_escape($time) . '</td>'
+							. '<td class="apcupsdDashNum" data-sort-value="' . $sort_num($watts) . '">' . html_escape(apcupsd_dashboard_format_value($watts, ' W')) . '</td>'
+							. '<td class="apcupsdDashNum">' . html_escape((string) ($ups['last_updated'] ?? '')) . '</td>'
 							. '</tr>';
 					}
 				} else {

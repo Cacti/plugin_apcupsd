@@ -31,6 +31,7 @@ require_once($config['base_path'] . '/lib/poller.php');
 require_once($config['base_path'] . '/lib/utility.php');
 require_once($config['base_path'] . '/lib/rrd.php');
 require_once(__DIR__ . '/includes/functions.php');
+require_once(__DIR__ . '/includes/nut.php');
 require_once(__DIR__ . '/includes/helpers.php');
 require_once(__DIR__ . '/includes/dashboard.php');
 
@@ -42,7 +43,8 @@ $ups_actions = [
 
 $ups_types = [
 	1 => __('APC UPSD Based', 'apcupsd'),
-	2 => __('SNMP Based', 'apcupsd')
+	2 => __('SNMP Based', 'apcupsd'),
+	3 => __('NUT Based', 'apcupsd')
 ];
 
 global $fields_snmp_item;
@@ -57,7 +59,7 @@ $fields_ups_edit = [
 	'name' => [
 		'method'        => 'textbox',
 		'friendly_name' => __('UPS Name', 'apcupsd'),
-		'description'   => __('The Name you would like to give this UPS.  For APCUPSD Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS\'s, you must create the Cacti Device first.', 'apcupsd'),
+		'description'   => __('The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS\'s, you must create the Cacti Device first.', 'apcupsd'),
 		'value'         => '|arg1:name|',
 		'size'          => '50',
 		'default'       => __('New UPS', 'apcupsd'),
@@ -129,7 +131,7 @@ $fields_ups_edit = [
 	'hostname' => [
 		'method'        => 'textbox',
 		'friendly_name' => __('Hostname', 'apcupsd'),
-		'description'   => __('The hostname of the host running apcupsd.', 'apcupsd'),
+		'description'   => __('The hostname of the host running apcupsd or the NUT server (upsd).', 'apcupsd'),
 		'value'         => '|arg1:hostname|',
 		'size'          => '70',
 		'max_length'    => '100'
@@ -137,11 +139,74 @@ $fields_ups_edit = [
 	'port' => [
 		'method'        => 'textbox',
 		'friendly_name' => __('TCP Port', 'apcupsd'),
-		'description'   => __('Enter the TCP Port for this UPS.', 'apcupsd'),
+		'description'   => __('Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493.', 'apcupsd'),
 		'value'         => '|arg1:port|',
 		'size'          => '10',
 		'placeholder'   => '3551',
 		'max_length'    => '10'
+	],
+	'timeout' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('Timeout (seconds)', 'apcupsd'),
+		'description'   => __('How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS\'s use the SNMP timeout instead.', 'apcupsd'),
+		'value'         => '|arg1:timeout|',
+		'size'          => '5',
+		'default'       => '5',
+		'placeholder'   => '5',
+		'max_length'    => '3'
+	],
+	'nut_spacer' => [
+		'method'        => 'spacer',
+		'friendly_name' => __('NUT Options', 'apcupsd'),
+		'collapsible'   => 'true'
+	],
+	'nut_ups_name' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('NUT UPS Name', 'apcupsd'),
+		'description'   => __('The name of the UPS on the NUT server, as listed by "upsc -l" (the part before the @ in ups@host).  One NUT server can serve several UPSes.', 'apcupsd'),
+		'value'         => '|arg1:nut_ups_name|',
+		'size'          => '40',
+		'placeholder'   => 'ups',
+		'max_length'    => '64'
+	],
+	'nut_username' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('NUT Username', 'apcupsd'),
+		'description'   => __('Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored.', 'apcupsd'),
+		'value'         => '|arg1:nut_username|',
+		'size'          => '40',
+		'max_length'    => '64'
+	],
+	'nut_password' => [
+		'method'        => 'textbox_password',
+		'friendly_name' => __('NUT Password', 'apcupsd'),
+		'description'   => __('The password for the NUT Username.', 'apcupsd'),
+		'value'         => '|arg1:nut_password|',
+		'size'          => '40',
+		'max_length'    => '128'
+	],
+	'nut_tls' => [
+		'method'        => 'checkbox',
+		'friendly_name' => __('Use TLS (STARTTLS)', 'apcupsd'),
+		'description'   => __('Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below.', 'apcupsd'),
+		'value'         => '|arg1:nut_tls|',
+		'default'       => ''
+	],
+	'nut_cafile' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('CA / Certificate File', 'apcupsd'),
+		'description'   => __('Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate.', 'apcupsd'),
+		'value'         => '|arg1:nut_cafile|',
+		'size'          => '60',
+		'placeholder'   => '/etc/ssl/certs/nut-ca.pem',
+		'max_length'    => '255'
+	],
+	'nut_tls_selfsigned' => [
+		'method'        => 'checkbox',
+		'friendly_name' => __('Allow Self-Signed Certificate', 'apcupsd'),
+		'description'   => __('Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above.', 'apcupsd'),
+		'value'         => '|arg1:nut_tls_selfsigned|',
+		'default'       => ''
 	],
 	'host_snmp_head' => [
 		'method'        => 'spacer',
@@ -277,14 +342,47 @@ function form_save(): void {
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
 		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '^[0-9]+$', true, 3);
 
-		if ($save['type_id'] == 1) {
-			$save['hostname'] = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
-		} else {
+		if ($save['type_id'] == 2) {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('snmp_hostname'), 'snmp_hostname', '', true, 3);
+		} else {
+			$save['hostname'] = form_input_validate(get_nfilter_request_var('hostname'), 'hostname', '', true, 3);
 		}
 
 		$save['port']         = form_input_validate(get_nfilter_request_var('port'), 'port', '^[0-9]+$', true, 3);
+		$save['timeout']      = apcupsd_normalize_timeout(get_nfilter_request_var('timeout'));
 		$save['enabled']      = isset_request_var('enabled') ? 'on' : '';
+
+		if ($save['type_id'] == 3) {
+			// A port of 0 or blank means the type's default, not the apcupsd default stored on the column.
+			if ((int) $save['port'] == 0) {
+				$save['port'] = APCUPSD_NUT_DEFAULT_PORT;
+			}
+
+			$save['nut_ups_name']       = form_input_validate(get_nfilter_request_var('nut_ups_name'), 'nut_ups_name', '^[A-Za-z0-9_.\-]{1,64}$', false, 3);
+			$save['nut_username']       = form_input_validate(get_nfilter_request_var('nut_username'), 'nut_username', '', true, 3);
+			$save['nut_password']       = form_input_validate(get_nfilter_request_var('nut_password'), 'nut_password', '', true, 3);
+			$save['nut_tls']            = isset_request_var('nut_tls') ? 'on' : '';
+			$save['nut_cafile']         = trim((string) get_nfilter_request_var('nut_cafile'));
+			$save['nut_tls_selfsigned'] = isset_request_var('nut_tls_selfsigned') ? 'on' : '';
+
+			if ($save['nut_cafile'] !== '' && !apcupsd_nut_valid_cafile($save['nut_cafile'])) {
+				form_input_validate('', 'nut_cafile', '^$', false, 3);
+			}
+
+			if (!apcupsd_nut_valid_host($save['hostname'])) {
+				form_input_validate('', 'hostname', '^$', false, 3);
+			}
+
+			if (strlen((string) $save['nut_username']) > 64 || strlen((string) $save['nut_password']) > 128 || apcupsd_nut_quote($save['nut_username']) === null || apcupsd_nut_quote($save['nut_password']) === null) {
+				form_input_validate('', 'nut_username', '^$', false, 3);
+			}
+
+			if (isset_request_var('nut_password_confirm') && get_nfilter_request_var('nut_password') !== get_nfilter_request_var('nut_password_confirm')) {
+				form_input_validate('', 'nut_password', '^$', false, 3);
+			}
+		} elseif ($save['type_id'] == 1 && (int) $save['port'] == 0) {
+			$save['port'] = 3551;
+		}
 
 		$save['snmp_version']   = form_input_validate(get_nfilter_request_var('snmp_version'), 'snmp_version', '', true, 3);
 		$save['snmp_community'] = form_input_validate(get_nfilter_request_var('snmp_community'), 'snmp_community', '', true, 3);
@@ -675,21 +773,53 @@ function ups_edit(): void {
 	var snmp_port            = $('#snmp_port').val();
 	var snmp_timeout         = $('#snmp_timeout').val();
 
-	function changeType() {
-		if ($('#type_id').val() == 1) {
+	function syncNutTls() {
+		// The certificate options only matter while STARTTLS is on.
+		var on = $('#type_id').val() == 3 && $('#nut_tls').is(':checked');
+
+		$('#row_nut_cafile, #row_nut_tls_selfsigned').toggle(on);
+	}
+
+	// userChanged is true only when the collector type is changed by hand: the default
+	// port is swapped then, never when an existing UPS's form is first drawn.
+	function changeType(userChanged) {
+		var type = $('#type_id').val();
+
+		if (type == 1) {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
 			$('#row_port').show();
+			$('#row_timeout').show();
 			$('#row_host_snmp_head').hide();
 			$('[id^="row_snmp"]').hide();
-		} else if ($('#type_id').val() == 2) {
+			$('[id^="row_nut"]').hide();
+
+			if (userChanged && $('#port').val() == '3493') {
+				$('#port').val('3551');
+			}
+		} else if (type == 2) {
 			$('#row_host_id').show();
 			$('#row_spacer1').hide();
 			$('#row_hostname').hide();
 			$('#row_port').hide();
+			$('#row_timeout').hide();
+			$('[id^="row_nut"]').hide();
 			$('#row_host_snmp_head').show();
 			$('[id^="row_snmp"]').show();
 			setSNMP();
+		} else if (type == 3) {
+			$('#row_spacer1').hide();
+			$('#row_hostname').show();
+			$('#row_port').show();
+			$('#row_timeout').show();
+			$('#row_host_snmp_head').hide();
+			$('[id^="row_snmp"]').hide();
+			$('[id^="row_nut"]').show();
+			syncNutTls();
+
+			if (userChanged && ($('#port').val() == '' || $('#port').val() == '3551')) {
+				$('#port').val('3493');
+			}
 		} else {
 			$('#row_spacer1').show();
 			$('#row_hostname').show();
@@ -699,7 +829,11 @@ function ups_edit(): void {
 
 	$(function() {
 		$('#type_id').change(function() {
-			changeType();
+			changeType(true);
+		});
+
+		$('#nut_tls').change(function() {
+			syncNutTls();
 		});
 
 		$('#snmp_version').change(function() {
@@ -707,7 +841,7 @@ function ups_edit(): void {
 		});
 
 		setSNMP();
-		changeType();
+		changeType(false);
 	});
 	</script>
 	<?php
@@ -997,7 +1131,7 @@ function upses(): void {
 			'display' => __('Collector', 'apcupsd'),
 			'align'   => 'left',
 			'sort'    => 'ASC',
-			'tip'     => __('The Type of Collector.  Currently APCUPSD and SNMP are supported.', 'apcupsd')
+			'tip'     => __('The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported.', 'apcupsd')
 		],
 		'ups_status' => [
 			'display' => __('UPS Status', 'apcupsd'),
@@ -1039,7 +1173,7 @@ function upses(): void {
 			'display' => __('Hostname:Port', 'apcupsd'),
 			'align'   => 'right',
 			'sort'    => 'DESC',
-			'tip'     => __('The Hostname:Port that is running the apcupsd daemon.', 'apcupsd')
+			'tip'     => __('The Hostname:Port that is running the apcupsd daemon or NUT server.', 'apcupsd')
 		],
 		'enabled' => [
 			'display' => __('Enabled', 'apcupsd'),
@@ -1075,7 +1209,7 @@ function upses(): void {
 			form_selectable_cell($ups['id'], $ups['id'], '', 'center');
 			form_selectable_cell($ups['host_id'], $ups['id'], '', 'center');
 			form_selectable_cell(get_colored_device_status(($ups['enabled'] == '' ? true : false), $ups['status']), $ups['id'], '', 'center');
-			form_selectable_ecell($ups['type_id'] == 1 ? 'APCUPSD' : 'SNMPD', $ups['id'], '', 'left');
+			form_selectable_ecell([1 => 'APCUPSD', 2 => 'SNMPD', 3 => 'NUT'][(int) $ups['type_id']] ?? '', $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_status'], $ups['id'], '', 'left');
 			form_selectable_ecell($ups['ups_model'], $ups['id'], '', 'left');
 			form_selectable_ecell(checkNullandReturn($ups['ups_line_voltage']), $ups['id'], '', 'right');
@@ -1083,7 +1217,7 @@ function upses(): void {
 			form_selectable_ecell($ups['est_watts'] === null ? checkNullandReturn(null) : apcupsd_dashboard_format_value((float) $ups['est_watts'], ' W'), $ups['id'], '', 'right');
 			form_selectable_ecell(round((float)($ups['ups_timeleft'] ?? 0), 2), $ups['id'], '', 'right');
 
-			if ($ups['type_id'] == 1) {
+			if ($ups['type_id'] != 2) {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['port'], $ups['id'], '', 'right');
 			} else {
 				form_selectable_ecell($ups['hostname'] . ':' . $ups['snmp_port'], $ups['id'], '', 'right');

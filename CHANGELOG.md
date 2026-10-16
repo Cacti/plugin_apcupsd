@@ -1,13 +1,22 @@
 # ChangeLog
 
---- develop ---
+--- 1.4.0 ---
 
+* feature: Add support for monitoring UPSes through Network UPS Tools (NUT) as a third collector type, "NUT Based". The poller talks to `upsd` (TCP 3493 by default) over a native PHP socket implementation of the NUT protocol, so no `upsc` or other CLI tool is needed. Optional username/password authentication and STARTTLS (with certificate verification) are supported, and one NUT server can serve several UPSes through the new NUT UPS Name setting. NUT status flags are translated to the existing apcupsd vocabulary (OL to ONLINE, OB to ONBATT, and so on) so the dashboards, fleet totals and alerts keep working unchanged
+* issue: Widen the status, model, serial number, firmware, driver and name columns of `apcupsd_ups_stats` so multi-flag NUT statuses and longer NUT strings are not truncated
+* feature: Let NUT STARTTLS work with self-signed certificates: a per-UPS CA / Certificate File to verify the server against (certificate and host name are still checked), or an Allow Self-Signed Certificate option that encrypts without verifying the server
+* feature: Add a per-UPS Timeout (seconds) setting, 5 by default and limited to 1-120, for `apcupsd` and NUT UPS'. NUT connects and conversations are now bounded by twice the timeout in total, and `apcaccess` is run through Cacti's `exec_with_timeout()` so a hung `apcaccess` can no longer stall the poller; a timed out `apcaccess` now records an error on the UPS
+* feature: Make the UPSes table on the Fleet Dashboard sort like the HMIB dashboards: click (or press Enter/Space on) a column header to sort and click again to reverse, in the card and in its maximize dialog
+* issue: Right-align the Load, Charge, Time Left, Est. Power and Last Updated columns of the Fleet Dashboard UPSes table
 * feature: Share the UPS Dashboard card arrangement across every UPS (graph cards stay per UPS since they belong to each device), hide N/A rows in the UPS Information card, combine Cable and Driver on one row, and add a per-UPS Estimated Power gauge card that reuses the shared nominal power x load % estimate
 * issue: Show N/A for a slave UPS's (e.g. ONLINE SLAVE) estimated power on the Fleet Dashboard and leave it out of the fleet power total, since its draw is already counted in its master's
-
 * feature: Estimate each UPS's power draw as nominal power x load % for UPSes that do not report real wattage, and show it on the Fleet Dashboard (an "Est. Power" tile, a new "Fleet Power" gauge card of total estimated watts against rated capacity, and an "Est. Power" column with a fleet total in the UPSes card) and as a sortable "Est. Power" column in the UPSes list
-* feature: Make the Fleet Dashboard UPSes table sortable by UPS, Status, Load, Charge, Time Left, Est. Power and Last Updated; the choice persists in the browser and survives card refreshes
+* feature: Make the Fleet Dashboard UPSes table sortable by UPS, Status, Load, Charge, Time Left, Est. Power and Last Updated
 * issue: Stop the dashboard auto-refresh interval following the user to another page by driving Cacti's `refreshMSeconds`/`refreshPage` page-timer globals (as the Graphs page does) instead of storing the interval in the session
+* feature: Auto-refresh now updates the dashboard's cards in place instead of reloading the whole page: through Cacti's `refreshFunction` page-timer hook where core has it (Cacti 1.3+), and with a timer of its own on Cacti 1.2.x, which has no such hook and stops when the dashboard leaves the screen. The chosen table sort is kept across a refresh (the live one, even if it was changed while the refresh was in flight), overlapping refresh rounds are skipped, and the full-page refresh remains the fallback when the dashboard script is not loaded
+* issue: Mark a NUT UPS's linked Cacti host down when its NUT query fails (these devices have availability checking disabled, so core polling cannot detect it), and stop `upsd` from holding a poll open past the deadline by trickling bytes
+* issue: Stop the UPS edit form from rewriting an existing UPS's port (3551 to 3493 or back) when it opens; the default port is now only swapped when the collector type is changed by hand
+* issue: Store the start time, manufacture date, master update, last on battery and last self test of `apcupsd_ups_stats` as unknown (NULL) when the UPS does not report them, instead of letting each poll invent the current time
 * security: Replace the confirmation pages' inline `onClick='cactiReturnTo()'` Cancel buttons with the CSP-safe `cactiReturnTo` class so the pages no longer trip Cacti's Content-Security-Policy script-src-attr directive
 * security: Move the UPS filter selects' inline onChange handlers into the ready block so the page no longer trips Cacti's Content-Security-Policy script-src-attr directive
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
