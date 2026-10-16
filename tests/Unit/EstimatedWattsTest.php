@@ -41,6 +41,21 @@ describe('apcupsd_estimate_watts', function () {
 	});
 });
 
+describe('apcupsd_is_slave_status', function () {
+	it('flags slave statuses', function () {
+		expect(apcupsd_is_slave_status('ONLINE SLAVE'))->toBeTrue();
+		expect(apcupsd_is_slave_status('SLAVEDOWN'))->toBeTrue();
+		expect(apcupsd_is_slave_status('online slave'))->toBeTrue();
+	});
+
+	it('does not flag master or non-string statuses', function () {
+		expect(apcupsd_is_slave_status('ONLINE'))->toBeFalse();
+		expect(apcupsd_is_slave_status('ONBATT'))->toBeFalse();
+		expect(apcupsd_is_slave_status(''))->toBeFalse();
+		expect(apcupsd_is_slave_status(null))->toBeFalse();
+	});
+});
+
 describe('estimated watts wiring', function () {
 	$read = function (string $relative): string {
 		$contents = file_get_contents(__DIR__ . '/../../' . $relative);
@@ -56,6 +71,7 @@ describe('estimated watts wiring', function () {
 		expect($source)->toContain('AS estWatts');
 		expect($source)->toContain('AS estCapacity');
 		expect($source)->toContain('AS estCount');
+		expect($source)->toContain("NOT LIKE '%SLAVE%'");
 		expect($source)->toContain("'power'    => ['title' => __('Fleet Power', 'apcupsd')");
 	});
 
@@ -64,6 +80,7 @@ describe('estimated watts wiring', function () {
 
 		expect($source)->toContain("\$th('power', __('Est. Power', 'apcupsd')");
 		expect($source)->toContain('apcupsd_estimate_watts(');
+		expect($source)->toContain('!apcupsd_is_slave_status(');
 		expect($source)->toContain('apcupsdDashTotalRow');
 	});
 

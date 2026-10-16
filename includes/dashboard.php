@@ -1832,7 +1832,8 @@ if (!function_exists('apcupsd_fleet_stats')) {
 	 * Memoized fleet aggregates: UPS counts by status (online/on-battery/other/
 	 * disabled), the min/avg/max of load, battery charge and runtime across the
 	 * enabled UPSes, and the estimated total power draw (nominal power x load %)
-	 * with the rated capacity and UPS count it was summed over.
+	 * with the rated capacity and UPS count it was summed over. Slave UPSes are
+	 * left out of the power figures: their draw is already part of the master's.
 	 *
 	 * @return array The aggregate row.
 	 */
@@ -1840,6 +1841,8 @@ if (!function_exists('apcupsd_fleet_stats')) {
 		static $cache = null;
 
 		if ($cache === null) {
+			$estimable = "ups.enabled = 'on' AND COALESCE(stats.ups_status, '') NOT LIKE '%SLAVE%' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0";
+
 			$row = db_fetch_row("SELECT
 				COUNT(*) AS total,
 				SUM(CASE WHEN ups.enabled = 'on' THEN 1 ELSE 0 END) AS enabled,
@@ -1855,9 +1858,9 @@ if (!function_exists('apcupsd_fleet_stats')) {
 				MIN(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS minTime,
 				AVG(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS avgTime,
 				MAX(CASE WHEN ups.enabled = 'on' THEN stats.ups_timeleft END) AS maxTime,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power * stats.ups_load_percent / 100 END) AS estWatts,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN stats.ups_nominal_power END) AS estCapacity,
-				SUM(CASE WHEN ups.enabled = 'on' AND stats.ups_nominal_power > 0 AND stats.ups_load_percent >= 0 THEN 1 ELSE 0 END) AS estCount
+				SUM(CASE WHEN $estimable THEN stats.ups_nominal_power * stats.ups_load_percent / 100 END) AS estWatts,
+				SUM(CASE WHEN $estimable THEN stats.ups_nominal_power END) AS estCapacity,
+				SUM(CASE WHEN $estimable THEN 1 ELSE 0 END) AS estCount
 				FROM apcupsd_ups AS ups
 				LEFT JOIN apcupsd_ups_stats AS stats ON stats.ups_id = ups.id");
 
@@ -2257,8 +2260,9 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 						$charge = isset($ups['ups_battery_charge']) && is_numeric($ups['ups_battery_charge']) ? number_format_i18n((float) $ups['ups_battery_charge'], 0) . '%' : __('N/A', 'apcupsd');
 						$time   = isset($ups['ups_timeleft']) && is_numeric($ups['ups_timeleft']) ? number_format_i18n((float) $ups['ups_timeleft'], 0) . ' ' . __('min', 'apcupsd') : __('N/A', 'apcupsd');
 
-						// A disabled UPS is not being polled, so its last reading is not an estimate.
-						$watts = ($ups['enabled'] ?? '') === 'on' ? apcupsd_estimate_watts($ups['ups_nominal_power'] ?? null, $ups['ups_load_percent'] ?? null) : null;
+						// A disabled UPS is not being polled, so its last reading is not an estimate,
+						// and a slave's draw is already counted in its master's power.
+						$watts = ($ups['enabled'] ?? '') === 'on' && !apcupsd_is_slave_status($ups['ups_status'] ?? null) ? apcupsd_estimate_watts($ups['ups_nominal_power'] ?? null, $ups['ups_load_percent'] ?? null) : null;
 
 						print '<tr>'
 							. '<td><a class="apcupsdDashGlyph" href="' . html_escape($view) . '" title="' . __esc('Open UPS Dashboard', 'apcupsd') . '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></a></td>'
