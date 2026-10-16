@@ -622,6 +622,10 @@ function collect_nut_ups_data($ups): bool {
 	if ($result['error'] !== '') {
 		debug('NUT query failed: ' . $result['error']);
 
+		// The poller runs in the background with its output discarded, so the Cacti log is
+		// the only place an operator can see why a NUT UPS is down.
+		cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', $ups['name'], $ups['hostname'], $ups['port'], $result['error']), false, 'APCUPSD');
+
 		// These devices have availability checking disabled, so core polling cannot
 		// notice the failure: mark the linked host down here.
 		set_ups_host_state($ups['host_id'], false);

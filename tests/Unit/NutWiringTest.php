@@ -168,6 +168,28 @@ describe('NUT wiring', function () {
 		expect(strpos($poller, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
 	});
 
+	it('logs a failed NUT query to the Cacti log without exposing credentials', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+		$log    = "cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', \$ups['name'], \$ups['hostname'], \$ups['port'], \$result['error']), false, 'APCUPSD');";
+
+		expect($poller)->toContain($log);
+
+		// The failure is logged before the status is written and the function returns.
+		expect(strpos($poller, $log))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
+
+		// Neither the NUT username nor password may reach the log line.
+		expect($log)->not->toContain('nut_password');
+		expect($log)->not->toContain('nut_username');
+	});
+
+	it('stores the Poller ID chosen on the UPS form', function () use ($read) {
+		$page = $read('upses.php');
+
+		expect($page)->toContain("if (isset_request_var('poller_id')) {");
+		expect($page)->toContain("\$save['poller_id'] = form_input_validate(get_nfilter_request_var('poller_id'), 'poller_id', '^[0-9]+\$', false, 3);");
+		expect(strpos($page, "\$save['poller_id']"))->toBeLessThan(strpos($page, "sql_save(\$save, 'apcupsd_ups')"));
+	});
+
 	it('does not rewrite an existing UPS\'s port when the edit form opens', function () use ($read) {
 		$page = $read('upses.php');
 

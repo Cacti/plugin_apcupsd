@@ -352,6 +352,11 @@ function form_save(): void {
 		$save['description']  = form_input_validate(get_nfilter_request_var('description'), 'description', '', true, 3);
 		$save['site_id']      = form_input_validate(get_nfilter_request_var('site_id'), 'site_id', '^[0-9]+$', true, 3);
 
+		// Without this the Poller ID field is shown but never stored, so every UPS falls back to the column default.
+		if (isset_request_var('poller_id')) {
+			$save['poller_id'] = form_input_validate(get_nfilter_request_var('poller_id'), 'poller_id', '^[0-9]+$', false, 3);
+		}
+
 		if ($save['type_id'] == 2) {
 			$save['hostname'] = form_input_validate(get_nfilter_request_var('snmp_hostname'), 'snmp_hostname', '', true, 3);
 		} else {

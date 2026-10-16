@@ -2,6 +2,8 @@
 
 --- 1.4.0 ---
 
+* issue: Write a WARNING to the Cacti log (APCUPSD) naming the UPS, host, port and reason whenever a NUT query fails; before, the reason was only stored in the UPS's error message and shown with `-d`, so a NUT UPS that could not be reached left nothing in the log
+* issue: Save the Poller ID chosen on the UPS form; the field was displayed but never stored, so every UPS was always assigned to poller 1
 * feature: Add support for monitoring UPSes through Network UPS Tools (NUT) as a third collector type, "NUT Based". The poller talks to `upsd` (TCP 3493 by default) over a native PHP socket implementation of the NUT protocol, so no `upsc` or other CLI tool is needed. Optional username/password authentication and STARTTLS (with certificate verification) are supported, and one NUT server can serve several UPSes through the new NUT UPS Name setting. NUT status flags are translated to the existing apcupsd vocabulary (OL to ONLINE, OB to ONBATT, and so on) so the dashboards, fleet totals and alerts keep working unchanged
 * issue: Widen the status, model, serial number, firmware, driver and name columns of `apcupsd_ups_stats` so multi-flag NUT statuses and longer NUT strings are not truncated
 * feature: Let NUT STARTTLS work with self-signed certificates: a per-UPS CA / Certificate File to verify the server against (certificate and host name are still checked), or an Allow Self-Signed Certificate option that encrypts without verifying the server
