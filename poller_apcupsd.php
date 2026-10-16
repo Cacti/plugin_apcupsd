@@ -585,7 +585,9 @@ function collect_nut_ups_data($ups): bool {
 		$ups['nut_username'],
 		$ups['nut_password'],
 		$ups['nut_tls'] == 'on',
-		apcupsd_normalize_timeout($ups['timeout'] ?? null)
+		apcupsd_normalize_timeout($ups['timeout'] ?? null),
+		(string) ($ups['nut_cafile'] ?? ''),
+		($ups['nut_tls_selfsigned'] ?? '') == 'on'
 	);
 
 	if ($result['error'] === '' && !cacti_sizeof($result['vars'])) {

@@ -1080,7 +1080,27 @@ msgid "Use TLS (STARTTLS)"
 msgstr ""
 
 #: upses.php
-msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller."
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr ""
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr ""
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr ""
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr ""
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr ""
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
 msgstr ""
 
 #: poller_apcupsd.php

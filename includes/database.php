@@ -59,6 +59,8 @@ function apcupsd_ups_table_data(): array {
 	$data['columns'][] = ['name' => 'nut_username',         'type' => 'varchar(64)',  'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'nut_password',         'type' => 'varchar(128)', 'NULL' => false, 'default' => ''];
 	$data['columns'][] = ['name' => 'nut_tls',              'type' => 'char(2)',      'NULL' => true,  'default' => ''];
+	$data['columns'][] = ['name' => 'nut_cafile',           'type' => 'varchar(255)', 'NULL' => false, 'default' => ''];
+	$data['columns'][] = ['name' => 'nut_tls_selfsigned',   'type' => 'char(2)',      'NULL' => true,  'default' => ''];
 	$data['columns'][] = ['name' => 'timeout',              'type' => 'int(10)',      'unsigned' => true, 'NULL' => false, 'default' => 5];
 	$data['columns'][] = ['name' => 'enabled',              'type' => 'char(2)',      'NULL' => true, 'default' => 'on'];
 	$data['columns'][] = ['name' => 'error_message',        'type' => 'varchar(255)', 'NULL' => true, 'default' => ''];

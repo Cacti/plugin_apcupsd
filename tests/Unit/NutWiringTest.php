@@ -38,6 +38,15 @@ describe('NUT schema', function () {
 		expect($ups['nut_ups_name']['default'])->toBe('');
 	});
 
+	it('adds the CA file and self-signed TLS options to apcupsd_ups', function () use ($columns) {
+		$ups = $columns(apcupsd_ups_table_data());
+
+		expect($ups['nut_cafile']['type'])->toBe('varchar(255)');
+		expect($ups['nut_cafile']['default'])->toBe('');
+		expect($ups['nut_tls_selfsigned']['type'])->toBe('char(2)');
+		expect($ups['nut_tls_selfsigned']['default'])->toBe('');
+	});
+
 	it('adds a per-UPS timeout that defaults to five seconds', function () use ($columns) {
 		$ups = $columns(apcupsd_ups_table_data());
 
@@ -130,7 +139,7 @@ describe('NUT wiring', function () {
 		expect($poller)->toContain('exec_with_timeout($command, $output, $return, $timeout);');
 		expect($poller)->not->toContain('exec($command');
 		expect($poller)->toContain("\$timeout = apcupsd_normalize_timeout(\$ups['timeout'] ?? null);");
-		expect(preg_match("/\\\$ups\\['nut_tls'\\] == 'on',\\s+apcupsd_normalize_timeout\\(\\\$ups\\['timeout'\\] \\?\\? null\\)\\s+\\);/", $poller))->toBe(1);
+		expect(preg_match("/\\\$ups\\['nut_tls'\\] == 'on',\\s+apcupsd_normalize_timeout\\(\\\$ups\\['timeout'\\] \\?\\? null\\),/", $poller))->toBe(1);
 		expect($poller)->toContain('if ($return != 0 || !cacti_sizeof($output)) {');
 
 		$page = $read('upses.php');
@@ -154,7 +163,23 @@ describe('NUT wiring', function () {
 		}
 
 		expect($nut)->toContain('stream_socket_client');
-		expect($nut)->toContain("'verify_peer'      => true");
+		expect($nut)->toContain("'verify_peer'       => !\$allow_self_signed");
+	});
+
+	it('offers a CA file and a self-signed option for NUT TLS and passes them to the poller', function () use ($read) {
+		$page   = $read('upses.php');
+		$poller = $read('poller_apcupsd.php');
+
+		foreach (['nut_cafile', 'nut_tls_selfsigned'] as $field) {
+			expect($page)->toContain("'{$field}' => [");
+			expect($poller)->toContain("\$ups['{$field}']");
+		}
+
+		expect($page)->toContain("get_nfilter_request_var('nut_cafile')");
+		expect($page)->toContain("isset_request_var('nut_tls_selfsigned')");
+		expect($page)->toContain('apcupsd_nut_valid_cafile(');
+		expect($page)->toContain('function syncNutTls()');
+		expect($read('README.md'))->toContain('Allow Self-Signed Certificate');
 	});
 
 	it('is measured by the coverage run', function () use ($read) {

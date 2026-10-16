@@ -83,9 +83,21 @@ type:
   community strings and passwords are.
 
 * **Use TLS (STARTTLS)**: encrypts the connection before any credentials are
-  sent.  The server certificate and host name are always verified, so the
-  certificate must be trusted by the Cacti poller (the `openssl` PHP extension
-  is required).
+  sent (the `openssl` PHP extension is required).  The server certificate and
+  host name are verified, so by default the certificate must be trusted by the
+  Cacti poller.  For a homelab with a self-signed certificate there are two
+  ways around that:
+
+  * **CA / Certificate File** (recommended): the full path, on the poller, to a
+    PEM file holding the CA certificate, or the self-signed server certificate
+    itself (for example `/etc/nut/upsd.pem` copied from the NUT server).  The
+    server is still authenticated against that file, and the Hostname must
+    match a name in the certificate.
+
+  * **Allow Self-Signed Certificate**: accepts any certificate without
+    checking it.  The connection is encrypted but the server's identity is not
+    verified, so a man-in-the-middle could still read the NUT credentials.  Use
+    it only on a network you trust, and prefer the certificate file.
 
 * **Timeout (seconds)**: how long the poller waits for the NUT server, from 1
   to 120 seconds (5 by default).  It bounds the connection attempt and each

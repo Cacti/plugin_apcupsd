@@ -188,8 +188,24 @@ $fields_ups_edit = [
 	'nut_tls' => [
 		'method'        => 'checkbox',
 		'friendly_name' => __('Use TLS (STARTTLS)', 'apcupsd'),
-		'description'   => __('Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller.', 'apcupsd'),
+		'description'   => __('Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below.', 'apcupsd'),
 		'value'         => '|arg1:nut_tls|',
+		'default'       => ''
+	],
+	'nut_cafile' => [
+		'method'        => 'textbox',
+		'friendly_name' => __('CA / Certificate File', 'apcupsd'),
+		'description'   => __('Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate.', 'apcupsd'),
+		'value'         => '|arg1:nut_cafile|',
+		'size'          => '60',
+		'placeholder'   => '/etc/ssl/certs/nut-ca.pem',
+		'max_length'    => '255'
+	],
+	'nut_tls_selfsigned' => [
+		'method'        => 'checkbox',
+		'friendly_name' => __('Allow Self-Signed Certificate', 'apcupsd'),
+		'description'   => __('Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above.', 'apcupsd'),
+		'value'         => '|arg1:nut_tls_selfsigned|',
 		'default'       => ''
 	],
 	'host_snmp_head' => [
@@ -342,10 +358,16 @@ function form_save(): void {
 				$save['port'] = APCUPSD_NUT_DEFAULT_PORT;
 			}
 
-			$save['nut_ups_name'] = form_input_validate(get_nfilter_request_var('nut_ups_name'), 'nut_ups_name', '^[A-Za-z0-9_.\-]{1,64}$', false, 3);
-			$save['nut_username'] = form_input_validate(get_nfilter_request_var('nut_username'), 'nut_username', '', true, 3);
-			$save['nut_password'] = form_input_validate(get_nfilter_request_var('nut_password'), 'nut_password', '', true, 3);
-			$save['nut_tls']      = isset_request_var('nut_tls') ? 'on' : '';
+			$save['nut_ups_name']       = form_input_validate(get_nfilter_request_var('nut_ups_name'), 'nut_ups_name', '^[A-Za-z0-9_.\-]{1,64}$', false, 3);
+			$save['nut_username']       = form_input_validate(get_nfilter_request_var('nut_username'), 'nut_username', '', true, 3);
+			$save['nut_password']       = form_input_validate(get_nfilter_request_var('nut_password'), 'nut_password', '', true, 3);
+			$save['nut_tls']            = isset_request_var('nut_tls') ? 'on' : '';
+			$save['nut_cafile']         = trim((string) get_nfilter_request_var('nut_cafile'));
+			$save['nut_tls_selfsigned'] = isset_request_var('nut_tls_selfsigned') ? 'on' : '';
+
+			if ($save['nut_cafile'] !== '' && !apcupsd_nut_valid_cafile($save['nut_cafile'])) {
+				form_input_validate('', 'nut_cafile', '^$', false, 3);
+			}
 
 			if (!apcupsd_nut_valid_host($save['hostname'])) {
 				form_input_validate('', 'hostname', '^$', false, 3);
@@ -751,6 +773,13 @@ function ups_edit(): void {
 	var snmp_port            = $('#snmp_port').val();
 	var snmp_timeout         = $('#snmp_timeout').val();
 
+	function syncNutTls() {
+		// The certificate options only matter while STARTTLS is on.
+		var on = $('#type_id').val() == 3 && $('#nut_tls').is(':checked');
+
+		$('#row_nut_cafile, #row_nut_tls_selfsigned').toggle(on);
+	}
+
 	function changeType() {
 		var type = $('#type_id').val();
 
@@ -784,6 +813,7 @@ function ups_edit(): void {
 			$('#row_host_snmp_head').hide();
 			$('[id^="row_snmp"]').hide();
 			$('[id^="row_nut"]').show();
+			syncNutTls();
 
 			if ($('#port').val() == '' || $('#port').val() == '3551') {
 				$('#port').val('3493');
@@ -798,6 +828,10 @@ function ups_edit(): void {
 	$(function() {
 		$('#type_id').change(function() {
 			changeType();
+		});
+
+		$('#nut_tls').change(function() {
+			syncNutTls();
 		});
 
 		$('#snmp_version').change(function() {

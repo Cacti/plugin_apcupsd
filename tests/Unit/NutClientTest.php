@@ -356,6 +356,56 @@ describe('timeout normalisation', function () {
 	});
 });
 
+describe('NUT TLS trust options', function () {
+	it('accepts only plain absolute CA file paths', function () {
+		foreach (['/etc/nut/upsd.pem', '/etc/ssl/certs/nut ca.pem', 'C:\\certs\\ca.pem', 'C:/certs/ca.pem'] as $path) {
+			expect(apcupsd_nut_valid_cafile($path))->toBeTrue("path {$path}");
+		}
+
+		foreach (['', 'ca.pem', 'relative/ca.pem', 'phar:///tmp/x.phar/ca.pem', 'http://example.com/ca.pem', "/etc/nut/ca.pem\nx", "/etc/\0ca.pem", '/' . str_repeat('a', 255)] as $path) {
+			expect(apcupsd_nut_valid_cafile($path))->toBeFalse('path ' . json_encode($path));
+		}
+	});
+
+	it('verifies the certificate chain and host name by default', function () {
+		$options = apcupsd_nut_ssl_options('nut.example.com');
+
+		expect($options['verify_peer'])->toBeTrue();
+		expect($options['verify_peer_name'])->toBeTrue();
+		expect($options['allow_self_signed'])->toBeFalse();
+		expect($options['peer_name'])->toBe('nut.example.com');
+		expect($options)->not->toHaveKey('cafile');
+	});
+
+	it('trusts a CA / certificate file without weakening verification', function () {
+		$options = apcupsd_nut_ssl_options('nut.example.com', '/etc/nut/upsd.pem');
+
+		expect($options['cafile'])->toBe('/etc/nut/upsd.pem');
+		expect($options['verify_peer'])->toBeTrue();
+		expect($options['verify_peer_name'])->toBeTrue();
+	});
+
+	it('only turns verification off when self-signed certificates are explicitly allowed', function () {
+		$options = apcupsd_nut_ssl_options('nut.example.com', '/etc/nut/upsd.pem', true);
+
+		expect($options['verify_peer'])->toBeFalse();
+		expect($options['verify_peer_name'])->toBeFalse();
+		expect($options['allow_self_signed'])->toBeTrue();
+		expect($options)->not->toHaveKey('cafile');
+	});
+
+	it('refuses an unreadable or unsafe CA file before connecting', function () {
+		foreach (['/nonexistent/ca.pem', 'phar:///tmp/x.phar', 'relative.pem'] as $path) {
+			expect(apcupsd_nut_query('127.0.0.1', 1, 'ups', '', '', true, 1, $path)['error'])->toContain('CA / certificate file cannot be read');
+		}
+	});
+
+	it('ignores the CA file when TLS is off or self-signed certificates are allowed', function () {
+		expect(apcupsd_nut_query('127.0.0.1', 1, 'ups', '', '', false, 1, '/nonexistent/ca.pem')['error'])->toContain('Unable to connect');
+		expect(apcupsd_nut_query('127.0.0.1', 1, 'ups', '', '', true, 1, '/nonexistent/ca.pem', true)['error'])->toContain('Unable to connect');
+	});
+});
+
 describe('NUT socket layer', function () {
 	$pair = function (array $lines): array {
 		$domain = DIRECTORY_SEPARATOR === '\\' ? STREAM_PF_INET : STREAM_PF_UNIX;

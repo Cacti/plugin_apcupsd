@@ -354,41 +354,95 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 	}
 }
 
+if (!function_exists('apcupsd_nut_valid_cafile')) {
+	/**
+	 * Whether a value is acceptable as the path of the CA / certificate file used
+	 * to verify the NUT server: an absolute local path with no stream wrapper
+	 * (such as phar:// or http://) and no control characters.
+	 *
+	 * @param mixed $path The configured path.
+	 *
+	 * @return bool True when the path is a plain absolute file path.
+	 */
+	function apcupsd_nut_valid_cafile($path): bool {
+		$path = (string) $path;
+
+		return strlen($path) <= 255
+			&& strpos($path, '://') === false
+			&& preg_match('#^(/|[A-Za-z]:[\\\\/])[^\x00-\x1f\x7f]+$#', $path) === 1;
+	}
+}
+
+if (!function_exists('apcupsd_nut_ssl_options')) {
+	/**
+	 * The SSL stream-context options used for the STARTTLS upgrade. By default
+	 * the certificate chain and host name are verified against the system trust
+	 * store. A CA / certificate file makes that file the trust anchor instead,
+	 * which is how a self-signed server certificate is trusted without weakening
+	 * verification. Allowing self-signed certificates turns verification off, so
+	 * the traffic is encrypted but the server's identity is not checked.
+	 *
+	 * @param string $hostname          The NUT server's hostname, used for SNI and name verification.
+	 * @param string $cafile            Optional PEM file to verify the server against.
+	 * @param bool   $allow_self_signed Accept any certificate without verifying it.
+	 *
+	 * @return array<string, mixed> The 'ssl' context options.
+	 */
+	function apcupsd_nut_ssl_options(string $hostname, string $cafile = '', bool $allow_self_signed = false): array {
+		$options = [
+			'verify_peer'       => !$allow_self_signed,
+			'verify_peer_name'  => !$allow_self_signed,
+			'allow_self_signed' => $allow_self_signed,
+			'peer_name'         => $hostname,
+			'SNI_enabled'       => true,
+		];
+
+		if ($cafile !== '' && !$allow_self_signed) {
+			$options['cafile'] = $cafile;
+		}
+
+		return $options;
+	}
+}
+
 if (!function_exists('apcupsd_nut_query')) {
 	/**
 	 * Connect to a NUT server over TCP and read every variable of one UPS. The
 	 * connect and the whole conversation together are bounded by twice the
-	 * timeout. When TLS is requested the certificate and host name are verified,
-	 * so install the server's CA (or use a trusted certificate) for STARTTLS to
-	 * succeed.
+	 * timeout. When TLS is requested the certificate and host name are verified
+	 * (see apcupsd_nut_ssl_options()), so install the server's CA, point the UPS
+	 * at a CA / certificate file, or allow self-signed certificates for STARTTLS
+	 * to succeed.
 	 *
-	 * @param string $hostname The NUT server's hostname or IP address.
-	 * @param mixed  $port     The NUT server's TCP port.
-	 * @param string $ups      The NUT UPS name to read.
-	 * @param string $username The upsd.users user; empty for anonymous access.
-	 * @param string $password The upsd.users password.
-	 * @param bool   $tls      Whether to require STARTTLS.
-	 * @param int    $timeout  Seconds allowed to connect and per read, clamped to 1-120.
+	 * @param string $hostname          The NUT server's hostname or IP address.
+	 * @param mixed  $port              The NUT server's TCP port.
+	 * @param string $ups               The NUT UPS name to read.
+	 * @param string $username          The upsd.users user; empty for anonymous access.
+	 * @param string $password          The upsd.users password.
+	 * @param bool   $tls               Whether to require STARTTLS.
+	 * @param int    $timeout           Seconds allowed to connect and per read, clamped to 1-120.
+	 * @param string $cafile            Optional PEM file to verify the server certificate against.
+	 * @param bool   $allow_self_signed Accept any certificate without verifying it (encrypts only).
 	 *
 	 * @return array{vars: array<string, string>, version: string, error: string}
 	 */
-	function apcupsd_nut_query(string $hostname, $port, string $ups, string $username = '', string $password = '', bool $tls = false, int $timeout = 5): array {
+	function apcupsd_nut_query(string $hostname, $port, string $ups, string $username = '', string $password = '', bool $tls = false, int $timeout = 5, string $cafile = '', bool $allow_self_signed = false): array {
 		$started  = microtime(true);
 		$hostname = trim($hostname);
 		$port     = apcupsd_normalize_positive_int($port, APCUPSD_NUT_DEFAULT_PORT);
 		$timeout  = apcupsd_normalize_timeout($timeout);
+		$cafile   = trim($cafile);
 
 		if (!apcupsd_nut_valid_host($hostname) || $port > 65535 || !apcupsd_nut_valid_ups_name($ups)) {
 			return ['vars' => [], 'version' => '', 'error' => __('Invalid NUT hostname, port or UPS name configuration', 'apcupsd')];
 		}
 
+		if ($tls && !$allow_self_signed && $cafile !== '' && (!apcupsd_nut_valid_cafile($cafile) || !is_readable($cafile))) {
+			return ['vars' => [], 'version' => '', 'error' => __('The NUT CA / certificate file cannot be read.', 'apcupsd')];
+		}
+
 		$target  = (strpos($hostname, ':') !== false ? '[' . $hostname . ']' : $hostname) . ':' . $port;
-		$context = stream_context_create(['ssl' => [
-			'verify_peer'      => true,
-			'verify_peer_name' => true,
-			'peer_name'        => $hostname,
-			'SNI_enabled'      => true,
-		]]);
+		$context = stream_context_create(['ssl' => apcupsd_nut_ssl_options($hostname, $cafile, $allow_self_signed)]);
 
 		$stream = @stream_socket_client('tcp://' . $target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
 
