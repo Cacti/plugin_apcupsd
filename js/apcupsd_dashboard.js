@@ -54,12 +54,123 @@ function apcupsdDashPost(grid, extra) {
 	return data;
 }
 
+var apcupsdDashSortStorageKey = 'apcupsd_dashboard_sort';
+
+/** Read the saved sort choices ({tableId: {key, direction}}) from localStorage. */
+function apcupsdDashSortRead() {
+	try {
+		var saved = JSON.parse(window.localStorage.getItem(apcupsdDashSortStorageKey));
+		return saved && typeof saved === 'object' ? saved : {};
+	} catch (e) {
+		return {};
+	}
+}
+
+/** Save the sort choices; storage can be unavailable, in which case the sort
+ *  still applies for the current view. */
+function apcupsdDashSortWrite(state) {
+	try {
+		window.localStorage.setItem(apcupsdDashSortStorageKey, JSON.stringify(state));
+	} catch (e) {
+		return;
+	}
+}
+
+/** Sort a table's body rows by the header with the given key. Cells carry their
+ *  sortable value in data-sort; rows with an empty value (N/A) always sort last,
+ *  and ties keep their original order. */
+function apcupsdDashSortTable(table, key, direction) {
+	var body = table.tBodies[0];
+	var header = table.querySelector('thead th[data-sort-key="' + key + '"]');
+	if (!body || !header) {
+		return;
+	}
+
+	var column  = header.cellIndex;
+	var numeric = header.dataset.sortType === 'num';
+	var factor  = direction === 'desc' ? -1 : 1;
+
+	var rows = Array.prototype.map.call(body.rows, function(row, index) {
+		// Remember the server's row order the first time, so ties always fall back
+		// to it rather than to whatever the previous sort left behind.
+		if (row.getAttribute('data-sort-index') === null) {
+			row.setAttribute('data-sort-index', String(index));
+		}
+
+		var cell = row.cells[column];
+		return {row: row, index: parseInt(row.getAttribute('data-sort-index'), 10), value: cell ? cell.getAttribute('data-sort') : null};
+	});
+
+	rows.sort(function(a, b) {
+		var aEmpty = a.value === null || a.value === '';
+		var bEmpty = b.value === null || b.value === '';
+		if (aEmpty || bEmpty) {
+			return aEmpty && bEmpty ? a.index - b.index : (aEmpty ? 1 : -1);
+		}
+
+		var result = numeric
+			? parseFloat(a.value) - parseFloat(b.value)
+			: a.value.localeCompare(b.value, undefined, {numeric: true, sensitivity: 'base'});
+
+		return result !== 0 ? result * factor : a.index - b.index;
+	});
+
+	rows.forEach(function(item) {
+		body.appendChild(item.row);
+	});
+
+	table.querySelectorAll('thead th.apcupsdDashSortable').forEach(function(th) {
+		th.setAttribute('aria-sort', th === header ? (direction === 'desc' ? 'descending' : 'ascending') : 'none');
+	});
+}
+
+/** Re-apply the saved sort to every sortable table under a root, so a sort
+ *  survives card refreshes and newly added cards. */
+function apcupsdDashApplySort(root) {
+	var state = apcupsdDashSortRead();
+
+	root.querySelectorAll('table[data-sort-table]').forEach(function(table) {
+		var saved = state[table.dataset.sortTable];
+		if (saved && typeof saved.key === 'string' && (saved.direction === 'asc' || saved.direction === 'desc')) {
+			apcupsdDashSortTable(table, saved.key, saved.direction);
+		}
+	});
+}
+
+/** Handle a sort-button click: the first click on a column uses its natural
+ *  direction (numbers largest first, text A-Z), later clicks toggle it. */
+function apcupsdDashSortClick(button) {
+	var header = button.closest('th');
+	var table  = header ? header.closest('table[data-sort-table]') : null;
+	if (!header || !table) {
+		return;
+	}
+
+	var id      = table.dataset.sortTable;
+	var key     = header.dataset.sortKey;
+	var state   = apcupsdDashSortRead();
+	var current = state[id];
+	var direction = current && current.key === key
+		? (current.direction === 'asc' ? 'desc' : 'asc')
+		: (header.dataset.sortFirst === 'desc' ? 'desc' : 'asc');
+
+	state[id] = {key: key, direction: direction};
+	apcupsdDashSortWrite(state);
+	apcupsdDashApplySort(document);
+}
+
 function initApcupsdDashboard() {
 	$(function() {
 		var grid = document.getElementById('apcupsd_dashboard');
 		if (!grid) {
 			return;
 		}
+
+		// Delegated so the sort buttons also work in cards that are refreshed, added
+		// later, or copied into the maximize dialog.
+		$(document).off('click.apcupsdsort').on('click.apcupsdsort', '.apcupsdDashSortBtn', function() {
+			apcupsdDashSortClick(this);
+		});
 
 		grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
 			apcupsdDashBindCard(grid, card);
@@ -150,6 +261,8 @@ function initApcupsdDashboard() {
 
 /** Wire a single card's drag handle (mouse + keyboard) and drag events. */
 function apcupsdDashBindCard(grid, card) {
+	apcupsdDashApplySort(card);
+
 	var handle = card.querySelector('.apcupsdDashCardDrag');
 	if (!handle) {
 		return;

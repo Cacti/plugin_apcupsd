@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* feature: Estimate each UPS's power draw as nominal power x load % for UPSes that do not report real wattage, and show it on the Fleet Dashboard (an "Est. Power" tile, a new "Fleet Power" gauge card of total estimated watts against rated capacity, and an "Est. Power" column with a fleet total in the UPSes card) and as a sortable "Est. Power" column in the UPSes list
+* feature: Make the Fleet Dashboard UPSes table sortable by UPS, Status, Load, Charge, Time Left, Est. Power and Last Updated; the choice persists in the browser and survives card refreshes
+* issue: Stop the dashboard auto-refresh interval following the user to another page by driving Cacti's `refreshMSeconds`/`refreshPage` page-timer globals (as the Graphs page does) instead of storing the interval in the session
 * security: Replace the confirmation pages' inline `onClick='cactiReturnTo()'` Cancel buttons with the CSP-safe `cactiReturnTo` class so the pages no longer trip Cacti's Content-Security-Policy script-src-attr directive
 * security: Move the UPS filter selects' inline onChange handlers into the ready block so the page no longer trips Cacti's Content-Security-Policy script-src-attr directive
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
