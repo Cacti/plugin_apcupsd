@@ -174,11 +174,11 @@ if (!function_exists('apcupsd_nut_error')) {
 			case 'INVALID-USERNAME':
 				return __('The NUT server denied access. Check the NUT username and password.', 'apcupsd');
 			case 'UNKNOWN-UPS':
-				return sprintf(__('The NUT server does not know a UPS named "%s".', 'apcupsd'), $ups);
+				return __('The NUT server does not know a UPS named "%s".', $ups, 'apcupsd');
 			case 'DATA-STALE':
 				return __('The NUT server has stale data for this UPS: its driver is not responding.', 'apcupsd');
 			default:
-				return sprintf(__('The NUT server reported an error: %s', 'apcupsd'), $code === '' ? 'ERR' : $code);
+				return __('The NUT server reported an error: %s', $code === '' ? 'ERR' : $code, 'apcupsd');
 		}
 	}
 }
@@ -374,7 +374,7 @@ if (!function_exists('apcupsd_nut_query_stream')) {
 
 		// A read that gave up because time ran out looks like a closed connection to the session.
 		if ($result['error'] === __('The NUT server closed the connection unexpectedly.', 'apcupsd') && microtime(true) >= $deadline) {
-			$result['error'] = sprintf(__('The NUT server did not answer within %s seconds.', 'apcupsd'), $timeout);
+			$result['error'] = __('The NUT server did not answer within %s seconds.', $timeout, 'apcupsd');
 		}
 
 		return $result;
@@ -474,7 +474,7 @@ if (!function_exists('apcupsd_nut_query')) {
 		$stream = @stream_socket_client('tcp://' . $target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
 
 		if ($stream === false) {
-			return ['vars' => [], 'version' => '', 'error' => sprintf(__('Unable to connect to the NUT server %s: %s', 'apcupsd'), $target, $errstr)];
+			return ['vars' => [], 'version' => '', 'error' => __('Unable to connect to the NUT server %s: %s', $target, $errstr, 'apcupsd')];
 		}
 
 		$result = apcupsd_nut_query_stream($stream, $hostname, $ups, $username, $password, $tls, $timeout, $started + ($timeout * 2));

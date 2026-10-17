@@ -498,7 +498,7 @@ function collect_ups_data($ups) {
 	}));
 
 	if ($return != 0 || !cacti_sizeof($output)) {
-		$message = cacti_sizeof($output) ? implode(', ', $output) : sprintf(__('apcaccess failed or did not answer within %s seconds.', 'apcupsd'), $timeout);
+		$message = cacti_sizeof($output) ? implode(', ', $output) : __('apcaccess failed or did not answer within %s seconds.', $timeout, 'apcupsd');
 
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
