@@ -3,7 +3,7 @@
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
  |                                                                         |
- | Shared helpers for request normalization and apcaccess execution.       |
+ | Shared helpers for request normalization and request validation.        |
  +-------------------------------------------------------------------------+
  */
 
@@ -78,8 +78,8 @@ if (!function_exists('apcupsd_normalize_positive_int')) {
 	 * integer, falling back to a caller-supplied default when the value
 	 * isn't a positive whole number. Called throughout this file and
 	 * upses.php/poller_apcupsd.php to sanitize request/config values such
-	 * as site ids, row limits, and ports before use in SQL or shell
-	 * commands.
+	 * as site ids, row limits, and ports before use in SQL or network
+	 * requests.
 	 *
 	 * @param mixed $value   The value to normalize.
 	 * @param int   $default The value to return when $value does not
@@ -108,7 +108,7 @@ if (!function_exists('apcupsd_normalize_timeout')) {
 	/**
 	 * Coerces a configured timeout to whole seconds between 1 and 120, falling
 	 * back to a default when the value is not a positive number. Used for the
-	 * per-UPS timeout of the apcaccess and NUT collectors so a blank, zero or
+	 * per-UPS timeout of the apcupsd and NUT collectors so a blank, zero or
 	 * absurd value can neither disable the timeout nor stall the poller.
 	 *
 	 * @param mixed $value   The configured timeout in seconds.
@@ -158,73 +158,5 @@ if (!function_exists('apcupsd_get_autocomplete_rows_limit')) {
 	 */
 	function apcupsd_get_autocomplete_rows_limit($rows): int {
 		return apcupsd_normalize_positive_int($rows, 1);
-	}
-}
-
-if (!function_exists('apcupsd_escape_shellcmd')) {
-	/**
-	 * Escapes a string for safe use as a shell command name, preferring
-	 * Cacti core's cacti_escapeshellcmd() when available and falling back
-	 * to PHP's native escapeshellcmd() otherwise. Called from
-	 * apcupsd_build_apcaccess_command() before building the apcaccess
-	 * shell command.
-	 *
-	 * @param string $value The value to escape.
-	 *
-	 * @return string The escaped value.
-	 */
-	function apcupsd_escape_shellcmd($value): string {
-		if (function_exists('cacti_escapeshellcmd')) {
-			return cacti_escapeshellcmd($value);
-		}
-
-		return escapeshellcmd($value);
-	}
-}
-
-if (!function_exists('apcupsd_escape_shellarg')) {
-	/**
-	 * Escapes a string for safe use as a single shell command argument,
-	 * preferring Cacti core's cacti_escapeshellarg() when available and
-	 * falling back to PHP's native escapeshellarg() otherwise. Called from
-	 * apcupsd_build_apcaccess_command() before building the apcaccess
-	 * shell command.
-	 *
-	 * @param string $value The value to escape.
-	 *
-	 * @return string The escaped value.
-	 */
-	function apcupsd_escape_shellarg($value): string {
-		if (function_exists('cacti_escapeshellarg')) {
-			return cacti_escapeshellarg($value);
-		}
-
-		return escapeshellarg($value);
-	}
-}
-
-if (!function_exists('apcupsd_build_apcaccess_command')) {
-	/**
-	 * Builds a safely-escaped 'apcaccess -u -h host:port' shell command for
-	 * querying a remote apcupsd daemon, validating the hostname and port
-	 * first. Called from poller_apcupsd.php while polling each configured
-	 * UPS device.
-	 *
-	 * @param string $binary_path The path to the apcaccess binary.
-	 * @param string $hostname    The apcupsd daemon's hostname/IP.
-	 * @param mixed  $port        The apcupsd daemon's TCP port.
-	 *
-	 * @return string|false The fully-escaped shell command, or false when
-	 *                      the binary path, hostname, or port is invalid.
-	 */
-	function apcupsd_build_apcaccess_command($binary_path, $hostname, $port) {
-		$hostname = trim((string)$hostname);
-		$port     = apcupsd_normalize_positive_int($port, 0);
-
-		if ($binary_path === '' || $hostname === '' || !preg_match('/^[a-zA-Z0-9.\-]{1,253}$/', $hostname) || $port < 1 || $port > 65535) {
-			return false;
-		}
-
-		return apcupsd_escape_shellcmd($binary_path) . ' -u -h ' . apcupsd_escape_shellarg($hostname . ':' . $port);
 	}
 }

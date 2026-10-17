@@ -9,9 +9,9 @@ SNMP support in order to provide direct access to certain models over the SNMP
 protocol thus removing the need for an `apcupsd` host to provide the monitoring
 details as well.
 
-Each `apcupsd` UPS is defined by a network address and port name.  Cacti uses 
-the `apcaccess` command to gather statistics from the UPS and store them 
-in the Cacti database for `apcupsd` enabled UPS'.  The data stored in the
+Each `apcupsd` UPS is defined by a network address and port name.  Cacti asks
+the `apcupsd` daemon for its status over the apcupsd network protocol and stores
+it in the Cacti database for `apcupsd` enabled UPS'.  The data stored in the
 Cacti database can be used for Reporting, Graphing, and Alerting.
 
 ## Purpose
@@ -26,8 +26,8 @@ APCUPSD daemon or by NUT.
 
 * Log information to Cacti database
 
-* Three collector types: `apcupsd` (via `apcaccess`), SNMP, and NUT (via the
-  native NUT network protocol)
+* Three collector types: `apcupsd` (via the native apcupsd network protocol),
+  SNMP, and NUT (via the native NUT network protocol)
 
 * Fleet and per-UPS dashboards, with sortable tables
 
@@ -48,10 +48,12 @@ $(document).off('click.cactiReturnTo', '.cactiReturnTo')
 ## Installation
 
 Install just like any other plugin, just throw it in the plugin directory, and
-Install and Enabled from the Plugin Management Interface.  To monitor
-`apcupsd` UPS', your Cacti install will require the Linux `apcupsd` package be
-installed and `apcaccess` be in the system path.  NUT UPS' need no extra
-software on the Cacti poller.
+Install and Enabled from the Plugin Management Interface.  Neither `apcupsd`,
+`apcaccess` nor NUT need to be installed on the Cacti poller: both are spoken
+to over the network by the plugin itself.  To monitor an `apcupsd` UPS, the
+`apcupsd` daemon on the UPS host must have its network information server
+enabled (`NETSERVER on`, port 3551 by default) and allow the poller's address
+(`NISIP`).
 
 After you have installed the plugin, install the Device Package in the 
 templates folder from Console > Import/Export > Import Package.  This 
@@ -112,9 +114,8 @@ type:
   to 120 seconds (5 by default).  It bounds the connection attempt and each
   reply, and the connection plus the whole conversation together never take
   longer than twice the timeout, so an unresponsive server cannot hold up the
-  poller.  The same setting applies to `apcupsd` UPS', where `apcaccess` is
-  stopped if it has not finished in time.  SNMP UPS' keep using the SNMP
-  timeout.
+  poller.  The same setting and bounds apply to `apcupsd` UPS'.  SNMP UPS' keep
+  using the SNMP timeout.
 
 On the NUT server, `upsd` only listens on localhost by default.  To let a
 Cacti poller reach it, add a `LISTEN` line to `upsd.conf` (for example
