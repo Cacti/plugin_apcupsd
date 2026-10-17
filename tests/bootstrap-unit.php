@@ -291,14 +291,20 @@ if (!function_exists('html_escape')) {
 }
 
 if (!function_exists('__')) {
-	function __($text, $domain = '') {
-		return $text;
+	// Mirrors Cacti's __(): with more than the text it formats at once, and the trailing text domain is
+	// just one more sprintf argument. A placeholder with too few values therefore throws, as it does in Cacti.
+	function __($text, ...$args) {
+		if ($args === [] || preg_match('/%(?!%)[-+0-9.\']*[bcdeEfFgGosuxX]/', (string) $text) !== 1) {
+			return $text;
+		}
+
+		return str_replace('%%', '%', sprintf($text, ...$args));
 	}
 }
 
 if (!function_exists('__esc')) {
-	function __esc($text, $domain = '') {
-		return htmlspecialchars((string) $text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+	function __esc($text, ...$args) {
+		return htmlspecialchars((string) __($text, ...$args), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	}
 }
 

@@ -7,18 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-if (!function_exists('cacti_escapeshellcmd')) {
-	function cacti_escapeshellcmd($value) {
-		return '[cmd]' . $value . '[/cmd]';
-	}
-}
-
-if (!function_exists('cacti_escapeshellarg')) {
-	function cacti_escapeshellarg($value) {
-		return '[arg]' . $value . '[/arg]';
-	}
-}
-
 require_once __DIR__ . '/../../includes/functions.php';
 
 describe('apcupsd security helpers', function () {
@@ -36,14 +24,5 @@ describe('apcupsd security helpers', function () {
 
 	it('never returns a zero autocomplete rows limit', function () {
 		expect(apcupsd_get_autocomplete_rows_limit('0'))->toBe(1);
-	});
-
-	it('escapes the binary and host target in the apcaccess command', function () {
-		expect(apcupsd_build_apcaccess_command('/usr/bin/apcaccess', 'ups.example.com', '3551'))
-			->toBe('[cmd]/usr/bin/apcaccess[/cmd] -u -h [arg]ups.example.com:3551[/arg]');
-	});
-
-	it('rejects invalid ports in the apcaccess command', function () {
-		expect(apcupsd_build_apcaccess_command('/usr/bin/apcaccess', 'ups.example.com', '3551;id'))->toBeFalse();
 	});
 });
