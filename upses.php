@@ -627,9 +627,9 @@ function run_graph_automation(array $ups_ids): void {
 	if ($ran === 0) {
 		raise_message('apcupsd_automation', __('None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll.', 'apcupsd'), MESSAGE_LEVEL_WARN);
 	} elseif ($skipped > 0) {
-		raise_message('apcupsd_automation', sprintf(__('Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped.', 'apcupsd'), $ran, $skipped), MESSAGE_LEVEL_WARN);
+		raise_message('apcupsd_automation', __('Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped.', $ran, $skipped, 'apcupsd'), MESSAGE_LEVEL_WARN);
 	} else {
-		raise_message('apcupsd_automation', sprintf(__('Graph Automation was run for %d UPS(es).', 'apcupsd'), $ran), MESSAGE_LEVEL_INFO);
+		raise_message('apcupsd_automation', __('Graph Automation was run for %d UPS(es).', $ran, 'apcupsd'), MESSAGE_LEVEL_INFO);
 	}
 }
 

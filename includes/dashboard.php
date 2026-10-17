@@ -558,19 +558,19 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 		$summary = [];
 
 		if ($current !== null) {
-			$summary[] = sprintf(__('now %s', 'apcupsd'), apcupsd_dashboard_format_value($current, $unit));
+			$summary[] = __('now %s', apcupsd_dashboard_format_value($current, $unit), 'apcupsd');
 		}
 
 		if ($min !== null) {
-			$summary[] = sprintf(__('min %s', 'apcupsd'), apcupsd_dashboard_format_value($min, $unit));
+			$summary[] = __('min %s', apcupsd_dashboard_format_value($min, $unit), 'apcupsd');
 		}
 
 		if ($avg !== null) {
-			$summary[] = sprintf(__('avg %s', 'apcupsd'), apcupsd_dashboard_format_value($avg, $unit));
+			$summary[] = __('avg %s', apcupsd_dashboard_format_value($avg, $unit), 'apcupsd');
 		}
 
 		if ($max !== null) {
-			$summary[] = sprintf(__('max %s', 'apcupsd'), apcupsd_dashboard_format_value($max, $unit));
+			$summary[] = __('max %s', apcupsd_dashboard_format_value($max, $unit), 'apcupsd');
 		}
 
 		$head = '<div class="apcupsdBulletHead">'
@@ -893,15 +893,15 @@ if (!function_exists('apcupsd_dashboard_stats_caption')) {
 		$parts = [];
 
 		if ($min !== null) {
-			$parts[] = sprintf(__('min %s', 'apcupsd'), apcupsd_dashboard_format_value($min, $unit));
+			$parts[] = __('min %s', apcupsd_dashboard_format_value($min, $unit), 'apcupsd');
 		}
 
 		if ($avg !== null) {
-			$parts[] = sprintf(__('avg %s', 'apcupsd'), apcupsd_dashboard_format_value($avg, $unit));
+			$parts[] = __('avg %s', apcupsd_dashboard_format_value($avg, $unit), 'apcupsd');
 		}
 
 		if ($max !== null) {
-			$parts[] = sprintf(__('max %s', 'apcupsd'), apcupsd_dashboard_format_value($max, $unit));
+			$parts[] = __('max %s', apcupsd_dashboard_format_value($max, $unit), 'apcupsd');
 		}
 
 		return implode(' · ', $parts);
@@ -2486,7 +2486,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				}
 
 				$est_load = $est_watts / $est_capacity * 100;
-				$rated    = sprintf(__('%s of %s rated', 'apcupsd'), apcupsd_dashboard_format_value($est_load, '%'), apcupsd_dashboard_format_value($est_capacity, ' W'));
+				$rated    = __('%s of %s rated', apcupsd_dashboard_format_value($est_load, '%'), apcupsd_dashboard_format_value($est_capacity, ' W'), 'apcupsd');
 
 				// The range comes from each UPS's load RRD scaled by its (constant) nominal power,
 				// like the Load gauge; without load history the rating is the caption instead.
