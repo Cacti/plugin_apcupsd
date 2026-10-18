@@ -1,7 +1,6 @@
 # ChangeLog
 
 --- 1.4.0 ---
-* security: Pin CI fixtures and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
 * issue: Fix the Fleet Dashboard returning a 500 error (`ArgumentCountError`) when it showed an estimated load. Cacti's `__()` formats a string as soon as it is given more than the text, and the text domain counts as a value, so `__('%s of %s rated', 'apcupsd')` had too few values. Every string with a placeholder now passes its values before the text domain, for example `__('%s of %s rated', $load, $capacity, 'apcupsd')`
 * issue: Show the real values in the gauge min/avg/max/now summaries (they read "min apcupsd"), in the NUT error messages ("did not answer within apcupsd seconds", "reported an error: apcupsd", a UPS "named apcupsd"), and in the apcaccess timeout and Graph Automation messages, which had the same problem
@@ -32,6 +31,7 @@
 * security: Replace the confirmation pages' inline `onClick='cactiReturnTo()'` Cancel buttons with the CSP-safe `cactiReturnTo` class so the pages no longer trip Cacti's Content-Security-Policy script-src-attr directive
 * security: Move the UPS filter selects' inline onChange handlers into the ready block so the page no longer trips Cacti's Content-Security-Policy script-src-attr directive
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
+* dev: Pin CI fixtures and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 * security: Add a version-safe CSP nonce (`plugin_apcupsd_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
 * issue: If an SNMP device goes down, once it returns to service the UPS status is missed
 
