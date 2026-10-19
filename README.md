@@ -50,10 +50,25 @@ $(document).off('click.cactiReturnTo', '.cactiReturnTo')
 Install just like any other plugin, just throw it in the plugin directory, and
 Install and Enabled from the Plugin Management Interface.  Neither `apcupsd`,
 `apcaccess` nor NUT need to be installed on the Cacti poller: both are spoken
-to over the network by the plugin itself.  To monitor an `apcupsd` UPS, the
-`apcupsd` daemon on the UPS host must have its network information server
-enabled (`NETSERVER on`, port 3551 by default) and allow the poller's address
-(`NISIP`).
+to over the network by the plugin itself.
+
+To monitor an `apcupsd` UPS, the `apcupsd` daemon on the UPS host must have its
+network information server enabled (`NETSERVER on`, the default, on port 3551
+unless `NISPORT` says otherwise) and the Cacti poller must be able to reach it:
+
+* `NISIP` in `apcupsd.conf` is the address of the network interface the daemon
+  *listens* on, not a list of clients that are allowed in.  The default,
+  `0.0.0.0`, listens on every interface.  If it is set to `127.0.0.1`, the
+  daemon only accepts connections from the UPS host itself and a remote poller
+  cannot connect, so set it to the UPS host's own reachable address (or leave
+  the default).  Do not put the poller's address there: the daemon would try to
+  bind to an address it does not own and stop serving.
+
+* Allowing the poller in is done outside `apcupsd.conf`: open TCP port 3551 to
+  the poller in the UPS host's firewall, or, if your `apcupsd` was built with
+  TCP Wrappers support, add a rule for the poller to `/etc/hosts.allow`.  The
+  network information server has no authentication and is read-only, so only
+  expose it to networks you trust.
 
 After you have installed the plugin, install the Device Package in the 
 templates folder from Console > Import/Export > Import Package.  This 

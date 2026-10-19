@@ -33,6 +33,94 @@ function apcupsd_test_nis_reply(array $records, bool $end = true): string {
 	return $out . ($end ? pack('n', 0) : '');
 }
 
+/**
+ * A stream whose reads return exactly the pieces it was fed, one piece per read,
+ * so a test decides where a reply is split. Stream sockets do not keep write
+ * boundaries (a whole reply can come back from one fread()), which makes a
+ * socket pair unable to prove that short reads are accumulated.
+ *
+ * A piece of '' is a read that finds nothing to read yet; the stream only reports
+ * end of file once every piece has been handed out.
+ */
+class ApcupsdTestChunkedStream {
+	public $context;
+
+	/** @var array<int, string> The pieces still to hand out, in order. */
+	public static $pieces = [];
+
+	/** @var array<int, string> What the client wrote, one entry per write. */
+	public static $written = [];
+
+	/** @var int How many non-empty pieces have been read. */
+	public static $reads = 0;
+
+	/** @var int The next piece to hand out. */
+	private static $next = 0;
+
+	/**
+	 * Load the pieces and reset the counters.
+	 *
+	 * @param array<int, string> $pieces The pieces to hand out, in order.
+	 *
+	 * @return void
+	 */
+	public static function feed(array $pieces): void {
+		if (!in_array('apcupsdchunks', stream_get_wrappers(), true)) {
+			stream_wrapper_register('apcupsdchunks', self::class);
+		}
+
+		self::$pieces  = array_values($pieces);
+		self::$written = [];
+		self::$reads   = 0;
+		self::$next    = 0;
+	}
+
+	/**
+	 * Open the stream the client reads from.
+	 *
+	 * @return resource
+	 */
+	public static function open() {
+		return fopen('apcupsdchunks://reply', 'r+');
+	}
+
+	public function stream_open($path, $mode, $options, &$opened_path) {
+		return true;
+	}
+
+	public function stream_read($count) {
+		if (self::$next >= count(self::$pieces)) {
+			return '';
+		}
+
+		$piece = self::$pieces[self::$next++];
+
+		if ($piece !== '') {
+			self::$reads++;
+		}
+
+		return $piece;
+	}
+
+	public function stream_write($data) {
+		self::$written[] = $data;
+
+		return strlen($data);
+	}
+
+	public function stream_eof() {
+		return self::$next >= count(self::$pieces);
+	}
+
+	public function stream_set_option($option, $arg1, $arg2) {
+		return true;
+	}
+
+	public function stream_stat() {
+		return [];
+	}
+}
+
 describe('apcupsd unit stripping', function () {
 	it('removes the unit from a number, as apcaccess -u does', function () {
 		foreach (['121.0 Volts' => '121.0', '23.0 Percent' => '23.0', '30 Seconds' => '30', '30.5 Minutes' => '30.5', '60.0 Hz' => '60.0', '28.0 C' => '28.0', '900 Watts' => '900', '1.80 Amps' => '1.80', '-5.0 C' => '-5.0'] as $raw => $expected) {
@@ -161,23 +249,46 @@ describe('apcupsd socket layer', function () {
 		fclose($server);
 	});
 
-	it('reads a reply that arrives in pieces, splitting a length and a record', function () use ($pair) {
-		$reply  = apcupsd_test_nis_reply(["LINEV    : 121.0 Volts\n", "STATUS   : ONLINE\n"]);
-		$domain = DIRECTORY_SEPARATOR === '\\' ? STREAM_PF_INET : STREAM_PF_UNIX;
-		[$client, $server] = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+	it('reads a reply that arrives one byte at a time, so every length and record is assembled from many reads', function () {
+		$reply = apcupsd_test_nis_reply(["LINEV    : 121.0 Volts\n", "STATUS   : ONLINE\n"]);
 
-		fwrite($server, substr($reply, 0, 1));
-		fwrite($server, substr($reply, 1, 9));
-		fwrite($server, substr($reply, 10));
-		stream_socket_shutdown($server, STREAM_SHUT_WR);
+		ApcupsdTestChunkedStream::feed(str_split($reply));
 
-		$result = apcupsd_nis_query_stream($client, 2);
+		$result = apcupsd_nis_query_stream(ApcupsdTestChunkedStream::open(), 2);
+
+		// A byte is the most a read can return, so none of the 2-byte lengths or the records
+		// could have been read in one go: each piece had to be read, and kept, separately.
+		expect($result['error'])->toBe('');
+		expect($result['vars'])->toBe(['LINEV' => '121.0', 'STATUS' => 'ONLINE']);
+		expect(ApcupsdTestChunkedStream::$reads)->toBe(strlen($reply));
+		expect(ApcupsdTestChunkedStream::$written)->toBe(["\x00\x06status"]);
+	});
+
+	it('reads a reply split inside a length and inside a record, with the server pausing between the pieces', function () {
+		$reply = apcupsd_test_nis_reply(["LINEV    : 121.0 Volts\n", "STATUS   : ONLINE\n"]);
+
+		// The first piece is half of a 2-byte length. '' is a read that finds nothing to read yet.
+		$pieces = [substr($reply, 0, 1), substr($reply, 1, 9), '', substr($reply, 10, 7), '', '', substr($reply, 17)];
+
+		ApcupsdTestChunkedStream::feed($pieces);
+
+		$result = apcupsd_nis_query_stream(ApcupsdTestChunkedStream::open(), 2);
 
 		expect($result['error'])->toBe('');
 		expect($result['vars'])->toBe(['LINEV' => '121.0', 'STATUS' => 'ONLINE']);
+		expect(ApcupsdTestChunkedStream::$reads)->toBe(4);
+		expect(strlen($pieces[0]))->toBeLessThan(2);
+	});
 
-		fclose($client);
-		fclose($server);
+	it('does not mistake a pause in the reply for the end of it', function () {
+		$reply = apcupsd_test_nis_reply(["STATUS   : ONLINE\n"]);
+
+		ApcupsdTestChunkedStream::feed([substr($reply, 0, 3), '', '', '', substr($reply, 3)]);
+
+		$result = apcupsd_nis_query_stream(ApcupsdTestChunkedStream::open(), 2);
+
+		expect($result['error'])->toBe('');
+		expect($result['vars'])->toBe(['STATUS' => 'ONLINE']);
 	});
 
 	it('reports a peer that hangs up without answering', function () use ($pair) {
