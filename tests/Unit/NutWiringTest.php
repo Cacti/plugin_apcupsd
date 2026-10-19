@@ -165,13 +165,16 @@ describe('NUT wiring', function () {
 		expect($poller)->toContain("db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?'");
 
 		// The failure branch must mark the host before it returns false.
-		expect(strpos($poller, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($poller, "substr(\$result['error'], 0, 255)"));
+		$nut = substr($poller, (int) strpos($poller, 'function collect_nut_ups_data('));
+
+		expect(strpos($nut, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($nut, "substr(\$result['error'], 0, 255)"));
 	});
 
 	it('keeps the NUT failure log line and the Poller ID save in place', function (string $file, string $needle) use ($read) {
 		expect($read($file))->toContain($needle);
 	})->with([
 		'failure logged'          => ['poller_apcupsd.php', "cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', \$ups['name'], \$ups['hostname'], \$ups['port'], \$result['error']), false, 'APCUPSD');"],
+		'apcupsd failure logged'  => ['poller_apcupsd.php', "cacti_log(sprintf('WARNING: apcupsd query for UPS %s (%s:%s) failed: %s', \$ups['name'], \$ups['hostname'], \$ups['port'], \$result['error']), false, 'APCUPSD');"],
 		'poller id saved'         => ['upses.php', "if (isset_request_var('poller_id')) {"],
 		'poller id digits only'   => ['upses.php', "get_nfilter_request_var('poller_id'), 'poller_id', '^[0-9]+\$', false, 3);"],
 		'linked poller move held' => ['upses.php', "form_input_validate('', 'poller_id', '^\$', false, 3);"],
@@ -196,14 +199,18 @@ describe('NUT wiring', function () {
 		expect($page)->not->toContain('changeType();');
 	});
 
-	it('enforces the per-UPS timeout for both the apcaccess and NUT collectors', function () use ($read) {
+	it('enforces the per-UPS timeout for the apcupsd and NUT collectors alike', function () use ($read) {
 		$poller = $read('poller_apcupsd.php');
 
-		expect($poller)->toContain('exec_with_timeout($command, $output, $return, $timeout);');
-		expect($poller)->not->toContain('exec($command');
-		expect($poller)->toContain("\$timeout = apcupsd_normalize_timeout(\$ups['timeout'] ?? null);");
+		// apcupsd UPS' pass the same stored timeout to the query, which normalises and enforces it.
+		expect($poller)->toContain("apcupsd_nis_query(\$ups['hostname'], \$ups['port'], \$ups['timeout'] ?? null)");
 		expect(preg_match("/\\\$ups\\['nut_tls'\\] == 'on',\\s+apcupsd_normalize_timeout\\(\\\$ups\\['timeout'\\] \\?\\? null\\),/", $poller))->toBe(1);
-		expect($poller)->toContain('if ($return != 0 || !cacti_sizeof($output)) {');
+
+		$nis = $read('includes/nis.php');
+
+		expect($nis)->toContain('$timeout  = apcupsd_normalize_timeout($timeout);');
+		expect($nis)->toContain('stream_socket_client(\'tcp://\' . $target, $errno, $errstr, $timeout)');
+		expect($nis)->toContain('$started + ($timeout * 2)');
 
 		$page = $read('upses.php');
 

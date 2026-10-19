@@ -43,6 +43,7 @@ require_once($config['base_path'] . '/lib/utility.php');
 require('./plugins/apcupsd/includes/field_maps.php');
 require_once('./plugins/apcupsd/includes/functions.php');
 require_once('./plugins/apcupsd/includes/nut.php');
+require_once('./plugins/apcupsd/includes/nis.php');
 
 // process calling arguments
 $parms = $_SERVER['argv'];
@@ -115,7 +116,7 @@ $upses = db_fetch_assoc_prepared('SELECT ups.*
 $apcupsd = cacti_sizeof($upses);
 
 if ($apcupsd > 0) {
-	printf('NOTE: Found %s apcaccess enabled UPS\'s' . PHP_EOL, $apcupsd);
+	printf('NOTE: Found %s apcupsd enabled UPS\'s' . PHP_EOL, $apcupsd);
 
 	foreach ($upses as $ups) {
 		debug(sprintf('=================== Collecting UPS Information for %s ===================', $ups['name']));
@@ -135,7 +136,7 @@ if ($apcupsd > 0) {
 		}
 	}
 } else {
-	printf('NOTE: Did not find any apcaccess enabled UPS\'s' . PHP_EOL);
+	printf('NOTE: Did not find any apcupsd enabled UPS\'s' . PHP_EOL);
 }
 
 // apcupsd upses first UPS
@@ -220,7 +221,7 @@ cacti_log("APCUPSD STATS: $cacti_stats", false, 'SYSTEM');
 set_config_option('stats_apcupsd', $cacti_stats);
 
 /**
- * Creates a new Cacti device for a discovered UPS (apcaccess-based or
+ * Creates a new Cacti device for a discovered UPS (apcupsd-based or
  * NUT-based UPSes get a local device, SNMP-based UPSes use the
  * type-appropriate api_device_save() parameters),
  * links it back to the apcupsd_ups row, and triggers device automation.
@@ -431,139 +432,77 @@ function collect_snmp_ups_data($ups): bool {
 }
 
 /**
- * Polls a single apcaccess-based UPS by locating the apcaccess binary,
- * running it against the UPS's configured hostname/port (killed by Cacti's
- * exec_with_timeout() when it does not finish within the UPS's timeout), and
- * parsing its
- * "KEY: value" output into apcupsd_ups_stats columns (per the global
- * $ups_database mapping), also updating the UPS's linked host's up/down
- * status based on the STATUS field. Called from this script's main flow
- * for each enabled apcaccess-type UPS.
+ * Polls a single apcupsd-based UPS by asking its apcupsd server for the
+ * status over the native NIS protocol (see includes/nis.php), storing the
+ * values in apcupsd_ups_stats columns (per the global $ups_database mapping),
+ * and updating the UPS's linked host's up/down status from the STATUS field.
+ * The UPS's timeout bounds the connect and, at twice its length, the whole
+ * exchange. A failure is stored in the UPS's error_message and written to the
+ * Cacti log. Called from this script's main flow for each enabled
+ * apcupsd-type UPS.
  *
  * @param array $ups The apcupsd_ups row for the UPS being polled.
  *
- * @return int|void Returns 1 when the apcaccess command could not be
- *                  built (invalid hostname/port configuration); otherwise
- *                  returns no explicit value after recording the
- *                  reading or error message.
+ * @return void
  *
  * @global array $ups_database Map of apcupsd field keys to their
  *                              db_column metadata, defined in
- *                              includes/field_maps.php, used to translate apcaccess
- *                              output into database columns.
+ *                              includes/field_maps.php, used to translate the
+ *                              status values into database columns.
  */
-function collect_ups_data($ups) {
+function collect_ups_data($ups): void {
 	global $ups_database;
 
-	// for windows, apcupsd.exe must be in the path
-	$paths = [
-		'/usr/sbin/',
-		'/usr/bin/',
-		'/usr/local/bin/'
-	];
+	$result = apcupsd_nis_query($ups['hostname'], $ups['port'], $ups['timeout'] ?? null);
 
-	$found_path = '';
+	if ($result['error'] !== '') {
+		debug('apcupsd query failed: ' . $result['error']);
 
-	foreach ($paths as $path) {
-		if (file_exists($path . 'apcaccess')) {
-			$found_path = $path;
+		// The poller runs in the background with its output discarded, so the Cacti log is
+		// the only place an operator can see why an apcupsd UPS is down.
+		cacti_log(sprintf('WARNING: apcupsd query for UPS %s (%s:%s) failed: %s', $ups['name'], $ups['hostname'], $ups['port'], $result['error']), false, 'APCUPSD');
 
-			break;
-		}
+		db_execute_prepared('UPDATE apcupsd_ups
+			SET status = 1, error_message = ?
+			WHERE id = ?',
+			[substr($result['error'], 0, 255), $ups['id']]);
+
+		return;
 	}
-
-	$command = apcupsd_build_apcaccess_command($found_path . 'apcaccess', $ups['hostname'], $ups['port']);
-
-	$output = [];
-	$return = 0;
 
 	$ups_status = 1;
+	$sql_insert = 'REPLACE INTO apcupsd_ups_stats (ups_id';
+	$sql_data   = 'VALUES (?';
+	$sql_params = [$ups['id']];
 
-	if ($command === false) {
-		db_execute_prepared('UPDATE apcupsd_ups
-			SET status = 1, error_message = ?
-			WHERE id = ?',
-			[__('Invalid apcupsd hostname or port configuration', 'apcupsd'), $ups['id']]);
+	foreach ($result['vars'] as $keyword => $value) {
+		debug('Output:' . $keyword . ' : ' . $value);
 
-		return 1;
-	}
+		if (!array_key_exists($keyword, $ups_database)) {
+			debug('WARNING: Column ' . $keyword . ' is unknown with value ' . $value);
 
-	$timeout = apcupsd_normalize_timeout($ups['timeout'] ?? null);
-	$results = exec_with_timeout($command, $output, $return, $timeout);
-
-	// exec_with_timeout() kills apcaccess when it has not finished in time, which
-	// leaves a non-zero code (or none) and no output, and ends the output with a blank line.
-	$output = array_values(array_filter($output, function($line) {
-		return trim((string) $line) !== '';
-	}));
-
-	if ($return != 0 || !cacti_sizeof($output)) {
-		$message = cacti_sizeof($output) ? implode(', ', $output) : __('apcaccess failed or did not answer within %s seconds.', $timeout, 'apcupsd');
-
-		db_execute_prepared('UPDATE apcupsd_ups
-			SET status = 1, error_message = ?
-			WHERE id = ?',
-			[$message, $ups['id']]);
-	} else {
-		if (cacti_sizeof($output)) {
-			$sql_insert   = 'REPLACE INTO apcupsd_ups_stats (ups_id';
-			$sql_data     = 'VALUES (?';
-			$sql_params   = [];
-			$sql_params[] = $ups['id'];
-
-			foreach ($output as $o) {
-				debug('Output:' . $o);
-
-				$o = explode(': ', $o);
-
-				$keyword = trim($o[0]);
-
-				if (isset($o[1])) {
-					$value = trim($o[1]);
-				} else {
-					$value = '';
-				}
-
-				if (array_key_exists($keyword, $ups_database)) {
-					if ($keyword == 'STATUS') {
-						$status = db_fetch_cell_prepared('SELECT status
-							FROM host
-							WHERE id = ?',
-							[$ups['host_id']]);
-
-						if ($value == 'ONLINE' || $value == 'ONLINE SLAVE') {
-							$ups_status = 3;
-
-							if ($status != 3) {
-								db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', [$ups['host_id']]);
-							}
-						} else {
-							$ups_status = 1;
-
-							if ($status != 4) {
-								db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', [$ups['host_id']]);
-							}
-						}
-					}
-
-					$sql_params[] = $value;
-					$sql_insert .= ', `' . $ups_database[$keyword]['db_column'] . '`';
-					$sql_data .= ', ?';
-				} else {
-					debug('WARNING: Column ' . $keyword . ' is unknown with value ' . $value);
-				}
-			}
-
-			db_execute_prepared("$sql_insert) $sql_data)", $sql_params);
+			continue;
 		}
 
-		db_execute_prepared('UPDATE apcupsd_ups
-			SET status = ?, last_updated=NOW()
-			WHERE id = ?',
-			[$ups_status, $ups['id']]);
-	}
-}
+		if ($keyword == 'STATUS') {
+			$online     = ($value == 'ONLINE' || $value == 'ONLINE SLAVE');
+			$ups_status = $online ? 3 : 1;
 
+			set_ups_host_state($ups['host_id'], $online);
+		}
+
+		$sql_params[] = $value;
+		$sql_insert  .= ', `' . $ups_database[$keyword]['db_column'] . '`';
+		$sql_data    .= ', ?';
+	}
+
+	db_execute_prepared("$sql_insert) $sql_data)", $sql_params);
+
+	db_execute_prepared('UPDATE apcupsd_ups
+		SET status = ?, error_message = "", last_updated = NOW()
+		WHERE id = ?',
+		[$ups_status, $ups['id']]);
+}
 /**
  * Records a UPS's linked Cacti host as up or down, stamping the recovery or
  * failure time only when the state actually changes. Does nothing for a UPS
