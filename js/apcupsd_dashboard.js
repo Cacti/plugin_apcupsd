@@ -232,9 +232,11 @@ function initApcupsdDashboard() {
 
 		var ups = document.getElementById('apcupsd_dashboard_ups');
 		if (ups) {
+			// Switch the per-UPS dashboard in place (no full page refresh), like the
+			// timespan selector and the UPS filter do.
 			$(ups).off('change.apcupsddash').on('change.apcupsddash', function() {
 				if (this.value) {
-					window.location = 'upses.php?action=view&id=' + encodeURIComponent(this.value);
+					loadPageNoHeader('upses.php?action=view&id=' + encodeURIComponent(this.value) + '&header=false');
 				}
 			});
 		}

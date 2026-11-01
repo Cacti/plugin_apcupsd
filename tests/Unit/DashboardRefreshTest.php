@@ -247,4 +247,20 @@ describe('dashboard auto-refresh', function () {
 		expect($handler)->not->toContain('window.location');
 		expect($handler)->not->toContain('location.reload');
 	});
+
+	it('switches the selected UPS in place rather than reloading the whole page', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		$start = strpos($js, "document.getElementById('apcupsd_dashboard_ups')");
+		$end   = strpos($js, "document.getElementById('apcupsd_dashboard_timespan')");
+
+		expect($start)->toBeGreaterThan(0);
+		expect($end)->toBeGreaterThan($start);
+
+		$handler = substr($js, $start, $end - $start);
+
+		expect($handler)->toContain("loadPageNoHeader('upses.php?action=view&id=' + encodeURIComponent(this.value) + '&header=false');");
+		expect($handler)->not->toContain('window.location');
+		expect($handler)->not->toContain('location.reload');
+	});
 });
