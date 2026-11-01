@@ -703,12 +703,13 @@ function form_actions(): void {
 					WHERE id IN ($selected_placeholders)",
 					$selected_items);
 
-				db_execute_prepared("UPDATE host AS h
-					INNER JOIN apcupsd_ups AS u
-					ON h.id = u.host_id
-					SET h.disabled = ''
+				$host_ids = array_column(db_fetch_assoc_prepared("SELECT DISTINCT h.id
+					FROM host AS h
+					INNER JOIN apcupsd_ups AS u ON h.id = u.host_id
 					WHERE u.id IN ($selected_placeholders)",
-					$selected_items);
+					$selected_items), 'id');
+
+				api_device_enable_devices($host_ids);
 			} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
 				db_execute_prepared("UPDATE apcupsd_ups
 					SET enabled = ''
