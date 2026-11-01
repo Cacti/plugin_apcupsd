@@ -131,6 +131,10 @@ if ($apcupsd > 0) {
 			}
 		}
 
+		if ($ups['host_id'] > 0) {
+			apcupsd_upgrade_host_availability($ups);
+		}
+
 		if ($ups['host_id'] == 0 && $add_devices) {
 			add_ups_device($ups, $host_template_id);
 		}
@@ -199,6 +203,10 @@ if ($nutupses > 0) {
 			}
 		}
 
+		if ($ups['host_id'] > 0) {
+			apcupsd_upgrade_host_availability($ups);
+		}
+
 		if ($ups['host_id'] == 0 && $add_devices && $ups_up) {
 			add_ups_device($ups, $host_template_id);
 		}
@@ -243,13 +251,20 @@ function add_ups_device($ups, $host_template_id, $force_up = false): void {
 	$save = [];
 
 	if ($ups['type_id'] != 2) {
-		$host_id = api_device_save(0, $host_template_id, $ups['name'], 'localhost', // id, template_id, description, hostname
-			'', 0, '', '',                     // snmp community, snmp_version, snmp_username, snmp_password
-			161, 500, '', 0,                   // snmp_port, snmp_timeout, disabled, availability_method
-			0, 0, 500, 1, $ups['description'], // ping_method, ping_port, ping_timeout, ping_retries, notes
-			'', '', '', '', '',                // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
-			10, 1, $ups['poller_id'],          // max_oids, device_threads, poller_id
-			$ups['site_id'], '', '', 0);       // site_id, external_id, location, bulk_walk_size
+		// apcupsd and NUT UPSes are polled over TCP, so let Cacti own the linked
+		// device's up/down status with a TCP ping of the service host/port. That
+		// keeps any thold/monitor alerting that follows the device status driven by
+		// Cacti's native up/down handling instead of being written from this poller.
+		$hostname     = ($ups['hostname'] != '' ? $ups['hostname'] : 'localhost');
+		$ping_timeout = max(1, (int) $ups['timeout']) * 1000;
+
+		$host_id = api_device_save(0, $host_template_id, $ups['name'], $hostname, // id, template_id, description, hostname
+			'', 0, '', '',                                   // snmp community, snmp_version, snmp_username, snmp_password
+			161, 500, '', 3,                                 // snmp_port, snmp_timeout, disabled, availability_method (3 = AVAIL_PING)
+			3, (int) $ups['port'], $ping_timeout, 1, $ups['description'], // ping_method (3 = PING_TCP), ping_port, ping_timeout, ping_retries, notes
+			'', '', '', '', '',                              // snmp_auth_protocol, snmp_prive_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id
+			10, 1, $ups['poller_id'],                        // max_oids, device_threads, poller_id
+			$ups['site_id'], '', '', 0);                     // site_id, external_id, location, bulk_walk_size
 	} else {
 		$host_id = api_device_save(0, $host_template_id, $ups['name'], $ups['hostname'], // id, template_id, description, hostname
 			$ups['snmp_community'], $ups['snmp_version'], $ups['snmp_username'], $ups['snmp_password'], // snmp community, snmp_version, snmp_username, snmp_password
@@ -435,8 +450,8 @@ function collect_snmp_ups_data($ups): bool {
  * Polls a single apcupsd-based UPS by asking its apcupsd server for the
  * status over the native NIS protocol (see includes/nis.php), storing the
  * values in apcupsd_ups_stats columns (per the global $ups_database mapping),
- * and updating the UPS's linked host's up/down status from the STATUS field.
- * The UPS's timeout bounds the connect and, at twice its length, the whole
+ * and leaving the linked device's up/down status to Cacti's own availability
+ * check. The UPS's timeout bounds the connect and, at twice its length, the whole
  * exchange. A failure is stored in the UPS's error_message and written to the
  * Cacti log. Called from this script's main flow for each enabled
  * apcupsd-type UPS.
@@ -485,10 +500,7 @@ function collect_ups_data($ups): void {
 		}
 
 		if ($keyword == 'STATUS') {
-			$online     = ($value == 'ONLINE' || $value == 'ONLINE SLAVE');
-			$ups_status = $online ? 3 : 1;
-
-			set_ups_host_state($ups['host_id'], $online);
+			$ups_status = ($value == 'ONLINE' || $value == 'ONLINE SLAVE') ? 3 : 1;
 		}
 
 		$sql_params[] = $value;
@@ -504,35 +516,52 @@ function collect_ups_data($ups): void {
 		[$ups_status, $ups['id']]);
 }
 /**
- * Records a UPS's linked Cacti host as up or down, stamping the recovery or
- * failure time only when the state actually changes. Does nothing for a UPS
- * that has no linked host yet.
+ * Brings a UPS's linked Cacti device onto the availability check this plugin
+ * now relies on. apcupsd and NUT devices were originally created with
+ * availability checking turned off ("None"), which left Cacti's poller forcing
+ * their status back to Up every cycle and fighting the status this poller used
+ * to write - so the device flapped Up/Down and spammed thold/monitor alerts.
  *
- * @param int|string $host_id The linked Cacti host id; 0 when none.
- * @param bool       $up      True to mark the host up, false to mark it down.
+ * Devices still on that old "None" setting are switched to a TCP ping of their
+ * service host/port so Cacti owns their up/down status on its own. SNMP devices
+ * (which already use an SNMP availability check) and any device an operator has
+ * since given an availability method are left untouched.
+ *
+ * @param array $ups The apcupsd_ups row, including its linked host_id.
  *
  * @return void
  */
-function set_ups_host_state($host_id, bool $up): void {
-	if ($host_id <= 0) {
+function apcupsd_upgrade_host_availability($ups): void {
+	if ($ups['host_id'] <= 0 || $ups['type_id'] == 2) {
 		return;
 	}
 
-	$status = db_fetch_cell_prepared('SELECT status FROM host WHERE id = ?', [$host_id]);
+	$host = db_fetch_row_prepared('SELECT availability_method FROM host WHERE id = ?', [$ups['host_id']]);
 
-	if ($up && $status != 3) {
-		db_execute_prepared('UPDATE host SET status = 3, status_rec_date=NOW() WHERE id = ?', [$host_id]);
-	} elseif (!$up && $status != 4) {
-		db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?', [$host_id]);
+	// 0 is AVAIL_NONE: only upgrade devices still on the old "no availability
+	// check" default so an operator's own choice is never overwritten.
+	if (!is_array($host) || (int) $host['availability_method'] != 0) {
+		return;
 	}
+
+	$hostname     = ($ups['hostname'] != '' ? $ups['hostname'] : 'localhost');
+	$ping_timeout = max(1, (int) $ups['timeout']) * 1000;
+
+	// 3/3 are AVAIL_PING and PING_TCP; the status is reset so the next poll
+	// re-evaluates it cleanly instead of inheriting the stale value.
+	db_execute_prepared('UPDATE host
+		SET hostname = ?, availability_method = 3, ping_method = 3, ping_port = ?, ping_timeout = ?, status = 0, status_event_count = 0
+		WHERE id = ?',
+		[$hostname, (int) $ups['port'], $ping_timeout, $ups['host_id']]);
+
+	cacti_log(sprintf('NOTE: Enabled TCP availability checking on Device[%d] for UPS %s (%s:%s)', $ups['host_id'], $ups['name'], $hostname, $ups['port']), false, 'APCUPSD');
 }
 
 /**
  * Polls a single NUT-based UPS by asking its upsd server for every variable
  * over the native NUT protocol (see includes/nut.php), translating them into
- * apcupsd_ups_stats columns, and updating the UPS's linked host up/down
- * status from the translated ups.status, or marking it down when the query
- * fails. Called from this script's main flow
+ * apcupsd_ups_stats columns. The linked device's up/down status is left to
+ * Cacti's own availability check. Called from this script's main flow
  * for each enabled NUT-type UPS.
  *
  * @param array $ups The apcupsd_ups row for the UPS being polled.
@@ -565,10 +594,6 @@ function collect_nut_ups_data($ups): bool {
 		// the only place an operator can see why a NUT UPS is down.
 		cacti_log(sprintf('WARNING: NUT query for UPS %s (%s:%s) failed: %s', $ups['name'], $ups['hostname'], $ups['port'], $result['error']), false, 'APCUPSD');
 
-		// These devices have availability checking disabled, so core polling cannot
-		// notice the failure: mark the linked host down here.
-		set_ups_host_state($ups['host_id'], false);
-
 		db_execute_prepared('UPDATE apcupsd_ups
 			SET status = 1, error_message = ?
 			WHERE id = ?',
@@ -579,8 +604,6 @@ function collect_nut_ups_data($ups): bool {
 
 	$stats  = apcupsd_nut_build_stats($result['vars'], $ups, $result['version']);
 	$online = apcupsd_nut_status_online($stats['ups_status']);
-
-	set_ups_host_state($ups['host_id'], $online);
 
 	// The column names come from apcupsd_nut_build_stats(), never from the server.
 	db_execute_prepared('REPLACE INTO apcupsd_ups_stats (`' . implode('`, `', array_keys($stats)) . '`)

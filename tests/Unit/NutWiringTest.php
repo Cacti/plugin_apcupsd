@@ -156,18 +156,34 @@ describe('NUT wiring', function () {
 		expect($dashboard)->toContain("(int) (\$ups['type_id'] ?? 0) !== 2 ? (\$ups['port']");
 	});
 
-	it('marks the linked host down when a NUT query fails, and up or down from the status otherwise', function () use ($read) {
+	it('lets Cacti own the device status instead of writing it from the poller', function () use ($read) {
 		$poller = $read('poller_apcupsd.php');
 
-		expect($poller)->toContain('function set_ups_host_state(');
-		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], false);");
-		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], \$online);");
-		expect($poller)->toContain("db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?'");
+		// The poller no longer writes host.status at all; Cacti's own availability
+		// check (configured on the device) owns the up/down state, so thold/monitor
+		// no longer see it flap every poll cycle.
+		expect($poller)->not->toContain('set_ups_host_state');
+		expect($poller)->not->toContain('UPDATE host SET status = 4');
+		expect($poller)->not->toContain('UPDATE host SET status = 3, status_rec_date');
+	});
 
-		// The failure branch must mark the host before it returns false.
-		$nut = substr($poller, (int) strpos($poller, 'function collect_nut_ups_data('));
+	it('gives apcupsd and NUT devices a TCP availability check on their service host and port', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
 
-		expect(strpos($nut, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($nut, "substr(\$result['error'], 0, 255)"));
+		// Non-SNMP devices ping their own service host (3 = AVAIL_PING) over TCP
+		// (3 = PING_TCP) at the configured port, so Cacti tracks their availability.
+		expect($poller)->toContain("\$hostname     = (\$ups['hostname'] != '' ? \$ups['hostname'] : 'localhost');");
+		expect($poller)->toContain("161, 500, '', 3,");
+		expect($poller)->toContain("3, (int) \$ups['port'], \$ping_timeout, 1, \$ups['description'],");
+	});
+
+	it('upgrades legacy UPS devices that still have availability checking turned off', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain('function apcupsd_upgrade_host_availability(');
+		expect($poller)->toContain("(int) \$host['availability_method'] != 0");
+		expect($poller)->toContain('availability_method = 3, ping_method = 3, ping_port = ?');
+		expect($poller)->toContain('apcupsd_upgrade_host_availability($ups);');
 	});
 
 	it('keeps the NUT failure log line and the Poller ID save in place', function (string $file, string $needle) use ($read) {
