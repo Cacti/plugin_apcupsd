@@ -12,6 +12,7 @@
 * feature: Add a "Run Graph Automation" action to the UPSes list bulk-action dropdown
 * feature: introduce Fleet Dashboard for UPSes
 * feature: Properly refresh pages periodically using Cacti native API's
+* feature: Update the UPS and Fleet dashboard graph timespan in place instead of reloading the whole page
 * feature: Switch from using apcaccess to a native sockets based tcp poller for apcupsd targets
 * feature: Allow Enable and Disable from the UPSes UI
 * feature: Estimate each UPS's power draw as nominal power x load % for UPSes that do not report real wattage
