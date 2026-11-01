@@ -524,7 +524,11 @@ function collect_ups_data($ups): void {
  * Devices still on that old "None" setting are switched to a TCP ping of their
  * service host/port so Cacti owns their up/down status on its own. SNMP devices
  * (which already use an SNMP availability check) and any device an operator has
- * since given an availability method are left untouched.
+ * since given an availability method are left untouched. The change is written
+ * through api_device_save() - the same authoritative path device creation uses
+ * - so it lands in the main database and is propagated to the assigned poller,
+ * rather than touching only a local poller row that a later full sync would
+ * revert (making this run again every poll).
  *
  * @param array $ups The apcupsd_ups row, including its linked host_id.
  *
@@ -535,24 +539,25 @@ function apcupsd_upgrade_host_availability($ups): void {
 		return;
 	}
 
-	$host = db_fetch_row_prepared('SELECT availability_method FROM host WHERE id = ?', [$ups['host_id']]);
+	$host = db_fetch_row_prepared('SELECT * FROM host WHERE id = ?', [$ups['host_id']]);
 
 	// 0 is AVAIL_NONE: only upgrade devices still on the old "no availability
 	// check" default so an operator's own choice is never overwritten.
-	if (!is_array($host) || (int) $host['availability_method'] != 0) {
+	if (!cacti_sizeof($host) || (int) $host['availability_method'] != 0) {
 		return;
 	}
 
 	$avail = apcupsd_device_availability_fields($ups['hostname'], $ups['port'], $ups['timeout']);
 
-	// The status is reset so the next poll re-evaluates it cleanly instead of
-	// inheriting the stale value this poller used to write.
-	db_execute_prepared('UPDATE host
-		SET hostname = ?, availability_method = ?, ping_method = ?, ping_port = ?, ping_timeout = ?, status = 0, status_event_count = 0
-		WHERE id = ?',
-		[$avail['hostname'], $avail['availability_method'], $avail['ping_method'], $avail['ping_port'], $avail['ping_timeout'], $ups['host_id']]);
+	// Preserve every other device field; only the availability check changes.
+	api_device_save($host['id'], $host['host_template_id'], $host['description'], $avail['hostname'],
+		$host['snmp_community'], $host['snmp_version'], $host['snmp_username'], $host['snmp_password'],
+		$host['snmp_port'], $host['snmp_timeout'], $host['disabled'], $avail['availability_method'],
+		$avail['ping_method'], $avail['ping_port'], $avail['ping_timeout'], $host['ping_retries'], $host['notes'],
+		$host['snmp_auth_protocol'], $host['snmp_priv_passphrase'], $host['snmp_priv_protocol'], $host['snmp_context'], $host['snmp_engine_id'],
+		$host['max_oids'], $host['device_threads'], $host['poller_id'], $host['site_id'], $host['external_id'], $host['location'], $host['bulk_walk_size']);
 
-	cacti_log(sprintf('NOTE: Enabled TCP availability checking on Device[%d] for UPS %s (%s:%s)', $ups['host_id'], $ups['name'], $avail['hostname'], $ups['port']), false, 'APCUPSD');
+	cacti_log(sprintf('NOTE: Enabled TCP availability checking on Device[%d] for UPS %s (%s:%s)', $host['id'], $ups['name'], $avail['hostname'], $ups['port']), false, 'APCUPSD');
 }
 
 /**

@@ -185,8 +185,16 @@ describe('NUT wiring', function () {
 		expect($poller)->toContain("\$avail['ping_method'], \$avail['ping_port'], \$avail['ping_timeout'], 1, \$ups['description'],");
 	});
 
-	it('keeps the UPS edit form device check aligned through the same helper', function () use ($read) {
-		expect($read('upses.php'))->toContain("\$desired = apcupsd_device_availability_fields(\$save['hostname'], \$save['port'], \$save['timeout']);");
+	it('keeps the UPS edit form device check aligned when it is plugin-managed', function () use ($read) {
+		$page = $read('upses.php');
+
+		// Only the plugin's own check (or the legacy None default) is re-synced, so
+		// an operator-chosen check is preserved (not silently replaced with TCP).
+		expect($page)->toContain('$plugin_managed = ($current_am === 0)');
+		expect($page)->toContain('($current_am === 3 && $current_pm === 3)');
+		expect($page)->toContain("\$desired = apcupsd_device_availability_fields(\$save['hostname'], \$save['port'], \$save['timeout']);");
+		// Switching an existing device to SNMP uses the SNMP availability check.
+		expect($page)->toContain("'availability_method' => 2, // AVAIL_SNMP");
 	});
 
 	it('upgrades legacy UPS devices that still have availability checking turned off', function () use ($read) {
@@ -194,7 +202,9 @@ describe('NUT wiring', function () {
 
 		expect($poller)->toContain('function apcupsd_upgrade_host_availability(');
 		expect($poller)->toContain("(int) \$host['availability_method'] != 0");
-		expect($poller)->toContain('SET hostname = ?, availability_method = ?, ping_method = ?, ping_port = ?, ping_timeout = ?');
+		// Persisted through api_device_save() so it reaches the main database and
+		// propagates to the poller instead of being reverted by a later full sync.
+		expect($poller)->toContain("api_device_save(\$host['id'], \$host['host_template_id'], \$host['description'], \$avail['hostname'],");
 		expect($poller)->toContain('apcupsd_upgrade_host_availability($ups);');
 	});
 

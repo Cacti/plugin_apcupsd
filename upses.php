@@ -499,11 +499,30 @@ function form_save(): void {
 					}
 				}
 
-				// apcupsd and NUT devices are polled over TCP; keep Cacti's availability
-				// check pointed at the current service host/port so Cacti owns their
-				// up/down status (and the thold/monitor alerting that follows it).
-				if ($save['type_id'] != 2) {
-					$desired = apcupsd_device_availability_fields($save['hostname'], $save['port'], $save['timeout']);
+				// Keep the linked device's availability check in step with the
+				// collector, but only while it is still the plugin's own check (or the
+				// legacy "None" default) so an operator-chosen check (for example ICMP)
+				// is never silently overwritten.
+				$current_am = (int) ($host['availability_method'] ?? 0);
+				$current_pm = (int) ($host['ping_method'] ?? 0);
+
+				$plugin_managed = ($current_am === 0)             // legacy "None" default
+					|| ($current_am === 3 && $current_pm === 3)   // the plugin's TCP ping
+					|| ($current_am === 2);                       // the plugin's SNMP check
+
+				if ($plugin_managed) {
+					if ($save['type_id'] != 2) {
+						// apcupsd/NUT: a TCP ping of the service host and port.
+						$desired = apcupsd_device_availability_fields($save['hostname'], $save['port'], $save['timeout']);
+					} else {
+						// SNMP: the SNMP availability check a new SNMP device gets, so a
+						// working SNMP collector is not marked down by a stale TCP probe
+						// left over from a previous apcupsd/NUT collector.
+						$desired = [
+							'availability_method' => 2, // AVAIL_SNMP
+							'ping_method'         => 0,
+						];
+					}
 
 					foreach ($desired as $c => $v) {
 						if (!isset($host[$c]) || $host[$c] != $v) {
