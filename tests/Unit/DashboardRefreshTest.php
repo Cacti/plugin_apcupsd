@@ -229,4 +229,22 @@ describe('dashboard auto-refresh', function () {
 			expect($callback)->toBe('apcupsdDashOwnTick');
 		}
 	});
+
+	it('changes the timespan in place rather than reloading the whole page', function () use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		$start = strpos($js, "document.getElementById('apcupsd_dashboard_timespan')");
+		$end   = strpos($js, "document.getElementById('apcupsd_dashboard_refresh')");
+
+		expect($start)->toBeGreaterThan(0);
+		expect($end)->toBeGreaterThan($start);
+
+		$handler = substr($js, $start, $end - $start);
+
+		// The per-UPS and the Fleet dashboard share this handler, so one in-place
+		// load (header-less, like the UPS filter) covers both.
+		expect($handler)->toContain("loadPageNoHeader(reload + sep + 'predefined_timespan=' + encodeURIComponent(this.value) + '&header=false');");
+		expect($handler)->not->toContain('window.location');
+		expect($handler)->not->toContain('location.reload');
+	});
 });
