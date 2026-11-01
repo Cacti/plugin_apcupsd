@@ -442,6 +442,13 @@ function form_save(): void {
 				raise_message(2);
 			}
 
+			// Keep the linked device's polling in step with the UPS's Enabled flag,
+			// the same way the bulk Enable/Disable actions do, so toggling Enabled on
+			// the edit form resumes or stops Cacti graph polling consistently.
+			if ($save['host_id'] > 0) {
+				apcupsd_apply_device_state([$save['host_id']]);
+			}
+
 			if (cacti_sizeof($host)) {
 				$changed          = false;
 				$name_changed     = false;
@@ -650,6 +657,79 @@ function run_graph_automation(array $ups_ids): void {
 }
 
 /**
+ * Returns the distinct Cacti host ids linked to a set of UPS records, for
+ * reconciling device enable/disable state across the selected UPSes.
+ *
+ * @param array $ups_ids The apcupsd_ups ids whose linked hosts are wanted.
+ *
+ * @return array The distinct linked host ids (ints as fetched).
+ */
+function apcupsd_linked_host_ids(array $ups_ids): array {
+	if (!cacti_sizeof($ups_ids)) {
+		return [];
+	}
+
+	$placeholders = implode(',', array_fill(0, cacti_sizeof($ups_ids), '?'));
+
+	return array_column(db_fetch_assoc_prepared("SELECT DISTINCT h.id
+		FROM host AS h
+		INNER JOIN apcupsd_ups AS u ON h.id = u.host_id
+		WHERE u.id IN ($placeholders)",
+		$ups_ids), 'id');
+}
+
+/**
+ * Reconciles the Cacti device enable/disable state for a set of linked hosts
+ * with the UPSes that reference them, so graph polling follows the UPSes'
+ * enabled flags consistently from both the bulk actions and the edit form.
+ *
+ * A device is disabled only when none of the UPSes linked to it are still
+ * enabled: because duplicate_ups() keeps the host_id, several UPS records can
+ * share one device, and disabling one must not stop polling for the others.
+ * The device APIs are used (not a direct host update) so the state propagates
+ * to remote pollers.
+ *
+ * @param array $host_ids The linked Cacti host ids to reconcile; non-positive
+ *                        and duplicate ids are ignored.
+ *
+ * @return void
+ */
+function apcupsd_apply_device_state(array $host_ids): void {
+	$host_ids = array_values(array_unique(array_filter(array_map('intval', $host_ids), function ($id) {
+		return $id > 0;
+	})));
+
+	if (!cacti_sizeof($host_ids)) {
+		return;
+	}
+
+	$enable  = [];
+	$disable = [];
+
+	foreach ($host_ids as $host_id) {
+		$still_enabled = (int) db_fetch_cell_prepared("SELECT COUNT(*)
+			FROM apcupsd_ups
+			WHERE host_id = ?
+			AND enabled = 'on'",
+			[$host_id]);
+
+		if ($still_enabled > 0) {
+			$enable[] = $host_id;
+		} else {
+			$disable[] = $host_id;
+		}
+	}
+
+	if (cacti_sizeof($enable)) {
+		api_device_enable_devices($enable);
+	}
+
+	if (cacti_sizeof($disable)) {
+		api_device_disable_devices($disable);
+	}
+}
+
+/**
  * Handles the bulk-actions form for the UPSes list (delete/duplicate/
  * reset detection). On first display, renders the confirmation dialog
  * listing the selected UPSes (with a name field for duplication); once
@@ -703,25 +783,16 @@ function form_actions(): void {
 					WHERE id IN ($selected_placeholders)",
 					$selected_items);
 
-				$host_ids = array_column(db_fetch_assoc_prepared("SELECT DISTINCT h.id
-					FROM host AS h
-					INNER JOIN apcupsd_ups AS u ON h.id = u.host_id
-					WHERE u.id IN ($selected_placeholders)",
-					$selected_items), 'id');
-
-				api_device_enable_devices($host_ids);
+				apcupsd_apply_device_state(apcupsd_linked_host_ids($selected_items));
 			} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
+				$host_ids = apcupsd_linked_host_ids($selected_items);
+
 				db_execute_prepared("UPDATE apcupsd_ups
 					SET enabled = ''
 					WHERE id IN ($selected_placeholders)",
 					$selected_items);
 
-				db_execute_prepared("UPDATE host AS h
-					INNER JOIN apcupsd_ups AS u
-					ON h.id = u.host_id
-					SET h.disabled = 'on'
-					WHERE u.id IN ($selected_placeholders)",
-					$selected_items);
+				apcupsd_apply_device_state($host_ids);
 			}
 		}
 
