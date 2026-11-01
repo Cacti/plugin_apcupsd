@@ -42,6 +42,8 @@ require_once(__DIR__ . '/includes/dashboard.php');
 
 $ups_actions = [
 	1 => __('Delete', 'apcupsd'),
+	5 => __('Enable', 'apcupsd'),
+	6 => __('Disable', 'apcupsd'),
 	2 => __('Duplicate', 'apcupsd'),
 	3 => __('Reset Detection', 'apcupsd')
 ];
@@ -681,6 +683,30 @@ function form_actions(): void {
 					$selected_items);
 			} elseif (get_nfilter_request_var('drp_action') == '4') { // Run Graph Automation
 				run_graph_automation($selected_items);
+			} elseif (get_nfilter_request_var('drp_action') == '5') { // Enable
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET enabled = 'on'
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
+
+				db_execute_prepared("UPDATE host AS h
+					INNER JOIN apcupsd_ups AS u
+					ON h.id = u.host_id
+					SET h.disabled = ''
+					WHERE u.id IN ($selected_placeholders)",
+					$selected_items);
+			} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET enabled = ''
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
+
+				db_execute_prepared("UPDATE host AS h
+					INNER JOIN apcupsd_ups AS u
+					ON h.id = u.host_id
+					SET h.disabled = 'on'
+					WHERE u.id IN ($selected_placeholders)",
+					$selected_items);
 			}
 		}
 
@@ -735,7 +761,9 @@ function form_actions(): void {
 					<p>" . __n('Click \'Continue\' to Duplicate the following UPS.', 'Click \'Continue\' to Duplicate all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 					<p><strong>" . __('UPS Name:', 'apcupsd') . '</strong><br>';
+
 			form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text');
+
 			print '</p>
 				</td>
 			</tr>';
@@ -762,6 +790,26 @@ function form_actions(): void {
 
 			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __esc('Run Graph Automation', 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
+		} elseif (get_nfilter_request_var('drp_action') == '5') { // Enable
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to Enable the following UPS.', 'Click \'Continue\' to Enable all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Enable UPS', 'Enable UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
+		} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to Disable the following UPS.', 'Click \'Continue\' to Disable all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Disable UPS', 'Disable UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
 		raise_message(40);
@@ -1005,6 +1053,26 @@ function upses(): void {
 		$rows = get_request_var('rows');
 	}
 
+	$sites = array_rekey(
+		db_fetch_assoc_prepared('SELECT s.id, s.name
+			FROM sites AS s
+			INNER JOIN apcupsd_ups AS u
+			ON s.id = u.site_id
+			ORDER BY s.name',
+			[]),
+		'id', 'name'
+	);
+
+	$locations = array_rekey(
+		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
+			FROM host AS h
+			INNER JOIN apcupsd_ups AS u
+			ON h.id = u.host_id
+			ORDER BY h.location',
+			[]),
+		'id', 'name'
+	);
+
 	html_start_box(__('UPSes', 'apcupsd'), '100%', false, 3, 'center', 'upses.php?action=edit');
 
 	?>
@@ -1027,22 +1095,13 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-							$sites = array_rekey(
-								db_fetch_assoc_prepared('SELECT s.id, s.name
-									FROM sites AS s
-									INNER JOIN apcupsd_ups AS u
-									ON s.id = u.site_id
-									ORDER BY s.name',
-									[]),
-								'id', 'name'
-							);
 
-	if (cacti_sizeof($sites)) {
-		foreach ($sites as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($sites)) {
+								foreach ($sites as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1053,22 +1112,12 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-	$locations = array_rekey(
-		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
-									FROM host AS h
-									INNER JOIN apcupsd_ups AS u
-									ON h.id = u.host_id
-									ORDER BY h.location',
-			[]),
-		'id', 'name'
-	);
-
-	if (cacti_sizeof($locations)) {
-		foreach ($locations as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($locations)) {
+								foreach ($locations as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1078,12 +1127,12 @@ function upses(): void {
 						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
-	if (cacti_sizeof($item_rows)) {
-		foreach ($item_rows as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
