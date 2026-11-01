@@ -496,13 +496,7 @@ function form_save(): void {
 				// check pointed at the current service host/port so Cacti owns their
 				// up/down status (and the thold/monitor alerting that follows it).
 				if ($save['type_id'] != 2) {
-					$desired = [
-						'hostname'            => ($save['hostname'] != '' ? $save['hostname'] : 'localhost'),
-						'availability_method' => 3,                               // AVAIL_PING
-						'ping_method'         => 3,                               // PING_TCP
-						'ping_port'           => (int) $save['port'],
-						'ping_timeout'        => max(1, (int) $save['timeout']) * 1000,
-					];
+					$desired = apcupsd_device_availability_fields($save['hostname'], $save['port'], $save['timeout']);
 
 					foreach ($desired as $c => $v) {
 						if (!isset($host[$c]) || $host[$c] != $v) {

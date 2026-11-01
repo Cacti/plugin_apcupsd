@@ -168,13 +168,25 @@ describe('NUT wiring', function () {
 	});
 
 	it('gives apcupsd and NUT devices a TCP availability check on their service host and port', function () use ($read) {
-		$poller = $read('poller_apcupsd.php');
+		$poller    = $read('poller_apcupsd.php');
+		$functions = $read('includes/functions.php');
 
 		// Non-SNMP devices ping their own service host (3 = AVAIL_PING) over TCP
 		// (3 = PING_TCP) at the configured port, so Cacti tracks their availability.
-		expect($poller)->toContain("\$hostname     = (\$ups['hostname'] != '' ? \$ups['hostname'] : 'localhost');");
-		expect($poller)->toContain("161, 500, '', 3,");
-		expect($poller)->toContain("3, (int) \$ups['port'], \$ping_timeout, 1, \$ups['description'],");
+		// The settings come from one shared helper used at every call site.
+		expect($functions)->toContain('function apcupsd_device_availability_fields(');
+		expect($functions)->toContain("'hostname'            => (\$hostname != '' ? \$hostname : 'localhost'),");
+		expect($functions)->toContain("'availability_method' => 3,");
+		expect($functions)->toContain("'ping_method'         => 3,");
+		expect($functions)->toContain("'ping_timeout'        => max(1, (int) \$timeout) * 1000,");
+
+		expect($poller)->toContain("\$avail = apcupsd_device_availability_fields(\$ups['hostname'], \$ups['port'], \$ups['timeout']);");
+		expect($poller)->toContain("161, 500, '', \$avail['availability_method'],");
+		expect($poller)->toContain("\$avail['ping_method'], \$avail['ping_port'], \$avail['ping_timeout'], 1, \$ups['description'],");
+	});
+
+	it('keeps the UPS edit form device check aligned through the same helper', function () use ($read) {
+		expect($read('upses.php'))->toContain("\$desired = apcupsd_device_availability_fields(\$save['hostname'], \$save['port'], \$save['timeout']);");
 	});
 
 	it('upgrades legacy UPS devices that still have availability checking turned off', function () use ($read) {
@@ -182,7 +194,7 @@ describe('NUT wiring', function () {
 
 		expect($poller)->toContain('function apcupsd_upgrade_host_availability(');
 		expect($poller)->toContain("(int) \$host['availability_method'] != 0");
-		expect($poller)->toContain('availability_method = 3, ping_method = 3, ping_port = ?');
+		expect($poller)->toContain('SET hostname = ?, availability_method = ?, ping_method = ?, ping_port = ?, ping_timeout = ?');
 		expect($poller)->toContain('apcupsd_upgrade_host_availability($ups);');
 	});
 
