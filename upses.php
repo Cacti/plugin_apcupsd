@@ -1053,6 +1053,26 @@ function upses(): void {
 		$rows = get_request_var('rows');
 	}
 
+	$sites = array_rekey(
+		db_fetch_assoc_prepared('SELECT s.id, s.name
+			FROM sites AS s
+			INNER JOIN apcupsd_ups AS u
+			ON s.id = u.site_id
+			ORDER BY s.name',
+			[]),
+		'id', 'name'
+	);
+
+	$locations = array_rekey(
+		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
+			FROM host AS h
+			INNER JOIN apcupsd_ups AS u
+			ON h.id = u.host_id
+			ORDER BY h.location',
+			[]),
+		'id', 'name'
+	);
+
 	html_start_box(__('UPSes', 'apcupsd'), '100%', false, 3, 'center', 'upses.php?action=edit');
 
 	?>
@@ -1075,22 +1095,13 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-							$sites = array_rekey(
-								db_fetch_assoc_prepared('SELECT s.id, s.name
-									FROM sites AS s
-									INNER JOIN apcupsd_ups AS u
-									ON s.id = u.site_id
-									ORDER BY s.name',
-									[]),
-								'id', 'name'
-							);
 
-	if (cacti_sizeof($sites)) {
-		foreach ($sites as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($sites)) {
+								foreach ($sites as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1101,22 +1112,12 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-	$locations = array_rekey(
-		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
-									FROM host AS h
-									INNER JOIN apcupsd_ups AS u
-									ON h.id = u.host_id
-									ORDER BY h.location',
-			[]),
-		'id', 'name'
-	);
-
-	if (cacti_sizeof($locations)) {
-		foreach ($locations as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($locations)) {
+								foreach ($locations as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1126,12 +1127,12 @@ function upses(): void {
 						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
-	if (cacti_sizeof($item_rows)) {
-		foreach ($item_rows as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
