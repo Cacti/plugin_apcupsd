@@ -229,4 +229,33 @@ describe('dashboard auto-refresh', function () {
 			expect($callback)->toBe('apcupsdDashOwnTick');
 		}
 	});
+
+	it('navigates in place rather than reloading the whole page', function (string $startMarker, string $endMarker, string $expected) use ($read) {
+		$js = $read('js/apcupsd_dashboard.js');
+
+		$start = strpos($js, $startMarker);
+		$end   = strpos($js, $endMarker);
+
+		expect($start)->toBeGreaterThan(0);
+		expect($end)->toBeGreaterThan($start);
+
+		$handler = substr($js, $start, $end - $start);
+
+		expect($handler)->toContain($expected);
+		expect($handler)->not->toContain('window.location');
+		expect($handler)->not->toContain('location.reload');
+	})->with([
+		// The per-UPS and the Fleet dashboard share the timespan handler, so one
+		// in-place load (header-less, like the UPS filter) covers both.
+		'timespan selector' => [
+			"document.getElementById('apcupsd_dashboard_timespan')",
+			"document.getElementById('apcupsd_dashboard_refresh')",
+			"loadPageNoHeader(reload + sep + 'predefined_timespan=' + encodeURIComponent(this.value) + '&header=false');",
+		],
+		'UPS selector' => [
+			"document.getElementById('apcupsd_dashboard_ups')",
+			"document.getElementById('apcupsd_dashboard_timespan')",
+			"loadPageNoHeader('upses.php?action=view&id=' + encodeURIComponent(this.value) + '&header=false');",
+		],
+	]);
 });

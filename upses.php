@@ -42,6 +42,8 @@ require_once(__DIR__ . '/includes/dashboard.php');
 
 $ups_actions = [
 	1 => __('Delete', 'apcupsd'),
+	5 => __('Enable', 'apcupsd'),
+	6 => __('Disable', 'apcupsd'),
 	2 => __('Duplicate', 'apcupsd'),
 	3 => __('Reset Detection', 'apcupsd')
 ];
@@ -440,6 +442,13 @@ function form_save(): void {
 				raise_message(2);
 			}
 
+			// Keep the linked device's polling in step with the UPS's Enabled flag,
+			// the same way the bulk Enable/Disable actions do, so toggling Enabled on
+			// the edit form resumes or stops Cacti graph polling consistently.
+			if ($save['host_id'] > 0) {
+				apcupsd_apply_device_state([$save['host_id']]);
+			}
+
 			if (cacti_sizeof($host)) {
 				$changed          = false;
 				$name_changed     = false;
@@ -485,6 +494,39 @@ function form_save(): void {
 					foreach ($columns as $c) {
 						if ($save[$c] != $host[$c]) {
 							$ns[$c]  = $save[$c];
+							$changed = true;
+						}
+					}
+				}
+
+				// Keep the linked device's availability check in step with the
+				// collector, but only while it is still the plugin's own check (or the
+				// legacy "None" default) so an operator-chosen check (for example ICMP)
+				// is never silently overwritten.
+				$current_am = (int) ($host['availability_method'] ?? 0);
+				$current_pm = (int) ($host['ping_method'] ?? 0);
+
+				$plugin_managed = ($current_am === 0)             // legacy "None" default
+					|| ($current_am === 3 && $current_pm === 3)   // the plugin's TCP ping
+					|| ($current_am === 2);                       // the plugin's SNMP check
+
+				if ($plugin_managed) {
+					if ($save['type_id'] != 2) {
+						// apcupsd/NUT: a TCP ping of the service host and port.
+						$desired = apcupsd_device_availability_fields($save['hostname'], $save['port'], $save['timeout']);
+					} else {
+						// SNMP: the SNMP availability check a new SNMP device gets, so a
+						// working SNMP collector is not marked down by a stale TCP probe
+						// left over from a previous apcupsd/NUT collector.
+						$desired = [
+							'availability_method' => 2, // AVAIL_SNMP
+							'ping_method'         => 0,
+						];
+					}
+
+					foreach ($desired as $c => $v) {
+						if (!isset($host[$c]) || $host[$c] != $v) {
+							$ns[$c]  = $v;
 							$changed = true;
 						}
 					}
@@ -634,6 +676,79 @@ function run_graph_automation(array $ups_ids): void {
 }
 
 /**
+ * Returns the distinct Cacti host ids linked to a set of UPS records, for
+ * reconciling device enable/disable state across the selected UPSes.
+ *
+ * @param array $ups_ids The apcupsd_ups ids whose linked hosts are wanted.
+ *
+ * @return array The distinct linked host ids (ints as fetched).
+ */
+function apcupsd_linked_host_ids(array $ups_ids): array {
+	if (!cacti_sizeof($ups_ids)) {
+		return [];
+	}
+
+	$placeholders = implode(',', array_fill(0, cacti_sizeof($ups_ids), '?'));
+
+	return array_column(db_fetch_assoc_prepared("SELECT DISTINCT h.id
+		FROM host AS h
+		INNER JOIN apcupsd_ups AS u ON h.id = u.host_id
+		WHERE u.id IN ($placeholders)",
+		$ups_ids), 'id');
+}
+
+/**
+ * Reconciles the Cacti device enable/disable state for a set of linked hosts
+ * with the UPSes that reference them, so graph polling follows the UPSes'
+ * enabled flags consistently from both the bulk actions and the edit form.
+ *
+ * A device is disabled only when none of the UPSes linked to it are still
+ * enabled: because duplicate_ups() keeps the host_id, several UPS records can
+ * share one device, and disabling one must not stop polling for the others.
+ * The device APIs are used (not a direct host update) so the state propagates
+ * to remote pollers.
+ *
+ * @param array $host_ids The linked Cacti host ids to reconcile; non-positive
+ *                        and duplicate ids are ignored.
+ *
+ * @return void
+ */
+function apcupsd_apply_device_state(array $host_ids): void {
+	$host_ids = array_values(array_unique(array_filter(array_map('intval', $host_ids), function ($id) {
+		return $id > 0;
+	})));
+
+	if (!cacti_sizeof($host_ids)) {
+		return;
+	}
+
+	$enable  = [];
+	$disable = [];
+
+	foreach ($host_ids as $host_id) {
+		$still_enabled = (int) db_fetch_cell_prepared("SELECT COUNT(*)
+			FROM apcupsd_ups
+			WHERE host_id = ?
+			AND enabled = 'on'",
+			[$host_id]);
+
+		if ($still_enabled > 0) {
+			$enable[] = $host_id;
+		} else {
+			$disable[] = $host_id;
+		}
+	}
+
+	if (cacti_sizeof($enable)) {
+		api_device_enable_devices($enable);
+	}
+
+	if (cacti_sizeof($disable)) {
+		api_device_disable_devices($disable);
+	}
+}
+
+/**
  * Handles the bulk-actions form for the UPSes list (delete/duplicate/
  * reset detection). On first display, renders the confirmation dialog
  * listing the selected UPSes (with a name field for duplication); once
@@ -681,6 +796,22 @@ function form_actions(): void {
 					$selected_items);
 			} elseif (get_nfilter_request_var('drp_action') == '4') { // Run Graph Automation
 				run_graph_automation($selected_items);
+			} elseif (get_nfilter_request_var('drp_action') == '5') { // Enable
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET enabled = 'on'
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
+
+				apcupsd_apply_device_state(apcupsd_linked_host_ids($selected_items));
+			} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
+				$host_ids = apcupsd_linked_host_ids($selected_items);
+
+				db_execute_prepared("UPDATE apcupsd_ups
+					SET enabled = ''
+					WHERE id IN ($selected_placeholders)",
+					$selected_items);
+
+				apcupsd_apply_device_state($host_ids);
 			}
 		}
 
@@ -735,7 +866,9 @@ function form_actions(): void {
 					<p>" . __n('Click \'Continue\' to Duplicate the following UPS.', 'Click \'Continue\' to Duplicate all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
 					<div class='itemlist'><ul>$ups_list</ul></div>
 					<p><strong>" . __('UPS Name:', 'apcupsd') . '</strong><br>';
+
 			form_text_box('ups_name', '<ups> (1)', '', '255', '30', 'text');
+
 			print '</p>
 				</td>
 			</tr>';
@@ -762,6 +895,26 @@ function form_actions(): void {
 
 			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
 				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __esc('Run Graph Automation', 'apcupsd') . "'>" . __esc('Continue', 'apcupsd') . '</button>';
+		} elseif (get_nfilter_request_var('drp_action') == '5') { // Enable
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to Enable the following UPS.', 'Click \'Continue\' to Enable all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Enable UPS', 'Enable UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
+		} elseif (get_nfilter_request_var('drp_action') == '6') { // Disable
+			print "<tr>
+				<td class='textArea' class='odd'>
+					<p>" . __n('Click \'Continue\' to Disable the following UPS.', 'Click \'Continue\' to Disable all following UPSes.', cacti_sizeof($ups_array), 'apcupsd') . "</p>
+					<div class='itemlist'><ul>$ups_list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget cactiReturnTo' data-url='upses.php'>" . __esc('Cancel', 'apcupsd') . "</button>
+				<button type='submit' class='ui-button ui-corner-all ui-widget ui-state-active' title='" . __n('Disable UPS', 'Disable UPSes', cacti_sizeof($ups_array), 'apcupsd') . "'>" . __('Continue', 'apcupsd') . '</button>';
 		}
 	} else {
 		raise_message(40);
@@ -1005,6 +1158,26 @@ function upses(): void {
 		$rows = get_request_var('rows');
 	}
 
+	$sites = array_rekey(
+		db_fetch_assoc_prepared('SELECT s.id, s.name
+			FROM sites AS s
+			INNER JOIN apcupsd_ups AS u
+			ON s.id = u.site_id
+			ORDER BY s.name',
+			[]),
+		'id', 'name'
+	);
+
+	$locations = array_rekey(
+		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
+			FROM host AS h
+			INNER JOIN apcupsd_ups AS u
+			ON h.id = u.host_id
+			ORDER BY h.location',
+			[]),
+		'id', 'name'
+	);
+
 	html_start_box(__('UPSes', 'apcupsd'), '100%', false, 3, 'center', 'upses.php?action=edit');
 
 	?>
@@ -1027,22 +1200,13 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('site_id') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('site_id') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-							$sites = array_rekey(
-								db_fetch_assoc_prepared('SELECT s.id, s.name
-									FROM sites AS s
-									INNER JOIN apcupsd_ups AS u
-									ON s.id = u.site_id
-									ORDER BY s.name',
-									[]),
-								'id', 'name'
-							);
 
-	if (cacti_sizeof($sites)) {
-		foreach ($sites as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($sites)) {
+								foreach ($sites as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('site_id') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1053,22 +1217,12 @@ function upses(): void {
 							<option value='-1'<?php print (get_request_var('location') == '-1' ? ' selected>' : '>') . __('All', 'apcupsd'); ?></option>
 							<option value='-2'<?php print (get_request_var('location') == '-2' ? ' selected>' : '>') . __('None', 'apcupsd'); ?></option>
 							<?php
-	$locations = array_rekey(
-		db_fetch_assoc_prepared('SELECT DISTINCT h.location AS id, h.location AS name
-									FROM host AS h
-									INNER JOIN apcupsd_ups AS u
-									ON h.id = u.host_id
-									ORDER BY h.location',
-			[]),
-		'id', 'name'
-	);
-
-	if (cacti_sizeof($locations)) {
-		foreach ($locations as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($locations)) {
+								foreach ($locations as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('location') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -1078,12 +1232,12 @@ function upses(): void {
 						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'apcupsd'); ?></option>
 							<?php
-	if (cacti_sizeof($item_rows)) {
-		foreach ($item_rows as $key => $value) {
-			print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print "<option value='" . $key . "'" . (get_request_var('rows') == $key ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td>

@@ -123,6 +123,32 @@ if (!function_exists('apcupsd_normalize_timeout')) {
 	}
 }
 
+if (!function_exists('apcupsd_device_availability_fields')) {
+	/**
+	 * Builds the host-table availability settings that let Cacti own an
+	 * apcupsd or NUT UPS device's up/down status with a TCP ping of its
+	 * service host and port, instead of the plugin writing host.status (which
+	 * flapped against Cacti's own polling). Shared by the poller, which uses
+	 * it when creating and upgrading devices, and the UPS edit form, which
+	 * uses it to keep an existing device's check aligned with the service.
+	 *
+	 * @param mixed $hostname The UPS's service hostname; 'localhost' is used when blank.
+	 * @param mixed $port     The UPS's service port, used as the TCP ping port.
+	 * @param mixed $timeout  The per-UPS timeout in seconds; the ping timeout is derived from it.
+	 *
+	 * @return array The host columns: hostname, availability_method, ping_method, ping_port, ping_timeout.
+	 */
+	function apcupsd_device_availability_fields($hostname, $port, $timeout): array {
+		return [
+			'hostname'            => ($hostname != '' ? $hostname : 'localhost'),
+			'availability_method' => 3,                               // AVAIL_PING
+			'ping_method'         => 3,                               // PING_TCP
+			'ping_port'           => (int) $port,
+			'ping_timeout'        => max(1, (int) $timeout) * 1000,
+		];
+	}
+}
+
 if (!function_exists('apcupsd_get_site_sql_where')) {
 	/**
 	 * Builds a SQL condition restricting results to a single site id, when

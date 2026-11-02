@@ -156,18 +156,56 @@ describe('NUT wiring', function () {
 		expect($dashboard)->toContain("(int) (\$ups['type_id'] ?? 0) !== 2 ? (\$ups['port']");
 	});
 
-	it('marks the linked host down when a NUT query fails, and up or down from the status otherwise', function () use ($read) {
+	it('lets Cacti own the device status instead of writing it from the poller', function () use ($read) {
 		$poller = $read('poller_apcupsd.php');
 
-		expect($poller)->toContain('function set_ups_host_state(');
-		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], false);");
-		expect($poller)->toContain("set_ups_host_state(\$ups['host_id'], \$online);");
-		expect($poller)->toContain("db_execute_prepared('UPDATE host SET status = 4, status_fail_date=NOW() WHERE id = ?'");
+		// The poller no longer writes host.status at all; Cacti's own availability
+		// check (configured on the device) owns the up/down state, so thold/monitor
+		// no longer see it flap every poll cycle.
+		expect($poller)->not->toContain('set_ups_host_state');
+		expect($poller)->not->toContain('UPDATE host SET status = 4');
+		expect($poller)->not->toContain('UPDATE host SET status = 3, status_rec_date');
+	});
 
-		// The failure branch must mark the host before it returns false.
-		$nut = substr($poller, (int) strpos($poller, 'function collect_nut_ups_data('));
+	it('gives apcupsd and NUT devices a TCP availability check on their service host and port', function () use ($read) {
+		$poller    = $read('poller_apcupsd.php');
+		$functions = $read('includes/functions.php');
 
-		expect(strpos($nut, "set_ups_host_state(\$ups['host_id'], false);"))->toBeLessThan(strpos($nut, "substr(\$result['error'], 0, 255)"));
+		// Non-SNMP devices ping their own service host (3 = AVAIL_PING) over TCP
+		// (3 = PING_TCP) at the configured port, so Cacti tracks their availability.
+		// The settings come from one shared helper used at every call site.
+		expect($functions)->toContain('function apcupsd_device_availability_fields(');
+		expect($functions)->toContain("'hostname'            => (\$hostname != '' ? \$hostname : 'localhost'),");
+		expect($functions)->toContain("'availability_method' => 3,");
+		expect($functions)->toContain("'ping_method'         => 3,");
+		expect($functions)->toContain("'ping_timeout'        => max(1, (int) \$timeout) * 1000,");
+
+		expect($poller)->toContain("\$avail = apcupsd_device_availability_fields(\$ups['hostname'], \$ups['port'], \$ups['timeout']);");
+		expect($poller)->toContain("161, 500, '', \$avail['availability_method'],");
+		expect($poller)->toContain("\$avail['ping_method'], \$avail['ping_port'], \$avail['ping_timeout'], 1, \$ups['description'],");
+	});
+
+	it('keeps the UPS edit form device check aligned when it is plugin-managed', function () use ($read) {
+		$page = $read('upses.php');
+
+		// Only the plugin's own check (or the legacy None default) is re-synced, so
+		// an operator-chosen check is preserved (not silently replaced with TCP).
+		expect($page)->toContain('$plugin_managed = ($current_am === 0)');
+		expect($page)->toContain('($current_am === 3 && $current_pm === 3)');
+		expect($page)->toContain("\$desired = apcupsd_device_availability_fields(\$save['hostname'], \$save['port'], \$save['timeout']);");
+		// Switching an existing device to SNMP uses the SNMP availability check.
+		expect($page)->toContain("'availability_method' => 2, // AVAIL_SNMP");
+	});
+
+	it('upgrades legacy UPS devices that still have availability checking turned off', function () use ($read) {
+		$poller = $read('poller_apcupsd.php');
+
+		expect($poller)->toContain('function apcupsd_upgrade_host_availability(');
+		expect($poller)->toContain("(int) \$host['availability_method'] != 0");
+		// Persisted through api_device_save() so it reaches the main database and
+		// propagates to the poller instead of being reverted by a later full sync.
+		expect($poller)->toContain("api_device_save(\$host['id'], \$host['host_template_id'], \$host['description'], \$avail['hostname'],");
+		expect($poller)->toContain('apcupsd_upgrade_host_availability($ups);');
 	});
 
 	it('keeps the NUT failure log line and the Poller ID save in place', function (string $file, string $needle) use ($read) {

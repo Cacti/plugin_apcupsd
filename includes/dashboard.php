@@ -2046,8 +2046,8 @@ if (!function_exists('apcupsd_dashboard_tabs')) {
 	 */
 	function apcupsd_dashboard_tabs(string $current): void {
 		$tabs = [
-			'dashboard' => ['label' => __('Fleet Dashboard', 'apcupsd'), 'url' => 'upses.php?action=dashboard'],
 			'list'      => ['label' => __('UPSes', 'apcupsd'),           'url' => 'upses.php'],
+			'dashboard' => ['label' => __('Fleet Dashboard', 'apcupsd'), 'url' => 'upses.php?action=dashboard'],
 		];
 
 		$selected_ups = (int) read_user_setting('apcupsd_dashboard_ups', 0);
