@@ -3,6 +3,7 @@
 
 --- 1.4.0 ---
 
+* dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add a version-safe CSP nonce (`plugin_apcupsd_csp_nonce()`) to every inline `<script>`
 * security: Replace all inline javascript handlers with jQuery assigned handlers
 * issue: Provide better logging when UPSes are having communication issues with the Cacti data collector
