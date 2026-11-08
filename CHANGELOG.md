@@ -20,6 +20,7 @@
 * feature: Add a per-UPS Timeout (seconds) setting, 5 by default and limited to 1-120
 * feature: Add support for monitoring UPSes through Network UPS Tools (NUT)
 * feature: Support NUT TLS using self-signed certificates
+* issue#66: Ignore non-finite RRD samples and power estimates in dashboard aggregates
 
 --- 1.3.1 ---
 

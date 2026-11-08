@@ -475,7 +475,11 @@ if (!function_exists('apcupsd_dashboard_rrd_series')) {
 
 		foreach ($fetch['values'][$index] as $value) {
 			if (is_numeric($value)) {
-				$numbers[] = (float) $value;
+				$number = (float) $value;
+
+				if (is_finite($number)) {
+					$numbers[] = $number;
+				}
 			}
 		}
 

@@ -161,6 +161,14 @@ describe('RRD series and stats', function () {
 		expect(apcupsd_dashboard_rrd_series(11, 'loadpct', -3600, 0, 'AVERAGE'))->toBe([10.0, 30.0]);
 	});
 
+	it('excludes non-finite numeric values from RRD series', function () {
+		apcupsd_test_rrd_setup(111, 'loadpct', ['AVERAGE' => [10, 20, 30, 40]]);
+		$GLOBALS['__rrd_data'][111]['AVERAGE']['values'][0][1700000300] = INF;
+		$GLOBALS['__rrd_data'][111]['AVERAGE']['values'][0][1700000600] = NAN;
+
+		expect(apcupsd_dashboard_rrd_series(111, 'loadpct', -3600, 0, 'AVERAGE'))->toBe([10.0, 40.0]);
+	});
+
 	it('returns nothing for a missing RRD, an unknown column or an empty fetch', function () {
 		expect(apcupsd_dashboard_rrd_series(0, 'loadpct', -3600, 0, 'AVERAGE'))->toBe([]);
 		expect(apcupsd_dashboard_rrd_series(12, 'loadpct', -3600, 0, 'AVERAGE'))->toBe([]);
