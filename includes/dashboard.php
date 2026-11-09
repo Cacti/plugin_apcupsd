@@ -42,6 +42,20 @@ if (!function_exists('apcupsd_dashboard_print_css')) {
 	function apcupsd_dashboard_print_css(): void {
 		global $config;
 
+		// Shared card chrome + chart-widget primitives. On Cacti 1.2.32+ these ship
+		// in core and are loaded by the common page header; bundle the plugin's own
+		// copy only when core does not provide them.
+		// @codeCoverageIgnoreStart -- fallback runs only on cores lacking the bundle;
+		// the end-to-end run installs a core that ships it, so CI cannot reach here.
+		if (!file_exists($config['base_path'] . '/include/css/cards.css')) {
+			print get_md5_include_css('plugins/apcupsd/css/cards.css');
+		}
+
+		if (!file_exists($config['base_path'] . '/include/css/card-widgets.css')) {
+			print get_md5_include_css('plugins/apcupsd/css/card-widgets.css');
+		}
+		// @codeCoverageIgnoreEnd
+
 		print get_md5_include_css('plugins/apcupsd/css/apcupsd.css');
 
 		$theme = get_selected_theme();
@@ -573,13 +587,13 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 			$summary[] = __('max %s', apcupsd_dashboard_format_value($max, $unit), 'apcupsd');
 		}
 
-		$head = '<div class="apcupsdBulletHead">'
-			. '<span class="apcupsdBulletLabel">' . html_escape($label) . '</span>'
-			. '<span class="apcupsdBulletAvg">' . html_escape(implode(' · ', $summary)) . '</span>'
+		$head = '<div class="ccBulletHead">'
+			. '<span class="ccBulletLabel">' . html_escape($label) . '</span>'
+			. '<span class="ccBulletAvg">' . html_escape(implode(' · ', $summary)) . '</span>'
 			. '</div>';
 
 		if ($marker_value === null || $scale <= 0) {
-			return '<div class="apcupsdBullet">' . $head . '<div class="apcupsdBulletTrack"></div></div>';
+			return '<div class="ccBullet">' . $head . '<div class="ccBulletTrack"></div></div>';
 		}
 
 		$lo = max(0.0, min($scale, (float) ($min !== null ? $min : $marker_value)));
@@ -590,7 +604,7 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 		$width = max(0.75, ($hi - $lo) / $scale * 100);
 		$mark  = $mk / $scale * 100;
 
-		$sev = in_array($severity, ['up', 'recovering', 'down'], true) ? $severity : 'none';
+		$sev = ($severity === 'recovering') ? 'warn' : (in_array($severity, ['up', 'down'], true) ? $severity : 'none');
 
 		// A faint tick marks the historical average, distinct from the strong marker
 		// at the current reading, so both are visible when they differ.
@@ -598,16 +612,16 @@ if (!function_exists('apcupsd_dashboard_bullet')) {
 
 		if ($avg !== null) {
 			$avg_pos = max(0.0, min($scale, (float) $avg)) / $scale * 100;
-			$avg_marker = '<div class="apcupsdBulletAvgMarker" style="left:' . number_format($avg_pos, 2, '.', '') . '%" title="' . __esc('Average', 'apcupsd') . '"></div>';
+			$avg_marker = '<div class="ccBulletAvgMarker" style="left:' . number_format($avg_pos, 2, '.', '') . '%" title="' . __esc('Average', 'apcupsd') . '"></div>';
 		}
 
-		return '<div class="apcupsdBullet">' . $head
-			. '<div class="apcupsdBulletTrack">'
-			. '<div class="apcupsdBulletRange apcupsdBulletRange--' . $sev . '" style="left:' . number_format($left, 2, '.', '') . '%;width:' . number_format($width, 2, '.', '') . '%"></div>'
+		return '<div class="ccBullet">' . $head
+			. '<div class="ccBulletTrack">'
+			. '<div class="ccBulletRange ccBulletRange--' . $sev . '" style="left:' . number_format($left, 2, '.', '') . '%;width:' . number_format($width, 2, '.', '') . '%"></div>'
 			. $avg_marker
-			. '<div class="apcupsdBulletMarker" style="left:' . number_format($mark, 2, '.', '') . '%"></div>'
+			. '<div class="ccBulletMarker" style="left:' . number_format($mark, 2, '.', '') . '%"></div>'
 			. '</div>'
-			. '<div class="apcupsdBulletScale"><span>' . html_escape(apcupsd_dashboard_format_value(0.0, $unit)) . '</span><span>' . html_escape(apcupsd_dashboard_format_value($scale, $unit)) . '</span></div>'
+			. '<div class="ccBulletScale"><span>' . html_escape(apcupsd_dashboard_format_value(0.0, $unit)) . '</span><span>' . html_escape(apcupsd_dashboard_format_value($scale, $unit)) . '</span></div>'
 			. '</div>';
 	}
 }
@@ -630,7 +644,7 @@ if (!function_exists('apcupsd_dashboard_gauge')) {
 	 * @return string The gauge HTML.
 	 */
 	function apcupsd_dashboard_gauge(?float $current, ?float $min, ?float $max, float $scale, string $severity, string $center_label, string $sub_label = ''): string {
-		$sev = in_array($severity, ['up', 'recovering', 'down'], true) ? $severity : 'none';
+		$sev = ($severity === 'recovering') ? 'warn' : (in_array($severity, ['up', 'down'], true) ? $severity : 'none');
 
 		$frac = ($current !== null && $scale > 0) ? max(0.0, min(1.0, $current / $scale)) : 0.0;
 		$dash = number_format($frac * 100, 2, '.', '');
@@ -649,19 +663,19 @@ if (!function_exists('apcupsd_dashboard_gauge')) {
 			$ox = 60 + 56 * cos($angle);
 			$oy = 60 - 56 * sin($angle);
 
-			return '<line class="apcupsdGaugeTick" x1="' . number_format($ix, 2, '.', '') . '" y1="' . number_format($iy, 2, '.', '')
+			return '<line class="ccGaugeTick" x1="' . number_format($ix, 2, '.', '') . '" y1="' . number_format($iy, 2, '.', '')
 				. '" x2="' . number_format($ox, 2, '.', '') . '" y2="' . number_format($oy, 2, '.', '') . '" />';
 		};
 
-		return '<div class="apcupsdGauge">'
-			. '<svg class="apcupsdGaugeSvg" viewBox="0 0 120 68" role="img" aria-label="' . html_escape($center_label) . '">'
-			. '<path class="apcupsdGaugeTrack" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" />'
-			. '<path class="apcupsdGaugeValue apcupsdGaugeValue--' . $sev . '" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" stroke-dasharray="' . $dash . ' 100" />'
+		return '<div class="ccGauge">'
+			. '<svg class="ccGaugeSvg" viewBox="0 0 120 68" role="img" aria-label="' . html_escape($center_label) . '">'
+			. '<path class="ccGaugeTrack" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" />'
+			. '<path class="ccGaugeValue ccGaugeValue--' . $sev . '" d="M10 60 A50 50 0 0 1 110 60" fill="none" pathLength="100" stroke-dasharray="' . $dash . ' 100" />'
 			. $tick($min) . $tick($max)
 			. '</svg>'
-			. '<div class="apcupsdGaugeText">'
-			. '<span class="apcupsdGaugeValueText">' . html_escape($center_label) . '</span>'
-			. ($sub_label !== '' ? '<span class="apcupsdGaugeSub">' . html_escape($sub_label) . '</span>' : '')
+			. '<div class="ccGaugeText">'
+			. '<span class="ccGaugeValueText">' . html_escape($center_label) . '</span>'
+			. ($sub_label !== '' ? '<span class="ccGaugeSub">' . html_escape($sub_label) . '</span>' : '')
 			. '</div></div>';
 	}
 }
@@ -682,7 +696,7 @@ if (!function_exists('apcupsd_dashboard_render_bullets')) {
 		$ups = apcupsd_dashboard_ups($ups_id);
 
 		if (!cacti_sizeof($ups)) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
+			return '<p class="ccEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
 		}
 
 		apcupsd_dashboard_init_timespan();
@@ -742,7 +756,7 @@ if (!function_exists('apcupsd_dashboard_render_bullets')) {
 		}
 
 		if ($rows === 0) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for this group yet.', 'apcupsd') . '</p>';
+			return '<p class="ccEmpty">' . __esc('No readings are available for this group yet.', 'apcupsd') . '</p>';
 		}
 
 		return $out;
@@ -920,13 +934,13 @@ if (!function_exists('apcupsd_dashboard_gauge_from_reading')) {
 	 */
 	function apcupsd_dashboard_gauge_from_reading(?array $reading): string {
 		if (!is_array($reading)) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
+			return '<p class="ccEmpty">' . __esc('No readings have been collected for this UPS yet.', 'apcupsd') . '</p>';
 		}
 
 		$value = $reading['current'] !== null ? $reading['current'] : $reading['avg'];
 
 		if ($value === null && $reading['min'] === null && $reading['max'] === null) {
-			return '<p class="apcupsdDashEmpty">' . __esc('No readings are available for this gauge yet.', 'apcupsd') . '</p>';
+			return '<p class="ccEmpty">' . __esc('No readings are available for this gauge yet.', 'apcupsd') . '</p>';
 		}
 
 		$unit   = $reading['unit'];
@@ -1132,19 +1146,19 @@ if (!function_exists('apcupsd_dashboard_status_pill')) {
 		$status = trim($status);
 		$upper  = strtoupper($status);
 
-		$class = 'apcupsdDashPill--unknown';
+		$class = 'ccPill--none';
 
 		if ($upper === '') {
 			$status = __('Unknown', 'apcupsd');
 		} elseif (strpos($upper, 'ONBATT') !== false || strpos($upper, 'LOWBATT') !== false) {
-			$class = 'apcupsdDashPill--down';
+			$class = 'ccPill--down';
 		} elseif (strpos($upper, 'ONLINE') !== false) {
-			$class = 'apcupsdDashPill--up';
+			$class = 'ccPill--up';
 		} elseif (strpos($upper, 'CAL') !== false || strpos($upper, 'TRIM') !== false || strpos($upper, 'BOOST') !== false) {
-			$class = 'apcupsdDashPill--warn';
+			$class = 'ccPill--warn';
 		}
 
-		return '<span class="apcupsdDashPill ' . $class . '">' . html_escape($status) . '</span>';
+		return '<span class="ccPill ' . $class . '">' . html_escape($status) . '</span>';
 	}
 }
 
@@ -1177,7 +1191,7 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 			}
 
 			if (!$allowed) {
-				return '<p class="apcupsdDashEmpty">' . __esc('This graph is no longer available.', 'apcupsd') . '</p>';
+				return '<p class="ccEmpty">' . __esc('This graph is no longer available.', 'apcupsd') . '</p>';
 			}
 
 			apcupsd_dashboard_init_timespan();
@@ -1202,7 +1216,7 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				$reading = apcupsd_dashboard_est_power_reading($ups_id);
 
 				if ($reading === null) {
-					return '<p class="apcupsdDashEmpty">' . __esc('Estimated power needs a nominal power rating and a load reading.', 'apcupsd') . '</p>';
+					return '<p class="ccEmpty">' . __esc('Estimated power needs a nominal power rating and a load reading.', 'apcupsd') . '</p>';
 				}
 
 				return apcupsd_dashboard_gauge_from_reading($reading);
@@ -1211,7 +1225,7 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 			$cards = apcupsd_dashboard_gauge_cards();
 
 			if (!isset($cards[$key])) {
-				return '<p class="apcupsdDashEmpty">' . __esc('This gauge is no longer available.', 'apcupsd') . '</p>';
+				return '<p class="ccEmpty">' . __esc('This gauge is no longer available.', 'apcupsd') . '</p>';
 			}
 
 			return apcupsd_dashboard_gauge_card_body($cards[$key], $ups_id);
@@ -1222,7 +1236,7 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 		switch ($key) {
 			case 'identity':
 				if (!cacti_sizeof($ups)) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No information has been collected for this UPS yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No information has been collected for this UPS yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -1289,7 +1303,7 @@ if (!function_exists('apcupsd_dashboard_card_body')) {
 				break;
 			case 'events':
 				if (!cacti_sizeof($ups)) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No event data has been collected for this UPS yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No event data has been collected for this UPS yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -1342,33 +1356,35 @@ if (!function_exists('apcupsd_dashboard_card_chrome')) {
 		$tools = '';
 
 		if ($expandable) {
-			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="expand" aria-label="' . __esc('Show more', 'apcupsd') . '" title="' . __esc('Show more', 'apcupsd') . '"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>';
-			$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'apcupsd') . '" title="' . __esc('Show less', 'apcupsd') . '"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>';
+			$tools .= '<button type="button" class="ccTool" data-tool="expand" aria-label="' . __esc('Show more', 'apcupsd') . '" title="' . __esc('Show more', 'apcupsd') . '"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>';
+			$tools .= '<button type="button" class="ccTool" data-tool="collapse" aria-label="' . __esc('Show less', 'apcupsd') . '" title="' . __esc('Show less', 'apcupsd') . '"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>';
 		}
 
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'apcupsd') . '" title="' . __esc('Open in a dialog', 'apcupsd') . '"><i class="fas fa-window-maximize" aria-hidden="true"></i></button>';
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
-		$tools .= '<button type="button" class="apcupsdDashCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'apcupsd') . '" title="' . __esc('Remove from page', 'apcupsd') . '"><i class="fas fa-times" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="ccTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'apcupsd') . '" title="' . __esc('Open in a dialog', 'apcupsd') . '"><i class="fas fa-window-maximize" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="ccTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="ccTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'apcupsd') . '" title="' . __esc('Remove from page', 'apcupsd') . '"><i class="fas fa-times" aria-hidden="true"></i></button>';
 
-		$classes = 'apcupsdDashCard apcupsdDashSpan' . $span;
+		$classes = 'ccCard ccW' . $span;
 
 		if ($expandable) {
-			$classes .= ' apcupsdDashCardExpandable';
+			$classes .= ' ccCardExpandable';
 		}
 
 		if ($expanded) {
-			$classes .= ' apcupsdDashCardExpanded';
+			$classes .= ' ccCardExpanded';
 		}
 
-		$header_class = 'apcupsdDashCardHeader' . ($state !== '' ? ' apcupsdDashCardHeader--' . $state : '');
+		$severity = ($state === 'recovering') ? 'warn' : (($state === 'up' || $state === 'down') ? $state : 'none');
 
-		return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
-			. '<header class="' . $header_class . '">'
-			. '<button type="button" class="apcupsdDashCardDrag" aria-label="' . __esc('Drag to reorder card', 'apcupsd') . '"><i class="fas fa-bars" aria-hidden="true"></i></button>'
-			. '<h2 class="apcupsdDashCardTitle">' . html_escape($title) . '</h2>'
-			. '<span class="apcupsdDashCardTools">' . $tools . '</span>'
+		return '<section class="' . $classes . '" data-card="' . html_escape($key) . '" data-severity="' . $severity . '"'
+			. ($expandable ? ' data-expandable="1"' : '')
+			. ' data-expanded="' . ($expanded ? '1' : '0') . '">'
+			. '<header class="ccCardHeader">'
+			. '<button type="button" class="ccDrag" aria-label="' . __esc('Drag to reorder card', 'apcupsd') . '"><i class="fas fa-bars" aria-hidden="true"></i></button>'
+			. '<h2 class="ccTitle">' . html_escape($title) . '</h2>'
+			. '<span class="ccTools">' . $tools . '</span>'
 			. '</header>'
-			. '<div class="apcupsdDashCardBody">' . $body . '</div>'
+			. '<div class="ccCardBody">' . $body . '</div>'
 			. '</section>';
 	}
 }
@@ -1816,18 +1832,15 @@ if (!function_exists('apcupsd_dashboard_print_refresh')) {
 	 * @return void
 	 */
 	function apcupsd_dashboard_print_refresh(int $seconds, string $page): void {
-		if ($seconds <= 0) {
+		if ($seconds <= 0 || !function_exists('set_page_refresh')) {
 			return;
 		}
 
-		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . '>'
-			. '$(function() {'
-			. 'if (!document.getElementById("apcupsd_dashboard") || typeof setupPageTimeout !== "function") { return; }'
-			. 'refreshIsLogout = false;'
-			. 'refreshPage = ' . json_encode($page, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';'
-			. 'refreshMSeconds = ' . ($seconds * 1000) . ';'
-			. 'if (typeof apcupsdDashStartRefresh === "function") { apcupsdDashStartRefresh(); } else { setupPageTimeout(); }'
-			. '});</script>';
+		set_page_refresh([
+			'seconds' => $seconds,
+			'page'    => $page,
+			'logout'  => 'false'
+		]);
 	}
 }
 
@@ -1932,6 +1945,11 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		// The dashboard script goes first: when Cacti loads this page through ajax the
 		// scripts run in order, and the refresh script below needs its functions.
+		// @codeCoverageIgnoreStart -- bundled copy loads only on cores lacking it.
+		if (!file_exists($config['base_path'] . '/include/js/cards.js')) {
+			print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/cards.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/cards.js') . '"></script>';
+		}
+		// @codeCoverageIgnoreEnd
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 
 		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
@@ -1945,9 +1963,9 @@ if (!function_exists('apcupsd_dashboard')) {
 			$page_refresh_interval = [0 => __('No Refresh', 'apcupsd'), 30 => __('30 Seconds', 'apcupsd'), 60 => __('1 Minute', 'apcupsd'), 300 => __('5 Minutes', 'apcupsd')];
 		}
 
-		print '<div class="apcupsdDashToolbar">';
+		print '<div class="ccToolbar">';
 
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_ups">' . __esc('UPS', 'apcupsd') . '</label>';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_ups">' . __esc('UPS', 'apcupsd') . '</label>';
 		print '<select id="apcupsd_dashboard_ups" class="apcupsdDashUps">';
 
 		$upses = db_fetch_assoc("SELECT id, name
@@ -1963,7 +1981,7 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		print '</select>';
 
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_timespan">' . __esc('Timespan', 'apcupsd') . '</label>';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_timespan">' . __esc('Timespan', 'apcupsd') . '</label>';
 		print '<select id="apcupsd_dashboard_timespan" class="apcupsdDashTimespan">';
 
 		global $graph_timespans;
@@ -1977,8 +1995,8 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		print '</select>';
 
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_add">' . __esc('Add card', 'apcupsd') . '</label>';
-		print '<select id="apcupsd_dashboard_add" class="apcupsdDashAdd"><option value="">' . __esc('Add a card…', 'apcupsd') . '</option>';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_add">' . __esc('Add card', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_add" class="ccAdd"><option value="">' . __esc('Add a card…', 'apcupsd') . '</option>';
 
 		foreach ($absent as $key) {
 			print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
@@ -1986,9 +2004,9 @@ if (!function_exists('apcupsd_dashboard')) {
 
 		print '</select>';
 
-		print '<div class="apcupsdDashRefresh">';
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_refresh">' . __esc('Refresh', 'apcupsd') . '</label>';
-		print '<select id="apcupsd_dashboard_refresh" class="apcupsdDashRefreshInterval">';
+		print '<div class="ccRefresh">';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_refresh">' . __esc('Refresh', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_refresh" class="ccRefreshInterval">';
 		print '<option value="0"' . ($current_refresh == 0 ? ' selected' : '') . '>' . __esc('No Refresh', 'apcupsd') . '</option>';
 
 		foreach ($page_refresh_interval as $seconds => $display_text) {
@@ -2000,12 +2018,12 @@ if (!function_exists('apcupsd_dashboard')) {
 		}
 
 		print '</select>';
-		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="apcupsdDashCardTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
+		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="ccTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
 		print '</div>';
 		print '<span class="apcupsdDashSaveStatus" role="status" aria-live="polite" hidden></span>';
 		print '</div>';
 
-		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid" data-ups="' . $ups_id . '"'
+		print '<div id="apcupsd_dashboard" class="ccGrid" data-ups="' . $ups_id . '"'
 			. ' data-scope-param="id" data-scope="' . $ups_id . '"'
 			. ' data-refresh-page="' . html_escape($refresh_page) . '"'
 			. ' data-reload="' . html_escape('upses.php?action=view&id=' . $ups_id) . '">';
@@ -2404,7 +2422,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 		switch ($key) {
 			case 'overview':
 				if ($total === 0) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -2434,7 +2452,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				$bar_total = array_sum(array_column($segments, 'count'));
 
 				if ($bar_total === 0) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -2460,7 +2478,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				break;
 			case 'readings':
 				if ($enabled === 0) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -2480,7 +2498,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				break;
 			case 'power':
 				if ($est_count === 0 || $est_watts === null || $est_capacity === null || $est_capacity <= 0) {
-					print '<p class="apcupsdDashEmpty">' . __esc('Estimated power needs an enabled UPS with a nominal power rating and a load reading.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('Estimated power needs an enabled UPS with a nominal power rating and a load reading.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -2506,7 +2524,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 				break;
 			case 'gauges':
 				if ($enabled === 0) {
-					print '<p class="apcupsdDashEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
+					print '<p class="ccEmpty">' . __esc('No enabled UPSes are reporting readings yet.', 'apcupsd') . '</p>';
 
 					break;
 				}
@@ -2599,7 +2617,7 @@ if (!function_exists('apcupsd_fleet_card_body')) {
 							. '</tr>';
 					}
 				} else {
-					print '<tr class="apcupsdDashEmptyRow"><td colspan="8" class="apcupsdDashEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</td></tr>';
+					print '<tr class="apcupsdDashEmptyRow"><td colspan="8" class="ccEmpty">' . __esc('No UPSes are configured yet.', 'apcupsd') . '</td></tr>';
 				}
 
 				print '</tbody>';
@@ -2812,6 +2830,11 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 
 		// The dashboard script goes first: when Cacti loads this page through ajax the
 		// scripts run in order, and the refresh script below needs its functions.
+		// @codeCoverageIgnoreStart -- bundled copy loads only on cores lacking it.
+		if (!file_exists($config['base_path'] . '/include/js/cards.js')) {
+			print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/cards.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/cards.js') . '"></script>';
+		}
+		// @codeCoverageIgnoreEnd
 		print '<script type="text/javascript" ' . plugin_apcupsd_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/apcupsd/js/apcupsd_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/apcupsd/js/apcupsd_dashboard.js') . '"></script>';
 
 		apcupsd_dashboard_print_refresh($current_refresh, $refresh_page);
@@ -2824,9 +2847,9 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 			$page_refresh_interval = [0 => __('No Refresh', 'apcupsd'), 30 => __('30 Seconds', 'apcupsd'), 60 => __('1 Minute', 'apcupsd'), 300 => __('5 Minutes', 'apcupsd')];
 		}
 
-		print '<div class="apcupsdDashToolbar">';
+		print '<div class="ccToolbar">';
 
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_timespan">' . __esc('Timespan', 'apcupsd') . '</label>';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_timespan">' . __esc('Timespan', 'apcupsd') . '</label>';
 		print '<select id="apcupsd_dashboard_timespan" class="apcupsdDashTimespan">';
 
 		global $graph_timespans;
@@ -2840,8 +2863,8 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 
 		print '</select>';
 
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_add">' . __esc('Add card', 'apcupsd') . '</label>';
-		print '<select id="apcupsd_dashboard_add" class="apcupsdDashAdd"><option value="">' . __esc('Add a card…', 'apcupsd') . '</option>';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_add">' . __esc('Add card', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_add" class="ccAdd"><option value="">' . __esc('Add a card…', 'apcupsd') . '</option>';
 
 		foreach ($absent as $key) {
 			print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
@@ -2849,9 +2872,9 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 
 		print '</select>';
 
-		print '<div class="apcupsdDashRefresh">';
-		print '<label class="apcupsdDashToolbarLabel" for="apcupsd_dashboard_refresh">' . __esc('Refresh', 'apcupsd') . '</label>';
-		print '<select id="apcupsd_dashboard_refresh" class="apcupsdDashRefreshInterval">';
+		print '<div class="ccRefresh">';
+		print '<label class="ccToolbarLabel" for="apcupsd_dashboard_refresh">' . __esc('Refresh', 'apcupsd') . '</label>';
+		print '<select id="apcupsd_dashboard_refresh" class="ccRefreshInterval">';
 		print '<option value="0"' . ($current_refresh == 0 ? ' selected' : '') . '>' . __esc('No Refresh', 'apcupsd') . '</option>';
 
 		foreach ($page_refresh_interval as $seconds => $display_text) {
@@ -2863,12 +2886,12 @@ if (!function_exists('apcupsd_fleet_dashboard')) {
 		}
 
 		print '</select>';
-		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="apcupsdDashCardTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
+		print '<button type="button" id="apcupsd_dashboard_refresh_now" class="ccTool apcupsdDashRefreshNow" aria-label="' . __esc('Refresh', 'apcupsd') . '" title="' . __esc('Refresh', 'apcupsd') . '"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>';
 		print '</div>';
 		print '<span class="apcupsdDashSaveStatus" role="status" aria-live="polite" hidden></span>';
 		print '</div>';
 
-		print '<div id="apcupsd_dashboard" class="apcupsdDashGrid"'
+		print '<div id="apcupsd_dashboard" class="ccGrid"'
 			. ' data-card-action="summary_card" data-layout-action="summary_layout" data-refresh-action="summary_refresh"'
 			. ' data-refresh-page="' . html_escape($refresh_page) . '"'
 			. ' data-reload="upses.php?action=dashboard">';

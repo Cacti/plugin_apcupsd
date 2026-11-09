@@ -17,7 +17,21 @@
  * text colour via color-mix(currentColor ...) so the same rules read correctly
  * on every Cacti theme, with the per-theme css/<theme>.css files tuning accents.
  * Severity accents (up/recovering/down) use fixed, theme-independent colours.
+ *
+ * The card chrome and chart primitives now come from the shared Card API
+ * stylesheets (css/cards.css + css/card-widgets.css); the rules below are kept
+ * only where they also style apcupsd-specific content (tables, graph panels,
+ * the gauge grid, the UPS/timespan pickers). The shared grid reads its column
+ * count and accent palette from these custom properties.
  */
+#apcupsd_dashboard.ccGrid,
+#apcupsd_dashboard_dialog {
+	--cc-cols: 8;
+	--cc-card: transparent;
+	--cc-text: currentColor;
+	--cc-border: color-mix(in srgb, currentColor 18%, transparent);
+	--cc-header-bg: color-mix(in srgb, currentColor 9%, transparent);
+}
 
 .apcupsdDashboard {
 	color: #1b6ca8;

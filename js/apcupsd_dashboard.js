@@ -16,26 +16,15 @@
  +-------------------------------------------------------------------------+
 */
 
-/* UPS Dashboard: the per-UPS drilldown card grid. Mirrors the hmib/intropage
- * card interaction model (drag/keyboard reorder, per-card tools, an "Add card"
- * catalogue, a Cacti timespan selector, auto-refresh interval + manual refresh)
- * with the card order, expanded state and current UPS persisted server-side in
- * settings_user. */
+/* UPS Dashboard adapter for the shared card chrome (js/cards.js). The
+ * CactiCards controller owns drag/keyboard reorder, the per-card tools and the
+ * debounced layout save; this adapter maps those hooks to apcupsd's upses.php
+ * endpoints and adds apcupsd's extras: a UPS picker, Cacti's timespan selector
+ * (its graph and RRD-bullet cards follow the session timespan), an auto-refresh
+ * interval and a manual refresh-all. Card markup uses the shared .cc* contract
+ * and the card bodies the shared .cc* chart primitives. */
 
-var apcupsdDashDragging = null;
-
-/** Cacti's browser auto-logout timer as it was when this script loaded, before the
- *  dashboard replaces it with its own refresh. Choosing "No Refresh" puts it back (a
- *  page reload used to). It is kept across re-runs of this script, which can find the
- *  dashboard's own override in place of the original. */
-var apcupsdDashCoreTimer = typeof apcupsdDashCoreTimer === 'undefined' ? null : apcupsdDashCoreTimer;
-
-if (typeof refreshIsLogout !== 'undefined' && refreshIsLogout === true && typeof refreshMSeconds !== 'undefined' && typeof refreshPage !== 'undefined') {
-	apcupsdDashCoreTimer = {ms: refreshMSeconds, page: refreshPage};
-}
-
-/** The endpoint/scope configuration for a grid, read from its data attributes so
- *  the per-UPS and fleet dashboards can share this engine. */
+/* The endpoint/scope configuration for a grid, read from its data attributes. */
 function apcupsdDashCfg(grid) {
 	return {
 		page:          grid.dataset.page          || 'upses.php',
@@ -44,91 +33,84 @@ function apcupsdDashCfg(grid) {
 		refreshAction: grid.dataset.refreshAction || 'dashboard_refresh',
 		scopeParam:    grid.dataset.scopeParam    || '',
 		scope:         grid.dataset.scope         || '',
-		reload:        grid.dataset.reload        || 'upses.php',
-		refreshPage:   grid.dataset.refreshPage   || ''
+		reload:        grid.dataset.reload        || 'upses.php'
 	};
 }
 
-/** Build a POST payload for a grid, adding the CSRF token and the grid's scope
- *  parameter (the UPS id for the per-UPS dashboard; absent for the fleet one). */
+/* Build a POST payload for a grid, adding the CSRF token and the grid's scope
+ * parameter (the UPS id for the per-UPS dashboard). */
 function apcupsdDashPost(grid, extra) {
-	var cfg = apcupsdDashCfg(grid);
 	var data = {__csrf_magic: csrfMagicToken};
+
 	for (var key in extra) {
 		if (Object.prototype.hasOwnProperty.call(extra, key)) {
 			data[key] = extra[key];
 		}
 	}
+
+	var cfg = apcupsdDashCfg(grid);
+
 	if (cfg.scopeParam) {
 		data[cfg.scopeParam] = cfg.scope;
 	}
+
 	return data;
 }
 
-/** Make a container's sortable headers focusable and screen-reader friendly. */
+/* Make a container's sortable headers focusable and screen-reader friendly. */
 function apcupsdDashPrepSortHeaders(container) {
 	if (!container) {
 		return;
 	}
+
 	container.querySelectorAll('th.apcupsdDashSortable').forEach(function(th) {
 		if (!th.hasAttribute('tabindex')) {
 			th.setAttribute('tabindex', '0');
 		}
-		// Keep the native columnheader role: aria-sort is only valid there, and the
-		// tabindex + Enter/Space keydown handler already makes it operable.
+		th.setAttribute('role', 'button');
 		if (!th.hasAttribute('aria-sort')) {
 			th.setAttribute('aria-sort', 'none');
 		}
 	});
 }
 
-/** Sort a card table by the clicked column header, toggling asc/desc. Numeric
- *  columns (data-sort="num") sort by the cell's data-sort-value when present. */
+/* Sort a card table by the clicked column header, toggling asc/desc. Numeric
+ * columns (data-sort="num") sort by the cell's data-sort-value when present. */
 function apcupsdDashSortTable(th) {
 	var table = th.closest('table');
+
 	if (!table) {
 		return;
 	}
-	var tbody = table.tBodies[0];
-	if (!tbody) {
-		return;
-	}
+
+	var tbody   = table.tBodies[0];
 	var headers = Array.prototype.slice.call(th.parentNode.children);
-	var index = headers.indexOf(th);
-	var numeric = th.dataset.sort === 'num';
-	var asc = !th.classList.contains('apcupsdDashSortAsc');
+	var index   = headers.indexOf(th);
+	var numeric = th.getAttribute('data-sort') === 'num';
+	var asc     = th.getAttribute('aria-sort') !== 'ascending';
 
 	headers.forEach(function(header) {
-		header.classList.remove('apcupsdDashSortAsc', 'apcupsdDashSortDesc');
-		if (header.classList.contains('apcupsdDashSortable')) {
+		if (header !== th) {
 			header.setAttribute('aria-sort', 'none');
 		}
 	});
-	th.classList.add(asc ? 'apcupsdDashSortAsc' : 'apcupsdDashSortDesc');
+
 	th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
 
 	var rows = Array.prototype.slice.call(tbody.rows).filter(function(row) {
 		return !row.classList.contains('apcupsdDashEmptyRow');
 	});
 
-	var value = function(row) {
-		var cell = row.cells[index];
-		if (!cell) {
-			return numeric ? 0 : '';
-		}
-		if (numeric) {
-			var raw = cell.dataset.sortValue !== undefined ? cell.dataset.sortValue : cell.textContent;
-			var num = parseFloat(String(raw).replace(/[^0-9.\-]/g, ''));
-			return isNaN(num) ? 0 : num;
-		}
-		return cell.textContent.trim().toLowerCase();
-	};
-
 	rows.sort(function(a, b) {
-		var va = value(a);
-		var vb = value(b);
-		if (va < vb) { return asc ? -1 : 1; }
-		if (va > vb) { return asc ? 1 : -1; }
+		var x = apcupsdDashCellValue(a.cells[index], numeric);
+		var y = apcupsdDashCellValue(b.cells[index], numeric);
+
+		if (x < y) {
+			return asc ? -1 : 1;
+		}
+		if (x > y) {
+			return asc ? 1 : -1;
+		}
 		return 0;
 	});
 
@@ -137,37 +119,36 @@ function apcupsdDashSortTable(th) {
 	});
 }
 
-/** Remember which header a card's table is sorted by, and in which direction. */
-function apcupsdDashSortSnapshot(card) {
-	var th = card.querySelector('th.apcupsdDashSortAsc, th.apcupsdDashSortDesc');
-	if (!th) {
-		return null;
+/* The sort key of a cell: its data-sort-value when set, else its text; numeric
+ * columns parse to a number so 9 sorts below 10. */
+function apcupsdDashCellValue(cell, numeric) {
+	if (!cell) {
+		return numeric ? 0 : '';
 	}
-	return {index: Array.prototype.indexOf.call(th.parentNode.children, th), asc: th.classList.contains('apcupsdDashSortAsc')};
+
+	var raw = cell.hasAttribute('data-sort-value') ? cell.getAttribute('data-sort-value') : cell.textContent;
+
+	if (numeric) {
+		var value = parseFloat(raw);
+		return isNaN(value) ? 0 : value;
+	}
+
+	return (raw || '').trim().toLowerCase();
 }
 
-/** Re-apply a remembered sort to a freshly rendered card, so an in-place refresh
- *  does not throw away the order the user picked. */
-function apcupsdDashSortRestore(card, snapshot) {
-	if (!snapshot) {
+/* Delegate clicks and keyboard activation on a container's sortable headers. */
+function apcupsdDashBindSort(container, namespace) {
+	if (!container) {
 		return;
 	}
-	var th = card.querySelector('th.apcupsdDashSortable:nth-child(' + (snapshot.index + 1) + ')');
-	if (!th) {
-		return;
-	}
-	// apcupsdDashSortTable() toggles the direction, so seed the opposite one.
-	th.classList.toggle('apcupsdDashSortAsc', !snapshot.asc);
-	apcupsdDashSortTable(th);
-}
 
-/** Wire click and Enter/Space sorting on the sortable headers under a root. The
- *  handlers are delegated, so cards that are refreshed or added later keep working. */
-function apcupsdDashBindSort(root) {
-	$(root).off('click.apcupsdsort').on('click.apcupsdsort', 'th.apcupsdDashSortable', function() {
+	apcupsdDashPrepSortHeaders(container);
+
+	$(container).off('click.' + namespace).on('click.' + namespace, 'th.apcupsdDashSortable', function() {
 		apcupsdDashSortTable(this);
 	});
-	$(root).off('keydown.apcupsdsort').on('keydown.apcupsdsort', 'th.apcupsdDashSortable', function(event) {
+
+	$(container).off('keydown.' + namespace).on('keydown.' + namespace, 'th.apcupsdDashSortable', function(event) {
 		if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
 			event.preventDefault();
 			apcupsdDashSortTable(this);
@@ -175,558 +156,179 @@ function apcupsdDashBindSort(root) {
 	});
 }
 
+/* Wire the per-UPS dashboard grid to the shared card chrome plus apcupsd's
+ * extras: the UPS picker, Cacti's timespan selector, the auto-refresh interval
+ * and the manual refresh-all. */
 function initApcupsdDashboard() {
 	$(function() {
 		var grid = document.getElementById('apcupsd_dashboard');
-		if (!grid) {
+
+		if (!grid || !window.CactiCards) {
 			return;
 		}
 
-		// Delegated so the sortable headers also work in cards that are refreshed or
-		// added later.
-		apcupsdDashBindSort(grid);
+		var cfg = apcupsdDashCfg(grid);
 
-		grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
-			apcupsdDashBindCard(grid, card);
-		});
+		function catalogue() {
+			return typeof apcupsdDashCatalog !== 'undefined' ? apcupsdDashCatalog : null;
+		}
 
-		grid.addEventListener('dragover', function(event) {
-			if (!apcupsdDashDragging) {
+		function syncAddOptions() {
+			var add = document.getElementById('apcupsd_dashboard_add');
+			var cat = catalogue();
+
+			if (!add || !cat) {
 				return;
 			}
-			event.preventDefault();
-			event.dataTransfer.dropEffect = 'move';
-			var before = apcupsdDashDragReference(grid, event.clientX, event.clientY);
-			if (before == null) {
-				grid.appendChild(apcupsdDashDragging);
-			} else if (before !== apcupsdDashDragging) {
-				grid.insertBefore(apcupsdDashDragging, before);
-			}
-		});
 
-		// Per-card tool buttons bubble to the grid.
-		$(grid).off('click.apcupsddash').on('click.apcupsddash', '.apcupsdDashCardTool', function() {
-			var card = this.closest('.apcupsdDashCard');
-			if (!card) {
-				return;
-			}
-			switch (this.dataset.tool) {
-				case 'expand':   card.classList.add('apcupsdDashCardExpanded'); apcupsdDashSaveLayout(grid); break;
-				case 'collapse': card.classList.remove('apcupsdDashCardExpanded'); apcupsdDashSaveLayout(grid); break;
-				case 'maximize': apcupsdDashMaximize(card); break;
-				case 'refresh':  apcupsdDashRefreshCard(grid, card); break;
-				case 'remove':   apcupsdDashRemoveCard(grid, card); break;
-			}
-		});
+			var present = {};
 
-		var add = document.getElementById('apcupsd_dashboard_add');
-		if (add) {
-			$(add).off('change.apcupsddash').on('change.apcupsddash', function() {
-				var key = this.value;
-				this.value = '';
-				if (key) {
-					apcupsdDashAddCard(grid, key);
+			grid.querySelectorAll('.ccCard').forEach(function(card) {
+				if (card.dataset.card) {
+					present[card.dataset.card] = true;
+				}
+			});
+
+			while (add.options.length > 1) {
+				add.remove(1);
+			}
+
+			Object.keys(cat).forEach(function(key) {
+				if (!present[key]) {
+					var option = document.createElement('option');
+					option.value = key;
+					option.textContent = cat[key];
+					add.appendChild(option);
 				}
 			});
 		}
+
+		function fetchCard(id, expanded) {
+			return $.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: id, expanded: expanded ? '1' : '0'}), null, 'json').then(function(d) {
+				return d && d.html ? d.html : null;
+			});
+		}
+
+		function maximize(card) {
+			var dialog = document.getElementById('apcupsd_dashboard_dialog');
+
+			if (!dialog) {
+				return;
+			}
+
+			var title = card.querySelector('.ccTitle');
+			var body  = card.querySelector('.ccCardBody');
+
+			dialog.innerHTML = '<div class="ccDialogBody">' + (body ? body.innerHTML : '') + '</div>';
+
+			apcupsdDashBindSort(dialog, 'apcupsddlgsort');
+
+			$(dialog).dialog({
+				modal: true,
+				appendTo: 'body',
+				width: Math.min(900, $(window).width() - 40),
+				title: title ? title.textContent : ''
+			});
+		}
+
+		var adapter = {
+			addControl: 'apcupsd_dashboard_add',
+
+			fetchCard: function(id, state) {
+				return fetchCard(id, state && state.expanded);
+			},
+
+			onAddCard: function(id) {
+				return fetchCard(id, false);
+			},
+
+			onLayoutChange: function(state) {
+				var expanded = {};
+
+				state.order.forEach(function(id) {
+					if (state.cards[id] && state.cards[id].expanded) {
+						expanded[id] = true;
+					}
+				});
+
+				$.post(cfg.page, apcupsdDashPost(grid, {
+					action: cfg.layoutAction,
+					layout: JSON.stringify({order: state.order, expanded: expanded})
+				}), null, 'json');
+
+				syncAddOptions();
+			},
+
+			maximize: function(id, mode, card) {
+				maximize(card);
+			}
+		};
+
+		CactiCards.init(grid, adapter);
+		syncAddOptions();
+		apcupsdDashBindSort(grid, 'apcupsdsort');
 
 		var ups = document.getElementById('apcupsd_dashboard_ups');
 		if (ups) {
-			// Switch the per-UPS dashboard in place (no full page refresh), like the
-			// timespan selector and the UPS filter do.
-			$(ups).off('change.apcupsddash').on('change.apcupsddash', function() {
+			$(ups).off('change.apcupsd').on('change.apcupsd', function() {
 				if (this.value) {
-					loadPageNoHeader('upses.php?action=view&id=' + encodeURIComponent(this.value) + '&header=false');
+					window.location = 'upses.php?action=view&id=' + encodeURIComponent(this.value);
 				}
 			});
 		}
 
-		// Changing the timespan loads the dashboard in place (no full page refresh)
-		// so Cacti's session timespan selector picks up predefined_timespan, which
-		// drives both the graph cards and the RRD bullet/gauge queries. The grid's
-		// reload target (per-UPS view or the fleet dashboard) carries the id, so
-		// build the URL from it and request it without the page header.
+		// Changing the timespan reloads the dashboard so Cacti's session timespan
+		// selector picks up predefined_timespan, which drives the graph cards and
+		// the RRD bullet queries.
 		var timespan = document.getElementById('apcupsd_dashboard_timespan');
 		if (timespan) {
-			$(timespan).off('change.apcupsddash').on('change.apcupsddash', function() {
-				var reload = apcupsdDashCfg(grid).reload;
+			$(timespan).off('change.apcupsd').on('change.apcupsd', function() {
+				var reload = cfg.reload;
 				var sep = reload.indexOf('?') === -1 ? '?' : '&';
-				loadPageNoHeader(reload + sep + 'predefined_timespan=' + encodeURIComponent(this.value) + '&header=false');
+				window.location = reload + sep + 'predefined_timespan=' + encodeURIComponent(this.value);
 			});
 		}
 
-		// Changing the interval persists the preference through a CSRF-protected POST
-		// (never a drive-by GET), then applies it straight away without reloading the
-		// page. If the save fails the dropdown goes back to the interval in force.
+		// Changing the interval persists the preference through a CSRF-protected
+		// POST (never a drive-by GET), then reloads so Cacti's page refresh arms
+		// the new interval. If the save fails the dropdown rolls back.
 		var interval = document.getElementById('apcupsd_dashboard_refresh');
 		if (interval) {
-			interval.dataset.previous = interval.value;
-			$(interval).off('change.apcupsddash').on('change.apcupsddash', function() {
-				apcupsdDashSaveRefresh(grid, this);
+			$(interval).off('change.apcupsd').on('change.apcupsd', function() {
+				$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: this.value}), null, 'json').always(function() {
+					window.location = cfg.reload;
+				});
 			});
 		}
 
 		var refreshNow = document.getElementById('apcupsd_dashboard_refresh_now');
 		if (refreshNow) {
-			$(refreshNow).off('click.apcupsddash').on('click.apcupsddash', function() {
-				apcupsdDashRefreshAll(grid, this);
-			});
-		}
-	});
-}
+			$(refreshNow).off('click.apcupsd').on('click.apcupsd', function() {
+				var icon = this.querySelector('.fa, .fas');
+				var cards = Array.prototype.slice.call(grid.querySelectorAll('.ccCard'));
+				var pending = cards.length;
 
-/** Wire a single card's drag handle (mouse + keyboard) and drag events. */
-function apcupsdDashBindCard(grid, card) {
-	apcupsdDashPrepSortHeaders(card);
-
-	var handle = card.querySelector('.apcupsdDashCardDrag');
-	if (!handle) {
-		return;
-	}
-
-	// Arm HTML5 drag only from the handle, and disarm on release when no drag
-	// began so selecting content elsewhere can't drag the card.
-	var disarm = function() { card.draggable = false; };
-	handle.addEventListener('mousedown', function() {
-		card.draggable = true;
-		document.addEventListener('mouseup', disarm, {once: true});
-	});
-	handle.addEventListener('touchstart', function() {
-		card.draggable = true;
-		document.addEventListener('touchend', disarm, {once: true});
-		document.addEventListener('touchcancel', disarm, {once: true});
-	}, {passive: true});
-
-	// Keyboard-accessible reordering: move the card with the arrow keys.
-	handle.addEventListener('keydown', function(event) {
-		var back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
-		var fwd  = event.key === 'ArrowRight' || event.key === 'ArrowDown';
-		if (!back && !fwd) {
-			return;
-		}
-		event.preventDefault();
-		if (back && card.previousElementSibling) {
-			grid.insertBefore(card, card.previousElementSibling);
-		} else if (fwd && card.nextElementSibling) {
-			grid.insertBefore(card.nextElementSibling, card);
-		} else {
-			return;
-		}
-		handle.focus();
-		apcupsdDashSaveLayout(grid);
-	});
-
-	card.addEventListener('dragstart', function(event) {
-		apcupsdDashDragging = card;
-		card.classList.add('apcupsdDashCardDragging');
-		event.dataTransfer.effectAllowed = 'move';
-		try { event.dataTransfer.setData('text/plain', card.dataset.card || ''); } catch (error) { /* IE guard */ }
-	});
-
-	card.addEventListener('dragend', function() {
-		card.draggable = false;
-		card.classList.remove('apcupsdDashCardDragging');
-		if (apcupsdDashDragging) {
-			apcupsdDashDragging = null;
-			apcupsdDashSaveLayout(grid);
-		}
-	});
-}
-
-/** The card the dragged card should be inserted before for the current pointer
- *  position, or null to append at the end. */
-function apcupsdDashDragReference(grid, x, y) {
-	var cards = Array.prototype.slice.call(grid.querySelectorAll('.apcupsdDashCard:not(.apcupsdDashCardDragging)'));
-	for (var i = 0; i < cards.length; i++) {
-		var rect = cards[i].getBoundingClientRect();
-		if (y < rect.top - 1) {
-			return cards[i];
-		}
-		if (y <= rect.bottom && x < rect.left + rect.width / 2) {
-			return cards[i];
-		}
-	}
-	return null;
-}
-
-/** Add a card from the catalogue: fetch its HTML, append it, persist and refresh
- *  the "Add" options. */
-function apcupsdDashAddCard(grid, key) {
-	if (apcupsdDashHasCard(grid, key)) {
-		return;
-	}
-	var cfg = apcupsdDashCfg(grid);
-	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: key}), null, 'json').done(function(data) {
-		if (!data || !data.html || apcupsdDashHasCard(grid, key)) {
-			return;
-		}
-		var card = apcupsdDashParseCard(data.html);
-		if (!card) {
-			return;
-		}
-		grid.appendChild(card);
-		apcupsdDashBindCard(grid, card);
-		apcupsdDashSaveLayout(grid);
-		apcupsdDashSyncAddOptions(grid);
-	});
-}
-
-/** Whether a card with the given key is currently on the grid. */
-function apcupsdDashHasCard(grid, key) {
-	var present = false;
-	grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
-		if (card.dataset.card === key) {
-			present = true;
-		}
-	});
-	return present;
-}
-
-/** Remove a card from the page and return it to the "Add" catalogue. */
-function apcupsdDashRemoveCard(grid, card) {
-	card.parentNode.removeChild(card);
-	apcupsdDashSaveLayout(grid);
-	apcupsdDashSyncAddOptions(grid);
-}
-
-/** Re-fetch a single card's HTML and swap it in place, keeping expanded state. */
-function apcupsdDashRefreshCard(grid, card, done) {
-	var icon = card.querySelector('.apcupsdDashCardTool[data-tool="refresh"] .fa, .apcupsdDashCardTool[data-tool="refresh"] .fas');
-	if (icon) {
-		icon.classList.add('fa-spin');
-	}
-	var settle = function() {
-		if (icon) {
-			icon.classList.remove('fa-spin');
-		}
-		if (done) {
-			done();
-		}
-	};
-	var expanded = card.classList.contains('apcupsdDashCardExpanded') ? '1' : '0';
-	var cfg = apcupsdDashCfg(grid);
-	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.cardAction, card: card.dataset.card, expanded: expanded}), null, 'json').done(function(data) {
-		if (!data || !data.html || !card.parentNode) {
-			settle();
-			return;
-		}
-		var fresh = apcupsdDashParseCard(data.html);
-		if (!fresh) {
-			settle();
-			return;
-		}
-		// Read the card's expanded state and sort at swap time: the user may have toggled
-		// or sorted it while this request was in flight, and that live state must win over
-		// anything captured when the request was sent.
-		var sorted = apcupsdDashSortSnapshot(card);
-		if (card.classList.contains('apcupsdDashCardExpanded')) {
-			fresh.classList.add('apcupsdDashCardExpanded');
-		} else {
-			fresh.classList.remove('apcupsdDashCardExpanded');
-		}
-		card.parentNode.replaceChild(fresh, card);
-		apcupsdDashBindCard(grid, fresh);
-		apcupsdDashSortRestore(fresh, sorted);
-		if (done) {
-			done();
-		}
-	}).fail(settle);
-}
-
-/** Refresh every card on the page, spinning the toolbar glyph until all land. A
- *  refresh that is still in flight is not stacked on, so a slow server is never
- *  hit by overlapping rounds. */
-var apcupsdDashRefreshing = false;
-
-function apcupsdDashRefreshAll(grid, button) {
-	var icon = button ? button.querySelector('.fa, .fas') : null;
-	var cards = Array.prototype.slice.call(grid.querySelectorAll('.apcupsdDashCard'));
-	var pending = cards.length;
-	if (!pending || apcupsdDashRefreshing) {
-		return;
-	}
-	apcupsdDashRefreshing = true;
-	if (icon) {
-		icon.classList.add('fa-spin');
-	}
-	cards.forEach(function(card) {
-		apcupsdDashRefreshCard(grid, card, function() {
-			pending--;
-			if (pending <= 0) {
-				apcupsdDashRefreshing = false;
-				if (icon) {
-					icon.classList.remove('fa-spin');
+				if (!pending) {
+					return;
 				}
-			}
-		});
-	});
-}
 
-/** Called by Cacti's page timer (the refreshFunction global, the hook the Graphs
- *  page uses too): refresh the cards in place instead of reloading the page. Cacti
- *  re-arms the timer after this returns. The timer outlives ajax page loads, so if
- *  the dashboard is no longer on screen the page that replaced it gets Cacti's
- *  normal full-page refresh back. */
-function apcupsdDashAutoRefresh() {
-	var grid = document.getElementById('apcupsd_dashboard');
-	if (grid) {
-		apcupsdDashRefreshAll(grid, document.getElementById('apcupsd_dashboard_refresh_now'));
-		return;
-	}
+				if (icon) {
+					icon.classList.add('fa-spin');
+				}
 
-	refreshFunction = '';
-	if (typeof loadUrl === 'function' && typeof refreshPage !== 'undefined' && refreshPage !== '') {
-		loadUrl({url: refreshPage});
-	}
-}
-
-var apcupsdDashTimer = null;
-var apcupsdDashTimerMs = 0;
-
-/** One tick of the timer used where Cacti has no refreshFunction hook. It stops
- *  for good once the dashboard is no longer on screen, so it can never follow
- *  the user to another page. */
-function apcupsdDashOwnTick() {
-	apcupsdDashTimer = null;
-
-	var grid = document.getElementById('apcupsd_dashboard');
-	if (!grid) {
-		return;
-	}
-
-	apcupsdDashRefreshAll(grid, document.getElementById('apcupsd_dashboard_refresh_now'));
-	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
-}
-
-/** Start automatic refresh with the interval the page script put in Cacti's
- *  refreshMSeconds global. Cacti 1.3+ has a refreshFunction hook in its page
- *  timer, so use that. Cacti 1.2.x has no such hook and its timer would reload
- *  the whole page (losing the cards' state), so there the page timer is stopped
- *  and a timer of our own refreshes the cards instead. */
-function apcupsdDashStartRefresh() {
-	if (typeof refreshFunction !== 'undefined') {
-		refreshFunction = 'apcupsdDashAutoRefresh()';
-		setupPageTimeout();
-		return;
-	}
-
-	if (typeof myRefresh !== 'undefined') {
-		clearTimeout(myRefresh);
-	}
-	if (apcupsdDashTimer !== null) {
-		clearTimeout(apcupsdDashTimer);
-	}
-
-	apcupsdDashTimerMs = refreshMSeconds;
-	apcupsdDashTimer = window.setTimeout(apcupsdDashOwnTick, apcupsdDashTimerMs);
-}
-
-/** Put Cacti's own browser auto-logout timer back, as it was before the dashboard
- *  replaced it with a refresh. Does nothing when the page had no such timer. */
-function apcupsdDashRestoreCoreTimer() {
-	if (apcupsdDashCoreTimer === null || typeof setupPageTimeout !== 'function') {
-		return;
-	}
-
-	refreshIsLogout = true;
-	refreshPage = apcupsdDashCoreTimer.page;
-	refreshMSeconds = apcupsdDashCoreTimer.ms;
-
-	if (typeof refreshFunction !== 'undefined') {
-		refreshFunction = '';
-	}
-
-	setupPageTimeout();
-}
-
-/** Apply a new auto-refresh interval without reloading the page: stop whichever
- *  timer is running, then start one for the new interval, or for 0 (off) hand the
- *  page back to Cacti's own timer. */
-function apcupsdDashSetRefresh(seconds, page) {
-	if (typeof myRefresh !== 'undefined') {
-		clearTimeout(myRefresh);
-	}
-	if (apcupsdDashTimer !== null) {
-		clearTimeout(apcupsdDashTimer);
-		apcupsdDashTimer = null;
-	}
-
-	if (seconds <= 0) {
-		apcupsdDashRestoreCoreTimer();
-		return;
-	}
-
-	refreshIsLogout = false;
-	refreshPage = page;
-	refreshMSeconds = seconds * 1000;
-	apcupsdDashStartRefresh();
-}
-
-/** Set a dropdown's value and bring the widget Cacti draws over it (Select2 on
- *  1.2.x, a jQuery UI selectmenu on 1.3) back in line, without running the change
- *  handlers that save a preference. */
-function apcupsdDashSetSelect(select, value) {
-	var $select = $(select);
-
-	select.value = value;
-
-	if ($select.data('select2')) {
-		$select.trigger('change.select2');
-	}
-
-	if ($select.data('ui-selectmenu')) {
-		$select.selectmenu('refresh');
-	}
-}
-
-var apcupsdDashRefreshSaving = false;
-var apcupsdDashRefreshPending = false;
-
-/** Save the Refresh dropdown's choice, then apply it. One save is in flight at a
- *  time: a choice made meanwhile is sent once it settles, so saves cannot finish
- *  out of order and only a value that was actually saved updates the timer or
- *  becomes the one a failed save rolls back to. */
-function apcupsdDashSaveRefresh(grid, select) {
-	if (apcupsdDashRefreshSaving) {
-		apcupsdDashRefreshPending = true;
-		return;
-	}
-
-	apcupsdDashRefreshSaving = true;
-
-	var cfg = apcupsdDashCfg(grid);
-	var value = select.value;
-	var saved = false;
-	var message = '';
-
-	$.post(cfg.page, apcupsdDashPost(grid, {action: cfg.refreshAction, refresh: value}), null, 'json').done(function(data) {
-		if (data && data.ok) {
-			saved = true;
-			select.dataset.previous = value;
-			apcupsdDashSetRefresh(parseInt(value, 10) || 0, cfg.refreshPage);
-		} else if (data && data.error) {
-			message = data.error;
-		}
-	}).always(function() {
-		apcupsdDashRefreshSaving = false;
-
-		if (apcupsdDashRefreshPending) {
-			apcupsdDashRefreshPending = false;
-
-			if (select.value !== select.dataset.previous) {
-				apcupsdDashSaveRefresh(grid, select);
-				return;
-			}
-		}
-
-		if (saved) {
-			apcupsdDashShowStatus(grid, '');
-		} else {
-			apcupsdDashSetSelect(select, select.dataset.previous);
-			apcupsdDashShowStatus(grid, message);
-		}
-	});
-}
-
-/** Open a copy of a card's body in a large modal dialog. */
-function apcupsdDashMaximize(card) {
-	var dialog = document.getElementById('apcupsd_dashboard_dialog');
-	if (!dialog) {
-		return;
-	}
-	var title = card.querySelector('.apcupsdDashCardTitle');
-	var body  = card.querySelector('.apcupsdDashCardBody');
-	dialog.innerHTML = '<div class="apcupsdDashDialogBody">' + (body ? body.innerHTML : '') + '</div>';
-
-	// The dialog is a clone outside the grid, so wire its own sort handlers.
-	apcupsdDashPrepSortHeaders(dialog);
-	apcupsdDashBindSort(dialog);
-
-	$(dialog).dialog({
-		modal: true,
-		appendTo: 'body',
-		width: Math.min(900, $(window).width() - 40),
-		title: title ? title.textContent : ''
-	});
-}
-
-/** Parse a card HTML string into its <section> element. */
-function apcupsdDashParseCard(html) {
-	var tmp = document.createElement('div');
-	tmp.innerHTML = html;
-	return tmp.querySelector('.apcupsdDashCard');
-}
-
-/** Rebuild the "Add" dropdown so it lists only cards not currently on the page. */
-function apcupsdDashSyncAddOptions(grid) {
-	var add = document.getElementById('apcupsd_dashboard_add');
-	if (!add || typeof apcupsdDashCatalog === 'undefined') {
-		return;
-	}
-	var present = {};
-	grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
-		if (card.dataset.card) {
-			present[card.dataset.card] = true;
-		}
-	});
-	while (add.options.length > 1) {
-		add.remove(1);
-	}
-	Object.keys(apcupsdDashCatalog).forEach(function(key) {
-		if (!present[key]) {
-			var option = document.createElement('option');
-			option.value = key;
-			option.textContent = apcupsdDashCatalog[key];
-			add.appendChild(option);
-		}
-	});
-}
-
-/** Show (or clear, with an empty message) the status line above the grid. */
-function apcupsdDashShowStatus(grid, message) {
-	var status = grid.previousElementSibling && grid.previousElementSibling.querySelector('.apcupsdDashSaveStatus');
-	if (status) {
-		status.textContent = message;
-		status.hidden = !status.textContent;
-	}
-}
-
-/** Serialize layout POSTs so rapid actions can't persist out of order: one
- *  request is in flight at a time, and a save requested meanwhile is coalesced
- *  into a single follow-up that reads the latest DOM, so the final state wins. */
-var apcupsdDashSaveInFlight = false;
-var apcupsdDashSaveQueued = false;
-
-function apcupsdDashSaveLayout(grid) {
-	if (apcupsdDashSaveInFlight) {
-		apcupsdDashSaveQueued = true;
-		return;
-	}
-	apcupsdDashSaveInFlight = true;
-
-	var order = [];
-	var expanded = {};
-	grid.querySelectorAll('.apcupsdDashCard').forEach(function(card) {
-		if (!card.dataset.card) {
-			return;
-		}
-		order.push(card.dataset.card);
-		if (card.classList.contains('apcupsdDashCardExpanded')) {
-			expanded[card.dataset.card] = true;
-		}
-	});
-
-	var cfg = apcupsdDashCfg(grid);
-	$.post(cfg.page, apcupsdDashPost(grid, {
-		action: cfg.layoutAction,
-		layout: JSON.stringify({order: order, expanded: expanded})
-	}), null, 'json').done(function(data) {
-		apcupsdDashShowStatus(grid, data && data.error ? data.error : '');
-	}).always(function() {
-		apcupsdDashSaveInFlight = false;
-		if (apcupsdDashSaveQueued) {
-			apcupsdDashSaveQueued = false;
-			apcupsdDashSaveLayout(grid);
+				cards.forEach(function(card) {
+					fetchCard(card.dataset.card, card.classList.contains('ccCardExpanded')).then(function(html) {
+						if (html && card.parentNode && window.CactiCards) {
+							CactiCards.replaceCard(grid, adapter, card, html);
+						}
+					}).always(function() {
+						pending--;
+						if (pending <= 0 && icon) {
+							icon.classList.remove('fa-spin');
+						}
+					});
+				});
+			});
 		}
 	});
 }
