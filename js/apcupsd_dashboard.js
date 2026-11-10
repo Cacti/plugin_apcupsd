@@ -129,8 +129,8 @@ function apcupsdDashCellValue(cell, numeric) {
 	var raw = cell.hasAttribute('data-sort-value') ? cell.getAttribute('data-sort-value') : cell.textContent;
 
 	if (numeric) {
-		var value = parseFloat(raw);
-		return isNaN(value) ? 0 : value;
+		var value = Number.parseFloat(raw);
+		return Number.isNaN(value) ? 0 : value;
 	}
 
 	return (raw || '').trim().toLowerCase();
