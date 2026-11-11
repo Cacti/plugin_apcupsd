@@ -24,6 +24,11 @@
  * the gauge grid, the UPS/timespan pickers). The shared grid reads its column
  * count and accent palette from these custom properties.
  */
+/* The .ccToolbar above the grid is a sibling of #apcupsd_dashboard, not a child,
+   so bind the shared palette to it here as well; otherwise .ccToolbarLabel/.ccAdd
+   fall back to the light-theme #23362f default and render dark green on dark
+   themes such as deepness. */
+.ccToolbar,
 #apcupsd_dashboard.ccGrid,
 #apcupsd_dashboard_dialog {
 	--cc-cols: 8;
