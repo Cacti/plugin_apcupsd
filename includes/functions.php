@@ -64,11 +64,13 @@ if (!function_exists('apcupsd_estimate_watts')) {
 		$nominal = (float) $nominal_power;
 		$load    = (float) $load_percent;
 
-		if ($nominal <= 0 || $load < 0) {
+		if (!is_finite($nominal) || !is_finite($load) || $nominal <= 0 || $load < 0) {
 			return null;
 		}
 
-		return $nominal * $load / 100;
+		$watts = $nominal * $load / 100;
+
+		return is_finite($watts) ? $watts : null;
 	}
 }
 

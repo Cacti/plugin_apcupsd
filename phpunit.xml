@@ -28,6 +28,7 @@
     <source>
         <include>
             <file>setup.php</file>
+            <file>includes/dashboard.php</file>
             <file>includes/functions.php</file>
             <file>includes/helpers.php</file>
             <file>includes/nut.php</file>

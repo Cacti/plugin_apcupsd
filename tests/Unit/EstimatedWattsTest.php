@@ -39,6 +39,12 @@ describe('apcupsd_estimate_watts', function () {
 		expect(apcupsd_estimate_watts(-1500, 40))->toBeNull();
 		expect(apcupsd_estimate_watts(1500, -5))->toBeNull();
 	});
+
+	it('rejects non-finite inputs and estimates that overflow', function () {
+		expect(apcupsd_estimate_watts(INF, 40))->toBeNull();
+		expect(apcupsd_estimate_watts(1500, NAN))->toBeNull();
+		expect(apcupsd_estimate_watts(1.0e308, 1.0e308))->toBeNull();
+	});
 });
 
 describe('apcupsd_is_slave_status', function () {
