@@ -245,7 +245,7 @@ describe('bullet and gauge text', function () {
 	it('labels the track ends with the axis, not with N/A', function () {
 		$html = apcupsd_dashboard_bullet('Battery Voltage', 27.2, null, null, null, 30.0, ' V', '');
 
-		expect($html)->toContain('<div class="apcupsdBulletScale"><span>0 V</span><span>30 V</span></div>');
+		expect($html)->toContain('<div class="ccBulletScale"><span>0 V</span><span>30 V</span></div>');
 		expect($html)->not->toContain('N/A');
 	});
 

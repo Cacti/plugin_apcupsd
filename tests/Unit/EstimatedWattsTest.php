@@ -100,18 +100,17 @@ describe('estimated watts wiring', function () {
 
 		$js = $read('js/apcupsd_dashboard.js');
 
-		expect($js)->toContain("on('click.apcupsdsort', 'th.apcupsdDashSortable'");
-		expect($js)->toContain("on('keydown.apcupsdsort', 'th.apcupsdDashSortable'");
+		expect($js)->toContain("on('click.' + namespace, 'th.apcupsdDashSortable'");
+		expect($js)->toContain("on('keydown.' + namespace, 'th.apcupsdDashSortable'");
 		expect($js)->toContain('function apcupsdDashSortTable(th)');
-		expect($js)->toContain('apcupsdDashPrepSortHeaders(card)');
+		expect($js)->toContain('apcupsdDashPrepSortHeaders(container)');
 		expect($js)->toContain("setAttribute('aria-sort'");
 	});
 
 	it('also sorts in the maximize dialog', function () use ($read) {
 		$js = $read('js/apcupsd_dashboard.js');
 
-		expect($js)->toContain('apcupsdDashPrepSortHeaders(dialog);');
-		expect($js)->toContain('apcupsdDashBindSort(dialog);');
+		expect($js)->toContain("apcupsdDashBindSort(dialog, 'apcupsddlgsort');");
 	});
 
 	it('keeps no persisted sort state beyond a click-to-sort header like HMIB', function () use ($read) {

@@ -17,7 +17,26 @@
  * text colour via color-mix(currentColor ...) so the same rules read correctly
  * on every Cacti theme, with the per-theme css/<theme>.css files tuning accents.
  * Severity accents (up/recovering/down) use fixed, theme-independent colours.
+ *
+ * The card chrome and chart primitives now come from the shared Card API
+ * stylesheets (css/cards.css + css/card-widgets.css); the rules below are kept
+ * only where they also style apcupsd-specific content (tables, graph panels,
+ * the gauge grid, the UPS/timespan pickers). The shared grid reads its column
+ * count and accent palette from these custom properties.
  */
+/* The .ccToolbar above the grid is a sibling of #apcupsd_dashboard, not a child,
+   so bind the shared palette to it here as well; otherwise .ccToolbarLabel/.ccAdd
+   fall back to the light-theme #23362f default and render dark green on dark
+   themes such as deepness. */
+.ccToolbar,
+#apcupsd_dashboard.ccGrid,
+#apcupsd_dashboard_dialog {
+	--cc-cols: 8;
+	--cc-card: transparent;
+	--cc-text: currentColor;
+	--cc-border: color-mix(in srgb, currentColor 18%, transparent);
+	--cc-header-bg: color-mix(in srgb, currentColor 9%, transparent);
+}
 
 .apcupsdDashboard {
 	color: #1b6ca8;
@@ -66,21 +85,9 @@
 	font-size: 12px;
 }
 
-/* The 8-column card grid; each card spans a number of columns via a span class. */
-.apcupsdDashGrid {
-	display: grid;
-	grid-template-columns: repeat(8, minmax(0, 1fr));
-	align-items: start;
-	gap: 14px;
-	margin: 10px 4px;
-	font-variant-numeric: tabular-nums;
-}
-
-.apcupsdDashSpan2 { grid-column: span 2; }
-.apcupsdDashSpan3 { grid-column: span 3; }
-.apcupsdDashSpan4 { grid-column: span 4; }
-.apcupsdDashSpan6 { grid-column: span 6; }
-.apcupsdDashSpan8 { grid-column: span 8; }
+/* The card grid and per-card widths come from the shared .ccGrid / .ccW* chrome
+   (include/css/cards.css); apcupsd only binds --cc-cols and the responsive
+   overrides at the bottom of this file. */
 
 .apcupsdDashCard {
 	box-sizing: border-box;
@@ -555,8 +562,8 @@
 	font-size: 10px;
 }
 
-.apcupsdDashTable th.apcupsdDashSortAsc::after  { content: '\2191'; opacity: 0.9; }
-.apcupsdDashTable th.apcupsdDashSortDesc::after { content: '\2193'; opacity: 0.9; }
+.apcupsdDashTable th.apcupsdDashSortable[aria-sort="ascending"]::after  { content: '\2191'; opacity: 0.9; }
+.apcupsdDashTable th.apcupsdDashSortable[aria-sort="descending"]::after { content: '\2193'; opacity: 0.9; }
 
 /* Fleet total row under the UPSes table. */
 .apcupsdDashTotalRow > td {
@@ -571,30 +578,29 @@
 	color: color-mix(in srgb, currentColor 65%, transparent);
 }
 
-/* Narrow the grid before cards get cramped. */
+/* Narrow the grid before cards get cramped; clamp the shared .ccW* spans to the
+   reduced column count so they stack instead of creating implicit columns. */
 @media (max-width: 1200px) {
-	.apcupsdDashGrid {
+	#apcupsd_dashboard.ccGrid {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
-	.apcupsdDashSpan4,
-	.apcupsdDashSpan6,
-	.apcupsdDashSpan8 {
+	#apcupsd_dashboard.ccGrid .ccW4,
+	#apcupsd_dashboard.ccGrid .ccW5,
+	#apcupsd_dashboard.ccGrid .ccW6,
+	#apcupsd_dashboard.ccGrid .ccW7,
+	#apcupsd_dashboard.ccGrid .ccW8 {
 		grid-column: 1 / -1;
 	}
 }
 
 @media (max-width: 760px) {
-	.apcupsdDashGrid {
+	#apcupsd_dashboard.ccGrid {
 		grid-template-columns: 1fr;
 		gap: 10px;
 	}
 
-	.apcupsdDashSpan2,
-	.apcupsdDashSpan3,
-	.apcupsdDashSpan4,
-	.apcupsdDashSpan6,
-	.apcupsdDashSpan8 {
+	#apcupsd_dashboard.ccGrid > .ccCard {
 		grid-column: 1 / -1;
 	}
 }
