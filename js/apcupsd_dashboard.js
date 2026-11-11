@@ -67,11 +67,28 @@ function apcupsdDashPrepSortHeaders(container) {
 		if (!th.hasAttribute('tabindex')) {
 			th.setAttribute('tabindex', '0');
 		}
-		th.setAttribute('role', 'button');
 		if (!th.hasAttribute('aria-sort')) {
 			th.setAttribute('aria-sort', 'none');
 		}
 	});
+}
+
+/* Show (or clear) a layout-save error in the toolbar's live-region status span so
+ * a rejected save is not silently lost on the next reload. */
+function apcupsdDashShowSaveStatus(message) {
+	var el = document.querySelector('.apcupsdDashSaveStatus');
+
+	if (!el) {
+		return;
+	}
+
+	if (message) {
+		el.textContent = message;
+		el.removeAttribute('hidden');
+	} else {
+		el.textContent = '';
+		el.setAttribute('hidden', 'hidden');
+	}
 }
 
 /* Sort a card table by the clicked column header, toggling asc/desc. Numeric
@@ -234,6 +251,15 @@ function initApcupsdDashboard() {
 		var adapter = {
 			addControl: 'apcupsd_dashboard_add',
 
+			// The shared controller calls applyTheme after every swap (refresh,
+			// resize, add and manual refresh-all). apcupsd has no per-card palette
+			// to re-apply, but this is the hook that lets it re-enhance the sort
+			// headers of freshly inserted, server-rendered markup so keyboard
+			// users keep access to sorting after a refresh or re-add.
+			applyTheme: function(g) {
+				apcupsdDashPrepSortHeaders(g);
+			},
+
 			fetchCard: function(id, state) {
 				return fetchCard(id, state && state.expanded);
 			},
@@ -254,7 +280,11 @@ function initApcupsdDashboard() {
 				$.post(cfg.page, apcupsdDashPost(grid, {
 					action: cfg.layoutAction,
 					layout: JSON.stringify({order: state.order, expanded: expanded})
-				}), null, 'json');
+				}), null, 'json').done(function(d) {
+					// Surface a server-side rejection (e.g. the 4096-char layout
+					// cap) instead of letting the change silently revert on reload.
+					apcupsdDashShowSaveStatus(d && d.error ? d.error : '');
+				});
 
 				syncAddOptions();
 			},
@@ -267,6 +297,23 @@ function initApcupsdDashboard() {
 		CactiCards.init(grid, adapter);
 		syncAddOptions();
 		apcupsdDashBindSort(grid, 'apcupsdsort');
+
+		// Cacti 1.2.x upgrades the Add card <select> to Select2, which emits a
+		// jQuery 'change' but not the native event the shared controller listens
+		// for. Forward the jQuery change to a native one (guarding re-entry and
+		// the controller's own value reset) so choosing a card restores it on
+		// both the bundled and the core controllers.
+		var addSelect = document.getElementById('apcupsd_dashboard_add');
+		if (addSelect && window.jQuery) {
+			$(addSelect).on('change', function() {
+				if (addSelect.__ccBridging || !addSelect.value) {
+					return;
+				}
+				addSelect.__ccBridging = true;
+				addSelect.dispatchEvent(new Event('change', {bubbles: true}));
+				addSelect.__ccBridging = false;
+			});
+		}
 
 		var ups = document.getElementById('apcupsd_dashboard_ups');
 		if (ups) {
