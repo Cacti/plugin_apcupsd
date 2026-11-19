@@ -1,5 +1,8 @@
 # ChangeLog
 
+Documentation update (unreleased): Refresh README release/source compatibility,
+installation guidance and source-checked behavior.
+
 
 --- 1.4.0 ---
 

@@ -14,6 +14,24 @@ the `apcupsd` daemon for its status over the apcupsd network protocol and stores
 it in the Cacti database for `apcupsd` enabled UPS'.  The data stored in the
 Cacti database can be used for Reporting, Graphing, and Alerting.
 
+## Versions and compatibility
+
+This README describes the `develop` source branch.
+
+| Code | Plugin version | Minimum Cacti declared in `INFO` |
+| --- | --- | --- |
+| [Source branch](https://github.com/Cacti/plugin_apcupsd/blob/develop/INFO) | 1.4.0 | 1.2.29 |
+| [Published v1.2](https://github.com/Cacti/plugin_apcupsd/releases/tag/v1.2) | 1.2 | 1.2.24 |
+
+Use the published release’s assets and tagged documentation when installing that
+package. Branch code can include later changes, even when its version number
+matches the release. Cacti’s own PHP and database requirements also apply.
+
+Install this plugin in **`<cacti-root>/plugins/apcupsd`**, using the directory
+name `apcupsd` rather than `plugin_apcupsd`.
+
+See [CHANGELOG.md](https://github.com/Cacti/plugin_apcupsd/blob/develop/CHANGELOG.md) for the version history.
+
 ## Purpose
 
 This plugin allows Cacti Administrators to easily track their Data Center
