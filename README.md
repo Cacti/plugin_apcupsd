@@ -20,7 +20,7 @@ This README describes the `develop` source branch.
 
 | Code | Plugin version | Minimum Cacti declared in `INFO` |
 | --- | --- | --- |
-| [Source branch](INFO) | 1.4.0 | 1.2.29 |
+| [Source branch](https://github.com/Cacti/plugin_apcupsd/blob/develop/INFO) | 1.4.0 | 1.2.29 |
 | [Published v1.2](https://github.com/Cacti/plugin_apcupsd/releases/tag/v1.2) | 1.2 | 1.2.24 |
 
 Use the published release’s assets and tagged documentation when installing that
@@ -30,7 +30,7 @@ matches the release. Cacti’s own PHP and database requirements also apply.
 Install this plugin in **`<cacti-root>/plugins/apcupsd`**, using the directory
 name `apcupsd` rather than `plugin_apcupsd`.
 
-See [CHANGELOG.md](CHANGELOG.md) for the version history.
+See [CHANGELOG.md](https://github.com/Cacti/plugin_apcupsd/blob/develop/CHANGELOG.md) for the version history.
 
 ## Purpose
 
