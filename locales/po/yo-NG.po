@@ -1,0 +1,1215 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Yoruba <developers@cacti.net>\n"
+"Language: yo_NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Fóltéèjì Ìlà"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Fóltéèjì Àbájáde"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Fíríkúẹ́ǹsì Ìlà"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Ẹrù"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Agbára Bátìrì"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Fóltéèjì Bátìrì"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Àkókò Tó Kù"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Ìwọ̀n Ìgbóná"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "báyìí %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "kéré jù %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "àròpín %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "pọ̀ jù %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Àròpín"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "A kò tíì gba ìwọ̀n kankan fún UPS yìí síbẹ̀."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Kò sí ìwọ̀n kankan fún ẹgbẹ́ yìí síbẹ̀."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Kò sí"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Kò sí ìwọ̀n kankan fún òṣùwọ̀n yìí síbẹ̀."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Agbára Tí A Fojú Díwọ̀n"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Àlàyé UPS"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Ìwọlé àti Ẹrù"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Bátìrì àti Àkókò Ìṣiṣẹ́"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Àwọn Ìṣẹ̀lẹ̀ àti Ìyípò"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Aimọ"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Àwòrán ìtọ́pa yìí kò sí mọ́."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "Àwòrán ìtọ́pa UPS"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Agbára tí a fojú díwọ̀n nílò ìwọ̀n agbára àkọ́lé àti ìwọ̀n ẹrù."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Òṣùwọ̀n yìí kò sí mọ́."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "A kò tíì gba àlàyé kankan fún UPS yìí síbẹ̀."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Orúkọ UPS"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Àwòṣe"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Nọ́ńbà Ìtẹ̀léra"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Fámùwẹ́à"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Okùn / Dírẹ́fà"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Olùgbàjọ"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Orúkọ olùgbàlejò"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Agbára Àkọ́lé"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Fóltéèjì Ìwọlé Àkọ́lé"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Fóltéèjì Bátìrì Àkọ́lé"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Ìwọ̀n Ìlà Tó Kéré Jù Tí A Kọ"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Ìwọ̀n Ìlà Tó Pọ̀ Jù Tí A Kọ"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Ọjọ́ Bátìrì"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Ọjọ́ Ìṣẹ̀dá"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Ìsọdọ̀tun Kẹ́yìn"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "A kò tíì gba dátà ìṣẹ̀lẹ̀ kankan fún UPS yìí síbẹ̀."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Ìdí Ìyípò Tó Kẹ́yìn"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Iye Àwọn Ìyípò"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Àkókò Lórí Bátìrì"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "ìṣẹ́jú-àáyá"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Àpapọ̀ Àkókò Lórí Bátìrì"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Àyẹ̀wò Ara-ẹni Tó Kẹ́yìn"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Èsì Àyẹ̀wò Ara-ẹni"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Ìgbà Tó Kẹ́yìn Lórí Bátìrì"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Ìgbà Tó Kẹ́yìn Kúrò Lórí Bátìrì"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Fi púpọ̀ hàn"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Fi díẹ̀ hàn"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Ṣí nínú àpótí ìjíròrò"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Sọ dọ̀tun"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Yọ kúrò lórí ojú-ewé"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Wọ́ láti tún ètò káàdì ṣe"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Ìbéèrè tí kò tọ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Kò sí UPS tí a yàn."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Pátákó ìṣàkóso yìí ní káàdì púpọ̀ jù láti fi ìtòjọ rẹ̀ pamọ́."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Àlàfo ìsọdọ̀tun tí kò tọ́."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Káàdì àìmọ̀."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "Pátákó Ìṣàkóso UPS"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Ṣí Pátákó Ìṣàkóso UPS láti inú àtòjọ Ṣàkóso Àwọn UPS nípa títẹ àmì pátákó ìṣàkóso UPS náà. Pátákó Ìṣàkóso máa ń rántí UPS tó kẹ́yìn tí o ṣí."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "Ìṣẹ́jú 1"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "Ìṣẹ́jú-àáyá 30"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "Ìṣẹ́jú 5"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Kò Sí Ìsọdọ̀tun"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Ìgbà àkókò"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Fi káàdì kún"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Fi káàdì kan kún…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Pátákó Ìṣàkóso Àkójọpọ̀"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "Àwọn UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Àkópọ̀ Àkójọpọ̀"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Ìpínkiri Ipò"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Àwọn Ìwọ̀n Àkójọpọ̀"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Agbára Àkójọpọ̀"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Àwọn Òṣùwọ̀n Àkójọpọ̀"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "A kò tíì ṣètò UPS kankan síbẹ̀."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Àpapọ̀"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Lórí ìsopọ̀"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Lórí Bátìrì"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Òmíràn"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Ti mu kuro ni ṣiṣẹ"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Agbára Tí A Fojú Díwọ̀n"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Kò sí UPS tí a mú ṣiṣẹ́ tí ó ń fi ìwọ̀n ránṣẹ́ síbẹ̀."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Agbára tí a fojú díwọ̀n nílò UPS tí a mú ṣiṣẹ́ tí ó ní ìwọ̀n agbára àkọ́lé àti ìwọ̀n ẹrù."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s nínú %s tí a díwọ̀n"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "A fojú díwọ̀n rẹ̀ gẹ́gẹ́ bí agbára àkọ́lé x ẹrù %, láti inú ìwádìí tuntun jù lọ."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "A ka %s nínú %s àwọn UPS tí a mú ṣiṣẹ́."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Ipo"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Àkún"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "ìṣẹ́jú"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Ṣí Pátákó Ìṣàkóso UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Àpapọ̀ Àkójọpọ̀"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Àkókò ìdádúró kí APCUPSD tó bẹ̀rẹ̀ sí í dun ìkìlọ̀"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Ìwọ̀n ìgbóná àyíká"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "ẹ̀dà, iye àwọn àkọsílẹ̀ àti iye báìtì tí ó tẹ̀lé"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Àlàyé àwòṣe APC"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Iye àpò bátìrì ìta tí ó bàjẹ́ (fún àwọn àwòṣe XL)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Ọjọ́ tí a pààrọ̀ bátìrì kẹ́yìn (bí a bá ṣètò rẹ̀)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Ipò bátìrì."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Fóltéèjì bátìrì lọ́wọ́lọ́wọ́"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Ìdá ọgọ́rùn-ún agbára àkún bátìrì lọ́wọ́lọ́wọ́"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Irú okùn tí a tọ́ka sí nínú fáìlì ìṣètò"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Àpapọ̀ ìṣẹ́jú-àáyá lórí bátìrì láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Ọjọ́ àti àkókò àtúnṣe tó kẹ́yìn láti ọ̀dọ̀ UPS"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Àwọn ètò yíyí DIP UPS lọ́wọ́lọ́wọ́"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Àmì bátìrì kékeré tí a fi ránṣẹ́ nígbà tí àkókò ìṣiṣẹ́ bá kù báyìí"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Dírẹ́fà APCUPSD nígbà tí APCUPSD bá jẹ́ ìlànà ìbánisọ̀rọ̀"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Ìdádúró kí UPS tó pa lẹ́yìn tí ó bá gba àṣẹ"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Àkókò tí UPS ń dúró lẹ́yìn pípa iná nígbà tí iná bá padà wá"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Ọjọ́ àti àkókò tí a kọ àlàyé ipò"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Iye àwọn bátìrì ìta (fún àwọn àwòṣe XL)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Ẹ̀dà fámùwẹ́à UPS"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Fóltéèjì ìlà ìwọlé tí UPS yóò yí padà sí bátìrì tí ó bá kọjá rẹ̀"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "orúkọ olùgbàlejò kọ̀ǹpútà tí ó ń ṣiṣẹ́ apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Ọ̀rinrin àyíká"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Ìwọ̀n ìgbóná inú UPS ní ìwọ̀n Celsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Ìdí ìyípò sí bátìrì tó kẹ́yìn láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Ipò fóltéèjì ìlà ìwọlé."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Ìgbàṣẹ̀ ìlà lọ́wọ́lọ́wọ́ ní Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Fóltéèjì ìlà ìwọlé lọ́wọ́lọ́wọ́"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Ìdá ọgọ́rùn-ún agbára ẹrù UPS tí a lò gẹ́gẹ́ bí UPS ṣe fojú díwọ̀n"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Fóltéèjì ìlà ìwọlé tí UPS yóò yí padà sí bátìrì tí ó bá dín sí i"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Ọjọ́ ìṣẹ̀dá UPS"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Ìgbà tó kẹ́yìn tí olùdarí fi àtúnṣe ránṣẹ́ sí abẹ́"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Fóltéèjì ìlà ìwọlé tó pọ̀ jù láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Àkókò ìṣiṣẹ́ bátìrì tó pọ̀ jù (TIMEOUT) lẹ́yìn èyí tí ètò yóò pa"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Àkún bátìrì tó kéré jù %%% (BCHARGE) tí a nílò fún pípa ètò"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Fóltéèjì ìlà ìwọlé tó kéré jù (tí a ṣàkíyèsí) láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Àkókò ìṣiṣẹ́ bátìrì tó kéré jù (MINUTES) tí a nílò fún pípa ètò"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Àwòṣe UPS tí a rí láti inú àlàyé UPS"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Fóltéèjì bátìrì àkọ́lé"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Fóltéèjì ìwọlé àkọ́lé tí a fi fún UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Fóltéèjì ìjáde àkọ́lé láti pèsè nígbà tí ó bá wà lórí agbára bátìrì"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Ìjáde agbára àkọ́lé ní wáàtì"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Iye àwọn ìyípò sí bátìrì láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Fóltéèjì ìjáde UPS lọ́wọ́lọ́wọ́"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Ìforúkọsílẹ̀ àṣìṣe 1 ní hex"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Ìforúkọsílẹ̀ àṣìṣe 2 ní hex"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Ìforúkọsílẹ̀ àṣìṣe 3 ní hex"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Àkún bátìrì %%% tí a nílò lẹ́yìn pípa iná láti dá iná padà"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Ọjọ́ àti àkókò àyẹ̀wò ara-ẹni tó kẹ́yìn láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Ètò ìfọkànsí UPS lọ́wọ́lọ́wọ́ fún ìyípadà fóltéèjì"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Nọ́ńbà ìtẹ̀léra UPS"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Ọjọ́ àti àkókò tí a bẹ̀rẹ̀ apcupsd"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Àmì ipò UPS ní hex"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "Ipò UPS. Ọ̀kan tàbí jù bẹ́ẹ̀ lọ nínú àwọn wọ̀nyí (tí àlàfo pín): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN tàbí COMMLOST tàbí SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Ọjọ́ àyẹ̀wò ara-ẹni UPS tó kẹ́yìn"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Àlàfo àyẹ̀wò ara-ẹni"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Àkókò ìṣiṣẹ́ tó kù lórí bátìrì gẹ́gẹ́ bí UPS ṣe fojú díwọ̀n"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Ìṣẹ́jú-àáyá lọ́wọ́lọ́wọ́ lórí bátìrì"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Ipò tí UPS ń ṣiṣẹ́ níbẹ̀"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Orúkọ UPS láti inú fáìlì ìṣètò (dumb) tàbí EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Orúkọ olùdarí UPS nígbà tí APCUPSD bá ń fa dátà láti inú àpẹẹrẹ APCUPSD mìíràn"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "nọ́ńbà ẹ̀dà apcupsd, ọjọ́ àti ètò ìṣiṣẹ́ kọ̀ǹpútà"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Ọjọ́, àkókò ìyípò tó kẹ́yìn kúrò lórí bátìrì láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Ọjọ́, àkókò ìyípadà sí bátìrì tó kẹ́yìn láti ìgbà tí apcupsd ti bẹ̀rẹ̀"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Sáfà apcupsd ti pa ìsopọ̀ náà láìròtẹ́lẹ̀."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Sáfà apcupsd kò dá dátà ipò kankan padà."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Sáfà apcupsd fi àkọsílẹ̀ tó tóbi jù ránṣẹ́."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Sáfà apcupsd fi dátà tó pọ̀ jù ránṣẹ́."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Sáfà apcupsd kò dáhùn láàárín ìṣẹ́jú-àáyá %s."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Ìṣètò orúkọ olùgbàlejò tàbí pọ́ọ̀tì apcupsd kò tọ́"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Kò ṣeé ṣe láti sopọ̀ mọ́ apcupsd ní %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Sáfà NUT kọ̀ láti fún ni ní ààyè. Ṣàyẹ̀wò orúkọ olùlò àti ọ̀rọ̀ aṣínà NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Sáfà NUT kò mọ UPS kankan tí orúkọ rẹ̀ ń jẹ́ \"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Sáfà NUT ní dátà àtijọ́ fún UPS yìí: olùdarí rẹ̀ kò dáhùn."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Sáfà NUT ròyìn àṣìṣe kan: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Ìṣètò orúkọ olùgbàlejò NUT, pọ́ọ̀tì tàbí orúkọ UPS kò tọ́"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Sáfà NUT ti pa ìsopọ̀ náà láìròtẹ́lẹ̀."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Orúkọ olùlò tàbí ọ̀rọ̀ aṣínà NUT ní àwọn àmì tí kò ṣeé fi ránṣẹ́."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "Ìbáṣepọ̀ TLS pẹ̀lú sáfà NUT kùnà."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Sáfà NUT fi dátà tó pọ̀ jù ránṣẹ́."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Sáfà NUT kò dáhùn láàárín ìṣẹ́jú-àáyá %s."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Fáìlì CA / ìwé-ẹ̀rí NUT kò ṣeé kà."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Kò ṣeé ṣe láti sopọ̀ mọ́ sáfà NUT %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Sáfà NUT kò dá ìyípadà kankan padà fún UPS yìí."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Ṣàkóso àwọn UPS"
+
+#: setup.php
+msgid "Management"
+msgstr "Ìṣàkóso"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Ìṣàkóso Ètò"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Ṣàkóso àwọn UPS"
+
+#: upses.php
+msgid "Delete"
+msgstr "Pa rẹ́"
+
+#: upses.php
+msgid "Enable"
+msgstr "Mú ṣiṣẹ́"
+
+#: upses.php
+msgid "Disable"
+msgstr "Dá dúró"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Ṣe ẹ̀dà"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Tún Ìṣàwárí ṣe"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Ṣiṣẹ́ Ìṣàdáṣe Gíráàfù"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Tí ó da lórí APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Tí ó da lórí SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Tí ó da lórí NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Orúkọ tí o fẹ́ fún UPS yìí. Fún àwọn Ẹ̀rọ APCUPSD àti NUT, a ó ṣẹ̀dá Ẹ̀rọ Cacti tó bá a mu fúnra rẹ̀ fún UPS náà nípa lílo orúkọ yìí. Fún àwọn UPS tí ó da lórí SNMP, o gbọ́dọ̀ kọ́kọ́ ṣẹ̀dá Ẹ̀rọ Cacti náà."
+
+#: upses.php
+msgid "New UPS"
+msgstr "UPS Tuntun"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Àpèjúwe UPS"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Àpèjúwe kíkún sí i nípa UPS yìí tí ó bá pọndandan."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Irú UPS"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Irú UPS tí o ń ṣàbójútó."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "ID Olùṣèwádìí"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Olùṣèwádìí tí UPS yìí wà nínú rẹ̀ tí ó ń ṣàbójútó rẹ̀"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Orúkọ Ibùdó"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Ibùdó tí UPS yìí wà."
+
+#: upses.php
+msgid "None"
+msgstr "Kò sí"
+
+#: upses.php
+msgid "Location"
+msgstr "Ibi tí ó wà"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Ibi gidi tí Ẹ̀rọ náà wà. Ọ̀rọ̀ òmìnira yìí lè jẹ́ yàrá, ipò àpótí ẹ̀rọ, àti bẹ́ẹ̀ bẹ́ẹ̀ lọ."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Ẹ̀rọ Cacti"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Fún àwọn UPS tí ó da lórí SNMP, yan Ẹ̀rọ Cacti láti lò fún àwọn ìwé-ẹ̀rí ìwọlé SNMP. Bí kò bá rí bẹ́ẹ̀, yan Kò sí, àti pé àfikún UPS yóò ṣẹ̀dá Ẹ̀rọ náà fún ọ fúnra rẹ̀."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Ṣẹ̀dá fúnra rẹ̀ ní Ìwádìí Àkọ́kọ́"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Ti ṣiṣẹ́"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Sàmì sí i láti bẹ̀rẹ̀ ìwádìí fún dátà lẹ́sẹ̀kẹsẹ̀."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "Ìròyìn APC UPSD"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Orúkọ olùgbàlejò ti olùgbàlejò tí ń ṣiṣẹ́ apcupsd tàbí sáfà NUT (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "Pọ́ọ̀tì TCP"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Tẹ Pọ́ọ̀tì TCP fún UPS yìí sí i. apcupsd máa ń lo 3551 ní àìyípadà àti NUT máa ń lo 3493 ní àìyípadà."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Àkókò ìparí (ìṣẹ́jú-àáyá)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Bí olùṣèwádìí ṣe máa dúró pẹ́ tó fún apcupsd tàbí sáfà NUT kí ó tó jáwọ́ lórí UPS yìí, láti ìṣẹ́jú-àáyá 1 sí 120. Àwọn UPS tí ó da lórí SNMP máa ń lo àkókò ìparí SNMP dípò."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "Àwọn Àṣàyàn NUT"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "Orúkọ UPS NUT"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Orúkọ UPS lórí sáfà NUT, gẹ́gẹ́ bí \"upsc -l\" ṣe tò ó (apá tí ó wà ṣáájú @ nínú ups@host). Sáfà NUT kan lè ṣiṣẹ́ fún ọ̀pọ̀lọpọ̀ UPS."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "Orúkọ Olùlò NUT"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Àṣàyàn ni. Àkọọ́lẹ̀ upsd.users láti fi ṣe ìdánimọ̀. Fi sílẹ̀ ní òfo fún ààyè kíkà nìkan láìdárúkọ, èyí tí í ṣe bí a ṣe máa ń ṣàbójútó àwọn sáfà NUT lọ́pọ̀ ìgbà."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "Ọ̀rọ̀ Aṣínà NUT"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Ọ̀rọ̀ aṣínà fún Orúkọ Olùlò NUT."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Lo TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Pa ìsopọ̀ náà mọ́ pẹ̀lú STARTTLS kí a tó fi ìwé-ẹ̀rí ìwọlé kankan ránṣẹ́. A máa ń ṣàyẹ̀wò ìwé-ẹ̀rí sáfà NUT àti orúkọ olùgbàlejò, nítorí náà olùṣèwádìí Cacti gbọ́dọ̀ fọkàn tán ìwé-ẹ̀rí náà, tàbí kí o tọ́ka sí fáìlì CA / ìwé-ẹ̀rí rẹ̀ ní ìsàlẹ̀."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Fáìlì CA / Ìwé-ẹ̀rí"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Àṣàyàn ni. Ọ̀nà kíkún lórí olùṣèwádìí Cacti sí fáìlì PEM kan tí ó gbé ìwé-ẹ̀rí CA (tàbí ìwé-ẹ̀rí sáfà tí a fọwọ́ sí fúnra rẹ̀) láti fi ṣàyẹ̀wò sáfà NUT, fún àpẹẹrẹ /etc/nut/upsd.pem. Orúkọ olùgbàlejò lókè gbọ́dọ̀ bá ìwé-ẹ̀rí náà mu."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Gba Ìwé-ẹ̀rí Tí A Fọwọ́ Sí Fúnra Rẹ̀ Láyè"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Gba ìwé-ẹ̀rí èyíkéyìí láì ṣàyẹ̀wò rẹ̀. Ìsopọ̀ náà ṣì wà ní ìpamọ́, ṣùgbọ́n a kò fìdí sáfà NUT múlẹ̀, nítorí náà ẹnìkejì ní àárín lè ka àwọn ìwé-ẹ̀rí ìwọlé NUT. Yàn fáìlì CA / Ìwé-ẹ̀rí lókè dípò."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "Àwọn Àṣàyàn SNMP"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Orúkọ olùgbàlejò ibi tí aṣojú snmp wà."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "A kò lè yí ID Olùṣèwádìí padà nígbà tí UPS bá so mọ́ Ẹ̀rọ Cacti kan. Yí olùṣèwádìí padà lórí ẹ̀rọ náà dípò."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "A kò rí UPS Àdàkọ! Kò ṣeé ṣe láti ṣe ẹ̀dà."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Kò sí ọ̀kan nínú àwọn UPS tí a yàn tí ó ní Ẹ̀rọ Cacti síbẹ̀, nítorí náà a kò ṣiṣẹ́ Ìṣàdáṣe Gíráàfù. A máa ń ṣẹ̀dá ẹ̀rọ kan ní ìwádìí àkọ́kọ́ tí ó bá yọrí sí rere."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "A ti ṣiṣẹ́ Ìṣàdáṣe Gíráàfù fún UPS %d. UPS %d kò tíì ní Ẹ̀rọ Cacti kankan síbẹ̀ a sì fò wọ́n."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "A ti ṣiṣẹ́ Ìṣàdáṣe Gíráàfù fún UPS %d."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(kò sí Ẹ̀rọ Cacti síbẹ̀)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti pa gbogbo àwọn UPS wọ̀nyí rẹ́. Àkíyèsí, gbogbo àwọn ẹ̀rọ ni a ó yọ kúrò ní ìsopọ̀ pẹ̀lú UPS yìí."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Fagilé"
+
+#: upses.php
+msgid "Continue"
+msgstr "Tẹ̀síwájú"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Pa UPS Rẹ́"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti ṣe ẹ̀dà gbogbo àwọn UPS wọ̀nyí."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Orúkọ UPS:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Ṣe Ẹ̀dà UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti tún Ìṣàwárí bẹ̀rẹ̀ fún àwọn UPS wọ̀nyí. Àkíyèsí, èyí kan àwọn UPS irú SNMPD nìkan."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Tún UPS Tò"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti ṣe Ìṣe-àdáṣe Àwòrán Ìṣirò fún àwọn UPS wọ̀nyí. A ó ṣẹ̀dá àwọn àwòrán ìṣirò, àwọn orísun dátà àti àwọn ohun èlò igi ìtọ́kasí láti inú àwọn àdàkọ ẹ̀rọ kọ̀ọ̀kan àti àwọn òfin ìṣe-àdáṣe tó bá a mu; a ó fi àwọn àwòrán ìṣirò tó ti wà tẹ́lẹ̀ sílẹ̀ bí wọ́n ṣe wà. UPS tó ti ní Ẹ̀rọ Cacti tẹ́lẹ̀ nìkan ni èyí yóò kan."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti mú gbogbo àwọn UPS wọ̀nyí ṣiṣẹ́."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Mú UPS Ṣiṣẹ́"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti mú kí gbogbo àwọn UPS wọ̀nyí má ṣiṣẹ́."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Mú kí UPS Má Ṣiṣẹ́"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [ṣàtúnṣe: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [tuntun]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "A kò tíì gbé Àdàkọ Ẹ̀rọ APCUPSD wọlé. Ìṣàdáṣe ẹ̀rọ kò ní ṣẹlẹ̀ títí tí a ó fi gbé e wọlé!"
+
+#: upses.php
+msgid "Search"
+msgstr "Ṣàwárí"
+
+#: upses.php
+msgid "Site"
+msgstr "Ibùdó"
+
+#: upses.php
+msgid "All"
+msgstr "Gbogbo rẹ̀"
+
+#: upses.php
+msgid "Default"
+msgstr "Àìyípadà"
+
+#: upses.php
+msgid "Go"
+msgstr "Lọ"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Ṣètò/Sọ Àwọn Àlẹ̀mọ́ Dọ̀tun"
+
+#: upses.php
+msgid "Clear"
+msgstr "Nu kúrò"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Nu Àwọn Àlẹ̀mọ́ Kúrò"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Orúkọ UPS yìí."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "ID àkànṣe tí ó ní ṣe pẹ̀lú UPS yìí."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "ID Ẹ̀rọ Cacti."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Ipò ìṣiṣẹ́ apcupsd daemon lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Irú Olùkójọ. Lọ́wọ́lọ́wọ́ APCUPSD, SNMP àti NUT ni a ṣe àtìlẹ́yìn fún."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "Ipò UPS"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Ipò UPS tí a ń ṣàbójútó lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Àwòṣe UPS"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Àwòṣe UPS tí a ń ṣàbójútó lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Fóltéèjì Láyìnì ti UPS tí a ń ṣàbójútó lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Ìdá Ọgọ́rùn-ún Ẹrù"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Ìdá Ọgọ́rùn-ún Ẹrù ti UPS tí a ń ṣàbójútó lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Ìfàsẹ́yìn agbára iná tí a fojú bù ní wáàtì: ìdíwọ̀n agbára gangan tí a sọ di púpọ̀ pẹ̀lú Ìdá Ọgọ́rùn-ún Ẹrù."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Àwọn ìṣẹ́jú agbára UPS tó wà ní àyè ti UPS tí a ń ṣàbójútó lórí Olùgbàlejò àfojúsùn."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Orúkọ Olùgbàlejò:Pọ́ọ̀tì"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Orúkọ Olùgbàlejò:Pọ́ọ̀tì tí ń ṣiṣẹ́ apcupsd daemon tàbí sáfà NUT."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Bóyá a ń ṣàbójútó UPS yìí tàbí bẹ́ẹ̀ kọ́."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Ìgbà tó kẹ́yìn tí a ṣe àyẹ̀wò UPS yìí tàbí tí a rí i pé ó ń ṣiṣẹ́."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Wo Pátákó Ìṣàkóso UPS"
+
+#: upses.php
+msgid "No"
+msgstr "Rárá"
+
+#: upses.php
+msgid "Yes"
+msgstr "Bẹ́ẹ̀ ni"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Kò sí UPS tí a rí"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Kò sí lọ́wọ́"

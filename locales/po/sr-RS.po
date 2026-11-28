@@ -1,0 +1,1237 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Serbian <developers@cacti.net>\n"
+"Language: sr-RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Мрежни напон"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Излазни напон"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Мрежна фреквенција"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Оптерећење"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Напуњеност батерије"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Напон батерије"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Преостало време"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Температура"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "сада %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "мин %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "прос. %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "макс %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Просек"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Још увек нису прикупљена очитавања за овај UPS."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Још увек нема доступних очитавања за ову групу."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Н/Д"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Још увек нема доступних очитавања за овај мерач."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Процењена снага"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Информације о UPS-у"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Улаз и оптерећење"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Батерија и време рада"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Догађаји и пребацивања"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Непознато"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Овај графикон више није доступан."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "UPS графикон"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "За процену снаге потребни су номинална снага и очитавање оптерећења."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Овај мерач више није доступан."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Још увек нису прикупљене информације за овај UPS."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Назив UPS-а"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Модел"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Серијски број"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Фирмвер"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Кабл / Драјвер"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Колектор"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Име хоста"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Номинална снага"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Номинални улазни напон"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Номинални напон батерије"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Забележени мин. мрежни напон"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Забележени макс. мрежни напон"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Датум батерије"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Произведено"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Последње ажурирање"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Још увек нису прикупљени подаци о догађајима за овај UPS."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Разлог последњег пребацивања"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Број пребацивања"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Време на батерији"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "сек"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Укупно време на батерији"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Последњи самотест"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Резултат самотеста"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Последњи прелазак на батерију"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Последњи повратак са батерије"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Прикажи више"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Прикажи мање"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Отвори у дијалогу"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Освежи"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Уклони са странице"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Превуците да бисте променили редослед картице"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Неважећи захтев. Покушајте поново."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Није изабран ниједан UPS."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Ова контролна табла има превише картица да би се сачувао њен распоред."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Неважећи интервал освежавања."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Непозната картица."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "UPS контролна табла"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Отворите UPS контролну таблу са листе „Управљање UPS уређајима“ кликом на иконицу контролне табле за тај UPS. Контролна табла памти последњи UPS који сте отворили."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 минут"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 секунди"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 минута"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Без освежавања"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Временски опсег"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Додај картицу"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Додај картицу…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Контролна табла флоте"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS уређаји"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Преглед флоте"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Расподела статуса"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Очитавања флоте"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Снага флоте"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Мерачи флоте"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Још увек нема конфигурисаних UPS уређаја."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Укупно"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "На мрежи"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "На батерији"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Остало"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Онемогућено"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Проц. снага"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Ниједан омогућени UPS још не шаље очитавања."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "За процену снаге потребан је омогућени UPS са номиналном снагом и очитавањем оптерећења."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s од %s номинално"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Процењено као номинална снага x оптерећење %, из последњег очитавања."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "Урачунато %s од %s омогућених UPS уређаја."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Статус"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Напуњеност"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "мин"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Отвори UPS контролну таблу"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Укупно за флоту"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Време одлагања пре него што APCUPSD почне да оглашава аларм"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Температура околине"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "верзија, број записа и број бајтова који следе"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Информације о APC моделу"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Број неисправних спољних батеријских модула (за XL моделе)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Датум последње замене батерије (ако је постављен)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Статус батерије."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Тренутни напон батерије"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Тренутни проценат напуњености капацитета батерије"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Тип кабла наведен у конфигурационој датотеци"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Укупан број секунди на батерији од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Датум и време последњег ажурирања са UPS-а"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Тренутна подешавања DIP прекидача на UPS-у"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Сигнал празне батерије се шаље када преостане оволико времена рада"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD драјвер када је протокол APCUPSD"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Одлагање пре искључења UPS-а након пријема команде"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Време које UPS чека након искључења када се напајање поново успостави"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Датум и време када су информације о статусу записане"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Број спољних батерија (за XL моделе)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Верзија фирмвера UPS-а"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Улазни мрежни напон изнад ког се UPS пребацује на батерију"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "име хоста рачунара на ком ради apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Влажност околине"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Унутрашња температура UPS-а у степенима Целзијуса"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Разлог последњег пребацивања на батерију од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Статус улазног мрежног напона."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Тренутна фреквенција мреже у херцима"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Тренутни улазни мрежни напон"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Проценат искоришћености оптерећења UPS-а према процени самог UPS-а"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Улазни мрежни напон испод ког се UPS пребацује на батерију"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Датум производње UPS-а"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Последњи пут када је мастер послао ажурирање слејву"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Максимални улазни мрежни напон од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Максимално време рада на батерији (TIMEOUT) након ког се систем гаси"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Минимална напуњеност батерије %%% (BCHARGE) потребна за гашење система"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Минимални (забележени) улазни мрежни напон од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Минимално време рада на батерији (MINUTES) потребно за гашење система"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Модел UPS-а изведен из информација о UPS-у"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Номинални напон батерије"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Номинални улазни напон који се доводи на UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Номинални излазни напон при напајању са батерије"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Номинална излазна снага у ватима"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Број пребацивања на батерију од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Тренутни излазни напон UPS-а"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Регистар грешака 1 у хексадецималном облику"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Регистар грешака 2 у хексадецималном облику"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Регистар грешака 3 у хексадецималном облику"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Напуњеност батерије %%% потребна након искључења да би се напајање поново успоставило"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Датум и време последњег самотеста од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Тренутно подешавање осетљивости UPS-а на варијације напона"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Серијски број UPS-а"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Датум и време покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Ознака статуса UPS-а у хексадецималном облику"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "Статус UPS-а. Једно или више од следећег (одвојено размаком): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN или COMMLOST или SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Датум последњег самотеста UPS-а"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Интервал самотеста"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Преостало време рада на батерији према процени UPS-а"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Број секунди тренутно на батерији"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Режим у ком UPS ради"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Назив UPS-а из конфигурационе датотеке (dumb) или EEPROM меморије (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Назив главног (master) UPS-а у случају када APCUPSD преузима податке од друге инстанце APCUPSD-а"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "број верзије, датум и оперативни систем за apcupsd"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Датум и време последњег повратка са батерије од покретања apcupsd сервиса"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Датум и време последњег преласка на батерију од покретања apcupsd"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Сервер apcupsd је неочекивано затворио везу."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Сервер apcupsd није вратио податке о статусу."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Сервер apcupsd је послао превелики запис."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Сервер apcupsd је послао превише података."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Сервер apcupsd није одговорио у року од %s секунди."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Неважећа конфигурација имена хоста или порта за apcupsd"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Није могуће повезивање са apcupsd на %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "NUT сервер је одбио приступ. Проверите NUT корисничко име и лозинку."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "NUT сервер не препознаје UPS под називом \"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "NUT сервер има застареле податке за овај UPS: његов драјвер не одговара."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "NUT сервер је пријавио грешку: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Неважећа конфигурација NUT имена хоста, порта или назива UPS-а"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "NUT сервер је неочекивано затворио везу."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "NUT корисничко име или лозинка садржи знакове који не могу да се пошаљу."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "TLS преговарање са NUT сервером није успело."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "NUT сервер је послао превише података."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "NUT сервер није одговорио у року од %s секунди."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Датотека NUT CA / сертификата не може да се прочита."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Није могуће повезивање са NUT сервером %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "NUT сервер није вратио ниједну променљиву за овај UPS."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Управљање UPS уређајима"
+
+#: setup.php
+msgid "Management"
+msgstr "Управљање"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Администрација система"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Управљање UPS уређајима"
+
+#: upses.php
+msgid "Delete"
+msgstr "Обриши"
+
+#: upses.php
+msgid "Enable"
+msgstr "Омогући"
+
+#: upses.php
+msgid "Disable"
+msgstr "Онемогући"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Дуплирај"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Ресетуј детекцију"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Покрени аутоматизацију графика"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Засновано на APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Засновано на SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Засновано на NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Назив који желите да дате овом UPS-у. За APCUPSD и NUT уређаје, одговарајући Cacti уређај биће аутоматски креиран за UPS користећи овај назив. За UPS-ове засноване на SNMP-у, прво морате креирати Cacti уређај."
+
+#: upses.php
+msgid "New UPS"
+msgstr "Нови UPS"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Опис UPS-а"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Детаљнији опис овог UPS-а, ако је потребно."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Тип UPS-а"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Тип UPS-а који надгледате."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "ID полера"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Полер помоћу ког се овај UPS надгледа"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Назив локације"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Локација на којој се овај UPS налази."
+
+#: upses.php
+msgid "None"
+msgstr "Ниједно"
+
+#: upses.php
+msgid "Location"
+msgstr "Локација"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Физичка локација уређаја. Овај текст слободног формата може бити просторија, локација река итд."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Cacti уређај"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "За UPS-ове засноване на SNMP-у, изаберите Cacti уређај који ће се користити за SNMP акредитиве. У супротном, изаберите Ништа, и UPS додатак ће аутоматски креирати уређај за вас."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Аутоматски креирај при првом очитавању"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Означите да бисте одмах започели очитавање података."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "APC UPSD информације"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Име хоста рачунара на ком је покренут apcupsd или NUT сервер (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "TCP порт"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Унесите TCP порт за овај UPS. Подразумевана вредност за apcupsd је 3551, а за NUT је 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Истек времена (секунде)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Колико дуго полер чека на apcupsd или NUT сервер пре него што одустане од овог UPS-а, од 1 до 120 секунди. UPS-ови засновани на SNMP-у уместо тога користе SNMP истек времена."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "NUT опције"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "NUT назив UPS-а"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Назив UPS-а на NUT серверу, како је приказано помоћу \"upsc -l\" (део пре @ у ups@host). Један NUT сервер може опслуживати више UPS уређаја."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "NUT корисничко име"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Опционо. Налог из upsd.users за аутентификацију. Оставите празно за анонимни приступ само за читање, што је уобичајени начин надгледања NUT сервера."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "NUT лозинка"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Лозинка за NUT корисничко име."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Користи TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Шифрујте везу помоћу STARTTLS пре слања било каквих акредитива. Сертификат NUT сервера и име хоста се проверавају, па Cacti полер мора имати поверења у сертификат, или испод можете навести путању до његове CA / датотеке сертификата."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Датотека CA / сертификата"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Опционо. Пуна путања на Cacti полеру до PEM датотеке која садржи CA сертификат (или самопотписани сертификат сервера) за верификацију NUT сервера, на пример /etc/nut/upsd.pem. Име хоста изнад мора да се подудара са сертификатом."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Дозволи самопотписани сертификат"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Прихватите било који сертификат без провере. Веза је и даље шифрована, али NUT сервер није аутентификован, па би нападач у средини могао да прочита NUT акредитиве. Препоручује се коришћење датотеке CA / сертификата изнад."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "SNMP опције"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Име хоста на ком се налази snmp агент."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "ID полера се не може променити док је UPS повезан са Cacti уређајем. Уместо тога промените полер на уређају."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Шаблонски UPS није пронађен! Дуплирање није могуће."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Ниједан од изабраних UPS уређаја још нема Cacti уређај, па аутоматизација графика није покренута. Уређај се креира при првом успешном очитавању."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "Аутоматизација графика је покренута за %d UPS уређај(а). %d UPS уређај(а) још нема Cacti уређај и прескочено је."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "Аутоматизација графика је покренута за %d UPS уређај(а)."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(још нема Cacti уређаја)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Кликните на 'Настави' да обришете следећи UPS. Напомена: сви уређаји ће бити раздвојени од овог UPS-а."
+msgstr[1] "Кликните на 'Настави' да обришете све следеће UPS-ове. Напомена: сви уређаји ће бити раздвојени од ових UPS-ова."
+msgstr[2] "Кликните на 'Настави' да обришете све следеће UPS-ове. Напомена: сви уређаји ће бити раздвојени од ових UPS-ова."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Откажи"
+
+#: upses.php
+msgid "Continue"
+msgstr "Настави"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Обриши UPS"
+msgstr[1] "Обриши UPS-ове"
+msgstr[2] "Обриши UPS-ове"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Кликните на 'Настави' да дуплирате следећи UPS."
+msgstr[1] "Кликните на 'Настави' да дуплирате све следеће UPS-ове."
+msgstr[2] "Кликните на 'Настави' да дуплирате све следеће UPS-ове."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Назив UPS-а:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Дуплирај UPS"
+msgstr[1] "Дуплирај UPS-ове"
+msgstr[2] "Дуплирај UPS-ове"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Кликните на 'Настави' да ресетујете откривање за следећи UPS. Напомена: ово важи само за UPS-ове типа SNMPD."
+msgstr[1] "Кликните на 'Настави' да ресетујете откривање за следеће UPS-ове. Напомена: ово важи само за UPS-ове типа SNMPD."
+msgstr[2] "Кликните на 'Настави' да ресетујете откривање за следеће UPS-ове. Напомена: ово важи само за UPS-ове типа SNMPD."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Ресетуј UPS"
+msgstr[1] "Ресетуј UPS-ове"
+msgstr[2] "Ресетуј UPS-ове"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Кликните на 'Настави' да покренете аутоматизацију графикона за следећи UPS. Графикони, извори података и ставке стабла се креирају на основу шаблона уређаја и одговарајућих правила аутоматизације; графикони који већ постоје остају непромењени. Ово се односи само на UPS који већ има Cacti уређај."
+msgstr[1] "Кликните на 'Настави' да покренете аутоматизацију графикона за следеће UPS-ове. Графикони, извори података и ставке стабла се креирају на основу шаблона сваког уређаја и одговарајућих правила аутоматизације; графикони који већ постоје остају непромењени. Ово се односи само на UPS који већ има Cacti уређај."
+msgstr[2] "Кликните на 'Настави' да покренете аутоматизацију графикона за следеће UPS-ове. Графикони, извори података и ставке стабла се креирају на основу шаблона сваког уређаја и одговарајућих правила аутоматизације; графикони који већ постоје остају непромењени. Ово се односи само на UPS који већ има Cacti уређај."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Кликните на 'Настави' да омогућите следећи UPS."
+msgstr[1] "Кликните на 'Настави' да омогућите све следеће UPS-ове."
+msgstr[2] "Кликните на 'Настави' да омогућите све следеће UPS-ове."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Омогући UPS"
+msgstr[1] "Омогући UPS-ове"
+msgstr[2] "Омогући UPS-ове"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Кликните на 'Настави' да онемогућите следећи UPS."
+msgstr[1] "Кликните на 'Настави' да онемогућите све следеће UPS-ове."
+msgstr[2] "Кликните на 'Настави' да онемогућите све следеће UPS-ове."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Онемогући UPS"
+msgstr[1] "Онемогући UPS-ове"
+msgstr[2] "Онемогући UPS-ове"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [измена: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [ново]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "Шаблон уређаја APCUPSD није увезен. Аутоматизација уређаја се неће десити док се не увезе!"
+
+#: upses.php
+msgid "Search"
+msgstr "Претрага"
+
+#: upses.php
+msgid "Site"
+msgstr "Локација"
+
+#: upses.php
+msgid "All"
+msgstr "Све"
+
+#: upses.php
+msgid "Default"
+msgstr "Подразумевано"
+
+#: upses.php
+msgid "Go"
+msgstr "Иди"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Постави/освежи филтере"
+
+#: upses.php
+msgid "Clear"
+msgstr "Очисти"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Очисти филтере"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Назив овог UPS-а."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "Јединствени ID повезан са овим UPS-ом."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "ID Cacti уређаја."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Статус apcupsd демона на циљном хосту."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Тип сакупљача. Тренутно су подржани APCUPSD, SNMP и NUT."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "Статус UPS-а"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Статус надгледаног UPS-а на циљном хосту."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Модел UPS-а"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Модел надгледаног UPS-а на циљном хосту."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Мрежни напон надгледаног UPS-а на циљном хосту."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Проценат оптерећења"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Проценат оптерећења надгледаног UPS-а на циљном хосту."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Процењена потрошња енергије у ватима: номинална снага помножена процентом оптерећења."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Преостали минути напуњености батерије надгледаног UPS-а на циљном хосту."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Име хоста:Порт"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Име хоста:Порт на ком је покренут apcupsd демон или NUT сервер."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Да ли се овај UPS надгледа или не."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Последње време када је овај UPS очитан или затечен активан."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Прикажи UPS контролну таблу"
+
+#: upses.php
+msgid "No"
+msgstr "Не"
+
+#: upses.php
+msgid "Yes"
+msgstr "Да"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Није пронађен ниједан UPS"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Није доступно"

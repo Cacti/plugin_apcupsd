@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Xhosa <developers@cacti.net>\n"
+"Language: xh_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Ivolthi yeLayini"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Ivolthi yeSiphumo"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Ifrikhwensi yeLayini"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Umthwalo"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Intshaji yeBhetri"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "IVolthi yeBhetri"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Ixesha Eliseleyo"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Ubushushu"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "ngoku %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "ubuncinane %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "umndilili %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "ubukhulu %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Umndilili"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Akukho zilinganiso ziqokelelweyo zale UPS okwangoku."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Akukho zilinganiso zifumanekayo zeli qela okwangoku."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Akufumaneki"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Akukho zilinganiso zifumanekayo zesi silinganisi okwangoku."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Amandla Aqikelelwayo"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Ulwazi lwe-UPS"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Ungeniso noMthwalo"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "IBhetri neXesha lokuSebenza"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Iziganeko noTshintshelo"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Akwaziwa"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Le grafu ayisafumaneki."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "Igrafu ye-UPS"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Amandla aqikelelwayo afuna umlinganiselo wamandla oqhelekileyo kunye nokufundwa komthwalo."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Esi silinganisi asisafumaneki."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Akukho lwazi luqokelelweyo lwale UPS okwangoku."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Igama le-UPS"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Imodeli"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Inombolo yeSiriyeli"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "IFirmware"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Intambo / IDriver"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Umqokeleli"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Igama leHost"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Amandla aqhelekileyo"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "IVolthi yoNgeniso eQhelekileyo"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "IVolthi yeBhetri eQhelekileyo"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Ubuncinane boMgca oBhalisiweyo"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Ubukhulu boMgca oBhalisiweyo"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Umhla weBhetri"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Ivelisiwe"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Igqibele Ukuhlaziywa"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Akukho datha yeziganeko iqokelelweyo zale UPS okwangoku."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Isizathu soTshintshelo lokuGqibela"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Inani loTshintshelo"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Ixesha kwiBhetri"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "isek."
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Ixesha elihlangeneyo kwiBhetri"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Uvavanyo lokuZihlola lokuGqibela"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Isiphumo soVavanyo lokuZihlola"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "KwiBhetri okokuGqibela"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Ukusuka kwiBhetri okokuGqibela"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Bonisa ngakumbi"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Bonisa kancinci"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Vula kwidayalogi"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Hlaziya"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Susa kwiphepha"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Tsala ukuze ulungelelanise kwakhona ikhadi"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Isicelo esingasebenziyo. Nceda uzame kwakhona."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Akukho UPS ikhethiweyo."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Le deshibhodi inamakhadi amaninzi kakhulu ukuze kugcinwe uyilo lwayo."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Ixesha lokuhlaziya alisebenzi."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Ikhadi elingaziwayo."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "Ideshibhodi ye-UPS"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Vula iDeshibhodi ye-UPS kuluhlu lokuLawula ii-UPS ngokucofa uphawu lwedeshibhodi ye-UPS. IDeshibhodi iyayikhumbula i-UPS yokugqibela oyivulileyo."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "Umzuzu o-1"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "Imizuzwana engama-30"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "Imizuzu emi-5"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Akukho Kuhlaziya"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Ithuba Lexesha"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Yongeza ikhadi"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Yongeza ikhadi…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Ideshibhodi yoThotho"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "Ii-UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Ushwankathelo loThotho"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Ukwabiwa kweMeko"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Izilinganiso zoThotho"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Amandla oThotho"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Izilinganisi zoThotho"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Akukho ii-UPS zicwangcisiweyo okwangoku."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Iyonke"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Ikwi-Online"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "IkwiBhetri"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Okunye"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Ivaliwe"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Amandla Aqik."
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Akukho ii-UPS ezivuliweyo ezixela izilinganiso okwangoku."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Amandla aqikelelwayo afuna i-UPS evuliweyo enomlinganiselo wamandla oqhelekileyo kunye nokufundwa komthwalo."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s kwi-%s elinganisiweyo"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Iqikelelwe njengamandla aqhelekileyo x % yomthwalo, ukusuka kwingqokelela yamva nje."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "Kubalwe %s kwi-%s yee-UPS ezivuliweyo."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Imeko"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Itshaji"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "umz."
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Vula iDeshibhodi ye-UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Isixa soThotho"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Ixesha lokulibazisa ngaphambi kokuba i-APCUPSD iqalise ukukhala ialamu"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Ubushushu bendawo engqongileyo"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "uguqulelo, inani leerekhodi kunye nenani leebhayithi ezilandelayo"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Ulwazi lwemodeli ye-APC"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Inani leepakethe zebhetri zangaphandle ezingasebenziyo (kwiimodeli ze-XL)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Umhla ebhetri yatshintshwa ngawo okokugqibela (ukuba umiselwe)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Imeko yebhetri."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "IVolthi yebhetri yangoku"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Ipesenti yetshaji yomthamo webhetri yangoku"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Uhlobo lwentambo oluchazwe kwifayile yoqwalaselo"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Imizuzwana ehlangeneyo kwiBhetri ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Umhla nexesha lohlaziyo lokugqibela oluvela kwi-UPS"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Iisetingi zangoku zeswitshi ye-DIP ye-UPS"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Isiginali yebhetri esezantsi ithunyelwa xa kusele eli xesha lokusebenza"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "IDriver ye-APCUPSD xa i-APCUPSD iyiprothokholi"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Ulibaziseko ngaphambi kokuba i-UPS icime emva kokufumana umyalelo"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Ixesha elilindwa yi-UPS emva kokucima kombane xa umbane ubuyiselwe"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Umhla nexesha lolwazi lwemeko olubhalwe ngalo"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Inani leebhetri zangaphandle (kwiimodeli ze-XL)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Uguqulelo lwefirmware ye-UPS"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "IVolthi yomgca wongeniso ethi ngaphezulu kwayo i-UPS itshintshele kwibhetri"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "igama le-host yekhompyutha eqhuba i-apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Ukufuma kwendawo engqongileyo"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Ubushushu bangaphakathi be-UPS ngamaqondo eCelsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Isizathu sotshintshelo lokugqibela kwibhetri ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Imeko yevolthi yomgca wongeniso."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Ifrikhwensi yomgca yangoku nge-Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "IVolthi yomgca wongeniso yangoku"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Ipesenti yomthamo womthwalo we-UPS osetyenzisiweyo njengoko kuqikelelwe yi-UPS"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "IVolthi yomgca wongeniso ethi ngaphantsi kwayo i-UPS itshintshele kwibhetri"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Umhla wokuveliswa kwe-UPS"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Ixesha lokugqibela apho i-master ithumele uhlaziyo kwi-slave"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Eyona volthi iphezulu yomgca wongeniso ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Elona xesha lide lokusebenza kwebhetri (TIMEOUT) ekuthi emva kwalo inkqubo icinywe"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Ubuncinane betshaji yebhetri %%% (BCHARGE) obufunekayo ukucima inkqubo"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Eyona volthi incinci (eqwalaselweyo) yomgca wongeniso ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Ubuncinane bexesha lokusebenza kwebhetri (MINUTES) obufunekayo ukucima inkqubo"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Imodeli ye-UPS ethatyathwe kulwazi lwe-UPS"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "IVolthi yebhetri eqhelekileyo"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "IVolthi yongeniso eqhelekileyo ethunyelwa kwi-UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "IVolthi yemveliso eqhelekileyo yokubonelela xa ikumbane webhetri"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Imveliso yamandla eqhelekileyo ngee-watts"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Inani lotshintshelo kwibhetri ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "IVolthi yemveliso ye-UPS yangoku"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Irejista yempazamo 1 nge-hex"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Irejista yempazamo 2 nge-hex"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Irejista yempazamo 3 nge-hex"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Itshaji yebhetri %%% efunekayo emva kokucima kombane ukuze kubuyiselwe umbane"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Umhla nexesha lovavanyo lokuzihlola lokugqibela ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Isetingi yobuntununtunu be-UPS yangoku yokuguquguquka kwevolthi"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Inombolo yesiriyeli ye-UPS"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Umhla nexesha eqaliswe ngalo i-apcupsd"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Iflegi yemeko ye-UPS nge-hex"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "Imeko ye-UPS. Inye okanye ngaphezulu kwezi zilandelayo (zohlulwe ngezithuba): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN okanye COMMLOST okanye SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Umhla wovavanyo lokuzihlola lwe-UPS lokugqibela"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Ixesha phakathi kovavanyo lokuzihlola"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Ixesha lokusebenza eliseleyo kwibhetri njengoko kuqikelelwe yi-UPS"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Imizuzwana ekwibhetri okwangoku"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Imowudi esebenza ngayo i-UPS"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Igama le-UPS elivela kwifayile yoqwalaselo (dumb) okanye kwi-EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Igama le-master ye-UPS kwimeko apho i-APCUPSD itsala idatha kwenyee i-instance ye-APCUPSD"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "inombolo yoguqulelo lwe-apcupsd, umhla kunye nenkqubo yokusebenza"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Umhla, ixesha lotshintshelo lokugqibela lokusuka kwibhetri ukususela ekuqaleni kwe-apcupsd"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Umhla, ixesha lokugqibela lokutshintshela kwibhetri ukusukela ekuqaleni kwe-apcupsd"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Iseva ye-apcupsd iluvale unxibelelwano ngokungalindelekanga."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Iseva ye-apcupsd ayibuyisanga datha yesimo."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Iseva ye-apcupsd ithumele irekhodi enkulu ngokugqithisileyo."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Iseva ye-apcupsd ithumele idatha eninzi kakhulu."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Iseva ye-apcupsd ayiphendulanga kwimizuzwana eyi-%s."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Uqwalaselo olungasebenziyo lwegama lomamkeli okanye izibuko le-apcupsd"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Ayikwazi ukuqhagamshela kwi-apcupsd kwa-%s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Iseva ye-NUT yale ukufikelela. Khangela igama lomsebenzisi kunye negama lokugqitha le-NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Iseva ye-NUT ayiyazi i-UPS ebizwa ngokuba yi-\"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Iseva ye-NUT inedatha ephelelwe lixesha yale UPS: umqhubi wayo akaphenduli."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Iseva ye-NUT ixele impazamo: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Uqwalaselo olungasebenziyo lwegama lomamkeli, izibuko okanye igama le-UPS ye-NUT"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Iseva ye-NUT iluvale unxibelelwano ngokungalindelekanga."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Igama lomsebenzisi okanye igama lokugqitha le-NUT liqulethe oonobumba abangenakuthunyelwa."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "Uthethathethwano lwe-TLS kunye neseva ye-NUT aluphumelelanga."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Iseva ye-NUT ithumele idatha eninzi kakhulu."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Iseva ye-NUT ayiphendulanga kwimizuzwana eyi-%s."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Ifayile ye-CA / yesatifikethi ye-NUT ayinakufundwa."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Ayikwazi ukuqhagamshela kweseva ye-NUT %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Iseva ye-NUT ayibuyisanga zinto eziguquguqukayo zale UPS."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Lawula ii-UPS"
+
+#: setup.php
+msgid "Management"
+msgstr "Ulawulo"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Ulawulo lweNkqubo"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Lawula ii-UPS"
+
+#: upses.php
+msgid "Delete"
+msgstr "Cima"
+
+#: upses.php
+msgid "Enable"
+msgstr "Yenza isebenze"
+
+#: upses.php
+msgid "Disable"
+msgstr "Yenza ingasebenzi"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Phindaphinda"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Seta kwakhona uBhaqo"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Qhuba uZenzekelo lweGrafu"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Isekelwe kwi-APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Isekelwe kwi-SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Isekelwe kwi-NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Igama ongathanda ukulinika le UPS. Kwizixhobo ze-APCUPSD kunye ne-NUT, isixhobo se-Cacti esihambelanayo siya kuyilwa ngokuzenzekelayo kule UPS kusetyenziswa eli gama. Kwi-UPS esekelwe kwi-SNMP, kufuneka uyile iSixhobo se-Cacti kuqala."
+
+#: upses.php
+msgid "New UPS"
+msgstr "I-UPS Entsha"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Inkcazelo ye-UPS"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Inkcazelo ecacileyo ngakumbi yale UPS ukuba iyafuneka."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Uhlobo lwe-UPS"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Uhlobo lwe-UPS oyibekileyo esweni."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "I-ID ye-Poller"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "I-Poller ekhoyo kuyo le UPS ibekwe esweni ngu"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Igama leSiza"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "ISiza ekhoyo kuso le UPS."
+
+#: upses.php
+msgid "None"
+msgstr "Akukho nto"
+
+#: upses.php
+msgid "Location"
+msgstr "Indawo"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Indawo ebonakalayo yesiXhobo. Eli gama lasimahla linokuba ligumbi, indawo yerack, njl."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Isixhobo se-Cacti"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Kwi-UPS esekelwe kwi-SNMP, khetha iSixhobo se-Cacti oza kusisebenzisa ngeziqinisekiso ze-SNMP. Kungenjalo, khetha Akukho nto, kwaye iplagin ye-UPS iya kukuyilela iSixhobo ngokuzenzekelayo."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Yila ngokuzenzekelayo kuVavanyo lokuQala"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Iyasebenza"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Khangela ukuze uqalise ngokukhawuleza ukuqokelela idatha."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "Ulwazi lwe-APC UPSD"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Igama lomamkeli eliqhuba i-apcupsd okanye iseva ye-NUT (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "Izibuko le-TCP"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Faka iZibuko le-TCP lale UPS. I-apcupsd isebenzisa u-3551 ngokungagqibekanga kwaye i-NUT isebenzisa u-3493 ngokungagqibekanga."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Ixesha lokuphelelwa (imizuzwana)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Ixesha elilindwa yi-poller kwi-apcupsd okanye iseva ye-NUT phambi kokuyekela kule UPS, ukusuka ku-1 ukuya ku-120 imizuzwana. Ii-UPS ezisekelwe kwi-SNMP zisebenzisa ixesha lokuphelelwa le-SNMP endaweni yoko."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "Iinketho ze-NUT"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "Igama le-UPS ye-NUT"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Igama le-UPS kweseva ye-NUT, njengoko kudweliswe ngu-\"upsc -l\" (inxalenye ephambi kuka-@ kwi-ups@host). Iseva enye ye-NUT inokunika inkonzo kwii-UPS ezininzi."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "Igama lomsebenzisi le-NUT"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Ayinyanzeliswanga. I-akhawunti ye-upsd.users yokungena ngayo. Shiya ingenanto ukufikelela okungaziwayo kokufunda kuphela, okuyindlela iiseva ze-NUT ezihlala zibekwa esweni ngayo."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "Igama lokugqitha le-NUT"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Igama lokugqitha leGama lomsebenzisi le-NUT."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Sebenzisa i-TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Fihla unxibelelwano nge-STARTTLS phambi kokuba kuthunyelwe naziphi na iziqinisekiso. Isatifikethi seseva ye-NUT kunye negama lomamkeli ziyaqinisekiswa, ngoko isatifikethi kufuneka sithenjwe yi-Cacti poller, okanye ungakhomba kwifayile yayo ye-CA / yesatifikethi ngezantsi."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Ifayile ye-CA / yeSatifikethi"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Ayinyanzeliswanga. Umendo opheleleyo kwi-Cacti poller oya kwifayile ye-PEM ephethe isatifikethi se-CA (okanye isatifikethi seseva esizisayinelweyo) ukuze kuqinisekiswe iseva ye-NUT ngokuchasene nayo, umzekelo /etc/nut/upsd.pem. Igama lomamkeli elingentla kufuneka lihambelane nesatifikethi."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Vumela iSatifikethi esiZisayinelweyo"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Yamkela nasiphi na isatifikethi ngaphandle kokusihlola. Unxibelelwano lusafihliwe, kodwa iseva ye-NUT ayiqinisekiswanga, ngoko umntu ophakathi angafunda iziqinisekiso ze-NUT. Khetha iFayile ye-CA / yeSatifikethi engentla."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "Iinketho ze-SNMP"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Igama lomamkeli apho iarhente ye-snmp ikhoyo."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "I-Poller ID ayinakutshintshwa ngelixa i-UPS iqhagamshelwe kwiSixhobo se-Cacti. Tshintsha i-poller kwisixhobo endaweni yoko."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "I-Template UPS ayifumanekanga! Ayikwazi ukuphinda-phinda."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Akukho nanye kwii-UPS ezikhethiweyo enesixhobo se-Cacti okwangoku, ngoko uZenzekelo lweGrafu aluqhutywanga. Isixhobo siyilwa kuvavanyo lokuqala oluyimpumelelo."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "UZenzekelo lweGrafu luqhutyelwe ii-UPS ezi-%d. Ii-UPS ezi-%d azinasiXhobo se-Cacti okwangoku kwaye zitsityiwe."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "UZenzekelo lweGrafu luqhutyelwe ii-UPS ezi-%d."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(akukho Sixhobo se-Cacti okwangoku)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uCime le UPS ilandelayo. Qaphela, zonke iziXhobo ziya kukhululwa kule UPS."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uCime zonke ezi UPS zilandelayo. Qaphela, zonke izixhobo ziya kukhululwa kule UPS."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Rhoxisa"
+
+#: upses.php
+msgid "Continue"
+msgstr "Qhubeka"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Cima i-UPS"
+msgstr[1] "Cima ii-UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uPhindaphinde le UPS ilandelayo."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uPhindaphinde zonke ezi UPS zilandelayo."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Igama le-UPS:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Phindaphinda i-UPS"
+msgstr[1] "Phindaphinda ii-UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uSeke kwakhona ukuFumanisa kule UPS ilandelayo. Qaphela, oku kusebenza kuphela kwii-UPS zohlobo lwe-SNMPD."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uSeke kwakhona ukuFumanisa kwezi UPS zilandelayo. Qaphela, oku kusebenza kuphela kwii-UPS zohlobo lwe-SNMPD."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Seka kwakhona i-UPS"
+msgstr[1] "Seka kwakhona ii-UPS"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uqhube uZenzekelo lweGrafu kule UPS ilandelayo. Iigrafu, imithombo yedatha kunye nezinto zomthi ziyilwa ukusuka kwiitemplate zesixhobo kunye nemigaqo yokuzenzekela ehambelanayo; iigrafu esele zikho zishiywa zinjalo. Kuphela yi-UPS esele ineSixhobo seCacti echaphazelekayo."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uqhube uZenzekelo lweGrafu kwezi UPS zilandelayo. Iigrafu, imithombo yedatha kunye nezinto zomthi ziyilwa ukusuka kwiitemplate zesixhobo ngasinye kunye nemigaqo yokuzenzekela ehambelanayo; iigrafu esele zikho zishiywa zinjalo. Kuphela yi-UPS esele ineSixhobo seCacti echaphazelekayo."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uVumele le UPS ilandelayo."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uVumele zonke ezi UPS zilandelayo."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Vumela i-UPS"
+msgstr[1] "Vumela ii-UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Cofa u-'Qhubeka' ukuze uKhubaze le UPS ilandelayo."
+msgstr[1] "Cofa u-'Qhubeka' ukuze uKhubaze zonke ezi UPS zilandelayo."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Khubaza i-UPS"
+msgstr[1] "Khubaza ii-UPS"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "I-UPS [hlela: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "I-UPS [entsha]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "I-APCUPSD Device Template ayikangeniswa. Uzenzekelo lwesixhobo aluyi kwenzeka de ingeniswe!"
+
+#: upses.php
+msgid "Search"
+msgstr "Khangela"
+
+#: upses.php
+msgid "Site"
+msgstr "ISayithi"
+
+#: upses.php
+msgid "All"
+msgstr "Zonke"
+
+#: upses.php
+msgid "Default"
+msgstr "Emiselweyo"
+
+#: upses.php
+msgid "Go"
+msgstr "Hamba"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Seta/Hlaziya Izihluzi"
+
+#: upses.php
+msgid "Clear"
+msgstr "Sula"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Sula Izihluzi"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Igama lale UPS."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "I-id eyodwa eyanyaniswa nale UPS."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "I-ID yeSixhobo se-Cacti."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Isimo se-daemon ye-apcupsd kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Uhlobo loMqokeleli. Okwangoku i-APCUPSD, i-SNMP kunye ne-NUT ziyaxhaswa."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "Isimo se-UPS"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Isimo se-UPS ebekwe esweni kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Imodeli ye-UPS"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Imodeli ye-UPS ebekwe esweni kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Ivolthi yeLayini ye-UPS ebekwe esweni kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Ipesenti yoMthwalo"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Ipesenti yoMthwalo ye-UPS ebekwe esweni kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Umlinganiselo wombane oqikelelweyo ngee-watts: umlinganiselo wamandla oqhelekileyo uphindaphindwe ngePesenti yoMthwalo."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Imizuzu yamandla akhoyo e-UPS ebekwe esweni kuMamkeli ekujoliswe kuye."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Igama loMamkeli:Izibuko"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Igama loMamkeli:Izibuko eliqhuba i-daemon ye-apcupsd okanye iseva ye-NUT."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Ukuba le UPS ibekwe esweni okanye hayi."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Ixesha lokugqibela apho le UPS yavavanywa khona okanye yafunyanwa ivuliwe."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Jonga iDashibhodi ye-UPS"
+
+#: upses.php
+msgid "No"
+msgstr "Hayi"
+
+#: upses.php
+msgid "Yes"
+msgstr "Ewe"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Akukho zii-UPS zifunyenweyo"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Ayifumaneki"

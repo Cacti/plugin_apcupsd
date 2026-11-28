@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Malagasy <developers@cacti.net>\n"
+"Language: mg_MG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Fihenjanan'ny zotra"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Fihenjanana mivoaka"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Fahatetehan'ny zotra"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Vesatra"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Fahafenoan'ny bateria"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Voltazin'ny bateria"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Fotoana sisa"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Maripana"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "ankehitriny %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "kely indrindra %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "salany %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "ambony indrindra %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Salany"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Mbola tsy nisy fandrefesana voaangona ho an'ity UPS ity."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Mbola tsy misy fandrefesana azo jerena ho an'ity vondrona ity."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Tsy mihatra"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Mbola tsy misy fandrefesana azo jerena ho an'ity mari-drefy ity."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Hery tombanana"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Fampahalalana momba ny UPS"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Fidirana sy Vesatra"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Bateria sy Fotoam-piasana"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Hetsika sy Fifindrana"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Tsy fantatra"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Tsy misy intsony ity kisary ity."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "Kisary UPS"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Ny hery tombanana dia mila ny sandan'ny hery voatondro sy ny fandrefesana ny vesatra."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Tsy misy intsony ity mari-drefy ity."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Mbola tsy nisy fampahalalana voaangona ho an'ity UPS ity."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Anaran'ny UPS"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Modely"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Laharana serialy"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Rindrankajy anatiny (Firmware)"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Tariby / Mpandrindra"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Mpanangona"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Anaran'ny mpampiantrano"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Hery voatondro"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Voltazy fidirana voatondro"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Voltazin'ny bateria voatondro"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Zotra ambany indrindra voarakitra"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Zotra ambony indrindra voarakitra"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Datin'ny bateria"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Daty namboarina"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Fanavaozana farany"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Mbola tsy nisy angon-javatra momba ny hetsika voaangona ho an'ity UPS ity."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Anton'ny fifindrana farany"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Isan'ny fifindrana"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Fotoana tamin'ny bateria"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "seg"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Fitambaran'ny fotoana tamin'ny bateria"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Fitsapana tena farany"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Vokatry ny fitsapana tena"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Tamin'ny bateria farany"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Niala tamin'ny bateria farany"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Asehoy bebe kokoa"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Asehoy kely kokoa"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Sokafy ao anaty varavarankely"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Havaozy"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Esory amin'ny pejy"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Tariho hanovana ny filaharan'ny karatra"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Fangatahana tsy manan-kery. Andramo indray azafady."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Tsy misy UPS voafidy."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Manana karatra be loatra ity tabilao fanaraha-maso ity ka tsy afaka mitahiry ny firafiny."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Elanelam-potoana fanavaozana tsy manan-kery."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Karatra tsy fantatra."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "Tabilao fanaraha-maso UPS"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Sokafy ny Tabilao fanaraha-maso UPS avy ao amin'ny lisitra Fitantanana UPS amin'ny alalan'ny fipihana ny kisary tabilao an'ilay UPS. Tadidin'ny Tabilao fanaraha-maso ny UPS farany nosokafanao."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 Minitra"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 Segondra"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 Minitra"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Tsy misy fanavaozana"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Elanelam-potoana"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Manampy karatra"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Manampy karatra…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Tabilao fanaraha-maso ny andiany"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "Ireo UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Topi-maso ny andiany"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Fizarazarana ny sata"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Fandrefesana ny andiany"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Herin'ny andiany"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Mari-drefy ny andiany"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Mbola tsy misy UPS voarindra."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Fitambarany"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Mifandray"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Amin'ny bateria"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Hafa"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Tsy mandeha"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Hery tomb."
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Mbola tsy misy UPS mandeha mitatitra fandrefesana."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Ny hery tombanana dia mila UPS mandeha manana sandan'ny hery voatondro sy fandrefesana vesatra."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s amin'ny %s voatondro"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Tombanana ho hery voatondro x vesatra %, avy amin'ny fanadihadiana farany."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "Voaisa ny %s amin'ny %s UPS mandeha."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Sata"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Fahafenoana"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "min"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Sokafy ny Tabilao fanaraha-maso UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Fitambaran'ny andiany"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Fotoana fiandrasana alohan'ny hanombohan'ny APCUPSD mampaneno fanairana"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Maripana manodidina"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "kinova, isan'ny firaketana ary isan'ny byte manaraka"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Fampahalalana momba ny modely APC"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Isan'ny fonosana bateria ivelany simba (ho an'ny modely XL)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Daty nanoloana ny bateria farany (raha voafaritra)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Satan'ny bateria."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Voltazin'ny bateria ankehitriny"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Isan-jaton'ny fahafenoan'ny bateria ankehitriny"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Karazana tariby voalaza ao amin'ny rakitra fanefena"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Fitambaran'ny segondra tamin'ny bateria hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Daty sy ora fanavaozana farany avy amin'ny UPS"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Fikirakirana switch DIP an'ny UPS ankehitriny"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Famantarana bateria ambany alefa rehefa io sisa no fotoam-piasana tavela"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Ny mpandrindra APCUPSD rehefa APCUPSD no arofenitra"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Fotoana fiandrasana alohan'ny hamonoan'ny UPS azy aorian'ny fandraisana baiko"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Fotoana iandrasan'ny UPS aorian'ny fahatapahan-jiro rehefa miverina ny herinaratra"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Daty sy ora nanoratana ny fampahalalana momba ny sata"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Isan'ny bateria ivelany (ho an'ny modely XL)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Kinovan'ny rindrankajy anatiny UPS"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Voltazin'ny zotra fidirana izay hihoarana ka hampivadika ny UPS amin'ny bateria"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "anaran'ny solosaina mpampiantrano mampiasa apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Hamandoana manodidina"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Maripana anatiny amin'ny UPS amin'ny degre Celsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Antony nifindrana farany tamin'ny bateria hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Satan'ny voltazin'ny zotra fidirana."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Hatetiky ny zotra ankehitriny amin'ny Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Voltazin'ny zotra fidirana ankehitriny"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Isan-jaton'ny fahafahan'ny vesatra UPS ampiasaina araka ny tombantomban'ny UPS"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Voltazin'ny zotra fidirana izay ho latsaka ambany ka hampivadika ny UPS amin'ny bateria"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Daty nanamboarana ny UPS"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Fotoana farany nandefasan'ny mpitarika fanavaozana tamin'ny mpanaraka"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Voltazin'ny zotra fidirana ambony indrindra hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Fotoam-piasan'ny bateria ambony indrindra (TIMEOUT) izay hamonoana ny rafitra aorian'izany"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Fahafenoan'ny bateria kely indrindra %%% (BCHARGE) ilaina amin'ny famonoana ny rafitra"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Voltazin'ny zotra fidirana kely indrindra (voamarika) hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Fotoam-piasan'ny bateria kely indrindra (MINUTES) ilaina amin'ny famonoana ny rafitra"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Modely UPS nalaina avy amin'ny fampahalalana momba ny UPS"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Voltazin'ny bateria voatondro"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Voltazy fidirana voatondro omena ny UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Voltazy fivoahana voatondro omena rehefa mandeha amin'ny bateria"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Hery fivoahana voatondro amin'ny watt"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Isan'ny fifindrana amin'ny bateria hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Voltazin'ny fivoahan'ny UPS ankehitriny"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Rejisitra fahadisoana 1 amin'ny hex"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Rejisitra fahadisoana 2 amin'ny hex"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Rejisitra fahadisoana 3 amin'ny hex"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Fahafenoan'ny bateria %%% ilaina aorian'ny fahatapahan-jiro mba hamerenana ny herinaratra"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Daty sy ora nanaovana ny fitsapana tena farany hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Fikirakirana fahatsapan'ny UPS ankehitriny amin'ny fiovaovan'ny voltazy"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Laharana serialin'ny UPS"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Daty sy ora nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Mariky ny satan'ny UPS amin'ny hex"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "Satan'ny UPS. Iray na maromaro amin'ireto manaraka ireto (sarahan'ny elanelana): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN na COMMLOST na SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Datin'ny fitsapana tena farany nataon'ny UPS"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Elanelam-potoana fitsapana tena"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Fotoam-piasana tavela amin'ny bateria araka ny tombantomban'ny UPS"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Segondra amin'ny bateria ankehitriny"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Fomba fiasan'ny UPS"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Anaran'ny UPS avy amin'ny rakitra fanefena (dumb) na EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Anaran'ny mpitarika UPS raha maka angona avy amin'ny APCUPSD hafa ny APCUPSD"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "Laharan'ny kinovan'ny apcupsd, daty ary rafitra fiasa"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Daty, ora nialana farany tamin'ny bateria hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Daty sy ora nifindrana farany tamin'ny bateria hatramin'ny nanombohan'ny apcupsd"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Nakatona tampoka ny fifandraisana nataon'ny mpizara apcupsd."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Tsy namerina angona momba ny sata ny mpizara apcupsd."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Nandefa firaketana lehibe loatra ny mpizara apcupsd."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Nandefa angona be loatra ny mpizara apcupsd."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Tsy namaly tao anatin'ny %s segondra ny mpizara apcupsd."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Tsy manankery ny fikirakirana anaran'ny mpampiantrano na seranana ho an'ny apcupsd"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Tsy afaka mifandray amin'ny apcupsd ao amin'ny %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Nandà ny fidirana ny mpizara NUT. Hamarino ny anaran'ny mpampiasa sy ny tenimiafina NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Tsy mahafantatra UPS mitondra ny anarana hoe \"%s\" ny mpizara NUT."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Lany daty ny angona ao amin'ny mpizara NUT ho an'ity UPS ity: tsy mamaly ny mpamily azy."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Nitatitra hadisoana ny mpizara NUT: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Tsy manankery ny fikirakirana anaran'ny mpampiantrano, seranana, na anaran'ny UPS ho an'ny NUT"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Nakatona tampoka ny fifandraisana nataon'ny mpizara NUT."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Misy soratra tsy azo alefa ao amin'ny anaran'ny mpampiasa na ny tenimiafina NUT."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "Tsy nahomby ny fifanarahana TLS tamin'ny mpizara NUT."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Nandefa angona be loatra ny mpizara NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Tsy namaly tao anatin'ny %s segondra ny mpizara NUT."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Tsy azo vakiana ny rakitra CA / fanamarinana NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Tsy afaka mifandray amin'ny mpizara NUT %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Tsy namerina ova ho an'ity UPS ity ny mpizara NUT."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Mitantana UPS"
+
+#: setup.php
+msgid "Management"
+msgstr "Fitantanana"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Fitantanana ny rafitra"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Mitantana ireo UPS"
+
+#: upses.php
+msgid "Delete"
+msgstr "Fafao"
+
+#: upses.php
+msgid "Enable"
+msgstr "Velomy"
+
+#: upses.php
+msgid "Disable"
+msgstr "Vonoy"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Hanao dika mitovy"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Averina ny fitadiavana"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Alefa ny fanamboarana kisary mandeha ho azy"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Miorina amin'ny APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Miorina amin'ny SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Miorina amin'ny NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Ny anarana tianao homena ity UPS ity. Ho an'ny fitaovana APCUPSD sy NUT, hisy fitaovana Cacti mifandraika aminy hoforonina ho azy amin'ny fampiasana io anarana io. Ho an'ny UPS miorina amin'ny SNMP, tsy maintsy mamorona ny fitaovana Cacti aloha ianao."
+
+#: upses.php
+msgid "New UPS"
+msgstr "UPS vaovao"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Famaritana ny UPS"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Famaritana amin'ny antsipiriany kokoa momba ity UPS ity raha ilaina."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Karazana UPS"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Ny karazana UPS arahinao maso."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "ID-n'ny Poller"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Ny Poller manara-maso sy misy ity UPS ity"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Anaran'ny toerana"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Ny toerana misy ity UPS ity."
+
+#: upses.php
+msgid "None"
+msgstr "Tsy misy"
+
+#: upses.php
+msgid "Location"
+msgstr "Toerana"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Ny toerana ara-batana misy ny fitaovana. Ity lahatsoratra malalaka ity dia mety ho efitrano, toerana amin'ny talantalana (rack), sns."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Fitaovana Cacti"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Ho an'ny UPS miorina amin'ny SNMP, safidio ny fitaovana Cacti hampiasaina amin'ny fahazoan-dalana SNMP. Raha tsy izany, safidio ny Tsy misy, dia ny plugin UPS no hamorona ny fitaovana ho azy ho anao."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Famoronana ho azy amin'ny fanangonana voalohany"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Velona"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Mariho raha hanomboka avy hatrany ny fanangonana angona."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "Fampahalalana momba ny APC UPSD"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Ny anaran'ny mpampiantrano izay mampandeha ny apcupsd na ny mpizara NUT (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "Seranana TCP"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Ampidiro ny seranana TCP ho an'ity UPS ity. Ny an'ny apcupsd dia 3551 amin'ny mahazatra ary ny an'ny NUT dia 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Fe-potoana farany (segondra)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Ny faharetan'ny fiandrasan'ny poller ny apcupsd na ny mpizara NUT alohan'ny hijanonana amin'ity UPS ity, manomboka amin'ny 1 ka hatramin'ny 120 segondra. Ny UPS miorina amin'ny SNMP dia mampiasa ny fe-potoana SNMP kosa."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "Safidy NUT"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "Anaran'ny UPS ao amin'ny NUT"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Ny anaran'ny UPS ao amin'ny mpizara NUT, araka ny asehon'ny \"upsc -l\" (ilay ampahany alohan'ny @ ao amin'ny ups@host). Ny mpizara NUT iray dia afaka manompo UPS maromaro."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "Anaran'ny mpampiasa NUT"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Tsy voatery. Ny kaonty upsd.users ampiasaina amin'ny fanamarinana. Avelao ho banga raha fidirana famakiana ihany tsy mitonona anarana, izay fomba mahazatra fanaraha-maso ny mpizara NUT."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "Tenimiafina NUT"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Ny tenimiafina ho an'ny anaran'ny mpampiasa NUT."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Mampiasa TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Afeno amin'ny STARTTLS ny fifandraisana alohan'ny handefasana ny fahazoan-dalana. Hamarinina ny fanamarinana sy ny anaran'ny mpampiantrano an'ny mpizara NUT, ka tsy maintsy atokisan'ny poller Cacti ilay fanamarinana, na azonao tondroina eto ambany ny rakitra CA / fanamarinana."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Rakitra CA / Fanamarinana"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Tsy voatery. Ny lalana feno ao amin'ny poller Cacti mankany amin'ny rakitra PEM mitahiry ny fanamarinana CA (na ny fanamarinan'ny mpizara nosoniavin'ny tenany ihany) hanamarinana ny mpizara NUT, ohatra /etc/nut/upsd.pem. Ny anaran'ny mpampiantrano etsy ambony dia tsy maintsy mifanaraka amin'ny fanamarinana."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Ekeo ny fanamarinana nosoniavin'ny tenany ihany"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Ekeo daholo izay fanamarinana rehetra nefa tsy manamarina azy. Mbola voafehy sy miafina ny fifandraisana, saingy tsy voamarina ny mpizara NUT, ka mety ho vitan'ny mpisakana eny antenatenany ny mamaky ny fahazoan-dalana NUT. Tsara kokoa ny mampiasa ny rakitra CA / Fanamarinana etsy ambony."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "Safidy SNMP"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Ny anaran'ny mpampiantrano misy ny mpandraharaha SNMP."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "Tsy azo ovana ny ID-n'ny Poller raha mbola mifandray amin'ny fitaovana Cacti ny UPS. Ovao ao amin'ny fitaovana kosa ny poller."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Tsy hita ny môdely UPS! Tsy afaka manao dika mitovy."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Tsy misy amin'ireo UPS voafidy no mbola manana fitaovana Cacti, ka tsy nandeha ny fanamboarana kisary ho azy. Misy fitaovana foronina amin'ny fanangonana voalohany mahomby."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "Nandeha ny fanamboarana kisary ho azy ho an'ny UPS %d. UPS %d no mbola tsy manana fitaovana Cacti ary nodikaina."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "Nandeha ny fanamboarana kisary ho azy ho an'ny UPS %d."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(mbola tsy misy fitaovana Cacti)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Tsindrio ny 'Tohizo' mba hamafana ity UPS manaraka ity. Marihina fa hesorina tsy hifandray amin'ity UPS ity ny Fitaovana rehetra."
+msgstr[1] "Tsindrio ny 'Tohizo' mba hamafana ireo UPS manaraka rehetra. Marihina fa hesorina tsy hifandray amin'ity UPS ity ny fitaovana rehetra."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Foano"
+
+#: upses.php
+msgid "Continue"
+msgstr "Tohizo"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Fafao ny UPS"
+msgstr[1] "Fafao ireo UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Tsindrio ny 'Tohizo' mba hanaovana dika mitovy ity UPS manaraka ity."
+msgstr[1] "Tsindrio ny 'Tohizo' mba hanaovana dika mitovy ireo UPS manaraka rehetra."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Anaran'ny UPS:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Ataovy dika mitovy ny UPS"
+msgstr[1] "Ataovy dika mitovy ireo UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Tsindrio ny 'Tohizo' mba hamerenana amin'ny laoniny ny Fikarohana ho an'ity UPS manaraka ity. Marihina fa ho an'ireo UPS karazana SNMPD ihany no mihatra izany."
+msgstr[1] "Tsindrio ny 'Tohizo' mba hamerenana amin'ny laoniny ny Fikarohana ho an'ireto UPS manaraka ireto. Marihina fa ho an'ireo UPS karazana SNMPD ihany no mihatra izany."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Avereno amin'ny laoniny ny UPS"
+msgstr[1] "Avereno amin'ny laoniny ireo UPS"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Tsindrio ny 'Tohizo' mba hampandehanana ny Fanaovana kisary ho azy ho an'ity UPS manaraka ity. Ny kisary, ny loharanon-drakitra ary ny singa ao amin'ny hazo dia foronina avy amin'ny môdelin'ilay fitaovana sy ny fitsipika fanaovana ho azy mifanaraka amin'izany; avela amin'izao kosa ireo kisary efa misy. Ny UPS efa manana Fitaovana Cacti ihany no voakasika."
+msgstr[1] "Tsindrio ny 'Tohizo' mba hampandehanana ny Fanaovana kisary ho azy ho an'ireto UPS manaraka ireto. Ny kisary, ny loharanon-drakitra ary ny singa ao amin'ny hazo dia foronina avy amin'ny môdelin'ny fitaovana tsirairay sy ny fitsipika fanaovana ho azy mifanaraka amin'izany; avela amin'izao kosa ireo kisary efa misy. Ny UPS efa manana Fitaovana Cacti ihany no voakasika."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Tsindrio ny 'Tohizo' mba handefasana ity UPS manaraka ity."
+msgstr[1] "Tsindrio ny 'Tohizo' mba handefasana ireo UPS manaraka rehetra."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Alefaso ny UPS"
+msgstr[1] "Alefaso ireo UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Tsindrio ny 'Tohizo' mba hampiatoana ity UPS manaraka ity."
+msgstr[1] "Tsindrio ny 'Tohizo' mba hampiatoana ireo UPS manaraka rehetra."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Ajanony ny UPS"
+msgstr[1] "Ajanony ireo UPS"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [fanovana: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [vaovao]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "Tsy mbola nampidirina ny môdelin'ny fitaovana APCUPSD. Tsy hitranga ny fanamboarana fitaovana ho azy raha tsy efa nampidirina izany!"
+
+#: upses.php
+msgid "Search"
+msgstr "Karoka"
+
+#: upses.php
+msgid "Site"
+msgstr "Toerana"
+
+#: upses.php
+msgid "All"
+msgstr "Rehetra"
+
+#: upses.php
+msgid "Default"
+msgstr "Mahazatra"
+
+#: upses.php
+msgid "Go"
+msgstr "Alefa"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Apetraho/Havaozy ny sivana"
+
+#: upses.php
+msgid "Clear"
+msgstr "Diovy"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Diovy ny sivana"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Ny anaran'ity UPS ity."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "Ny famantarana manokana mifandray amin'ity UPS ity."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "Ny ID-n'ny fitaovana Cacti."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Ny satan'ny daemon apcupsd ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Ny karazana mpanangona. Amin'izao fotoana izao dia tohanana ny APCUPSD, SNMP ary NUT."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "Satan'ny UPS"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Ny satan'ny UPS arahina maso ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Môdelin'ny UPS"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Ny môdelin'ny UPS arahina maso ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Ny voltazin'ny tsipika an'ny UPS arahina maso ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Isan-jaton'ny vesatra"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Ny isan-jaton'ny vesatra amin'ny UPS arahina maso ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Ny tomban'ny hery laniana amin'ny watt: ny hery ara-dalàna ampitomboina amin'ny isan-jaton'ny vesatra."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Ny minitra faharetan'ny fahan'ny UPS sisa azo ampiasaina amin'ny UPS arahina maso ao amin'ny mpampiantrano kendrena."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Mpampiantrano:Seranana"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Ny Mpampiantrano:Seranana izay mampandeha ny daemon apcupsd na ny mpizara NUT."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Raha arahina maso ity UPS ity na tsia."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Ny fotoana farany nakana santionany na nahitana fa mandeha ity UPS ity."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Hijery ny tabilao UPS"
+
+#: upses.php
+msgid "No"
+msgstr "Tsia"
+
+#: upses.php
+msgid "Yes"
+msgstr "Eny"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Tsy nahitana UPS"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Tsy misy"
