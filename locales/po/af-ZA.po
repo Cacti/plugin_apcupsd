@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Afrikaans <developers@cacti.net>\n"
+"Language: af_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Lynspanning"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Uitsetspanning"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Lynfrekwensie"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Las"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Batterylading"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Batteryspanning"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Tyd oor"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Temperatuur"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "nou %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "min %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "gem %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "maks %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Gemiddeld"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Geen lesings is nog vir hierdie UPS ingesamel nie."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Geen lesings is nog vir hierdie groep beskikbaar nie."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "N.v.t."
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Geen lesings is nog vir hierdie meter beskikbaar nie."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Geskatte krag"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "UPS-inligting"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Inset en las"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Battery en looptyd"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Gebeurtenisse en oorskakelings"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Hierdie grafiek is nie meer beskikbaar nie."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "UPS-grafiek"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Geskatte krag benodig 'n nominale kraggradering en 'n laslesing."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Hierdie meter is nie meer beskikbaar nie."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Geen inligting is nog vir hierdie UPS ingesamel nie."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "UPS-naam"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Model"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Reeksnommer"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Fermware"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Kabel / Drywer"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Versamelaar"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Gasheernaam"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Nominale krag"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Nominale insetspanning"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Nominale batteryspanning"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Aangetekende lyn-min"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Aangetekende lyn-maks"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Batterydatum"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Vervaardig"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Laas bygewerk"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Geen gebeurtenisdata is nog vir hierdie UPS ingesamel nie."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Rede vir laaste oorskakeling"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Aantal oorskakelings"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Tyd op battery"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "sek"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Kumulatief op battery"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Laaste selftoets"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Selftoetsuitslag"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Laas op battery"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Laas van battery af"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Wys meer"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Wys minder"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Maak in 'n dialoog oop"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Verfris"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Verwyder van bladsy"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Sleep om kaart te herrangskik"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Ongeldige versoek. Probeer asseblief weer."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Geen UPS gekies nie."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Hierdie paneelbord het te veel kaarte om sy uitleg te stoor."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Ongeldige verfrissingsinterval."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Onbekende kaart."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "UPS-paneelbord"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Maak 'n UPS-paneelbord oop vanuit die lys Bestuur UPS'e deur op die UPS se paneelbordglief te klik. Die paneelbord onthou die laaste UPS wat jy oopgemaak het."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 minuut"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 sekondes"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 minute"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Geen verfrissing"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Tydspan"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Voeg kaart by"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Voeg 'n kaart by…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Vlootpaneelbord"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS'e"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Vlootoorsig"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Statusverspreiding"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Vlootlesings"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Vlootkrag"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Vlootmeters"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Geen UPS'e is nog opgestel nie."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Totaal"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Aanlyn"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Op battery"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Ander"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Gedeaktiveer"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Gesk. krag"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Geen geaktiveerde UPS'e rapporteer nog lesings nie."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Geskatte krag benodig 'n geaktiveerde UPS met 'n nominale kraggradering en 'n laslesing."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s van %s gegradeer"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Geskat as nominale krag x las-%, vanaf die jongste peiling."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "%s van %s geaktiveerde UPS'e getel."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Status"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Lading"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "min"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Maak UPS-paneelbord oop"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Vloottotaal"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Vertragingstydperk voordat APCUPSD 'n alarm begin laat klink"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Omgewingstemperatuur"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "weergawe, aantal rekords en aantal grepe wat volg"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "APC-modelinligting"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Aantal foutiewe eksterne batterypakke (vir XL-modelle)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Datum waarop battery laas vervang is (indien gestel)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Batterystatus."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Huidige batteryspanning"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Huidige batterykapasiteit-ladingspersentasie"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Kabeltipe soos in die opstellingslêer gespesifiseer"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Kumulatiewe sekondes op battery sedert apcupsd opgestart het"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Datum en tyd van laaste bywerking vanaf UPS"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Huidige UPS DIP-skakelaarinstellings"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Laebattery-sein word gestuur wanneer soveel looptyd oorbly"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Die APCUPSD-drywer wanneer APCUPSD die protokol is"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Vertraging voordat UPS afskakel nadat opdrag ontvang is"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Tyd wat UPS wag na kragafskakeling wanneer die krag herstel word"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Datum en tyd waarop statusinligting geskryf is"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Aantal eksterne batterye (vir XL-modelle)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "UPS-fermwareweergawe"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Insetlynspanning waarbo UPS na battery sal oorskakel"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "gasheernaam van rekenaar waarop apcupsd loop"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Omgewingsvogtigheid"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "UPS se interne temperatuur in grade Celsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Rede vir laaste oorskakeling na battery sedert apcupsd opgestart het"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Insetlynspanningstatus."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Huidige lynfrekwensie in Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Huidige insetlynspanning"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Persentasie van UPS-laskapasiteit wat gebruik word soos deur UPS beraam"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Insetlynspanning waaronder UPS na battery sal oorskakel"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Vervaardigingsdatum van UPS"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Laaste keer wat die meester 'n bywerking na die slaaf gestuur het"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Maksimum insetlynspanning sedert apcupsd begin het"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Maks. batterylooptyd (TIMEOUT) waarna stelsel afgeskakel word"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Min. batterylading %%% (BCHARGE) vereis vir stelselafskakeling"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Min. (waargenome) insetlynspanning sedert apcupsd begin het"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Min. batterylooptyd (MINUTES) vereis vir stelselafskakeling"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "UPS-model afgelei uit UPS-inligting"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Nominale batteryspanning"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Nominale insetspanning wat aan die UPS gelewer word."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Nominale uitsetspanning wat gelewer word wanneer op batterykrag"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Nominale kraguitset in watt"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Aantal oorskakelings na battery sedert apcupsd opgestart het"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Huidige UPS-uitsetspanning"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Foutregister 1 in heks"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Foutregister 2 in heks"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Foutregister 3 in heks"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Batterylading %%% vereis na kragafskakeling om krag te herstel"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Datum en tyd van laaste selftoets sedert apcupsd opgestart het"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Huidige UPS-sensitiwiteitsinstelling vir spanningskommelinge"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "UPS-reeksnommer"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Datum en tyd waarop apcupsd begin is"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "UPS-statusvlag in heks"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "UPS-status. Een of meer van die volgende (spasiegeskei): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN of COMMLOST of SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Datum van die laaste UPS-selftoets"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Selftoets-interval"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Oorblywende looptyd op battery soos deur die UPS beraam"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Sekondes tans op battery"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Modus waarin UPS werk"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "UPS-naam uit opstellingslêer (dumb) of EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "UPS-meesternaam in die geval waar APCUPSD die data van 'n ander instansie van APCUPSD intrek"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd-weergawenommer, datum en bedryfstelsel"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Datum, tyd van laaste oorskakeling vanaf battery sedert apcupsd opgestart het"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Datum, tyd van laaste oorskakeling na battery sedert apcupsd-opstart"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Die apcupsd-bediener het die verbinding onverwags gesluit."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Die apcupsd-bediener het geen statusdata teruggestuur nie."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Die apcupsd-bediener het 'n oorgroot rekord gestuur."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Die apcupsd-bediener het te veel data gestuur."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Die apcupsd-bediener het nie binne %s sekondes geantwoord nie."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Ongeldige apcupsd-gasheernaam- of poortkonfigurasie"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Kan nie met apcupsd by %s koppel nie: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Die NUT-bediener het toegang geweier. Gaan die NUT-gebruikersnaam en -wagwoord na."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Die NUT-bediener ken nie 'n UPS met die naam \"%s\" nie."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Die NUT-bediener het verouderde data vir hierdie UPS: sy drywer reageer nie."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Die NUT-bediener het 'n fout gerapporteer: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Ongeldige konfigurasie vir NUT-gasheernaam, poort of UPS-naam"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Die NUT-bediener het die verbinding onverwags gesluit."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Die NUT-gebruikersnaam of -wagwoord bevat karakters wat nie gestuur kan word nie."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "TLS-onderhandeling met die NUT-bediener het misluk."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Die NUT-bediener het te veel data gestuur."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Die NUT-bediener het nie binne %s sekondes geantwoord nie."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Die NUT CA- / sertifikaatlêer kan nie gelees word nie."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Kan nie met die NUT-bediener %s koppel nie: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Die NUT-bediener het geen veranderlikes vir hierdie UPS teruggestuur nie."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Bestuur UPS'e"
+
+#: setup.php
+msgid "Management"
+msgstr "Bestuur"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Stelseladministrasie"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Bestuur UPS'e"
+
+#: upses.php
+msgid "Delete"
+msgstr "Skrap"
+
+#: upses.php
+msgid "Enable"
+msgstr "Aktiveer"
+
+#: upses.php
+msgid "Disable"
+msgstr "Deaktiveer"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Dupliseer"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Stel bespeuring terug"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Voer grafiekoutomatisering uit"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "APC UPSD-gebaseer"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "SNMP-gebaseer"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "NUT-gebaseer"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Die naam wat jy aan hierdie UPS wil gee. Vir APCUPSD- en NUT-toestelle sal 'n ooreenstemmende Cacti-toestel outomaties vir die UPS geskep word met hierdie naam. Vir SNMP-gebaseerde UPS'e moet jy eers die Cacti-toestel skep."
+
+#: upses.php
+msgid "New UPS"
+msgstr "Nuwe UPS"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "UPS-beskrywing"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "'n Meer volledige beskrywing van hierdie UPS indien nodig."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "UPS-tipe"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Die tipe UPS wat jy monitor."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "Peiler-ID"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Die peiler waarin hierdie UPS voorkom en waardeur dit gemonitor word"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Terreinnaam"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Die terrein waarin hierdie UPS geleë is."
+
+#: upses.php
+msgid "None"
+msgstr "Geen"
+
+#: upses.php
+msgid "Location"
+msgstr "Ligging"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Die fisiese ligging van die toestel. Hierdie vryvormteks kan 'n kamer, rakligging, ens. wees."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Cacti-toestel"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Vir SNMP-gebaseerde UPS'e, kies die Cacti-toestel om vir SNMP-aanmeldbewyse te gebruik. Andersins, kies Geen, en die UPS-inprop sal die toestel outomaties vir jou skep."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Skep outomaties by eerste peiling"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Geaktiveer"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Merk om onmiddellik vir data te begin peil."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "APC UPSD-inligting"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Die gasheernaam van die gasheer wat apcupsd of die NUT-bediener (upsd) laat loop."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "TCP-poort"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Voer die TCP-poort vir hierdie UPS in. apcupsd gebruik standaard 3551 en NUT gebruik standaard 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Uitteltyd (sekondes)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Hoe lank die peiler vir apcupsd of die NUT-bediener wag voordat dit op hierdie UPS tou opgooi, van 1 tot 120 sekondes. SNMP-gebaseerde UPS'e gebruik eerder die SNMP-uitteltyd."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "NUT-opsies"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "NUT UPS-naam"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Die naam van die UPS op die NUT-bediener, soos gelys deur \"upsc -l\" (die deel voor die @ in ups@host). Een NUT-bediener kan verskeie UPS'e bedien."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "NUT-gebruikersnaam"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Opsioneel. Die upsd.users-rekening om mee te staaf. Laat leeg vir anonieme leesalleentoegang, wat die gewone manier is waarop NUT-bedieners gemonitor word."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "NUT-wagwoord"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Die wagwoord vir die NUT-gebruikersnaam."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Gebruik TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Enkripteer die verbinding met STARTTLS voordat enige aanmeldbewyse gestuur word. Die NUT-bedienersertifikaat en gasheernaam word geverifieer, dus moet die sertifikaat deur die Cacti-peiler vertrou word, of jy kan hieronder na sy CA- / sertifikaatlêer verwys."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "CA- / sertifikaatlêer"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Opsioneel. Die volledige pad op die Cacti-peiler na 'n PEM-lêer wat die CA-sertifikaat (of die selfondertekende bedienersertifikaat) bevat om die NUT-bediener teen te verifieer, byvoorbeeld /etc/nut/upsd.pem. Die gasheernaam hierbo moet by die sertifikaat pas."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Laat selfondertekende sertifikaat toe"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Aanvaar enige sertifikaat sonder om dit na te gaan. Die verbinding is steeds geënkripteer, maar die NUT-bediener word nie gestaaf nie, dus kan 'n tussenganger die NUT-aanmeldbewyse lees. Verkies die CA- / sertifikaatlêer hierbo."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "SNMP-opsies"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Die gasheernaam waar die SNMP-agent geleë is."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "Die Peiler-ID kan nie verander word terwyl die UPS aan 'n Cacti-toestel gekoppel is nie. Verander eerder die peiler op die toestel."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Sjabloon-UPS is nie gevind nie! Kan nie dupliseer nie."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Geen van die gekose UPS'e het nog 'n Cacti-toestel nie, dus is grafiekoutomatisering nie uitgevoer nie. 'n Toestel word met die eerste suksesvolle peiling geskep."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "Grafiekoutomatisering is vir %d UPS('e) uitgevoer. %d UPS('e) het nog geen Cacti-toestel nie en is oorgeslaan."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "Grafiekoutomatisering is vir %d UPS('e) uitgevoer."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(nog geen Cacti-toestel nie)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Klik 'Gaan voort' om die volgende UPS te skrap. Let wel, alle toestelle sal van hierdie UPS ontkoppel word."
+msgstr[1] "Klik 'Gaan voort' om al die volgende UPS'e te skrap. Let wel, alle toestelle sal van hierdie UPS'e ontkoppel word."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Kanselleer"
+
+#: upses.php
+msgid "Continue"
+msgstr "Gaan voort"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Skrap UPS"
+msgstr[1] "Skrap UPS'e"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Klik 'Gaan voort' om die volgende UPS te dupliseer."
+msgstr[1] "Klik 'Gaan voort' om al die volgende UPS'e te dupliseer."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "UPS-naam:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Dupliseer UPS"
+msgstr[1] "Dupliseer UPS'e"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Klik 'Gaan voort' om ontdekking vir die volgende UPS terug te stel. Let wel, dit geld slegs vir SNMPD-tipe UPS'e."
+msgstr[1] "Klik 'Gaan voort' om ontdekking vir die volgende UPS'e terug te stel. Let wel, dit geld slegs vir SNMPD-tipe UPS'e."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Stel UPS terug"
+msgstr[1] "Stel UPS'e terug"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Klik 'Gaan voort' om grafiekoutomatisering vir die volgende UPS uit te voer. Grafieke, databronne en boomitems word geskep uit die toestel se sjablone en die ooreenstemmende outomatiseringsreëls; grafieke wat reeds bestaan, word gelaat soos hulle is. Slegs 'n UPS wat reeds 'n Cacti-toestel het, word geraak."
+msgstr[1] "Klik 'Gaan voort' om grafiekoutomatisering vir die volgende UPS'e uit te voer. Grafieke, databronne en boomitems word geskep uit elke toestel se sjablone en die ooreenstemmende outomatiseringsreëls; grafieke wat reeds bestaan, word gelaat soos hulle is. Slegs 'n UPS wat reeds 'n Cacti-toestel het, word geraak."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Klik 'Gaan voort' om die volgende UPS te aktiveer."
+msgstr[1] "Klik 'Gaan voort' om al die volgende UPS'e te aktiveer."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Aktiveer UPS"
+msgstr[1] "Aktiveer UPS'e"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Klik 'Gaan voort' om die volgende UPS te deaktiveer."
+msgstr[1] "Klik 'Gaan voort' om al die volgende UPS'e te deaktiveer."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Deaktiveer UPS"
+msgstr[1] "Deaktiveer UPS'e"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [wysig: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [nuwe]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "Die APCUPSD-toestelsjabloon is nog nie ingevoer nie. Toesteloutomatisering sal nie plaasvind voordat dit ingevoer is nie!"
+
+#: upses.php
+msgid "Search"
+msgstr "Soek"
+
+#: upses.php
+msgid "Site"
+msgstr "Terrein"
+
+#: upses.php
+msgid "All"
+msgstr "Almal"
+
+#: upses.php
+msgid "Default"
+msgstr "Verstek"
+
+#: upses.php
+msgid "Go"
+msgstr "Gaan"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Stel/verfris filters"
+
+#: upses.php
+msgid "Clear"
+msgstr "Maak skoon"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Maak filters skoon"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Die naam van hierdie UPS."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "Die unieke ID wat aan hierdie UPS gekoppel is."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "Die Cacti-toestel-ID."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Die status van die apcupsd-demoon op die teikengasheer."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Die tipe versamelaar. Tans word APCUPSD, SNMP en NUT ondersteun."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "UPS-status"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Die status van die gemonitorde UPS op die teikengasheer."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "UPS-model"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Die model van die gemonitorde UPS op die teikengasheer."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Die lynspanning van die gemonitorde UPS op die teikengasheer."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Laspersentasie"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Die laspersentasie van die gemonitorde UPS op die teikengasheer."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Die beraamde kragverbruik in watt: die nominale kraggradering vermenigvuldig met die laspersentasie."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Die minute beskikbare UPS-lading van die gemonitorde UPS op die teikengasheer."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Gasheernaam:Poort"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Die Gasheernaam:Poort wat die apcupsd-demoon of NUT-bediener laat loop."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Of hierdie UPS gemonitor word al dan nie."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Die laaste keer dat hierdie UPS gemonster of aanlyn gevind is."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Bekyk UPS-kontroleskerm"
+
+#: upses.php
+msgid "No"
+msgstr "Nee"
+
+#: upses.php
+msgid "Yes"
+msgstr "Ja"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Geen UPS'e gevind nie"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Nie beskikb."

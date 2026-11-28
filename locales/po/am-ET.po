@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Amharic <developers@cacti.net>\n"
+"Language: am_ET\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "የመስመር ቮልቴጅ"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "የውጤት ቮልቴጅ"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "የመስመር ድግግሞሽ"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "ጭነት"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "የባትሪ ቻርጅ"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "የባትሪ ቮልቴጅ"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "የቀረ ጊዜ"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "የሙቀት መጠን"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "አሁን %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "ዝቅተኛ %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "አማካይ %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "ከፍተኛ %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "አማካይ"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "ለዚህ UPS እስካሁን ምንም ንባቦች አልተሰበሰቡም።"
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "ለዚህ ቡድን እስካሁን ምንም ንባቦች አይገኙም።"
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "አይገኝም"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "ለዚህ መለኪያ እስካሁን ምንም ንባቦች አይገኙም።"
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "የሚገመት ኃይል"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "የUPS መረጃ"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "ግብዓት እና ጭነት"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "ባትሪ እና የሥራ ጊዜ"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "ክስተቶች እና ዝውውሮች"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "ያልታወቀ"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "ይህ ግራፍ ከእንግዲህ አይገኝም።"
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "የUPS ግራፍ"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "የሚገመት ኃይል መደበኛ የኃይል ደረጃ እና የጭነት ንባብ ይፈልጋል።"
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "ይህ መለኪያ ከእንግዲህ አይገኝም።"
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "ለዚህ UPS እስካሁን ምንም መረጃ አልተሰበሰበም።"
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "የUPS ስም"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "ሞዴል"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "ተከታታይ ቁጥር"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "ፈርምዌር"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "ገመድ / ድራይቨር"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "ሰብሳቢ"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "የሆስት ስም"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "መደበኛ ኃይል"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "መደበኛ የግብዓት ቮልቴጅ"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "መደበኛ የባትሪ ቮልቴጅ"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "የተመዘገበ ዝቅተኛ የመስመር መጠን"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "የተመዘገበ ከፍተኛ የመስመር መጠን"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "የባትሪ ቀን"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "የተመረተበት"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "መጨረሻ የዘመነው"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "ለዚህ UPS እስካሁን ምንም የክስተት ውሂብ አልተሰበሰበም።"
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "የመጨረሻው የዝውውር ምክንያት"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "የዝውውሮች ብዛት"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "በባትሪ ላይ የቆየበት ጊዜ"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "ሰከንድ"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "በባትሪ ላይ የተጠራቀመ ጊዜ"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "የመጨረሻው የራስ ሙከራ"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "የራስ ሙከራ ውጤት"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "ለመጨረሻ ጊዜ በባትሪ ላይ"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "ለመጨረሻ ጊዜ ከባትሪ የወጣበት"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "ተጨማሪ አሳይ"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "ያነሰ አሳይ"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "በመገናኛ ሳጥን ውስጥ ክፈት"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "አድስ"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "ከገጹ አስወግድ"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "ካርዱን እንደገና ለመደርደር ይጎትቱ"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "ልክ ያልሆነ ጥያቄ። እባክዎ እንደገና ይሞክሩ።"
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "ምንም UPS አልተመረጠም።"
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "ይህ ዳሽቦርድ አቀማመጡን ለማስቀመጥ በጣም ብዙ ካርዶች አሉት።"
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "ልክ ያልሆነ የማደሻ ክፍተት።"
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "ያልታወቀ ካርድ።"
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "የUPS ዳሽቦርድ"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "የUPSን ዳሽቦርድ ምልክት ጠቅ በማድረግ ከUPSዎችን አስተዳድር ዝርዝር ውስጥ የUPS ዳሽቦርድን ይክፈቱ። ዳሽቦርዱ ለመጨረሻ ጊዜ የከፈቱትን UPS ያስታውሳል።"
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 ደቂቃ"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 ሰከንዶች"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 ደቂቃዎች"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "እድሳት የለም"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "የጊዜ ክፍተት"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "ካርድ አክል"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "ካርድ አክል…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "የስብስብ ዳሽቦርድ"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPSዎች"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "የስብስብ አጠቃላይ እይታ"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "የሁኔታ ስርጭት"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "የስብስብ ንባቦች"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "የስብስብ ኃይል"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "የስብስብ መለኪያዎች"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "እስካሁን ምንም UPSዎች አልተዋቀሩም።"
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "ጠቅላላ"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "መስመር ላይ"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "በባትሪ ላይ"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "ሌላ"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "ተሰናክሏል"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "ግምታዊ ኃይል"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "እስካሁን ምንም የነቁ UPSዎች ንባቦችን ሪፖርት እያደረጉ አይደለም።"
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "የሚገመት ኃይል መደበኛ የኃይል ደረጃ እና የጭነት ንባብ ያለው የነቃ UPS ይፈልጋል።"
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s ከ %s መደበኛ ደረጃ"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "ከቅርብ ጊዜው መረጃ ማሰባሰብ እንደ መደበኛ ኃይል x ጭነት % የተገመተ።"
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "%s ከ %s የነቁ UPSዎች ተቆጥረዋል።"
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "ሁኔታ"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "ቻርጅ"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "ደቂቃ"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "የUPS ዳሽቦርድ ክፈት"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "የስብስብ ድምር"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "APCUPSD ማንቂያ ማሰማት ከመጀመሩ በፊት ያለ የመዘግየት ጊዜ"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "የአካባቢ ሙቀት"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "ስሪት፣ የመዝገቦች ብዛት እና የሚከተሉት የባይቶች ብዛት"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "የAPC ሞዴል መረጃ"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "የተበላሹ ውጫዊ የባትሪ ጥቅሎች ብዛት (ለXL ሞዴሎች)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "ባትሪው ለመጨረሻ ጊዜ የተተካበት ቀን (ከተዘጋጀ)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "የባትሪ ሁኔታ።"
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "የአሁኑ የባትሪ ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "የአሁኑ የባትሪ አቅም የቻርጅ መቶኛ"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "በማዋቀሪያ ፋይሉ ውስጥ የተገለጸው የገመድ ዓይነት"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ በባትሪ ላይ የተቆዩ የተጠራቀሙ ሰከንዶች"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "ከUPS የመጨረሻው ዝማኔ የተገኘበት ቀን እና ሰዓት"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "የአሁኑ የUPS DIP ማብሪያ/ማጥፊያ ቅንብሮች"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "ይህን ያህል የሥራ ጊዜ ሲቀር ዝቅተኛ የባትሪ ምልክት ይላካል"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD ፕሮቶኮል በሚሆንበት ጊዜ የAPCUPSD ድራይቨር"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "ትዕዛዝ ከደረሰ በኋላ UPS ከመጥፋቱ በፊት ያለ የመዘግየት ጊዜ"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "ኃይል ሲመለስ UPS ከጠፋ በኋላ የሚጠብቀው ጊዜ"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "የሁኔታ መረጃው የተጻፈበት ቀን እና ሰዓት"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "የውጫዊ ባትሪዎች ብዛት (ለXL ሞዴሎች)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "የUPS ፈርምዌር ስሪት"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "UPS ወደ ባትሪ የሚሸጋገርበት ከፍተኛ የግብዓት መስመር ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "apcupsdን የሚያስኬድ የኮምፒውተር የሆስት ስም"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "የአካባቢ እርጥበት"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "የUPS ውስጣዊ ሙቀት በዲግሪ ሴልሺየስ"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ለመጨረሻ ጊዜ ወደ ባትሪ የተዛወረበት ምክንያት"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "የግብዓት መስመር ቮልቴጅ ሁኔታ።"
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "የአሁኑ የመስመር ድግግሞሽ በሄርዝ"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "የአሁኑ የግብዓት መስመር ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "በUPS የተገመተው ጥቅም ላይ የዋለ የUPS ጭነት አቅም መቶኛ"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "UPS ወደ ባትሪ የሚሸጋገርበት ዝቅተኛ የግብዓት መስመር ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "UPS የተመረተበት ቀን"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "ዋናው ለተከታዩ ለመጨረሻ ጊዜ ዝማኔ የላከበት ጊዜ"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ከፍተኛው የግብዓት መስመር ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "ከዚያ በኋላ ስርዓቱ የሚዘጋበት ከፍተኛው የባትሪ የሥራ ጊዜ (TIMEOUT)"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "ስርዓቱን ለመዝጋት የሚያስፈልግ ዝቅተኛ የባትሪ ቻርጅ %%% (BCHARGE)"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ዝቅተኛው (የታየው) የግብዓት መስመር ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "ስርዓቱን ለመዝጋት የሚያስፈልግ ዝቅተኛ የባትሪ የሥራ ጊዜ (MINUTES)"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "ከUPS መረጃ የተገኘ የUPS ሞዴል"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "መደበኛ የባትሪ ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "ለUPS የሚቀርብ መደበኛ የግብዓት ቮልቴጅ።"
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "በባትሪ ኃይል ላይ ሲሆን የሚቀርብ መደበኛ የውጤት ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "መደበኛ የኃይል ውጤት በዋት"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ወደ ባትሪ የተደረጉ ዝውውሮች ብዛት"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "የአሁኑ የUPS የውጤት ቮልቴጅ"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "የስህተት መመዝገቢያ 1 በሄክስ"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "የስህተት መመዝገቢያ 2 በሄክስ"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "የስህተት መመዝገቢያ 3 በሄክስ"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "ኃይል ከጠፋ በኋላ ኃይልን ለመመለስ የሚያስፈልግ የባትሪ ቻርጅ %%%"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ የመጨረሻው የራስ ሙከራ ቀን እና ሰዓት"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "ለቮልቴጅ መለዋወጥ የአሁኑ የUPS ስሜታዊነት ቅንብር"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "የUPS ተከታታይ ቁጥር"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "apcupsd የተጀመረበት ቀን እና ሰዓት"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "የUPS ሁኔታ አመልካች በሄክስ"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "የUPS ሁኔታ። ከሚከተሉት አንዱ ወይም ከዚያ በላይ (በክፍተት የተለዩ)፦ CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ወይም COMMLOST ወይም SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "የመጨረሻው የUPS የራስ ሙከራ ቀን"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "የራስ-ሙከራ ክፍተት"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "በUPS እንደተገመተው በባትሪ ላይ የቀረው የሥራ ጊዜ"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "በአሁኑ ጊዜ በባትሪ ላይ ያሉ ሰከንዶች"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "UPS እየሠራበት ያለው ሁነታ"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "ከማዋቀሪያ ፋይል (dumb) ወይም ከEEPROM (smart) የተገኘ የUPS ስም"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "APCUPSD መረጃውን ከሌላ የAPCUPSD ምሳሌ በሚስብበት ጊዜ የUPS ዋና ስም"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "የapcupsd ስሪት ቁጥር፣ ቀን እና ኦፕሬቲንግ ሲስተም"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ለመጨረሻ ጊዜ ከባትሪ የወጣበት ቀን እና ሰዓት"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "apcupsd ከተጀመረበት ጊዜ ጀምሮ ለመጨረሻ ጊዜ ወደ ባትሪ የተላለፈበት ቀንና ሰዓት"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "የapcupsd አገልጋዩ ግንኙነቱን ባልተጠበቀ ሁኔታ ዘግቷል።"
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "የapcupsd አገልጋዩ ምንም የሁኔታ ውሂብ አልመለሰም።"
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "የapcupsd አገልጋዩ ከመጠን ያለፈ መዝገብ ልኳል።"
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "የapcupsd አገልጋዩ በጣም ብዙ ውሂብ ልኳል።"
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "የapcupsd አገልጋዩ በ%s ሰከንዶች ውስጥ መልስ አልሰጠም።"
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "ልክ ያልሆነ የapcupsd አስተናጋጅ ስም ወይም የወደብ ውቅር"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "በ%s: %s ላይ ከapcupsd ጋር መገናኘት አልተቻለም"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "የNUT አገልጋዩ መዳረሻን ከልክሏል። የNUT የተጠቃሚ ስም እና የይለፍ ቃል ያረጋግጡ።"
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "የNUT አገልጋዩ \"%s\" የተባለ UPS አያውቅም።"
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "የNUT አገልጋዩ ለዚህ UPS ጊዜው ያለፈበት ውሂብ አለው: ነጂው ምላሽ እየሰጠ አይደለም።"
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "የNUT አገልጋዩ ስህተት ሪፖርት አድርጓል: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "ልክ ያልሆነ የNUT አስተናጋጅ ስም፣ ወደብ ወይም የUPS ስም ውቅር"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "የNUT አገልጋዩ ግንኙነቱን ባልተጠበቀ ሁኔታ ዘግቷል።"
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "የNUT የተጠቃሚ ስም ወይም የይለፍ ቃል ሊላኩ የማይችሉ ቁምፊዎችን ይዟል።"
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "ከNUT አገልጋዩ ጋር የTLS ድርድር አልተሳካም።"
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "የNUT አገልጋዩ በጣም ብዙ ውሂብ ልኳል።"
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "የNUT አገልጋዩ በ%s ሰከንዶች ውስጥ መልስ አልሰጠም።"
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "የNUT CA / የምስክር ወረቀት ፋይል ማንበብ አይቻልም።"
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "ከNUT አገልጋይ %s: %s ጋር መገናኘት አልተቻለም"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "የNUT አገልጋዩ ለዚህ UPS ምንም ተለዋዋጮችን አልመለሰም።"
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "UPSዎችን ያስተዳድሩ"
+
+#: setup.php
+msgid "Management"
+msgstr "አስተዳደር"
+
+#: setup.php
+msgid "System Administration"
+msgstr "የስርዓት አስተዳደር"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "UPSዎችን ያስተዳድሩ"
+
+#: upses.php
+msgid "Delete"
+msgstr "ሰርዝ"
+
+#: upses.php
+msgid "Enable"
+msgstr "አንቃ"
+
+#: upses.php
+msgid "Disable"
+msgstr "አሰናክል"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "አባዛ"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "ማወቂያን ዳግም አስጀምር"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "የግራፍ አውቶሜሽንን አሂድ"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "በAPC UPSD ላይ የተመሠረተ"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "በSNMP ላይ የተመሠረተ"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "በNUT ላይ የተመሠረተ"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "ለዚህ UPS መስጠት የሚፈልጉት ስም። ለAPCUPSD እና NUT መሣሪያዎች ይህንን ስም በመጠቀም ለUPSው ተዛማጅ የCacti መሣሪያ በራስ-ሰር ይፈጠራል። በSNMP ላይ ለተመሠረቱ UPSዎች መጀመሪያ የCacti መሣሪያውን መፍጠር አለብዎት።"
+
+#: upses.php
+msgid "New UPS"
+msgstr "አዲስ UPS"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "የUPS መግለጫ"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "አስፈላጊ ከሆነ የዚህ UPS ይበልጥ ዝርዝር መግለጫ።"
+
+#: upses.php
+msgid "UPS Type"
+msgstr "የUPS ዓይነት"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "እየተከታተሉት ያለው የUPS ዓይነት።"
+
+#: upses.php
+msgid "Poller ID"
+msgstr "የPoller መለያ"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "ይህ UPS የሚገኝበት እና የሚከታተለው Poller"
+
+#: upses.php
+msgid "Site Name"
+msgstr "የጣቢያ ስም"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "ይህ UPS የሚገኝበት ጣቢያ።"
+
+#: upses.php
+msgid "None"
+msgstr "ምንም"
+
+#: upses.php
+msgid "Location"
+msgstr "አካባቢ"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "የመሣሪያው አካላዊ መገኛ። ይህ ነጻ ጽሑፍ ክፍል፣ የራክ ቦታ ወዘተ ሊሆን ይችላል።"
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "የCacti መሣሪያ"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "በSNMP ላይ ለተመሠረቱ UPSዎች ለSNMP ማረጋገጫዎች የሚያገለግለውን የCacti መሣሪያ ይምረጡ። ያለበለዚያ ምንም የሚለውን ይምረጡ፣ እና የUPS ተሰኪው መሣሪያውን በራስ-ሰር ይፈጥርልዎታል።"
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "በመጀመሪያው Poll ላይ በራስ-ሰር ፍጠር"
+
+#: upses.php
+msgid "Enabled"
+msgstr "ነቅቷል"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "ውሂብ መሰብሰብ (polling) ወዲያውኑ ለመጀመር ምልክት ያድርጉ።"
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "የAPC UPSD መረጃ"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "apcupsd ወይም የNUT አገልጋይ (upsd) የሚያሄደው አስተናጋጅ ስም።"
+
+#: upses.php
+msgid "TCP Port"
+msgstr "የTCP ወደብ"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "ለዚህ UPS የTCP ወደብ ያስገቡ። የapcupsd ነባሪ 3551 ሲሆን የNUT ነባሪ 3493 ነው።"
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "የጊዜ ማብቂያ (ሰከንዶች)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "pollerው ይህን UPS ከመተዉ በፊት ለapcupsd ወይም ለNUT አገልጋዩ ምን ያህል ጊዜ እንደሚጠብቅ፣ ከ1 እስከ 120 ሰከንዶች። በSNMP ላይ የተመሠረቱ UPSዎች በምትኩ የSNMP የጊዜ ማብቂያን ይጠቀማሉ።"
+
+#: upses.php
+msgid "NUT Options"
+msgstr "የNUT አማራጮች"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "የNUT UPS ስም"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "በ\"upsc -l\" እንደተዘረዘረው በNUT አገልጋዩ ላይ ያለው የUPS ስም (በups@host ውስጥ ከ@ በፊት ያለው ክፍል)። አንድ የNUT አገልጋይ ለብዙ UPSዎች ማገልገል ይችላል።"
+
+#: upses.php
+msgid "NUT Username"
+msgstr "የNUT የተጠቃሚ ስም"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "አማራጭ። ለማረጋገጫ የሚያገለግለው የupsd.users መለያ። ስም-አልባ የንባብ-ብቻ መዳረሻ ለማግኘት ባዶ ይተዉት፤ የNUT አገልጋዮች ብዙውን ጊዜ የሚከታተሉት በዚህ መንገድ ነው።"
+
+#: upses.php
+msgid "NUT Password"
+msgstr "የNUT የይለፍ ቃል"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "ለNUT የተጠቃሚ ስም የይለፍ ቃል።"
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "TLS (STARTTLS) ተጠቀም"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "ማንኛውም የማረጋገጫ መረጃ ከመላኩ በፊት ግንኙነቱን በSTARTTLS ያመስጥሩ። የNUT አገልጋዩ የምስክር ወረቀት እና የአስተናጋጅ ስም ስለሚረጋገጡ የምስክር ወረቀቱ በCacti poller መታመን አለበት፣ ወይም ከታች ወደ CA / የምስክር ወረቀት ፋይሉ መጠቆም ይችላሉ።"
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "CA / የምስክር ወረቀት ፋይል"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "አማራጭ። የNUT አገልጋዩን ለማረጋገጥ የCA የምስክር ወረቀቱን (ወይም በራስ-የተፈረመውን የአገልጋይ የምስክር ወረቀት) የያዘው የPEM ፋይል በCacti poller ላይ ያለው ሙሉ መንገድ፣ ለምሳሌ /etc/nut/upsd.pem። ከላይ ያለው የአስተናጋጅ ስም ከምስክር ወረቀቱ ጋር መዛመድ አለበት።"
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "በራስ-የተፈረመ የምስክር ወረቀት ፍቀድ"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "ማንኛውንም የምስክር ወረቀት ሳይፈትሹ ይቀበሉ። ግንኙነቱ አሁንም የተመሰጠረ ነው፣ ነገር ግን የNUT አገልጋዩ አልተረጋገጠም፣ ስለዚህ መሃል-ገብ አጥቂ የNUT ማረጋገጫዎችን ሊያነብ ይችላል። ከላይ ያለውን CA / የምስክር ወረቀት ፋይል ይምረጡ።"
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "የSNMP አማራጮች"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "የsnmp ወኪል የሚገኝበት የአስተናጋጅ ስም።"
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "UPSው ከCacti መሣሪያ ጋር ተገናኝቶ እያለ የPoller መለያው ሊቀየር አይችልም። በምትኩ በመሣሪያው ላይ ያለውን poller ይቀይሩ።"
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "አብነት UPS አልተገኘም! ማባዛት አልተቻለም።"
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "ከተመረጡት UPSዎች ውስጥ አንዱም ገና የCacti መሣሪያ የለውም፣ ስለዚህ የግራፍ አውቶሜሽን አልተሄደም። መሣሪያ የሚፈጠረው በመጀመሪያው የተሳካ poll ላይ ነው።"
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "የግራፍ አውቶሜሽን ለ%d UPS(ዎች) ተሂዷል። %d UPS(ዎች) ገና የCacti መሣሪያ ስለሌላቸው ታልፈዋል።"
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "የግራፍ አውቶሜሽን ለ%d UPS(ዎች) ተሂዷል።"
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(ገና የCacti መሣሪያ የለም)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "የሚከተለውን UPS ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ማስታወሻ፣ ሁሉም መሣሪያዎች ከዚህ UPS ጋር ያላቸው ግንኙነት ይቋረጣል።"
+msgstr[1] "የሚከተሉትን ሁሉንም UPSዎች ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ማስታወሻ፣ ሁሉም መሣሪያዎች ከዚህ UPS ጋር ያላቸው ግንኙነት ይቋረጣል።"
+
+#: upses.php
+msgid "Cancel"
+msgstr "ሰርዝ"
+
+#: upses.php
+msgid "Continue"
+msgstr "ቀጥል"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "UPS ሰርዝ"
+msgstr[1] "UPSዎችን ሰርዝ"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "የሚከተለውን UPS ለማባዛት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+msgstr[1] "የሚከተሉትን ሁሉንም UPSዎች ለማባዛት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "የUPS ስም:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "UPS አባዛ"
+msgstr[1] "UPSዎችን አባዛ"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "ለሚከተለው UPS ግኝትን ዳግም ለማስጀመር 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ማስታወሻ፣ ይህ የሚሠራው ለSNMPD ዓይነት UPSዎች ብቻ ነው።"
+msgstr[1] "ለሚከተሉት UPSዎች ግኝትን ዳግም ለማስጀመር 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ማስታወሻ፣ ይህ የሚሠራው ለSNMPD ዓይነት UPSዎች ብቻ ነው።"
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "UPS ዳግም አስጀምር"
+msgstr[1] "UPSዎችን ዳግም አስጀምር"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "ለሚከተለው UPS የግራፍ አውቶሜሽንን ለማስኬድ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ግራፎች፣ የውሂብ ምንጮች እና የዛፍ ንጥሎች የሚፈጠሩት ከመሣሪያው አብነቶች እና ከተዛማጅ የአውቶሜሽን ደንቦች ነው፤ ቀደም ሲል ያሉ ግራፎች እንዳሉ ይቀመጣሉ።  ተጽዕኖ የሚደርስበት ቀደም ሲል የCacti መሣሪያ ያለው UPS ብቻ ነው።"
+msgstr[1] "ለሚከተሉት UPSዎች የግራፍ አውቶሜሽንን ለማስኬድ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።  ግራፎች፣ የውሂብ ምንጮች እና የዛፍ ንጥሎች የሚፈጠሩት ከእያንዳንዱ መሣሪያ አብነቶች እና ከተዛማጅ የአውቶሜሽን ደንቦች ነው፤ ቀደም ሲል ያሉ ግራፎች እንዳሉ ይቀመጣሉ።  ተጽዕኖ የሚደርስበት ቀደም ሲል የCacti መሣሪያ ያለው UPS ብቻ ነው።"
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "የሚከተለውን UPS ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+msgstr[1] "የሚከተሉትን ሁሉንም UPSዎች ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "UPS አንቃ"
+msgstr[1] "UPSዎችን አንቃ"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "የሚከተለውን UPS ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+msgstr[1] "የሚከተሉትን ሁሉንም UPSዎች ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "UPS አሰናክል"
+msgstr[1] "UPSዎችን አሰናክል"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [አርትዕ: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [አዲስ]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "የAPCUPSD መሣሪያ አብነት አልገባም። እስኪገባ ድረስ የመሣሪያ አውቶሜሽን አይከሰትም!"
+
+#: upses.php
+msgid "Search"
+msgstr "ፈልግ"
+
+#: upses.php
+msgid "Site"
+msgstr "ጣቢያ"
+
+#: upses.php
+msgid "All"
+msgstr "ሁሉም"
+
+#: upses.php
+msgid "Default"
+msgstr "ነባሪ"
+
+#: upses.php
+msgid "Go"
+msgstr "ሂድ"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "ማጣሪያዎችን አዘጋጅ/አድስ"
+
+#: upses.php
+msgid "Clear"
+msgstr "አጽዳ"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "ማጣሪያዎችን አጽዳ"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "የዚህ UPS ስም።"
+
+#: upses.php
+msgid "ID"
+msgstr "መለያ"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "ከዚህ UPS ጋር የተያያዘው ልዩ መለያ።"
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "የCacti መሣሪያ መለያ።"
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ያለው የapcupsd ዴሞን ሁኔታ።"
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "የሰብሳቢው ዓይነት። በአሁኑ ጊዜ APCUPSD፣ SNMP እና NUT ይደገፋሉ።"
+
+#: upses.php
+msgid "UPS Status"
+msgstr "የUPS ሁኔታ"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ክትትል የሚደረግበት የUPS ሁኔታ።"
+
+#: upses.php
+msgid "UPS Model"
+msgstr "የUPS ሞዴል"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ክትትል የሚደረግበት የUPS ሞዴል።"
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ክትትል የሚደረግበት የUPS የመስመር ቮልቴጅ።"
+
+#: upses.php
+msgid "Load Percent"
+msgstr "የጭነት መቶኛ"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ክትትል የሚደረግበት የUPS የጭነት መቶኛ።"
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "የተገመተው የኃይል ፍጆታ በዋት: ስመ የኃይል መጠን በጭነት መቶኛ ተባዝቶ።"
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "በዒላማው አስተናጋጅ ላይ ክትትል የሚደረግበት የUPS የሚገኘው የኃይል መሙያ ደቂቃዎች።"
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "የአስተናጋጅ ስም:ወደብ"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "የapcupsd ዴሞንን ወይም የNUT አገልጋይን የሚያሄደው የአስተናጋጅ ስም:ወደብ።"
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "ይህ UPS ክትትል እየተደረገበት እንደሆነ ወይም እንዳልሆነ።"
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "ይህ UPS ለመጨረሻ ጊዜ ናሙና የተወሰደበት ወይም እየሰራ የተገኘበት ጊዜ።"
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "የUPS ዳሽቦርድን ይመልከቱ"
+
+#: upses.php
+msgid "No"
+msgstr "አይ"
+
+#: upses.php
+msgid "Yes"
+msgstr "አዎ"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "ምንም UPSዎች አልተገኙም"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "አይገኝም"

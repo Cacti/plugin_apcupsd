@@ -1,0 +1,1237 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Latvian <https://translate.cacti.net/projects/cacti/core/lv/>\n"
+"Language: lv-LV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Tīkla spriegums"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Izejas spriegums"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Tīkla frekvence"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Slodze"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Akumulatora uzlāde"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Akumulatora spriegums"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Atlikušais laiks"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Temperatūra"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "tagad %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "min %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "vid %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "maks %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Vidēji"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Šim UPS vēl nav savākti mērījumi."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Šai grupai vēl nav pieejami mērījumi."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Nav pieejams"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Šim mērinstrumentam vēl nav pieejami mērījumi."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Aprēķinātā jauda"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "UPS informācija"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Ieeja un slodze"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Akumulators un darbības laiks"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Notikumi un pārslēgšanās"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Nezināms"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Šis grafiks vairs nav pieejams."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "UPS grafiks"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Aprēķinātajai jaudai ir nepieciešama nominālā jauda un slodzes rādījums."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Šis mērinstruments vairs nav pieejams."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Par šo UPS vēl nav savākta informācija."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "UPS nosaukums"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Modelis"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Sērijas numurs"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Aparātprogrammatūra"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Kabelis / draiveris"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Kolekcionāri"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Resursdatora nosaukums"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Nominālā jauda"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Nominālais ieejas spriegums"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Nominālais akumulatora spriegums"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Reģistrētais tīkla min."
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Reģistrētais tīkla maks."
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Akumulatora datums"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Ražots"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Pēdējoreiz atjaunināts"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Šim UPS vēl nav savākti notikumu dati."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Pēdējās pārslēgšanās iemesls"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Pārslēgšanos skaits"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Laiks ar akumulatoru"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "sek"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Kopējais laiks ar akumulatoru"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Pēdējā pašpārbaude"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Pašpārbaudes rezultāts"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Pēdējoreiz uz akumulatora"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Pēdējoreiz atslēgts no akumulatora"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Rādīt vairāk"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Rādīt mazāk"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Atvērt dialoglodziņā"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Atsvaidzināt"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Noņemt no lapas"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Velciet, lai pārkārtotu kartīti"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Nederīgs pieprasījums. Lūdzu, mēģiniet vēlreiz."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Nav atlasīts neviens UPS."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Šajā informācijas panelī ir pārāk daudz kartīšu, lai saglabātu tā izkārtojumu."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Nederīgs atsvaidzināšanas intervāls."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Nezināma kartīte."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "UPS informācijas panelis"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Atveriet UPS informācijas paneli no saraksta Pārvaldīt UPS ierīces, noklikšķinot uz UPS informācijas paneļa ikonas. Informācijas panelis atceras pēdējo atvērto UPS."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 minūte"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 sekundes"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 minūtes"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Bez atsvaidzināšanas"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Laika sprīdis"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Pievienot kartīti"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Pievienot kartīti…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Parka informācijas panelis"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS ierīces"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Parka pārskats"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Statusu sadalījums"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Parka rādījumi"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Parka jauda"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Parka mērinstrumenti"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Vēl nav konfigurēta neviena UPS ierīce."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Kopā"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Tiešsaistē"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Darbojas no akumulatora"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Cits"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Atspējots"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Aprēķ. jauda"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Neviena iespējota UPS ierīce vēl neziņo rādījumus."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Aprēķinātajai jaudai nepieciešama iespējota UPS ierīce ar nominālās jaudas vērtību un slodzes rādījumu."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s no %s nominālās"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Aprēķināta kā nominālā jauda x slodze % no pēdējās aptaujas."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "Ieskaitīti %s no %s iespējotajiem UPS."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Statuss"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Uzlāde"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "min"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Atvērt UPS informācijas paneli"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Parka kopsumma"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Aizkaves periods, pirms APCUPSD sāk atskaņot trauksmes signālu"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Apkārtējās vides temperatūra"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "versija, ierakstu skaits un sekojošo baitu skaits"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "APC modeļa informācija"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Bojāto ārējo akumulatoru bloku skaits (XL modeļiem)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Datums, kad akumulators pēdējo reizi nomainīts (ja iestatīts)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Akumulatora statuss."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Pašreizējais akumulatora spriegums"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Pašreizējais akumulatora ietilpības uzlādes procents"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Konfigurācijas failā norādītais kabeļa tips"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Kopējais sekunžu skaits darbībā no akumulatora kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Pēdējā atjauninājuma no UPS datums un laiks"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Pašreizējie UPS DIP slēdžu iestatījumi"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Zema akumulatora uzlādes līmeņa signāls tiek nosūtīts, kad atlicis tik daudz darbības laika"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD draiveris, ja protokols ir APCUPSD"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Aizkave, pirms UPS izslēdzas pēc komandas saņemšanas"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Laiks, ko UPS gaida pēc izslēgšanas, kad barošana ir atjaunota"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Datums un laiks, kad statusa informācija tika ierakstīta"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Ārējo akumulatoru skaits (XL modeļiem)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "UPS aparātprogrammatūras versija"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Ieejas līnijas spriegums, virs kura UPS pārslēgsies uz akumulatoru"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "datora, kurā darbojas apcupsd, resursdatora nosaukums"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Apkārtējās vides mitrums"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "UPS iekšējā temperatūra Celsija grādos"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Pēdējās pārslēgšanās uz akumulatoru iemesls kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Ieejas līnijas sprieguma statuss."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Pašreizējā līnijas frekvence hercos"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Pašreizējais ieejas līnijas spriegums"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "UPS novērtētais izmantotās UPS slodzes kapacitātes procents"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Ieejas līnijas spriegums, zem kura UPS pārslēgsies uz akumulatoru"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "UPS ražošanas datums"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Pēdējā reize, kad galvenais mezgls nosūtīja atjauninājumu pakārtotajam mezglam"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Maksimālais ieejas līnijas spriegums kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Maksimālais akumulatora darbības laiks (TIMEOUT), pēc kura sistēma tiek izslēgta"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Minimālais akumulatora uzlādes līmenis %%% (BCHARGE), kas nepieciešams sistēmas izslēgšanai"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Minimālais (novērotais) ieejas līnijas spriegums kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Minimālais akumulatora darbības laiks (MINUTES), kas nepieciešams sistēmas izslēgšanai"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "UPS modelis, kas iegūts no UPS informācijas"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Nominālais akumulatora spriegums"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Nominālais ieejas spriegums, kas tiek padots uz UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Nominālais izejas spriegums, kas jānodrošina, darbojoties no akumulatora"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Nominālā izejas jauda vatos"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Pārslēgšanos uz akumulatoru skaits kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Pašreizējais UPS izejas spriegums"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "1. kļūdu reģistrs heksadecimālā formātā"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "2. kļūdu reģistrs heksadecimālā formātā"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "3. kļūdu reģistrs heksadecimālā formātā"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Akumulatora uzlādes līmenis %%%, kas nepieciešams pēc izslēgšanas, lai atjaunotu barošanu"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Pēdējās pašpārbaudes datums un laiks kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Pašreizējais UPS jutības iestatījums sprieguma svārstībām"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "UPS sērijas numurs"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Datums un laiks, kad apcupsd tika palaists"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "UPS statusa karodziņš heksadecimālā formātā"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "UPS statuss. Viens vai vairāki no šiem (atdalīti ar atstarpēm): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN vai COMMLOST vai SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Pēdējās UPS pašpārbaudes datums"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Pašpārbaudes intervāls"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "UPS novērtētais atlikušais darbības laiks no akumulatora"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Pašreizējais sekunžu skaits darbībā no akumulatora"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Režīms, kurā darbojas UPS"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "UPS nosaukums no konfigurācijas faila (dumb) vai EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "UPS galvenā mezgla nosaukums gadījumā, ja APCUPSD izgūst datus no citas APCUPSD instances"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd versijas numurs, datums un operētājsistēma"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Pēdējās pārslēgšanās no akumulatora datums un laiks kopš apcupsd palaišanas"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Pēdējās pārslēgšanās uz akumulatoru datums un laiks kopš apcupsd palaišanas"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "apcupsd serveris negaidīti aizvēra savienojumu."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "apcupsd serveris neatgrieza nekādus statusa datus."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "apcupsd serveris nosūtīja pārāk lielu ierakstu."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "apcupsd serveris nosūtīja pārāk daudz datu."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "apcupsd serveris neatbildēja %s sekunžu laikā."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Nederīga apcupsd resursdatora nosaukuma vai porta konfigurācija"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Nevar izveidot savienojumu ar apcupsd adresē %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "NUT serveris liedza piekļuvi. Pārbaudiet NUT lietotājvārdu un paroli."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "NUT serveris neatpazīst UPS ar nosaukumu \"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "NUT serverim ir novecojuši šī UPS dati: tā draiveris nereaģē."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "NUT serveris ziņoja par kļūdu: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Nederīga NUT resursdatora nosaukuma, porta vai UPS nosaukuma konfigurācija"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "NUT serveris negaidīti aizvēra savienojumu."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "NUT lietotājvārds vai parole satur rakstzīmes, kuras nevar nosūtīt."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "TLS saruna ar NUT serveri neizdevās."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "NUT serveris nosūtīja pārāk daudz datu."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "NUT serveris neatbildēja %s sekunžu laikā."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "NUT CA / sertifikāta failu nevar nolasīt."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Nevar izveidot savienojumu ar NUT serveri %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "NUT serveris neatgrieza nevienu mainīgo šim UPS."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Pārvaldīt UPS"
+
+#: setup.php
+msgid "Management"
+msgstr "Vadība"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Sistēmas pārvaldīšana"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Pārvaldīt UPS ierīces"
+
+#: upses.php
+msgid "Delete"
+msgstr "Dzēst"
+
+#: upses.php
+msgid "Enable"
+msgstr "Iespējot"
+
+#: upses.php
+msgid "Disable"
+msgstr "Atspējot"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Dublēt"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Atiestatīt noteikšanu"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Palaist grafiku automatizāciju"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Balstīts uz APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Balstīts uz SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Balstīts uz NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Nosaukums, kuru vēlaties piešķirt šim UPS. APCUPSD un NUT ierīcēm, izmantojot šo nosaukumu, automātiski tiks izveidota atbilstoša Cacti ierīce. SNMP balstītiem UPS vispirms jāizveido Cacti ierīce."
+
+#: upses.php
+msgid "New UPS"
+msgstr "Jauns UPS"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "UPS apraksts"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Detalizētāks šī UPS apraksts, ja nepieciešams."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "UPS tips"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Uzraugāmā UPS tips."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "Aptaujātāja ID"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Aptaujātājs, kas uzrauga šo UPS"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Vietnes nosaukums"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Vietne, kurā atrodas šis UPS."
+
+#: upses.php
+msgid "None"
+msgstr "Neviens"
+
+#: upses.php
+msgid "Location"
+msgstr "Atrašanās vieta"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Ierīces fiziskā atrašanās vieta. Šis brīvas formas teksts var būt telpa, plaukta atrašanās vieta utt."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Cacti ierīce"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "SNMP balstītiem UPS atlasiet Cacti ierīci, kuru izmantot SNMP akreditācijas datiem. Pretējā gadījumā atlasiet Nav, un UPS spraudnis izveidos ierīci automātiski."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Automātiski izveidot pirmajā aptaujā"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Iespējots"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Atzīmējiet, lai nekavējoties sāktu datu aptauju."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "APC UPSD informācija"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Tā resursdatora nosaukums, kurā darbojas apcupsd vai NUT serveris (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "TCP ports"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Ievadiet šī UPS TCP portu. apcupsd noklusējuma ports ir 3551, bet NUT noklusējuma ports ir 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Noildze (sekundēs)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Cik ilgi aptaujātājs gaida apcupsd vai NUT serveri, pirms pārtrauc šī UPS aptauju, no 1 līdz 120 sekundēm. SNMP balstīti UPS tā vietā izmanto SNMP noildzi."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "NUT opcijas"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "NUT UPS nosaukums"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "UPS nosaukums NUT serverī, kā norādīts ar \"upsc -l\" (daļa pirms @ formātā ups@host). Viens NUT serveris var apkalpot vairākus UPS."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "NUT lietotājvārds"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Neobligāti. upsd.users konts autentifikācijai. Atstājiet tukšu anonīmai tikai lasīšanas piekļuvei, kā parasti tiek uzraudzīti NUT serveri."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "NUT parole"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "NUT lietotājvārda parole."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Izmantot TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Šifrēt savienojumu ar STARTTLS pirms akreditācijas datu nosūtīšanas. NUT servera sertifikāts un resursdatora nosaukums tiek pārbaudīti, tāpēc Cacti aptaujātājam ir jāuzticas sertifikātam, vai arī zemāk varat norādīt tā CA / sertifikāta failu."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "CA / sertifikāta fails"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Neobligāti. Pilns ceļš Cacti aptaujātājā līdz PEM failam, kurā ir CA sertifikāts (vai pašparakstīts servera sertifikāts) NUT servera pārbaudei, piemēram, /etc/nut/upsd.pem. Augstāk norādītajam resursdatora nosaukumam ir jāsakrīt ar sertifikātu."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Atļaut pašparakstītu sertifikātu"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Pieņemt jebkuru sertifikātu bez tā pārbaudes. Savienojums joprojām ir šifrēts, taču NUT serveris netiek autentificēts, tādēļ starpniekuzbrukumā varētu nolasīt NUT akreditācijas datus. Labāk izmantojiet augstāk norādīto CA / sertifikāta failu."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "SNMP opcijas"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Resursdatora nosaukums, kurā atrodas SNMP aģents."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "Aptaujātāja ID nevar mainīt, kamēr UPS ir saistīts ar Cacti ierīci. Tā vietā mainiet aptaujātāju pašai ierīcei."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Veidnes UPS netika atrasts! Nevar dublēt."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Nevienam no atlasītajiem UPS vēl nav Cacti ierīces, tāpēc grafiku automatizācija netika palaista. Ierīce tiek izveidota pirmās veiksmīgās aptaujas laikā."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "Grafiku automatizācija tika palaista %d UPS. %d UPS vēl nav Cacti ierīces, un tie tika izlaisti."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "Grafiku automatizācija tika palaista %d UPS."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(vēl nav Cacti ierīces)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai dzēstu visus tālāk norādītos UPS. Ņemiet vērā, ka visas ierīces tiks atsaistītas no šiem UPS."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai dzēstu tālāk norādīto UPS. Ņemiet vērā, ka visas ierīces tiks atsaistītas no šī UPS."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai dzēstu visus tālāk norādītos UPS. Ņemiet vērā, ka visas ierīces tiks atsaistītas no šiem UPS."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: upses.php
+msgid "Continue"
+msgstr "Turpināt"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Dzēst UPS"
+msgstr[1] "Dzēst UPS"
+msgstr[2] "Dzēst UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai dublētu visus tālāk norādītos UPS."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai dublētu tālāk norādīto UPS."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai dublētu visus tālāk norādītos UPS."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "UPS nosaukums:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Dublēt UPS"
+msgstr[1] "Dublēt UPS"
+msgstr[2] "Dublēt UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai atiestatītu atklāšanu tālāk norādītajiem UPS. Ņemiet vērā, ka tas attiecas tikai uz SNMPD tipa UPS."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai atiestatītu atklāšanu tālāk norādītajam UPS. Ņemiet vērā, ka tas attiecas tikai uz SNMPD tipa UPS."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai atiestatītu atklāšanu tālāk norādītajiem UPS. Ņemiet vērā, ka tas attiecas tikai uz SNMPD tipa UPS."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Atiestatīt UPS"
+msgstr[1] "Atiestatīt UPS"
+msgstr[2] "Atiestatīt UPS"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai palaistu grafiku automatizāciju tālāk norādītajiem UPS. Grafiki, datu avoti un koka vienumi tiek izveidoti no katras ierīces veidnēm un atbilstošajiem automatizācijas noteikumiem; jau esošie grafiki tiek atstāti nemainīti. Tas ietekmē tikai tādu UPS, kuram jau ir Cacti ierīce."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai palaistu grafiku automatizāciju tālāk norādītajam UPS. Grafiki, datu avoti un koka vienumi tiek izveidoti no ierīces veidnēm un atbilstošajiem automatizācijas noteikumiem; jau esošie grafiki tiek atstāti nemainīti. Tas ietekmē tikai tādu UPS, kuram jau ir Cacti ierīce."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai palaistu grafiku automatizāciju tālāk norādītajiem UPS. Grafiki, datu avoti un koka vienumi tiek izveidoti no katras ierīces veidnēm un atbilstošajiem automatizācijas noteikumiem; jau esošie grafiki tiek atstāti nemainīti. Tas ietekmē tikai tādu UPS, kuram jau ir Cacti ierīce."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai iespējotu visus tālāk norādītos UPS."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai iespējotu tālāk norādīto UPS."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai iespējotu visus tālāk norādītos UPS."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Iespējot UPS"
+msgstr[1] "Iespējot UPS"
+msgstr[2] "Iespējot UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Noklikšķiniet uz 'Turpināt', lai atspējotu visus tālāk norādītos UPS."
+msgstr[1] "Noklikšķiniet uz 'Turpināt', lai atspējotu tālāk norādīto UPS."
+msgstr[2] "Noklikšķiniet uz 'Turpināt', lai atspējotu visus tālāk norādītos UPS."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Atspējot UPS"
+msgstr[1] "Atspējot UPS"
+msgstr[2] "Atspējot UPS"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [rediģēt: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [jauns]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "APCUPSD ierīces veidne nav importēta. Ierīču automatizācija nenotiks, kamēr tā nebūs importēta!"
+
+#: upses.php
+msgid "Search"
+msgstr "Meklēt"
+
+#: upses.php
+msgid "Site"
+msgstr "Atrašanās vieta"
+
+#: upses.php
+msgid "All"
+msgstr "Visi"
+
+#: upses.php
+msgid "Default"
+msgstr "Noklusējuma"
+
+#: upses.php
+msgid "Go"
+msgstr "Doties"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Atlasīt/Atjaunināt filtrus"
+
+#: upses.php
+msgid "Clear"
+msgstr "Notīrīt"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Notīrīt filtrus"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Šī UPS nosaukums."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "Unikālais ID, kas saistīts ar šo UPS."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "Cacti ierīces ID."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "apcupsd dēmona statuss mērķa resursdatorā."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Datu vācēja tips. Pašlaik tiek atbalstīti APCUPSD, SNMP un NUT."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "UPS statuss"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Uzraudzītā UPS statuss mērķa resursdatorā."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "UPS modelis"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Uzraudzītā UPS modelis mērķa resursdatorā."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Uzraudzītā UPS tīkla spriegums mērķa resursdatorā."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Noslodzes procents"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Uzraudzītā UPS noslodzes procents mērķa resursdatorā."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Aptuvenais jaudas patēriņš vatos: nominālā jauda reizināta ar noslodzes procentu."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Pieejamās UPS uzlādes minūtes uzraudzītajam UPS mērķa resursdatorā."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Resursdators:Ports"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Resursdators:Ports, kurā darbojas apcupsd dēmons vai NUT serveris."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Vai šis UPS tiek uzraudzīts vai nē."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Pēdējā reize, kad šim UPS tika paņemti dati vai tas bija pieejams."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Skatīt UPS informācijas paneli"
+
+#: upses.php
+msgid "No"
+msgstr "Nē"
+
+#: upses.php
+msgid "Yes"
+msgstr "Jā"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Nav atrasts neviens UPS"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Nav pieejams"

@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: French (Senegal) <developers@cacti.net>\n"
+"Language: fr_SN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Tension de ligne"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Tension de sortie"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Fréquence secteur"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Charge"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Charge de la batterie"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Tension de la batterie"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Temps restant"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Température"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "actuel %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "min %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "moy %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "max %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Moyen"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Aucune mesure n'a encore été collectée pour cet UPS."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Aucune mesure n'est encore disponible pour ce groupe."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "N/A"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Aucune mesure n'est encore disponible pour cette jauge."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Puissance estimée"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Informations sur l'onduleur"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Entrée et charge"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Batterie et autonomie"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Événements et basculements"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Ce graphique n'est plus disponible."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "Graphique UPS"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "La puissance estimée nécessite une puissance nominale et une mesure de charge."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Cette jauge n'est plus disponible."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Aucune information n'a encore été collectée pour cet UPS."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Nom de l'onduleur"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Modèle"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Numéro de série"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Micrologiciel"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Câble / Pilote"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Collectionneur"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Nom d'hôte"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Puissance nominale"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Tension d'entrée nominale"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Tension nominale de la batterie"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Minimum secteur enregistré"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Maximum secteur enregistré"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Date de la batterie"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "Date de fabrication"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Dernière mise à jour"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Aucune donnée d'événement n'a encore été collectée pour cet UPS."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Raison du dernier basculement"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Nombre de basculements"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Temps sur batterie"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "s"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Temps cumulé sur batterie"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Dernier autotest"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Résultat de l'autotest"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Dernier passage sur batterie"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Dernier retour sur secteur"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Afficher plus"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Afficher moins"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Ouvrir dans une boîte de dialogue"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Actualiser"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Retirer de la page"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Glisser pour réorganiser la carte"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Requête invalide. Veuillez réessayer."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Aucun UPS sélectionné."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Ce tableau de bord contient trop de cartes pour enregistrer sa disposition."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Intervalle d'actualisation invalide."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Carte inconnue."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "Tableau de bord UPS"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Ouvrez un tableau de bord UPS depuis la liste Gérer les UPS en cliquant sur l'icône de tableau de bord de l'UPS. Le tableau de bord mémorise le dernier UPS que vous avez ouvert."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 minute"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 secondes"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 minutes"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Aucune actualisation"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Durée"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Ajouter une carte"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Ajouter une carte…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Tableau de bord du parc"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Vue d'ensemble du parc"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Répartition des états"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Mesures du parc"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Puissance du parc"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Jauges du parc"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Aucun UPS n'est encore configuré."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Total"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "En ligne"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Sur batterie"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Autre"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Puissance est."
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Aucun UPS activé ne remonte encore de mesures."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "La puissance estimée nécessite un UPS activé disposant d'une puissance nominale et d'une mesure de charge."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s sur %s nominal"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Estimée comme puissance nominale x % de charge, d'après la dernière interrogation."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "%s sur %s UPS activés ont été comptabilisés."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "État"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Charge"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "min"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Ouvrir le tableau de bord UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Total du parc"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Délai avant qu'APCUPSD ne déclenche l'alarme"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Température ambiante"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "version, nombre d'enregistrements et nombre d'octets suivants"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Informations sur le modèle APC"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Nombre de batteries externes défectueuses (pour les modèles XL)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Date du dernier remplacement de la batterie (si définie)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "État de la batterie."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Tension actuelle de la batterie"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Pourcentage de charge de la capacité actuelle de la batterie"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Type de câble spécifié dans le fichier de configuration"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Secondes cumulées sur batterie depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Date et heure de la dernière mise à jour d'UPS"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Paramètres actuels des commutateurs DIP de l'onduleur"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Signal de batterie faible envoyé lorsqu'il reste autant d'autonomie"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Le pilote APCUPSD lorsque APCUPSD est le protocole"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Délai avant que l'onduleur ne s'éteigne après la réception de la commande"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Temps d'attente de l'UPS après la mise hors tension lorsque le courant est rétabli"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Date et heure d'écriture des informations d'état"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Nombre de batteries externes (pour les modèles XL)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Version du micrologiciel de l'onduleur"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Tension de ligne d'entrée au-dessus de laquelle l'onduleur passera à la batterie"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "nom d'hôte de l'ordinateur exécutant apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Humidité ambiante"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Température interne de l'UPS en degrés Celsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Raison du dernier transfert vers la batterie depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "État de la tension de ligne d'entrée."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Fréquence de ligne actuelle en Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Tension de ligne d'entrée actuelle"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Pourcentage de la capacité de charge de l'ASI utilisée, telle qu'estimée par l'ASI"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Tension de ligne d'entrée en dessous de laquelle l'onduleur passera à la batterie"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Date de fabrication de l'onduleur"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "La dernière fois que le maître a envoyé une mise à jour à l'esclave"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Tension de ligne d'entrée maximale depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Autonomie maximale de la batterie (TIMEOUT) après laquelle le système s'arrête"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Charge minimale de la batterie %% % (BCHARGE) requise pour l'arrêt du système"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Tension de ligne d'entrée minimale (observée) depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Autonomie minimale de la batterie (MINUTES) requise pour l'arrêt du système"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Modèle d'onduleur dérivé des informations de l'onduleur"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Tension nominale de la batterie"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Tension d'entrée nominale fournie à l'UPS."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Tension de sortie nominale à fournir en cas d'alimentation par batterie"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Puissance de sortie nominale en watts"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Nombre de transferts vers la batterie depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Tension de sortie actuelle de l'ASI"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Registre de défauts 1 en hexadécimal"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Registre de défaut 2 en hexadécimal"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Registre de défaut 3 en hexadécimal"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Charge de la batterie %%% rnécessaire après la mise hors tension pour rétablir l'alimentation"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Date et heure du dernier autotest depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Réglage de la sensibilité actuelle de l'onduleur pour les fluctuations de tension"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Numéro de série de l'onduleur"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Date et heure de démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Indicateur d'état de l'onduleur en hexadécimal"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "État de l'onduleur. Un ou plusieurs des éléments suivants (séparés par des espaces) : CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ou COMMLOST ou SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Date du dernier autotest de l'UPS"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Intervalle d'auto-test"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Autonomie restante restante sur la batterie telle qu'estimée par l'onduleur"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Secondes actuellement sur batterie"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Mode de fonctionnement de l'ASI"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Nom de l'UPS du fichier de configuration (muet) ou EEPROM (intelligent)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Nom du maître UPS dans le cas où APCUPSD récupère les données depuis une autre instance d'APCUPSD"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "numéro de version apcupsd, date et système d'exploitation"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Date, heure du dernier transfert hors batterie depuis le démarrage d'apcupsd"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Date, heure du dernier transfert vers la batterie depuis le démarrage de apcupsd"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Le serveur apcupsd a fermé la connexion de manière inattendue."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Le serveur apcupsd n'a renvoyé aucune donnée d'état."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Le serveur apcupsd a envoyé un enregistrement trop volumineux."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Le serveur apcupsd a envoyé trop de données."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Le serveur apcupsd n'a pas répondu dans un délai de %s secondes."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Configuration de nom d'hôte ou de port apcupsd non valide"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Impossible de se connecter à apcupsd sur %s : %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Le serveur NUT a refusé l'accès. Vérifiez le nom d'utilisateur et le mot de passe NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Le serveur NUT ne connaît aucun UPS nommé « %s »."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Le serveur NUT dispose de données périmées pour cet UPS : son pilote ne répond pas."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Le serveur NUT a signalé une erreur : %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Configuration de nom d'hôte, de port ou de nom UPS NUT non valide"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Le serveur NUT a fermé la connexion de manière inattendue."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Le nom d'utilisateur ou le mot de passe NUT contient des caractères qui ne peuvent pas être envoyés."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "La négociation TLS avec le serveur NUT a échoué."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Le serveur NUT a envoyé trop de données."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Le serveur NUT n'a pas répondu dans un délai de %s secondes."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Impossible de lire le fichier de certificat / CA NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Impossible de se connecter au serveur NUT %s : %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Le serveur NUT n'a renvoyé aucune variable pour cet UPS."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Gérer les onduleurs"
+
+#: setup.php
+msgid "Management"
+msgstr "Gestion"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Gestion du système"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Gérer les onduleurs"
+
+#: upses.php
+msgid "Delete"
+msgstr "Supprimer"
+
+#: upses.php
+msgid "Enable"
+msgstr "Activer"
+
+#: upses.php
+msgid "Disable"
+msgstr "Désactiver"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Dupliquer"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Réinitialiser la détection"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Exécuter l'automatisation des graphiques"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Basé sur APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Basé sur SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Basé sur NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Le nom que vous souhaitez donner à cet UPS. Pour les équipements APCUPSD et NUT, un équipement Cacti correspondant sera créé automatiquement pour l'UPS avec ce nom. Pour les UPS basés sur SNMP, vous devez d'abord créer l'équipement Cacti."
+
+#: upses.php
+msgid "New UPS"
+msgstr "Nouvel onduleur"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Le calculateur de taux d' UPS se rapproche seulement le taux direct de l'expédition. \" Allow_url_fopen \" doit être activé."
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Une description plus détaillée de cet onduleur si nécessaire."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Type d'onduleur"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Le type d'onduleur que vous surveillez."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "ID d'interrogateur"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Le Poller dans lequel cet onduleur existe est surveillé par"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Nom du site"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Le site sur lequel cet onduleur existe."
+
+#: upses.php
+msgid "None"
+msgstr "Aucun"
+
+#: upses.php
+msgid "Location"
+msgstr "Emplacement"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "L'emplacement physique du dispositif.  Ce texte libre peut être une pièce, un emplacement de rack, etc."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Dispositif de cactus"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "Pour SNMP Based UPS', sélectionnez le périphérique Cacti à utiliser pour les informations d'identification SNMP. Sinon, sélectionnez Aucun et le plug-in UPS créera automatiquement l'appareil pour vous."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Création automatique lors du premier sondage"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Activé"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Cochez pour démarrer immédiatement la collecte des données."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "Informations APC UPSD"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Le nom d'hôte de la machine exécutant apcupsd ou le serveur NUT (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "Port TCP"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Saisissez le port TCP pour cet UPS. Par défaut, apcupsd utilise 3551 et NUT utilise 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Délai d'expiration (secondes)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Durée d'attente du collecteur pour apcupsd ou le serveur NUT avant d'abandonner pour cet UPS, de 1 à 120 secondes. Les UPS basés sur SNMP utilisent plutôt le délai d'expiration SNMP."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "Options NUT"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "Nom de l'UPS NUT"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Le nom de l'UPS sur le serveur NUT, tel qu'affiché par « upsc -l » (la partie avant le @ dans ups@host). Un serveur NUT peut desservir plusieurs UPS."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "Nom d'utilisateur NUT"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Facultatif. Le compte upsd.users utilisé pour l'authentification. Laissez vide pour un accès anonyme en lecture seule, ce qui est le mode habituel de supervision des serveurs NUT."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "Mot de passe NUT"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Le mot de passe associé au nom d'utilisateur NUT."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Utiliser TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Chiffre la connexion avec STARTTLS avant l'envoi des identifiants. Le certificat et le nom d'hôte du serveur NUT sont vérifiés ; le certificat doit donc être approuvé par le collecteur Cacti, ou vous pouvez indiquer son fichier CA / certificat ci-dessous."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Fichier CA / certificat"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Facultatif. Le chemin complet sur le collecteur Cacti vers un fichier PEM contenant le certificat CA (ou le certificat auto-signé du serveur) permettant de vérifier le serveur NUT, par exemple /etc/nut/upsd.pem. Le nom d'hôte ci-dessus doit correspondre au certificat."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Autoriser les certificats auto-signés"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Accepter tout certificat sans le vérifier. La connexion reste chiffrée, mais le serveur NUT n'est pas authentifié ; un attaquant de type homme du milieu pourrait donc lire les identifiants NUT. Privilégiez le fichier CA / certificat ci-dessus."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "Options SNMP"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Le nom d'hôte où se trouve l'agent SNMP."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "L'ID du collecteur ne peut pas être modifié tant que l'UPS est lié à un équipement Cacti. Modifiez plutôt le collecteur sur l'équipement."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Le modèle UPS n'a pas été trouvé ! Impossible de dupliquer."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Aucun des UPS sélectionnés n'a encore d'équipement Cacti ; l'automatisation des graphiques n'a donc pas été exécutée. Un équipement est créé lors de la première collecte réussie."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "L'automatisation des graphiques a été exécutée pour %d UPS. %d UPS n'ont pas encore d'équipement Cacti et ont été ignorés."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "L'automatisation des graphiques a été exécutée pour %d UPS."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(aucun équipement Cacti pour le moment)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Cliquez sur 'Continuer' pour supprimer l'UPS suivant. Remarque : tous les périphériques seront dissociés de cet UPS."
+msgstr[1] "Cliquez sur 'Continuer' pour supprimer tous les UPS suivants. Remarque : tous les périphériques seront dissociés de ces UPS."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Annuler"
+
+#: upses.php
+msgid "Continue"
+msgstr "Continuer"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Supprimer l'onduleur"
+msgstr[1] "Supprimer les onduleurs"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Cliquez sur « Continuer » pour dupliquer l'onduleur suivant."
+msgstr[1] "Cliquez sur « Continuer » pour dupliquer tous les onduleurs suivants."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Nom de l'onduleur :"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "UPS en double"
+msgstr[1] "UPS en double"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Cliquez sur 'Continuer' pour réinitialiser la découverte de l'UPS suivant. Remarque : ceci ne s'applique qu'aux UPS de type SNMPD."
+msgstr[1] "Cliquez sur 'Continuer' pour réinitialiser la découverte des UPS suivants. Remarque : ceci ne s'applique qu'aux UPS de type SNMPD."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Réinitialiser l'UPS"
+msgstr[1] "Réinitialiser les UPS"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Cliquez sur 'Continuer' pour exécuter l'automatisation des graphiques pour l'UPS suivant. Les graphiques, les sources de données et les éléments d'arborescence sont créés à partir des modèles du périphérique et des règles d'automatisation correspondantes ; les graphiques qui existent déjà restent inchangés. Seul un UPS disposant déjà d'un périphérique Cacti est concerné."
+msgstr[1] "Cliquez sur 'Continuer' pour exécuter l'automatisation des graphiques pour les UPS suivants. Les graphiques, les sources de données et les éléments d'arborescence sont créés à partir des modèles de chaque périphérique et des règles d'automatisation correspondantes ; les graphiques qui existent déjà restent inchangés. Seul un UPS disposant déjà d'un périphérique Cacti est concerné."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Cliquez sur 'Continuer' pour activer l'UPS suivant."
+msgstr[1] "Cliquez sur 'Continuer' pour activer tous les UPS suivants."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Activer l'UPS"
+msgstr[1] "Activer les UPS"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Cliquez sur 'Continuer' pour désactiver l'UPS suivant."
+msgstr[1] "Cliquez sur 'Continuer' pour désactiver tous les UPS suivants."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Désactiver l'UPS"
+msgstr[1] "Désactiver les UPS"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [modifier : %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "ASI [nouveau]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "Le modèle d'équipement APCUPSD n'a pas été importé. L'automatisation des équipements ne s'exécutera pas tant qu'il ne sera pas importé !"
+
+#: upses.php
+msgid "Search"
+msgstr "Rechercher"
+
+#: upses.php
+msgid "Site"
+msgstr "Site"
+
+#: upses.php
+msgid "All"
+msgstr "Tout"
+
+#: upses.php
+msgid "Default"
+msgstr "Défaut"
+
+#: upses.php
+msgid "Go"
+msgstr "Go"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Définir/Rafraîchir les filtres"
+
+#: upses.php
+msgid "Clear"
+msgstr "Effacer"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Supprimer les filtres"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Le nom de cet onduleur."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "L'identifiant unique associé à cet onduleur."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "L'ID de l'équipement Cacti."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Statut du démon apcupsd sur l'hôte cible."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Le type de collecteur. Actuellement, APCUPSD, SNMP et NUT sont pris en charge."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "État de l'onduleur"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "L'état de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Modèle d'onduleur"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Le modèle de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "La tension de ligne de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Pourcentage de charge"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Le pourcentage de charge de l'onduleur surveillé sur l'hôte cible."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "La puissance absorbée estimée en watts : la puissance nominale multipliée par le pourcentage de charge."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Les minutes de charge UPS disponibles de l'UPS surveillé sur l'hôte cible."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Nom d'hôte : Port"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Le couple NomHôte:Port sur lequel s'exécute le démon apcupsd ou le serveur NUT."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Si cet onduleur est surveillé ou non."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "La dernière fois que cet onduleur a été échantillonné ou trouvé."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Afficher le tableau de bord UPS"
+
+#: upses.php
+msgid "No"
+msgstr "Non"
+
+#: upses.php
+msgid "Yes"
+msgstr "Oui"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Aucun onduleur trouvé"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Non disponible"

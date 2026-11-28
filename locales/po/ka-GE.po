@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Georgian <https://translate.cacti.net/projects/cacti/core/ka/>\n"
+"Language: ka-GE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "ხაზის ძაბვა"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "გამომავალი ძაბვა"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "ხაზის სიხშირე"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "დატვირთვა"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "ბატარეის მუხტი"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "ბატარეის ძაბვა"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "დარჩენილი დრო"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "ტემპერატურა"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "ახლა %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "მინ %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "საშ %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "მაქს %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "საშუალო"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "ამ UPS-ისთვის ჩვენებები ჯერ არ შეგროვებულა."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "ამ ჯგუფისთვის ჩვენებები ჯერ არ არის ხელმისაწვდომი."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "N/A"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "ამ მაჩვენებლისთვის ჩვენებები ჯერ არ არის ხელმისაწვდომი."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "სავარაუდო სიმძლავრე"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "ინფორმაცია UPS-ის შესახებ"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "შემავალი და დატვირთვა"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "ბატარეა და მუშაობის დრო"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "მოვლენები და გადართვები"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "უცნობი"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "ეს გრაფიკი აღარ არის ხელმისაწვდომი."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "UPS გრაფიკი"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "სავარაუდო სიმძლავრის გამოსათვლელად საჭიროა ნომინალური სიმძლავრე და დატვირთვის ჩვენება."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "ეს მაჩვენებელი აღარ არის ხელმისაწვდომი."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "ამ UPS-ის შესახებ ინფორმაცია ჯერ არ შეგროვებულა."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "UPS-ის სახელი"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "მოდელი"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "სერიული ნომერი"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "მიკროპროგრამა"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "კაბელი / დრაივერი"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "მომგროვებელი"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "ჰოსტის სახელი"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "ნომინალური სიმძლავრე"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "ნომინალური შემავალი ძაბვა"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "ბატარეის ნომინალური ძაბვა"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "დაფიქსირებული ხაზის მინ."
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "დაფიქსირებული ხაზის მაქს."
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "ბატარეის თარიღი"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "წარმოებულია"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "ბოლო განახლება"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "ამ UPS-ისთვის მოვლენების მონაცემები ჯერ არ შეგროვებულა."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "ბოლო გადართვის მიზეზი"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "გადართვების რაოდენობა"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "ბატარეაზე მუშაობის დრო"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "წმ"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "ჯამური დრო ბატარეაზე"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "ბოლო თვითტესტი"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "თვითტესტის შედეგი"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "ბოლოს ბატარეაზე"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "ბოლოს ბატარეიდან"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "მეტის ჩვენება"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "ნაკლების ჩვენება"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "დიალოგში გახსნა"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "განახლება"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "გვერდიდან წაშლა"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "გადაათრიეთ ბარათის თანმიმდევრობის შესაცვლელად"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "არასწორი მოთხოვნა. გთხოვთ, სცადოთ ხელახლა."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "UPS არჩეული არ არის."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "ამ დაფაზე განლაგების შესანახად ზედმეტად ბევრი ბარათია."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "განახლების არასწორი ინტერვალი."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "უცნობი ბარათი."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "UPS დაფა"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "გახსენით UPS დაფა UPS-ების მართვის სიიდან UPS-ის დაფის ხატულაზე დაწკაპუნებით. დაფა იმახსოვრებს ბოლოს გახსნილ UPS-ს."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 წთ"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 წამი"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 წუთი"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "განახლების გარეშე"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "ხანგრძლივობა"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "ბარათის დამატება"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "ბარათის დამატება…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "პარკის დაფა"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS-ები"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "პარკის მიმოხილვა"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "სტატუსების განაწილება"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "პარკის მაჩვენებლები"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "პარკის სიმძლავრე"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "პარკის საზომები"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "UPS-ები ჯერ არ არის კონფიგურირებული."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "სულ"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "ხაზზე"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "ბატარეაზე"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "სხვა"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "გათიშულია"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "სავარ. სიმძლავრე"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "არცერთი ჩართული UPS ჯერ არ აწვდის მაჩვენებლებს."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "სავარაუდო სიმძლავრისთვის საჭიროა ჩართული UPS ნომინალური სიმძლავრის მნიშვნელობითა და დატვირთვის მაჩვენებლით."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s %s-დან (ნომინალური)"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "გამოთვლილია როგორც ნომინალური სიმძლავრე x დატვირთვის %, ბოლო გამოკითხვის მიხედვით."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "აღრიცხულია %s %s ჩართული UPS-დან."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "სტატუსი"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "მუხტი"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "წთ"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "UPS დაფის გახსნა"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "პარკის ჯამი"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "დაყოვნების პერიოდი, სანამ APCUPSD განგაშის სიგნალს ჩართავს"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "გარემოს ტემპერატურა"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "ვერსია, ჩანაწერების რაოდენობა და მომდევნო ბაიტების რაოდენობა"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "APC მოდელის ინფორმაცია"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "გაუმართავი გარე ბატარეის ბლოკების რაოდენობა (XL მოდელებისთვის)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "ბატარეის ბოლო შეცვლის თარიღი (თუ მითითებულია)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "ბატარეის სტატუსი."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "ბატარეის მიმდინარე ძაბვა"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "ბატარეის ტევადობის დამუხტვის მიმდინარე პროცენტი"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "კონფიგურაციის ფაილში მითითებული კაბელის ტიპი"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "ბატარეაზე მუშაობის ჯამური წამები apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "UPS-დან ბოლო განახლების თარიღი და დრო"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "UPS-ის DIP გადამრთველის მიმდინარე პარამეტრები"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "ბატარეის დაბალი მუხტის სიგნალი იგზავნება, როცა მუშაობის ეს დრო რჩება"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "APCUPSD დრაივერი, როდესაც პროტოკოლი არის APCUPSD"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "დაყოვნება ბრძანების მიღების შემდეგ UPS-ის გამორთვამდე"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "დრო, რომელსაც UPS ელოდება გამორთვის შემდეგ კვების აღდგენისას"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "სტატუსის ინფორმაციის ჩაწერის თარიღი და დრო"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "გარე ბატარეების რაოდენობა (XL მოდელებისთვის)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "UPS-ის მიკროპროგრამის ვერსია"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "შემავალი ხაზის ძაბვა, რომელზე მაღლაც UPS გადაერთვება ბატარეაზე"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "apcupsd-ის გამშვები კომპიუტერის ჰოსტის სახელი"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "გარემოს ტენიანობა"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "UPS-ის შიდა ტემპერატურა ცელსიუსის გრადუსებში"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "apcupsd-ის გაშვებიდან ბატარეაზე ბოლო გადართვის მიზეზი"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "შემავალი ხაზის ძაბვის სტატუსი."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "ხაზის მიმდინარე სიხშირე ჰერცებში"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "შემავალი ხაზის მიმდინარე ძაბვა"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "UPS-ის მიერ შეფასებული გამოყენებული დატვირთვის ტევადობის პროცენტი"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "შემავალი ხაზის ძაბვა, რომელზე დაბლაც UPS გადაერთვება ბატარეაზე"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "UPS-ის წარმოების თარიღი"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "ბოლო დრო, როდესაც master-მა slave-ს განახლება გაუგზავნა"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "შემავალი ხაზის მაქსიმალური ძაბვა apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "ბატარეაზე მუშაობის მაქსიმალური დრო (TIMEOUT), რის შემდეგაც სისტემა ითიშება"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "ბატარეის მინიმალური მუხტი %%% (BCHARGE), რაც საჭიროა სისტემის გათიშვისთვის"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "შემავალი ხაზის მინიმალური (დაფიქსირებული) ძაბვა apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "ბატარეაზე მუშაობის მინიმალური დრო (MINUTES), რაც საჭიროა სისტემის გათიშვისთვის"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "UPS-ის მოდელი, მიღებული UPS-ის ინფორმაციიდან"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "ბატარეის ნომინალური ძაბვა"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "UPS-ზე მიწოდებული ნომინალური შემავალი ძაბვა."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "ბატარეის კვებაზე ყოფნისას მიწოდებული ნომინალური გამომავალი ძაბვა"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "ნომინალური გამომავალი სიმძლავრე ვატებში"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "ბატარეაზე გადართვების რაოდენობა apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "UPS-ის მიმდინარე გამომავალი ძაბვა"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "შეცდომის რეგისტრი 1 თექვსმეტობითში (hex)"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "შეცდომის რეგისტრი 2 თექვსმეტობითში (hex)"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "შეცდომის რეგისტრი 3 თექვსმეტობითში (hex)"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "გამორთვის შემდეგ კვების აღსადგენად საჭირო ბატარეის მუხტი %%%"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "ბოლო თვითტესტის თარიღი და დრო apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "ძაბვის რყევების მიმართ UPS-ის მგრძნობელობის მიმდინარე პარამეტრი"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "UPS-ის სერიული ნომერი"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "apcupsd-ის გაშვების თარიღი და დრო"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "UPS-ის სტატუსის ალამი თექვსმეტობითში (hex)"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "UPS-ის სტატუსი. ქვემოთ ჩამოთვლილიდან ერთი ან მეტი (გამოყოფილი ინტერვალით): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ან COMMLOST ან SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "UPS-ის ბოლო თვითტესტის თარიღი"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "თვითტესტის ინტერვალი"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "UPS-ის მიერ შეფასებული ბატარეაზე მუშაობის დარჩენილი დრო"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "მიმდინარე წამები ბატარეაზე"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "რეჟიმი, რომელშიც UPS მუშაობს"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "UPS-ის სახელი კონფიგურაციის ფაილიდან (dumb) ან EEPROM-იდან (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "მთავარი UPS-ის (master) სახელი იმ შემთხვევაში, როდესაც APCUPSD მონაცემებს APCUPSD-ის სხვა ინსტანციიდან იღებს"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "apcupsd-ის ვერსიის ნომერი, თარიღი და ოპერაციული სისტემა"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "ბატარეიდან ბოლო გადმორთვის თარიღი და დრო apcupsd-ის გაშვებიდან"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "ბატარეაზე ბოლო გადართვის თარიღი და დრო apcupsd-ის გაშვებიდან"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "apcupsd სერვერმა მოულოდნელად დახურა კავშირი."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "apcupsd სერვერმა სტატუსის მონაცემები არ დააბრუნა."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "apcupsd სერვერმა ზედმეტად დიდი ჩანაწერი გამოგზავნა."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "apcupsd სერვერმა ზედმეტად ბევრი მონაცემი გამოგზავნა."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "apcupsd სერვერმა %s წამში არ უპასუხა."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "apcupsd ჰოსტის სახელის ან პორტის არასწორი კონფიგურაცია"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "apcupsd-თან დაკავშირება ვერ მოხერხდა მისამართზე %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "NUT სერვერმა წვდომა უარყო. შეამოწმეთ NUT მომხმარებლის სახელი და პაროლი."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "NUT სერვერისთვის უცნობია UPS სახელით \"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "NUT სერვერს ამ UPS-ისთვის მოძველებული მონაცემები აქვს: მისი დრაივერი არ პასუხობს."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "NUT სერვერმა დააბრუნა შეცდომა: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "NUT ჰოსტის სახელის, პორტის ან UPS-ის სახელის არასწორი კონფიგურაცია"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "NUT სერვერმა მოულოდნელად დახურა კავშირი."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "NUT მომხმარებლის სახელი ან პაროლი შეიცავს სიმბოლოებს, რომელთა გაგზავნაც შეუძლებელია."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "NUT სერვერთან TLS მოლაპარაკება ვერ მოხერხდა."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "NUT სერვერმა ზედმეტად ბევრი მონაცემი გამოგზავნა."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "NUT სერვერმა %s წამში არ უპასუხა."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "NUT CA / სერტიფიკატის ფაილის წაკითხვა შეუძლებელია."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "NUT სერვერთან %s დაკავშირება ვერ მოხერხდა: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "NUT სერვერმა ამ UPS-ისთვის არცერთი ცვლადი არ დააბრუნა."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "UPS-ების მართვა"
+
+#: setup.php
+msgid "Management"
+msgstr "მართვა"
+
+#: setup.php
+msgid "System Administration"
+msgstr "სისტემის ადმინისტრაცია"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "UPS-ების მართვა"
+
+#: upses.php
+msgid "Delete"
+msgstr "წაშლა"
+
+#: upses.php
+msgid "Enable"
+msgstr "ჩართვა"
+
+#: upses.php
+msgid "Disable"
+msgstr "გათიშვა"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "დუბლირება"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "აღმოჩენის გადატვირთვა"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "გრაფიკების ავტომატიზაციის გაშვება"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "APC UPSD-ზე დაფუძნებული"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "SNMP-ზე დაფუძნებული"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "NUT-ზე დაფუძნებული"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "სახელი, რომლის მინიჭებაც გსურთ ამ UPS-ისთვის. APCUPSD და NUT მოწყობილობებისთვის ამ სახელის გამოყენებით ავტომატურად შეიქმნება შესაბამისი Cacti მოწყობილობა. SNMP-ზე დაფუძნებული UPS-ებისთვის ჯერ უნდა შექმნათ Cacti მოწყობილობა."
+
+#: upses.php
+msgid "New UPS"
+msgstr "ახალი UPS"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "UPS-ის აღწერა"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "საჭიროების შემთხვევაში ამ UPS-ის უფრო დეტალური აღწერა."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "UPS-ის ტიპი"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "UPS-ის ტიპი, რომლის მონიტორინგსაც აწარმოებთ."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "Poller-ის ID"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Poller, რომლის ფარგლებშიც ხდება ამ UPS-ის მონიტორინგი"
+
+#: upses.php
+msgid "Site Name"
+msgstr "საიტის სახელი"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "საიტი, სადაც ეს UPS მდებარეობს."
+
+#: upses.php
+msgid "None"
+msgstr "არცერთი"
+
+#: upses.php
+msgid "Location"
+msgstr "მდებარეობა"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "მოწყობილობის ფიზიკური მდებარეობა. ეს თავისუფალი ფორმის ტექსტი შეიძლება იყოს ოთახი, დგარის მდებარეობა და ა.შ."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Cacti მოწყობილობა"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "SNMP-ზე დაფუძნებული UPS-ებისთვის აირჩიეთ Cacti მოწყობილობა SNMP მონაცემების გამოსაყენებლად. წინააღმდეგ შემთხვევაში აირჩიეთ «არცერთი» და UPS მოდული ავტომატურად შექმნის მოწყობილობას თქვენთვის."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "ავტომატური შექმნა პირველ გამოკითხვაზე"
+
+#: upses.php
+msgid "Enabled"
+msgstr "ჩართულია"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "მონიშნეთ მონაცემების გამოკითხვის დაუყოვნებლივ დასაწყებად."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "APC UPSD ინფორმაცია"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "ჰოსტის სახელი, რომელზეც გაშვებულია apcupsd ან NUT სერვერი (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "TCP პორტი"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "შეიყვანეთ ამ UPS-ის TCP პორტი. apcupsd-სთვის ნაგულისხმევია 3551, ხოლო NUT-სთვის 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "მოლოდინის დრო (წამები)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "რამდენ ხანს ელოდება გამომკითხველი apcupsd-ს ან NUT სერვერს ამ UPS-ზე უარის თქმამდე, 1-დან 120 წამამდე. SNMP-ზე დაფუძნებული UPS-ები ამის ნაცვლად SNMP მოლოდინის დროს იყენებენ."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "NUT პარამეტრები"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "NUT UPS სახელი"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "UPS-ის სახელი NUT სერვერზე, როგორც მითითებულია \"upsc -l\" ბრძანებით (ნაწილი @-მდე ups@host-ში). ერთ NUT სერვერს შეუძლია რამდენიმე UPS-ის მომსახურება."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "NUT მომხმარებლის სახელი"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "არასავალდებულო. upsd.users ანგარიში ავთენტიფიკაციისთვის. დატოვეთ ცარიელი ანონიმური მხოლოდ წაკითხვის წვდომისთვის, როგორც ჩვეულებრივ ხდება NUT სერვერების მონიტორინგი."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "NUT პაროლი"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "NUT მომხმარებლის სახელის პაროლი."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "TLS-ის (STARTTLS) გამოყენება"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "დაშიფრეთ კავშირი STARTTLS-ით ავთენტიფიკაციის მონაცემების გაგზავნამდე. NUT სერვერის სერტიფიკატი და ჰოსტის სახელი მოწმდება, ამიტომ სერტიფიკატი უნდა იყოს სანდო Cacti გამომკითხველისთვის, ან შეგიძლიათ მიუთითოთ მისი CA / სერტიფიკატის ფაილი ქვემოთ."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "CA / სერტიფიკატის ფაილი"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "არასავალდებულო. სრული გზა Cacti გამომკითხველზე PEM ფაილამდე, რომელიც შეიცავს CA სერტიფიკატს (ან თვითხელმოწერილ სერვერის სერტიფიკატს) NUT სერვერის შესამოწმებლად, მაგალითად /etc/nut/upsd.pem. ზემოთ მითითებული ჰოსტის სახელი უნდა ემთხვეოდეს სერტიფიკატს."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "თვითხელმოწერილი სერტიფიკატის დაშვება"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "ნებისმიერი სერტიფიკატის მიღება შემოწმების გარეშე. კავშირი კვლავ დაშიფრულია, მაგრამ NUT სერვერი არ არის ავთენტიფიცირებული, ამიტომ შუამავალს შეუძლია წაიკითხოს NUT მონაცემები. უპირატესობა მიანიჭეთ ზემოთ მოცემულ CA / სერტიფიკატის ფაილს."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "SNMP-ის მორგება"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "ჰოსტის სახელი, სადაც SNMP აგენტი მდებარეობს."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "გამომკითხველის ID-ის შეცვლა შეუძლებელია, სანამ UPS დაკავშირებულია Cacti მოწყობილობასთან. ამის ნაცვლად შეცვალეთ გამომკითხველი თავად მოწყობილობაზე."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "UPS-ის შაბლონი ვერ მოიძებნა! დუბლირება შეუძლებელია."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "არჩეული UPS-ებიდან ჯერ არცერთს არ აქვს Cacti მოწყობილობა, ამიტომ გრაფიკების ავტომატიზაცია არ გაეშვა. მოწყობილობა იქმნება პირველი წარმატებული გამოკითხვისას."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "გრაფიკების ავტომატიზაცია გაეშვა %d UPS-ისთვის. %d UPS-ს ჯერ არ აქვს Cacti მოწყობილობა და გამოტოვებულ იქნა."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "გრაფიკების ავტომატიზაცია გაეშვა %d UPS-ისთვის."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(ჯერ არ აქვს Cacti მოწყობილობა)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ის წასაშლელად. გაითვალისწინეთ, ყველა მოწყობილობას მოეხსნება კავშირი ამ UPS-თან."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე ყველა შემდეგი UPS-ის წასაშლელად. გაითვალისწინეთ, ყველა მოწყობილობას მოეხსნება კავშირი ამ UPS-თან."
+
+#: upses.php
+msgid "Cancel"
+msgstr "გაუქმება"
+
+#: upses.php
+msgid "Continue"
+msgstr "გაგრძელება"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "UPS-ის წაშლა"
+msgstr[1] "UPS-ების წაშლა"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ის დუბლირებისთვის."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე ყველა შემდეგი UPS-ის დუბლირებისთვის."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "UPS-ის სახელი:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "UPS-ის დუბლირება"
+msgstr[1] "UPS-ების დუბლირება"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ის აღმოჩენის გადასატვირთად. გაითვალისწინეთ, ეს ეხება მხოლოდ SNMPD ტიპის UPS-ებს."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ების აღმოჩენის გადასატვირთად. გაითვალისწინეთ, ეს ეხება მხოლოდ SNMPD ტიპის UPS-ებს."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "UPS-ის გადატვირთვა"
+msgstr[1] "UPS-ების გადატვირთვა"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ისთვის გრაფიკების ავტომატიზაციის გასაშვებად. გრაფიკები, მონაცემთა წყაროები და ხის ელემენტები იქმნება მოწყობილობის შაბლონებიდან და შესაბამისი ავტომატიზაციის წესებიდან; უკვე არსებული გრაფიკები უცვლელი რჩება. ეს იმოქმედებს მხოლოდ იმ UPS-ზე, რომელსაც უკვე აქვს Cacti მოწყობილობა."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ებისთვის გრაფიკების ავტომატიზაციის გასაშვებად. გრაფიკები, მონაცემთა წყაროები და ხის ელემენტები იქმნება თითოეული მოწყობილობის შაბლონებიდან და შესაბამისი ავტომატიზაციის წესებიდან; უკვე არსებული გრაფიკები უცვლელი რჩება. ეს იმოქმედებს მხოლოდ იმ UPS-ზე, რომელსაც უკვე აქვს Cacti მოწყობილობა."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ის ჩასართავად."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე ყველა შემდეგი UPS-ის ჩასართავად."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "UPS-ის ჩართვა"
+msgstr[1] "UPS-ების ჩართვა"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი UPS-ის გამოსართავად."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე ყველა შემდეგი UPS-ის გამოსართავად."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "UPS-ის გამორთვა"
+msgstr[1] "UPS-ების გამორთვა"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [რედაქტირება: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [ახალი]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "APCUPSD მოწყობილობის შაბლონი არ არის იმპორტირებული. მოწყობილობის ავტომატიზაცია არ მოხდება მის იმპორტამდე!"
+
+#: upses.php
+msgid "Search"
+msgstr "ძებნა"
+
+#: upses.php
+msgid "Site"
+msgstr "საიტი"
+
+#: upses.php
+msgid "All"
+msgstr "ყველა"
+
+#: upses.php
+msgid "Default"
+msgstr "ნაგულისხმევი"
+
+#: upses.php
+msgid "Go"
+msgstr "მიდი"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "ფილტრების დაყენება/განახლება"
+
+#: upses.php
+msgid "Clear"
+msgstr "გასუფთავება"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "ფილტრების გასუფთავება"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "ამ UPS-ის სახელი."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "ამ UPS-თან დაკავშირებული უნიკალური ID."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "Cacti მოწყობილობის ID."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "apcupsd დემონის სტატუსი სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "შემგროვებლის ტიპი. ამჟამად მხარდაჭერილია APCUPSD, SNMP და NUT."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "UPS სტატუსი"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "მონიტორინგის ქვეშ მყოფი UPS-ის სტატუსი სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "UPS მოდელი"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "მონიტორინგის ქვეშ მყოფი UPS-ის მოდელი სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "მონიტორინგის ქვეშ მყოფი UPS-ის ქსელის ძაბვა სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "დატვირთვის პროცენტი"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "მონიტორინგის ქვეშ მყოფი UPS-ის დატვირთვის პროცენტი სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "სავარაუდო ენერგომოხმარება ვატებში: ნომინალური სიმძლავრე გამრავლებული დატვირთვის პროცენტზე."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "მონიტორინგის ქვეშ მყოფი UPS-ის ხელმისაწვდომი მუხტის წუთები სამიზნე ჰოსტზე."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "ჰოსტის სახელი:პორტი"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "ჰოსტის სახელი:პორტი, სადაც გაშვებულია apcupsd დემონი ან NUT სერვერი."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "მიმდინარეობს თუ არა ამ UPS-ის მონიტორინგი."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "ბოლო დრო, როდესაც მოხდა ამ UPS-ის სინჯის აღება ან ხელმისაწვდომად დაფიქსირება."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "UPS პანელის ნახვა"
+
+#: upses.php
+msgid "No"
+msgstr "არა"
+
+#: upses.php
+msgid "Yes"
+msgstr "დიახ"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "UPS-ები ვერ მოიძებნა"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "მიუწვდომელია"

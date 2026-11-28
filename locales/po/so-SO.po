@@ -1,0 +1,1226 @@
+# apcupsd plugin translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti apcupsd\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-01 10:30-0500\n"
+"PO-Revision-Date: 2026-11-28 02:14+0000\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Language-Team: Somali <developers@cacti.net>\n"
+"Language: so_SO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/dashboard.php upses.php
+msgid "Line Voltage"
+msgstr "Fooltijka Khadka"
+
+#: includes/dashboard.php
+msgid "Output Voltage"
+msgstr "Fooltijka Wax-soo-saarka"
+
+#: includes/dashboard.php
+msgid "Line Frequency"
+msgstr "Soo Noqnoqoshada Khadka"
+
+#: includes/dashboard.php
+msgid "Load"
+msgstr "Culayska"
+
+#: includes/dashboard.php
+msgid "Battery Charge"
+msgstr "Dabka Batariga"
+
+#: includes/dashboard.php
+msgid "Battery Voltage"
+msgstr "Danabka Bateriga"
+
+#: includes/dashboard.php upses.php
+msgid "Time Left"
+msgstr "Waqtiga Haray"
+
+#: includes/dashboard.php
+msgid "Temperature"
+msgstr "Heerkulka"
+
+#: includes/dashboard.php
+#, php-format
+msgid "now %s"
+msgstr "hadda %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "min %s"
+msgstr "ugu yar %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "avg %s"
+msgstr "celcelis %s"
+
+#: includes/dashboard.php
+#, php-format
+msgid "max %s"
+msgstr "ugu badan %s"
+
+#: includes/dashboard.php
+msgid "Average"
+msgstr "Celcelis"
+
+#: includes/dashboard.php
+msgid "No readings have been collected for this UPS yet."
+msgstr "Weli wax akhrisyo ah looma ururin UPS-kan."
+
+#: includes/dashboard.php
+msgid "No readings are available for this group yet."
+msgstr "Weli wax akhrisyo ah looma hayo kooxdan."
+
+#: includes/dashboard.php
+msgid "N/A"
+msgstr "Ma khuseyso"
+
+#: includes/dashboard.php
+msgid "No readings are available for this gauge yet."
+msgstr "Weli wax akhrisyo ah looma hayo cabbirkan."
+
+#: includes/dashboard.php
+msgid "Estimated Power"
+msgstr "Awoodda La Qiyaasay"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Information"
+msgstr "Macluumaadka UPS-ka"
+
+#: includes/dashboard.php
+msgid "Input and Load"
+msgstr "Gelinta iyo Culayska"
+
+#: includes/dashboard.php
+msgid "Battery and Runtime"
+msgstr "Bateriga iyo Waqtiga Shaqada"
+
+#: includes/dashboard.php
+msgid "Events and Transfers"
+msgstr "Dhacdooyinka iyo Wareejinta"
+
+#: includes/dashboard.php
+msgid "Unknown"
+msgstr "Aan la garanayn"
+
+#: includes/dashboard.php
+msgid "This graph is no longer available."
+msgstr "Garaafkan hadda lama heli karo."
+
+#: includes/dashboard.php
+msgid "UPS graph"
+msgstr "Garaafka UPS-ka"
+
+#: includes/dashboard.php
+msgid "Estimated power needs a nominal power rating and a load reading."
+msgstr "Awoodda la qiyaasay waxay u baahan tahay qiime awood rasmi ah iyo akhris culays."
+
+#: includes/dashboard.php
+msgid "This gauge is no longer available."
+msgstr "Cabbirkan hadda lama heli karo."
+
+#: includes/dashboard.php
+msgid "No information has been collected for this UPS yet."
+msgstr "Weli wax macluumaad ah looma ururin UPS-kan."
+
+#: includes/dashboard.php
+msgid "APC UPSD"
+msgstr "APC UPSD"
+
+#: includes/dashboard.php
+msgid "NUT"
+msgstr "NUT"
+
+#: includes/dashboard.php
+msgid "SNMP"
+msgstr "SNMP"
+
+#: includes/dashboard.php upses.php
+msgid "UPS Name"
+msgstr "Magaca UPS-ka"
+
+#: includes/dashboard.php
+msgid "Model"
+msgstr "Moodeelka"
+
+#: includes/dashboard.php
+msgid "Serial Number"
+msgstr "Lambarka Taxanaha"
+
+#: includes/dashboard.php
+msgid "Firmware"
+msgstr "Firmware"
+
+#: includes/dashboard.php
+msgid "Cable / Driver"
+msgstr "Fiilada / Darawalka"
+
+#: includes/dashboard.php upses.php
+msgid "Collector"
+msgstr "Ururiyaha"
+
+#: includes/dashboard.php upses.php
+msgid "Hostname"
+msgstr "Magaca Martigeliyaha"
+
+#: includes/dashboard.php
+msgid "Nominal Power"
+msgstr "Awoodda Rasmiga ah"
+
+#: includes/dashboard.php
+msgid "Nominal Input Voltage"
+msgstr "Danabka Gelinta Rasmiga ah"
+
+#: includes/dashboard.php
+msgid "Nominal Battery Voltage"
+msgstr "Danabka Bateriga Rasmiga ah"
+
+#: includes/dashboard.php
+msgid "Recorded Line Min"
+msgstr "Khadka Ugu Yar ee La Diiwaangeliyay"
+
+#: includes/dashboard.php
+msgid "Recorded Line Max"
+msgstr "Khadka Ugu Badan ee La Diiwaangeliyay"
+
+#: includes/dashboard.php
+msgid "Battery Date"
+msgstr "Taariikhda Bateriga"
+
+#: includes/dashboard.php
+msgid "Manufactured"
+msgstr "La Sameeyay"
+
+#: includes/dashboard.php upses.php
+msgid "Last Updated"
+msgstr "Markii Ugu Dambeysay ee La Cusboonaysiiyay"
+
+#: includes/dashboard.php
+msgid "No event data has been collected for this UPS yet."
+msgstr "Weli wax xog dhacdo ah looma ururin UPS-kan."
+
+#: includes/dashboard.php
+msgid "Last Transfer Reason"
+msgstr "Sababta Wareejintii Ugu Dambeysay"
+
+#: includes/dashboard.php
+msgid "Number of Transfers"
+msgstr "Tirada Wareejimaha"
+
+#: includes/dashboard.php
+msgid "Time on Battery"
+msgstr "Waqtiga Bateriga Lagu Jiray"
+
+#: includes/dashboard.php
+msgid "sec"
+msgstr "ilb"
+
+#: includes/dashboard.php
+msgid "Cumulative on Battery"
+msgstr "Wadarta Waqtiga Bateriga"
+
+#: includes/dashboard.php
+msgid "Last Self Test"
+msgstr "Is-tijaabintii Ugu Dambeysay"
+
+#: includes/dashboard.php
+msgid "Self Test Result"
+msgstr "Natiijada Is-tijaabinta"
+
+#: includes/dashboard.php
+msgid "Last On Battery"
+msgstr "Markii Ugu Dambeysay ee Bateriga"
+
+#: includes/dashboard.php
+msgid "Last Off Battery"
+msgstr "Markii Ugu Dambeysay ee Laga Baxay Bateriga"
+
+#: includes/dashboard.php
+msgid "Show more"
+msgstr "Muuji wax badan"
+
+#: includes/dashboard.php
+msgid "Show less"
+msgstr "Muuji wax yar"
+
+#: includes/dashboard.php
+msgid "Open in a dialog"
+msgstr "Ku fur daaqad wadahadal"
+
+#: includes/dashboard.php
+msgid "Refresh"
+msgstr "Dib u cusboonaysii"
+
+#: includes/dashboard.php
+msgid "Remove from page"
+msgstr "Ka saar bogga"
+
+#: includes/dashboard.php
+msgid "Drag to reorder card"
+msgstr "Jiid si aad dib ugu habayso kaarka"
+
+#: includes/dashboard.php
+msgid "Invalid request. Please try again."
+msgstr "Codsi aan sax ahayn. Fadlan mar kale isku day."
+
+#: includes/dashboard.php
+msgid "No UPS selected."
+msgstr "Lama dooran wax UPS ah."
+
+#: includes/dashboard.php
+msgid "This dashboard has too many cards to save its layout."
+msgstr "Guddigan xogtu wuxuu leeyahay kaarar aad u badan si loo kaydiyo qaabkiisa."
+
+#: includes/dashboard.php
+msgid "Invalid refresh interval."
+msgstr "Muddada dib-u-cusboonaysiinta sax ma aha."
+
+#: includes/dashboard.php
+msgid "Unknown card."
+msgstr "Kaar aan la aqoon."
+
+#: includes/dashboard.php setup.php
+msgid "UPS Dashboard"
+msgstr "Guddiga Xogta UPS"
+
+#: includes/dashboard.php
+msgid "Open a UPS Dashboard from the Manage UPSes list by clicking the UPS's dashboard glyph. The Dashboard remembers the last UPS you opened."
+msgstr "Ka fur Guddiga Xogta UPS liiska Maamul UPS-yada adigoo gujinaya astaanta guddiga xogta ee UPS-ka. Guddiga Xogtu wuxuu xusuustaa UPS-kii ugu dambeeyay ee aad furtay."
+
+#: includes/dashboard.php
+msgid "1 Minute"
+msgstr "1 Daqiiqo"
+
+#: includes/dashboard.php
+msgid "30 Seconds"
+msgstr "30 Ilbiriqsi"
+
+#: includes/dashboard.php
+msgid "5 Minutes"
+msgstr "5 Daqiiqo"
+
+#: includes/dashboard.php
+msgid "No Refresh"
+msgstr "Dib-u-cusboonaysiin La'aan"
+
+#: includes/dashboard.php
+msgid "UPS"
+msgstr "UPS"
+
+#: includes/dashboard.php
+msgid "Timespan"
+msgstr "Muddada Waqtiga"
+
+#: includes/dashboard.php
+msgid "Add card"
+msgstr "Ku dar kaar"
+
+#: includes/dashboard.php
+msgid "Add a card…"
+msgstr "Ku dar kaar…"
+
+#: includes/dashboard.php setup.php
+msgid "Fleet Dashboard"
+msgstr "Guddiga Xogta Kooxda"
+
+#: includes/dashboard.php setup.php upses.php
+msgid "UPSes"
+msgstr "UPS-yada"
+
+#: includes/dashboard.php
+msgid "Fleet Overview"
+msgstr "Guudmarka Kooxda"
+
+#: includes/dashboard.php
+msgid "Status Distribution"
+msgstr "Qaybinta Xaaladda"
+
+#: includes/dashboard.php
+msgid "Fleet Readings"
+msgstr "Akhrisyada Kooxda"
+
+#: includes/dashboard.php
+msgid "Fleet Power"
+msgstr "Awoodda Kooxda"
+
+#: includes/dashboard.php
+msgid "Fleet Gauges"
+msgstr "Cabbirrada Kooxda"
+
+#: includes/dashboard.php
+msgid "No UPSes are configured yet."
+msgstr "Weli wax UPS-yo ah lama habayn."
+
+#: includes/dashboard.php
+msgid "Total"
+msgstr "Wadar"
+
+#: includes/dashboard.php
+msgid "Online"
+msgstr "Khadka ku jira"
+
+#: includes/dashboard.php
+msgid "On Battery"
+msgstr "Bateriga ku shaqaynaya"
+
+#: includes/dashboard.php
+msgid "Other"
+msgstr "Kale"
+
+#: includes/dashboard.php
+msgid "Disabled"
+msgstr "La damiyay"
+
+#: includes/dashboard.php upses.php
+msgid "Est. Power"
+msgstr "Awoodda Qiyaasta"
+
+#: includes/dashboard.php
+msgid "No enabled UPSes are reporting readings yet."
+msgstr "Weli ma jiraan UPS-yo shaqaynaya oo soo sheegaya akhrisyo."
+
+#: includes/dashboard.php
+msgid "Estimated power needs an enabled UPS with a nominal power rating and a load reading."
+msgstr "Awoodda la qiyaasay waxay u baahan tahay UPS shaqaynaya oo leh qiime awood rasmi ah iyo akhris culays."
+
+#: includes/dashboard.php
+#, php-format
+msgid "%s of %s rated"
+msgstr "%s ka mid ah %s la qiimeeyay"
+
+#: includes/dashboard.php
+msgid "Estimated as nominal power x load %, from the latest poll."
+msgstr "Waxaa lagu qiyaasay awoodda rasmiga ah x culayska %, laga soo bilaabo xog-ururintii ugu dambeysay."
+
+#: includes/dashboard.php
+#, php-format
+msgid "Counted %s of %s enabled UPSes."
+msgstr "Waxaa la tiriyay %s ka mid ah %s UPS-yo shaqaynaya."
+
+#: includes/dashboard.php upses.php
+msgid "Status"
+msgstr "Xaaladda"
+
+#: includes/dashboard.php
+msgid "Charge"
+msgstr "Dabka"
+
+#: includes/dashboard.php
+msgid "min"
+msgstr "daq"
+
+#: includes/dashboard.php
+msgid "Open UPS Dashboard"
+msgstr "Fur Guddiga Xogta UPS"
+
+#: includes/dashboard.php
+msgid "Fleet Total"
+msgstr "Wadarta Kooxda"
+
+#: includes/field_maps.php
+msgid "Delay period before APCUPSD starts sounding alarm"
+msgstr "Muddada dib-u-dhaca ka hor inta uusan APCUPSD bilaabin dhawaaqa digniinta"
+
+#: includes/field_maps.php
+msgid "Ambient temperature"
+msgstr "Heerkulka deegaanka"
+
+#: includes/field_maps.php
+msgid "version, number of records and number of bytes following"
+msgstr "nooca, tirada diiwaannada iyo tirada baytyada soo socda"
+
+#: includes/field_maps.php
+msgid "APC model information"
+msgstr "Macluumaadka moodeelka APC"
+
+#: includes/field_maps.php
+msgid "Number of bad external battery packs (for XL models)"
+msgstr "Tirada xirmooyinka bateriga dibadda ee xun (ee moodeellada XL)"
+
+#: includes/field_maps.php
+msgid "Date battery last replaced (if set)"
+msgstr "Taariikhda bateriga ugu dambeysay ee la beddelay (haddii la dejiyay)"
+
+#: includes/field_maps.php
+msgid "Battery status."
+msgstr "Xaaladda bateriga."
+
+#: includes/field_maps.php
+msgid "Current battery voltage"
+msgstr "Danabka bateriga ee hadda"
+
+#: includes/field_maps.php
+msgid "Current battery capacity charge percentage"
+msgstr "Boqolkiiba awoodda buuxinta bateriga ee hadda"
+
+#: includes/field_maps.php
+msgid "Cable type specified in the configuration file"
+msgstr "Nooca fiilada ee lagu sheegay faylka habaynta"
+
+#: includes/field_maps.php
+msgid "Cumulative seconds on battery since apcupsd startup"
+msgstr "Wadarta ilbiriqsiyada bateriga lagu jiray tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Date and time of last update from UPS"
+msgstr "Taariikhda iyo waqtiga cusboonaysiintii ugu dambeysay ee ka timid UPS-ka"
+
+#: includes/field_maps.php
+msgid "Current UPS DIP switch settings"
+msgstr "Dejinta furaha DIP ee UPS-ka hadda"
+
+#: includes/field_maps.php
+msgid "Low battery signal sent when this much runtime remains"
+msgstr "Calaamadda bateriga hooseysa waxaa la diraa marka waqtigan shaqada ahi haro"
+
+#: includes/field_maps.php
+msgid "The APCUPSD Driver when APCUPSD is the protocol"
+msgstr "Darawalka APCUPSD marka APCUPSD uu yahay hab-maamuuska"
+
+#: includes/field_maps.php
+msgid "Delay before UPS powers down after command received"
+msgstr "Dib-u-dhaca ka hor inta uusan UPS-ku damin ka dib marka la helo amarka"
+
+#: includes/field_maps.php
+msgid "Time UPS waits after power off when the power is restored"
+msgstr "Waqtiga uu UPS-ku sugo daminta ka dib marka korontada la soo celiyo"
+
+#: includes/field_maps.php
+msgid "Date and time of status information was written"
+msgstr "Taariikhda iyo waqtiga la qoray macluumaadka xaaladda"
+
+#: includes/field_maps.php
+msgid "Number of external batteries (for XL models)"
+msgstr "Tirada bateriyada dibadda (ee moodeellada XL)"
+
+#: includes/field_maps.php
+msgid "UPS firmware version"
+msgstr "Nooca firmware-ka UPS-ka"
+
+#: includes/field_maps.php
+msgid "Input line voltage above which UPS will switch to battery"
+msgstr "Danabka khadka gelinta oo haddii uu ka sarreeyo uu UPS-ku u wareegayo bateriga"
+
+#: includes/field_maps.php
+msgid "hostname of computer running apcupsd"
+msgstr "magaca martigeliyaha kombiyuutarka ku shaqaynaya apcupsd"
+
+#: includes/field_maps.php
+msgid "Ambient humidity"
+msgstr "Qoyaanka deegaanka"
+
+#: includes/field_maps.php
+msgid "UPS internal temperature in degrees Celsius"
+msgstr "Heerkulka gudaha UPS-ka ee digrii Celsius"
+
+#: includes/field_maps.php
+msgid "Reason for last transfer to battery since apcupsd startup"
+msgstr "Sababta wareejintii ugu dambeysay ee bateriga tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Input line voltage status."
+msgstr "Xaaladda danabka khadka gelinta."
+
+#: includes/field_maps.php
+msgid "Current line frequency in Hertz"
+msgstr "Soo noqnoqoshada khadka ee hadda iyadoo ah Hertz"
+
+#: includes/field_maps.php
+msgid "Current input line voltage"
+msgstr "Danabka khadka gelinta ee hadda"
+
+#: includes/field_maps.php
+msgid "Percentage of UPS load capacity used as estimated by UPS"
+msgstr "Boqolkiiba awoodda culayska UPS-ka ee la isticmaalay sida uu qiyaasay UPS-ku"
+
+#: includes/field_maps.php
+msgid "Input line voltage below which UPS will switch to battery"
+msgstr "Danabka khadka gelinta oo haddii uu ka hooseeyo uu UPS-ku u wareegayo bateriga"
+
+#: includes/field_maps.php
+msgid "UPS date of manufacture"
+msgstr "Taariikhda la sameeyay UPS-ka"
+
+#: includes/field_maps.php
+msgid "Last time the master sent an update to the slave"
+msgstr "Markii ugu dambeysay ee master-ku u diray cusboonaysiin slave-ka"
+
+#: includes/field_maps.php
+msgid "Maximum input line voltage since apcupsd started"
+msgstr "Danabka khadka gelinta ugu sarreeya tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Max battery runtime (TIMEOUT) after which system is shutdown"
+msgstr "Waqtiga shaqada bateriga ugu badan (TIMEOUT) oo ka dib nidaamka la daminayo"
+
+#: includes/field_maps.php
+msgid "Min battery charge %%% (BCHARGE) required for system shutdown"
+msgstr "Dabka bateriga ugu yar %%% (BCHARGE) ee loo baahan yahay daminta nidaamka"
+
+#: includes/field_maps.php
+msgid "Min (observed) input line voltage since apcupsd started"
+msgstr "Danabka khadka gelinta ugu yar (ee la arkay) tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Min battery runtime (MINUTES) required for system shutdown"
+msgstr "Waqtiga shaqada bateriga ugu yar (MINUTES) ee loo baahan yahay daminta nidaamka"
+
+#: includes/field_maps.php
+msgid "UPS model derived from UPS information"
+msgstr "Moodeelka UPS-ka ee laga soo dheegtay macluumaadka UPS-ka"
+
+#: includes/field_maps.php
+msgid "Nominal battery voltage"
+msgstr "Danabka bateriga rasmiga ah"
+
+#: includes/field_maps.php
+msgid "Nominal input voltage delivered to the UPS."
+msgstr "Danabka gelinta rasmiga ah ee la siiyo UPS-ka."
+
+#: includes/field_maps.php
+msgid "Nominal output voltage to supply when on battery power"
+msgstr "Danabka bixinta rasmiga ah ee la siinayo marka lagu jiro awoodda bateriga"
+
+#: includes/field_maps.php
+msgid "Nominal power output in watts"
+msgstr "Awoodda bixinta rasmiga ah iyadoo ah watts"
+
+#: includes/field_maps.php
+msgid "Number of transfers to battery since apcupsd startup"
+msgstr "Tirada wareejimaha bateriga tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS output voltage"
+msgstr "Danabka bixinta UPS-ka ee hadda"
+
+#: includes/field_maps.php
+msgid "Fault register 1 in hex"
+msgstr "Diiwaanka cilladda 1 ee nidaamka hex"
+
+#: includes/field_maps.php
+msgid "Fault register 2 in hex"
+msgstr "Diiwaanka cilladda 2 ee nidaamka hex"
+
+#: includes/field_maps.php
+msgid "Fault register 3 in hex"
+msgstr "Diiwaanka cilladda 3 ee nidaamka hex"
+
+#: includes/field_maps.php
+msgid "Battery charge %%% required after power off to restore power"
+msgstr "Dabka bateriga %%% ee loo baahan yahay daminta ka dib si korontada loo soo celiyo"
+
+#: includes/field_maps.php
+msgid "Date and time of last self test since apcupsd startup"
+msgstr "Taariikhda iyo waqtiga is-tijaabintii ugu dambeysay tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Current UPS sensitivity setting for voltage fluctuations"
+msgstr "Dejinta dareenka UPS-ka hadda ee isbedbeddelka danabka"
+
+#: includes/field_maps.php
+msgid "UPS serial number"
+msgstr "Lambarka taxanaha UPS-ka"
+
+#: includes/field_maps.php
+msgid "Date and time apcupsd was started"
+msgstr "Taariikhda iyo waqtiga la bilaabay apcupsd"
+
+#: includes/field_maps.php
+msgid "UPS status flag in hex"
+msgstr "Calanka xaaladda UPS-ka ee nidaamka hex"
+
+#: includes/field_maps.php
+msgid "UPS status. One or more of the following (space-separated): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN or COMMLOST or SHUTTING DOWN"
+msgstr "Xaaladda UPS-ka. Mid ama in ka badan oo ka mid ah kuwan soo socda (meel bannaan u dhexaysa): CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN ama COMMLOST ama SHUTTING DOWN"
+
+#: includes/field_maps.php
+msgid "Date of the last UPS self test"
+msgstr "Taariikhda is-tijaabintii ugu dambeysay ee UPS-ka"
+
+#: includes/field_maps.php
+msgid "Self-test interval"
+msgstr "Muddada u dhexaysa is-tijaabinta"
+
+#: includes/field_maps.php
+msgid "Remaining runtime left on battery as estimated by the UPS"
+msgstr "Waqtiga shaqada ee ku haray bateriga sida uu qiyaasay UPS-ku"
+
+#: includes/field_maps.php
+msgid "Seconds currently on battery"
+msgstr "Ilbiriqsiyada hadda bateriga lagu jiro"
+
+#: includes/field_maps.php
+msgid "Mode in which UPS is operating"
+msgstr "Habka uu UPS-ku u shaqaynayo"
+
+#: includes/field_maps.php
+msgid "UPS name from configuration file (dumb) or EEPROM (smart)"
+msgstr "Magaca UPS-ka ee laga helay faylka habaynta (dumb) ama EEPROM (smart)"
+
+#: includes/field_maps.php
+msgid "UPS master name in the case where APCUPSD is pulling the data from another instance of APCUPSD"
+msgstr "Magaca master-ka UPS-ka marka APCUPSD uu xogta ka soo jiidayo nuqul kale oo APCUPSD ah"
+
+#: includes/field_maps.php
+msgid "apcupsd version number, date and operating system"
+msgstr "lambarka nooca apcupsd, taariikhda iyo nidaamka hawlgalka"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer off battery since apcupsd startup"
+msgstr "Taariikhda, waqtiga wareejintii ugu dambeysay ee laga baxay bateriga tan iyo markii uu bilowday apcupsd"
+
+#: includes/field_maps.php
+msgid "Date, time of last transfer to battery since apcupsd startup"
+msgstr "Taariikhda, waqtiga u wareegiddii u dambeysay ee batteriga tan iyo markii apcupsd la bilaabay"
+
+#: includes/nis.php
+msgid "The apcupsd server closed the connection unexpectedly."
+msgstr "Server-ka apcupsd wuxuu xiray xiriirka si lama filaan ah."
+
+#: includes/nis.php
+msgid "The apcupsd server returned no status data."
+msgstr "Server-ka apcupsd ma soo celin wax xog xaalad ah."
+
+#: includes/nis.php
+msgid "The apcupsd server sent an oversized record."
+msgstr "Server-ka apcupsd wuxuu soo diray diiwaan aad u weyn."
+
+#: includes/nis.php
+msgid "The apcupsd server sent too much data."
+msgstr "Server-ka apcupsd wuxuu soo diray xog aad u badan."
+
+#: includes/nis.php
+#, php-format
+msgid "The apcupsd server did not answer within %s seconds."
+msgstr "Server-ka apcupsd kama jawaabin %s ilbiriqsi gudahood."
+
+#: includes/nis.php
+msgid "Invalid apcupsd hostname or port configuration"
+msgstr "Habaynta hostname-ka ama port-ka apcupsd oo aan sax ahayn"
+
+#: includes/nis.php
+#, php-format
+msgid "Unable to connect to apcupsd at %s: %s"
+msgstr "Lama xiriiri karo apcupsd ee %s: %s"
+
+#: includes/nut.php
+msgid "The NUT server denied access. Check the NUT username and password."
+msgstr "Server-ka NUT wuu diiday gelitaanka. Hubi magaca isticmaalaha iyo erayga sirta ah ee NUT."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server does not know a UPS named \"%s\"."
+msgstr "Server-ka NUT ma yaqaan UPS lagu magacaabo \"%s\"."
+
+#: includes/nut.php
+msgid "The NUT server has stale data for this UPS: its driver is not responding."
+msgstr "Server-ka NUT wuxuu hayaa xog duug ah oo loogu talagalay UPS-kan: darawalkiisu kama jawaabayo."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server reported an error: %s"
+msgstr "Server-ka NUT wuxuu soo sheegay khalad: %s"
+
+#: includes/nut.php
+msgid "Invalid NUT hostname, port or UPS name configuration"
+msgstr "Habaynta hostname-ka NUT, port-ka ama magaca UPS oo aan sax ahayn"
+
+#: includes/nut.php
+msgid "The NUT server closed the connection unexpectedly."
+msgstr "Server-ka NUT wuxuu xiray xiriirka si lama filaan ah."
+
+#: includes/nut.php
+msgid "The NUT username or password contains characters that cannot be sent."
+msgstr "Magaca isticmaalaha ama erayga sirta ah ee NUT wuxuu ka kooban yahay xarfo aan la diri karin."
+
+#: includes/nut.php
+msgid "TLS negotiation with the NUT server failed."
+msgstr "Wadahadalkii TLS ee lala lahaa server-ka NUT wuu fashilmay."
+
+#: includes/nut.php
+msgid "The NUT server sent too much data."
+msgstr "Server-ka NUT wuxuu soo diray xog aad u badan."
+
+#: includes/nut.php
+#, php-format
+msgid "The NUT server did not answer within %s seconds."
+msgstr "Server-ka NUT kama jawaabin %s ilbiriqsi gudahood."
+
+#: includes/nut.php
+msgid "The NUT CA / certificate file cannot be read."
+msgstr "Faylka CA / shahaadada ee NUT lama akhrin karo."
+
+#: includes/nut.php
+#, php-format
+msgid "Unable to connect to the NUT server %s: %s"
+msgstr "Lama xiriiri karo server-ka NUT %s: %s"
+
+#: poller_apcupsd.php
+msgid "The NUT server did not return any variables for this UPS."
+msgstr "Server-ka NUT ma soo celin wax doorsoomayaal ah oo loogu talagalay UPS-kan."
+
+#: setup.php
+msgid "Manage UPS's"
+msgstr "Maamul UPS-yada"
+
+#: setup.php
+msgid "Management"
+msgstr "Maarayn"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Maamulka Nidaamka"
+
+#: setup.php
+msgid "Manage UPSes"
+msgstr "Maamul UPS-yada"
+
+#: upses.php
+msgid "Delete"
+msgstr "Tirtir"
+
+#: upses.php
+msgid "Enable"
+msgstr "Hawl-geli"
+
+#: upses.php
+msgid "Disable"
+msgstr "Hawl-jooji"
+
+#: upses.php
+msgid "Duplicate"
+msgstr "Nuqul ka samee"
+
+#: upses.php
+msgid "Reset Detection"
+msgstr "Dib u deji Ogaanshaha"
+
+#: upses.php
+msgid "Run Graph Automation"
+msgstr "Orod Otomaatigga Shaxda"
+
+#: upses.php
+msgid "APC UPSD Based"
+msgstr "Ku salaysan APC UPSD"
+
+#: upses.php
+msgid "SNMP Based"
+msgstr "Ku salaysan SNMP"
+
+#: upses.php
+msgid "NUT Based"
+msgstr "Ku salaysan NUT"
+
+#: upses.php
+msgid "The Name you would like to give this UPS.  For APCUPSD and NUT Devices, a corresponding Cacti Device will be created automatically for the UPS using this name.  For SNMP based UPS's, you must create the Cacti Device first."
+msgstr "Magaca aad jeclaan lahayd inaad siiso UPS-kan.  Aaladaha APCUPSD iyo NUT, waxaa si otomaatig ah loogu abuuri doonaa Aalad Cacti ah oo u dhiganta UPS-ka iyadoo la adeegsanayo magacan.  UPS-yada ku salaysan SNMP, waa inaad marka hore abuurtaa Aaladda Cacti."
+
+#: upses.php
+msgid "New UPS"
+msgstr "UPS Cusub"
+
+#: upses.php
+msgid "UPS Description"
+msgstr "Sharaxaadda UPS"
+
+#: upses.php
+msgid "A more detailed Description of this UPS if required."
+msgstr "Sharaxaad faahfaahsan oo ku saabsan UPS-kan haddii loo baahdo."
+
+#: upses.php
+msgid "UPS Type"
+msgstr "Nooca UPS"
+
+#: upses.php
+msgid "The Type of UPS you are monitoring."
+msgstr "Nooca UPS ee aad la socoto."
+
+#: upses.php
+msgid "Poller ID"
+msgstr "Aqoonsiga Poller-ka"
+
+#: upses.php
+msgid "The Poller that this UPS exists in is monitored by"
+msgstr "Poller-ka uu UPS-kani ku jiro ee lagala socdo"
+
+#: upses.php
+msgid "Site Name"
+msgstr "Magaca Goobta"
+
+#: upses.php
+msgid "The Site that this UPS exists in."
+msgstr "Goobta uu UPS-kani ku yaal."
+
+#: upses.php
+msgid "None"
+msgstr "Waxba"
+
+#: upses.php
+msgid "Location"
+msgstr "Meesha"
+
+#: upses.php
+msgid "The physical location of the Device.  This free form text can be a room, rack location, etc."
+msgstr "Meesha jireed ee ay Aaladdu ku taal.  Qoraalkan xor ah wuxuu noqon karaa qol, meesha rack-ga, iwm."
+
+#: upses.php
+msgid "Cacti Device"
+msgstr "Aaladda Cacti"
+
+#: upses.php
+msgid "For SNMP Based UPS', select the Cacti Device to use for SNMP credentials.  Otherwise, select None, and the UPS plugin will create the Device for you automatically."
+msgstr "UPS-yada ku salaysan SNMP, dooro Aaladda Cacti si loogu isticmaalo aqoonsiga SNMP.  Haddii kale, dooro Waxba, oo plugin-ka UPS ayaa si otomaatig ah kuugu abuuri doona Aaladda."
+
+#: upses.php
+msgid "Autocreate on First Poll"
+msgstr "Si otomaatig ah u abuur marka ugu horreysa ee Poll"
+
+#: upses.php
+msgid "Enabled"
+msgstr "Hawl-gal ah"
+
+#: upses.php
+msgid "Check to immediately start polling for data."
+msgstr "Calaamadee si aad isla markiiba u bilowdo ururinta xogta."
+
+#: upses.php
+msgid "APC UPSD Information"
+msgstr "Macluumaadka APC UPSD"
+
+#: upses.php
+msgid "The hostname of the host running apcupsd or the NUT server (upsd)."
+msgstr "Hostname-ka martigeliyaha uu ku shaqaynayo apcupsd ama server-ka NUT (upsd)."
+
+#: upses.php
+msgid "TCP Port"
+msgstr "Port-ka TCP"
+
+#: upses.php
+msgid "Enter the TCP Port for this UPS.  apcupsd defaults to 3551 and NUT defaults to 3493."
+msgstr "Geli Port-ka TCP ee UPS-kan.  apcupsd wuxuu caadiyan adeegsadaa 3551, NUT-na wuxuu caadiyan adeegsadaa 3493."
+
+#: upses.php
+msgid "Timeout (seconds)"
+msgstr "Waqtiga dhammaadka (ilbiriqsi)"
+
+#: upses.php
+msgid "How long the poller waits for apcupsd or the NUT server before giving up on this UPS, from 1 to 120 seconds.  SNMP based UPS's use the SNMP timeout instead."
+msgstr "Inta uu poller-ku sugayo apcupsd ama server-ka NUT ka hor inta uusan ka quusan UPS-kan, laga bilaabo 1 ilaa 120 ilbiriqsi.  UPS-yada ku salaysan SNMP waxay beddelkeeda adeegsadaan waqtiga dhammaadka SNMP."
+
+#: upses.php
+msgid "NUT Options"
+msgstr "Ikhtiyaarrada NUT"
+
+#: upses.php
+msgid "NUT UPS Name"
+msgstr "Magaca NUT UPS"
+
+#: upses.php
+msgid "The name of the UPS on the NUT server, as listed by \"upsc -l\" (the part before the @ in ups@host).  One NUT server can serve several UPSes."
+msgstr "Magaca UPS-ka ee ku yaal server-ka NUT, sida uu u qoray \"upsc -l\" (qaybta ka horreysa @ ee ups@host).  Hal server oo NUT ah wuxuu u adeegi karaa dhowr UPS."
+
+#: upses.php
+msgid "NUT Username"
+msgstr "Magaca Isticmaalaha NUT"
+
+#: upses.php
+msgid "Optional.  The upsd.users account to authenticate with.  Leave blank for anonymous read-only access, which is how NUT servers are usually monitored."
+msgstr "Ikhtiyaari.  Akoonka upsd.users ee lagu xaqiijinayo.  Bannaan u daa si loo helo gelitaan akhris-kaliya oo aan magac lahayn, taas oo ah sida server-rada NUT badanaa loola socdo."
+
+#: upses.php
+msgid "NUT Password"
+msgstr "Erayga Sirta ah ee NUT"
+
+#: upses.php
+msgid "The password for the NUT Username."
+msgstr "Erayga sirta ah ee Magaca Isticmaalaha NUT."
+
+#: upses.php
+msgid "Use TLS (STARTTLS)"
+msgstr "Isticmaal TLS (STARTTLS)"
+
+#: upses.php
+msgid "Encrypt the connection with STARTTLS before any credentials are sent.  The NUT server certificate and host name are verified, so the certificate must be trusted by the Cacti poller, or you can point to its CA / certificate file below."
+msgstr "Ku sir xiriirka STARTTLS ka hor inta aan la dirin wax aqoonsi ah.  Shahaadada server-ka NUT iyo magaca martigeliyaha waa la xaqiijiyaa, markaa shahaadada waa inuu ku kalsoon yahay poller-ka Cacti, ama waxaad u tilmaami kartaa faylkeeda CA / shahaadada hoose."
+
+#: upses.php
+msgid "CA / Certificate File"
+msgstr "Faylka CA / Shahaadada"
+
+#: upses.php
+msgid "Optional.  The full path on the Cacti poller to a PEM file holding the CA certificate (or the self-signed server certificate) to verify the NUT server against, for example /etc/nut/upsd.pem.  The host name above must match the certificate."
+msgstr "Ikhtiyaari.  Dariiqada buuxda ee ku taal poller-ka Cacti oo aadda faylka PEM ee haya shahaadada CA (ama shahaadada server-ka ee is-saxiixday) si loogu xaqiijiyo server-ka NUT, tusaale ahaan /etc/nut/upsd.pem.  Magaca martigeliyaha ee sare waa inuu la mid noqdaa shahaadada."
+
+#: upses.php
+msgid "Allow Self-Signed Certificate"
+msgstr "Oggolow Shahaadada Is-saxiixday"
+
+#: upses.php
+msgid "Accept any certificate without checking it.  The connection is still encrypted, but the NUT server is not authenticated, so a man-in-the-middle could read the NUT credentials.  Prefer the CA / Certificate File above."
+msgstr "Aqbal shahaado kasta adigoon hubin.  Xiriirku weli waa la siray, laakiin server-ka NUT lama xaqiijin, markaa qof dhexda ku jira wuxuu akhrin karaa aqoonsiga NUT.  Doorbido Faylka CA / Shahaadada ee sare."
+
+#: upses.php
+msgid "SNMP Options"
+msgstr "Ikhtiyaarrada SNMP"
+
+#: upses.php
+msgid "The hostname where the snmp agent is located."
+msgstr "Hostname-ka meesha uu ku yaal wakiilka snmp."
+
+#: upses.php
+msgid "The Poller ID cannot be changed while the UPS is linked to a Cacti Device.  Change the poller on the device instead."
+msgstr "Aqoonsiga Poller-ka lama beddeli karo inta UPS-ku ku xiran yahay Aaladda Cacti.  Beddel poller-ka ku yaal aaladda beddelkeeda."
+
+#: upses.php
+msgid "Template UPS was not found! Unable to duplicate."
+msgstr "Qaabka UPS lama helin! Lama nuqul karin."
+
+#: upses.php
+msgid "None of the selected UPSes has a Cacti Device yet, so Graph Automation was not run.  A device is created on the first successful poll."
+msgstr "Midna ka mid ah UPS-yada la doortay weli ma laha Aalad Cacti, markaa Otomaatigga Shaxda lama orodsiin.  Aalad waxaa la abuuraa marka ugu horreysa ee poll guuleysto."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es).  %d UPS(es) have no Cacti Device yet and were skipped."
+msgstr "Otomaatigga Shaxda waxaa loo orodsiiyay %d UPS.  %d UPS weli ma laha Aalad Cacti waana laga booday."
+
+#: upses.php
+#, php-format
+msgid "Graph Automation was run for %d UPS(es)."
+msgstr "Otomaatigga Shaxda waxaa loo orodsiiyay %d UPS."
+
+#: upses.php
+msgid "(no Cacti Device yet)"
+msgstr "(weli ma jirto Aalad Cacti)"
+
+#: upses.php
+msgid "Click 'Continue' to Delete the following UPS.  Note, all Devices will be disassociated from this UPS."
+msgid_plural "Click 'Continue' to Delete all following UPSes.  Note, all devices will be disassociated from this UPS."
+msgstr[0] "Guji 'Sii wad' si aad u Tirtirto UPS-ka soo socda. Ogsoonow, dhammaan Qalabyada waxaa laga saari doonaa xiriirka UPS-kan."
+msgstr[1] "Guji 'Sii wad' si aad u Tirtirto dhammaan UPS-yada soo socda. Ogsoonow, dhammaan qalabyada waxaa laga saari doonaa xiriirka UPS-kan."
+
+#: upses.php
+msgid "Cancel"
+msgstr "Jooji"
+
+#: upses.php
+msgid "Continue"
+msgstr "Sii wad"
+
+#: upses.php
+msgid "Delete UPS"
+msgid_plural "Delete UPSes"
+msgstr[0] "Tirtir UPS"
+msgstr[1] "Tirtir UPS-yada"
+
+#: upses.php
+msgid "Click 'Continue' to Duplicate the following UPS."
+msgid_plural "Click 'Continue' to Duplicate all following UPSes."
+msgstr[0] "Guji 'Sii wad' si aad Nuqul uga samayso UPS-ka soo socda."
+msgstr[1] "Guji 'Sii wad' si aad Nuqul uga samayso dhammaan UPS-yada soo socda."
+
+#: upses.php
+msgid "UPS Name:"
+msgstr "Magaca UPS:"
+
+#: upses.php
+msgid "Duplicate UPS"
+msgid_plural "Duplicate UPSes"
+msgstr[0] "Nuqul ka samee UPS"
+msgstr[1] "Nuqul ka samee UPS-yada"
+
+#: upses.php
+msgid "Click 'Continue' to Reset Discovery the following UPS.  Note, this only applies for SNMPD type UPSes."
+msgid_plural "Click 'Continue' to Reset Discovery for the following UPSes.  Note, this only applies for SNMPD type UPSes."
+msgstr[0] "Guji 'Sii wad' si aad Dib ugu dejiso Baaritaanka UPS-ka soo socda. Ogsoonow, tani waxay khusaysaa oo keliya UPS-yada nooca SNMPD."
+msgstr[1] "Guji 'Sii wad' si aad Dib ugu dejiso Baaritaanka UPS-yada soo socda. Ogsoonow, tani waxay khusaysaa oo keliya UPS-yada nooca SNMPD."
+
+#: upses.php
+msgid "Reset UPS"
+msgid_plural "Reset UPSes"
+msgstr[0] "Dib u deji UPS"
+msgstr[1] "Dib u deji UPS-yada"
+
+#: upses.php
+msgid "Click 'Continue' to run Graph Automation for the following UPS.  Graphs, data sources and tree items are created from the device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgid_plural "Click 'Continue' to run Graph Automation for the following UPSes.  Graphs, data sources and tree items are created from each device's templates and the matching automation rules; graphs that already exist are left as they are.  Only a UPS that already has a Cacti Device is affected."
+msgstr[0] "Guji 'Sii wad' si aad u socodsiiso Otomaatigga Jaantusyada ee UPS-ka soo socda. Jaantusyada, ilaha xogta iyo walxaha geedka waxaa laga abuuraa qaababka qalabka iyo xeerarka otomaatigga ee u dhigma; jaantusyada hore u jiray sidooda ayaa loo daayaa. Keliya UPS hore u leh Qalabka Cacti ayaa la saameeyaa."
+msgstr[1] "Guji 'Sii wad' si aad u socodsiiso Otomaatigga Jaantusyada ee UPS-yada soo socda. Jaantusyada, ilaha xogta iyo walxaha geedka waxaa laga abuuraa qaababka qalab kasta iyo xeerarka otomaatigga ee u dhigma; jaantusyada hore u jiray sidooda ayaa loo daayaa. Keliya UPS hore u leh Qalabka Cacti ayaa la saameeyaa."
+
+#: upses.php
+msgid "Click 'Continue' to Enable the following UPS."
+msgid_plural "Click 'Continue' to Enable all following UPSes."
+msgstr[0] "Guji 'Sii wad' si aad u Hawlgeliso UPS-ka soo socda."
+msgstr[1] "Guji 'Sii wad' si aad u Hawlgeliso dhammaan UPS-yada soo socda."
+
+#: upses.php
+msgid "Enable UPS"
+msgid_plural "Enable UPSes"
+msgstr[0] "Hawlgeli UPS"
+msgstr[1] "Hawlgeli UPS-yada"
+
+#: upses.php
+msgid "Click 'Continue' to Disable the following UPS."
+msgid_plural "Click 'Continue' to Disable all following UPSes."
+msgstr[0] "Guji 'Sii wad' si aad u Damiso UPS-ka soo socda."
+msgstr[1] "Guji 'Sii wad' si aad u Damiso dhammaan UPS-yada soo socda."
+
+#: upses.php
+msgid "Disable UPS"
+msgid_plural "Disable UPSes"
+msgstr[0] "Dami UPS"
+msgstr[1] "Dami UPS-yada"
+
+#: upses.php
+#, php-format
+msgid "UPS [edit: %s]"
+msgstr "UPS [wax ka beddel: %s]"
+
+#: upses.php
+msgid "UPS [new]"
+msgstr "UPS [cusub]"
+
+#: upses.php
+msgid "The APCUPSD Device Template has not been imported.  Device automation will not happen until it is imported!"
+msgstr "Qaabka Aaladda APCUPSD lama soo dejin.  Otomaatigga aaladda ma dhici doono ilaa laga soo dejiyo!"
+
+#: upses.php
+msgid "Search"
+msgstr "Raadi"
+
+#: upses.php
+msgid "Site"
+msgstr "Goobta"
+
+#: upses.php
+msgid "All"
+msgstr "Dhammaan"
+
+#: upses.php
+msgid "Default"
+msgstr "Caadi ah"
+
+#: upses.php
+msgid "Go"
+msgstr "Tag"
+
+#: upses.php
+msgid "Set/Refresh Filters"
+msgstr "Deji/Dib u cusboonaysii Shaandheeyayaasha"
+
+#: upses.php
+msgid "Clear"
+msgstr "Nadiifi"
+
+#: upses.php
+msgid "Clear Filters"
+msgstr "Nadiifi Shaandheeyayaasha"
+
+#: upses.php
+msgid "The Name of this UPS."
+msgstr "Magaca UPS-kan."
+
+#: upses.php
+msgid "ID"
+msgstr "ID"
+
+#: upses.php
+msgid "The unique id associated with this UPS."
+msgstr "Aqoonsiga gaarka ah ee la xiriira UPS-kan."
+
+#: upses.php
+msgid "DID"
+msgstr "DID"
+
+#: upses.php
+msgid "The Cacti Device ID."
+msgstr "Aqoonsiga Aaladda Cacti."
+
+#: upses.php
+msgid "The Status of the apcupsd daemon on the target Host."
+msgstr "Xaaladda adeegga apcupsd ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "The Type of Collector.  Currently APCUPSD, SNMP and NUT are supported."
+msgstr "Nooca Ururiyaha.  Hadda APCUPSD, SNMP iyo NUT waa la taageeraa."
+
+#: upses.php
+msgid "UPS Status"
+msgstr "Xaaladda UPS"
+
+#: upses.php
+msgid "The Status of the monitored UPS on the target Host."
+msgstr "Xaaladda UPS-ka lala socdo ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "UPS Model"
+msgstr "Moodelka UPS"
+
+#: upses.php
+msgid "The Model of the monitored UPS on the target Host."
+msgstr "Moodelka UPS-ka lala socdo ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "The Line Voltage of the monitored UPS on the target Host."
+msgstr "Danabka Khadka ee UPS-ka lala socdo ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "Load Percent"
+msgstr "Boqolkiiba Culayska"
+
+#: upses.php
+msgid "The Load Percent of the monitored UPS on the target Host."
+msgstr "Boqolkiiba Culayska ee UPS-ka lala socdo ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "The estimated power draw in watts: the nominal power rating multiplied by the Load Percent."
+msgstr "Qiyaasta isticmaalka korontada ee watts: qiimeynta korontada ee magaca ah oo lagu dhuftay Boqolkiiba Culayska."
+
+#: upses.php
+msgid "The minutes of available UPS charge of the monitored UPS on the target Host."
+msgstr "Daqiiqadaha kaydka korontada UPS ee diyaarka ah ee UPS-ka lala socdo ee ku yaal Martigeliyaha la beegsanayo."
+
+#: upses.php
+msgid "Hostname:Port"
+msgstr "Magaca Martigeliyaha:Port"
+
+#: upses.php
+msgid "The Hostname:Port that is running the apcupsd daemon or NUT server."
+msgstr "Magaca Martigeliyaha:Port ee uu ku shaqaynayo adeegga apcupsd ama server-ka NUT."
+
+#: upses.php
+msgid "If this UPS is being monitored or not."
+msgstr "Haddii UPS-kan lala socdo ama aan lala socon."
+
+#: upses.php
+msgid "The last time this UPS was samples or found up."
+msgstr "Markii u dambeysay ee UPS-kan laga qaaday muunad ama la helay isagoo shaqeynaya."
+
+#: upses.php
+msgid "View UPS Dashboard"
+msgstr "Eeg Dashboard-ka UPS"
+
+#: upses.php
+msgid "No"
+msgstr "Maya"
+
+#: upses.php
+msgid "Yes"
+msgstr "Haa"
+
+#: upses.php
+msgid "No UPSes Found"
+msgstr "Wax UPS ah Lama Helin"
+
+#: upses.php
+msgid "Not Avail"
+msgstr "Lama Heli Karo"
